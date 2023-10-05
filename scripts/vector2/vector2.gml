@@ -74,12 +74,12 @@ function Vector2(x, y) constructor {
 	/// @param vector2
 	/// @desc Returns the distance between the two vectors.
 	static distance_to = function(vector2) {
-		var _check = instanceof(vector2);
-		if (is_string(_check)) {
+		//var _check = instanceof(vector2);
+		//if (is_string(_check)) {
 			return sqrt((x - vector2.x) * (x - vector2.x) + (y - vector2.y) * (y - vector2.y));
-		} else {
-			return undefined;
-		}
+		//} else {
+		//	return undefined;
+		//}
 	}
 	
 	/// @func distance_to_squared()
@@ -163,8 +163,8 @@ function Vector2(x, y) constructor {
 	/// @param {bool} by_radians?
 	/// @desc Returns the vector rotated by the amount supplied in degrees or radians.
 	static rotated = function(by_amount, radians = false) {
-		var _sine = (radians) ? sin(by_amount) : dsin(by_amount);
-		var _cosi = (radians) ? cos(by_amount) : dcos(by_amount);
+		var _sine = (radians) ? sin(by_amount) : dsin(by_amount); // 90 1
+		var _cosi = (radians) ? cos(by_amount) : dcos(by_amount); // 90 0
 		return (new Vector2(x * _cosi - y * _sine, x * _sine + y * _cosi));
 	}
 	
@@ -209,7 +209,7 @@ function Vector2(x, y) constructor {
 		var _length = _vector_delta.length();
 		
 		if (_length <= delta or _length < _epsilon) {
-			return vector2;
+			return new Vector2(vector2.x,vector2.y);
 		} else {
 			return new Vector2(_vector.x + _vector_delta.x / _length * delta, _vector.y + _vector_delta.y / _length * delta);
 		}

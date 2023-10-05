@@ -8,13 +8,12 @@
 //	self.width_arr  = width_arr;
 //}
 
-var tile_count = tilemap_get_width(ts_collisions) * tilemap_get_height(ts_collisions);
+//var tile_count = tilemap_get_width(ts_collisions) * tilemap_get_height(ts_collisions);
 
 //The angles from each collision tile
 //360 is for filled blocks, which top angle could be any direction
-tile_angles = array_create(tile_count,NaN);
 global.tile_angles = [
-360,22,22,
+0,360,22,22,
 45,45,22,22,
 45,45,31,12,
 12,31,45,0
