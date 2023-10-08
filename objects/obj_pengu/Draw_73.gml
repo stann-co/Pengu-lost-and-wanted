@@ -80,4 +80,6 @@ if(debug){
 	//draw angles
 	draw_text(x,y-40,sensor_angle);
 	draw_text(x,y-60,snap_to_90(sensor_angle));
+	
+	draw_sprite_ext(mask_index,0,x,y,image_xscale,image_yscale,image_angle,-1,0.1);
 }

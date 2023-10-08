@@ -2,7 +2,7 @@
 ///@function tile_collision()
 ///@desc returns tile collision
 function tile_collision(x_,y_){
-	return collision_point(round(x_),round(y_),[global.tile_collisions],true,true);
+	return collision_point(round(x_),round(y_),[global.tile_collisions,obj_collision],true,true);
 }
 
 ///@function point_sensor()
@@ -87,37 +87,41 @@ function draw_sensor(x,y,vec_start,dir,distance){
 function tile_rotation(x_,y_){
 	var inst = tile_collision(x_,y_);
 	
-	if(inst == noone) show_error("No tile",false);
+	if(inst == noone) show_error("No tile/object",false);
 	
-	var mx = tilemap_get_cell_x_at_pixel(inst, round(x_), round(y_));
-	var my = tilemap_get_cell_y_at_pixel(inst, round(x_), round(y_));
-	var tile = tilemap_get(inst, mx, my);
-	var tile_index = tile_get_index(tile);
-	
-	if(tile_index > array_length(global.tile_angles)-1 ) return 0;
-
-	//Get's the tile's rotation, which has been pre-set in global.tile_angles
-	var rotation = (global.tile_angles[tile_index])
-
-	if(rotation != 360){ //360 is a special number for solid blocks, so it doesn't need to get rotated or flipped
-		//rotates and flips the rotation if the tile is flipped or rotated
-		if (tile_get_rotate(tile)){
-			rotation = rotation - 90;
-			if (tile_get_mirror(tile))	rotation = -(rotation+180);	
-			if (tile_get_flip(tile))	rotation = -rotation;
-		} else {
-			if (tile_get_mirror(tile))	rotation = -rotation;
-			if (tile_get_flip(tile))	rotation = -(rotation+180);
+	if(!instance_exists(inst)){
+		//tiles
+		var mx = tilemap_get_cell_x_at_pixel(inst, round(x_), round(y_));
+		var my = tilemap_get_cell_y_at_pixel(inst, round(x_), round(y_));
+		var tile = tilemap_get(inst, mx, my);
+		var tile_index = tile_get_index(tile);
+		
+		if(tile_index > array_length(global.tile_angles)-1 ) return 0;
+		
+		//Get's the tile's rotation, which has been pre-set in global.tile_angles
+		var rotation = (global.tile_angles[tile_index])
+		
+		if(rotation != 360){ //360 is a special number for solid blocks, so it doesn't need to get rotated or flipped
+			//rotates and flips the rotation if the tile is flipped or rotated
+			if (tile_get_rotate(tile)){
+				rotation = rotation - 90;
+				if (tile_get_mirror(tile))	rotation = -(rotation+180);	
+				if (tile_get_flip(tile))	rotation = -rotation;
+			} else {
+				if (tile_get_mirror(tile))	rotation = -rotation;
+				if (tile_get_flip(tile))	rotation = -(rotation+180);
+			}
+			
+			if(rotation < 0) rotation += 360; //ensures the rotation is a positive number
+			else if (rotation > 360) rotation -= 360;
 		}
 		
-		if(rotation < 0) rotation += 360; //ensures the rotation is a positive number
-		else if (rotation > 360) rotation -= 360;
+		return rotation;
+	} else {
+		//objects and instances
+		
+		return 360
 	}
-	//else {
-	//	return snap_to_90(ground_angle);
-	//}
-	
-	return rotation;
 }
 
 ///@function snap_to_90()

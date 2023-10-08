@@ -20,7 +20,7 @@ normal_top_speed = 3;
 slide_acceleration_speed = 0.2;
 slide_deceleration_speed = 0.4;
 slide_friction_speed = 0.04;
-slide_top_speed = 6.5;
+slide_top_speed = 5;
 
 //absolute_top_speed = 9;
 
@@ -33,7 +33,7 @@ jump_release_force = 4;
 dash_force = 7;
 dash_air_windup = game_speed*0.2;
 
-rotation_speed = 0.0725; //when going airborne how fast you rotate to be back upright
+rotation_speed = 0.0215; //when going airborne how fast you rotate to be back upright
 
 normal_slope_factor = 0.215;
 slide_slope_factor = 0.425;
@@ -47,12 +47,15 @@ top_speed = normal_top_speed;
 ground_spd = 0; //how fast it's moving on the ground
 ground_angle = 0; //the grounds angle
 
+ground_slip_min_spd = 2 //if abs ground_speed is less than this, and on steep slopes you will start slipping or even detatching
+force_detatch_angle = 120;
+
 w_radius_normal = 6;
 h_radius_normal = 9;
 w_radius_slide	= 8; 
 h_radius_slide	= 6; 
 w_radius		= w_radius_normal; //width radius
-h_radius		= h_radius_normal; //height radius
+h_radius		= h_radius_normal; //height radius`?=)
 
 airborne = false;
 sliding = false;
@@ -73,7 +76,16 @@ subimg = 0;
 t = 0; //used for some states as a timer
 image_to_ground_angle = true;
 
+control_lock = 0; //When control lock is non-zero input is disabled, for when slipping down super steep slopes, or springs/speed ramps
+
 #endregion
+
+///@function set_control_lock()
+///@param duration
+set_control_lock = function(duration = game_speed*1){
+	control_lock = duration;
+	input_h = 0;
+}
 
 ///@function squish()
 ///@param scale_x_
@@ -89,23 +101,23 @@ squish = function(scale_x_,scale_y_,duration = game_speed*0.8){
 	squishing_duration = duration;
 }
 
-//set_ground_spd_from_air_spd = function(){
-//	if(ground_angle <= 23 || ground_angle >= 339){ //landing on mostly flat surface
-//		ground_spd = x_speed;
-//	} else if(ground_angle <= 45 || ground_angle >= 316){ //landing on mostly sloped surface
-//		if( abs(x_speed) >= abs(y_speed) ){ //moving mostly left/right
-//			ground_spd = x_speed;	
-//		} else {
-//			ground_spd = y_speed * -sign(dsin(ground_angle)) * 0.5;
-//		}				
-//	} else { //landing on mostly steep surface
-//		if( abs(x_speed) >= abs(y_speed) ){ //moving mostly left/right
-//			ground_spd = x_speed;	
-//		} else {
-//			ground_spd = y_speed * -sign(dsin(ground_angle));
-//		}				
-//	}
-//}
+set_ground_spd_from_air_spd = function(){
+	if(ground_angle <= 23 || ground_angle >= 339){ //landing on mostly flat surface
+		ground_spd = x_speed;
+	} else if(ground_angle <= 45 || ground_angle >= 316){ //landing on mostly sloped surface
+		if( abs(x_speed) >= abs(y_speed) ){ //moving mostly left/right
+			ground_spd = x_speed;	
+		} else {
+			ground_spd = y_speed * -sign(dsin(ground_angle)) * 0.5;
+		}				
+	} else { //landing on mostly steep surface
+		if( abs(x_speed) >= abs(y_speed) ){ //moving mostly left/right
+			ground_spd = x_speed;	
+		} else {
+			ground_spd = y_speed * -sign(dsin(ground_angle));
+		}				
+	}
+}
 
 #region sensors
 
@@ -232,19 +244,20 @@ state.add("begin_fall", {
 
 state.add("fall", {
     enter: function() {
+		airborne = true;
 		sprite_index = spr_pengu_fall;
 		subimg = 0;
 		ground_angle = 0;
 		image_to_ground_angle = false;
     },
 	step: function(){
-		if(!airborne){			
+		if(!airborne){
+			image_to_ground_angle = true;
+			airborne = false;
+			squish(1.4,0.8,game_speed);
 			if(force_slide_false) state.change("idle");
 			else state.change("sliding");	
 		}
-	},
-	leave: function(){
-		image_to_ground_angle = true;
 	}
 });
 
@@ -253,7 +266,22 @@ state.add("jump", {
 		sprite_index = spr_pengu_jump;
 		image_to_ground_angle = false;
 		subimg = 0;
+		
+		
+		airborne = true;
+		
+		var up_down = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
+		
+		y_speed = (-jump_force*up_down) - gravity_force //subtracting gravity force cancels out gravity for one frame
+		x_speed -= jump_force *dsin(ground_angle) * 0.5;
+		
+		if(x_speed != 0) mirror = sign(x_speed);
+		
+		image_angle -= 90 * dsin(ground_angle);
+		
 		ground_angle = 0;
+		
+		squish(0.4,1.4,game_speed*1);
 		
 		//when jumping from a slide you start rotated
 		if(state.get_previous_state() == "sliding"){
@@ -313,15 +341,21 @@ state.add("dash", {
 		w_radius = w_radius_slide;
 		h_radius = h_radius_slide;
 		
-		airborne = true;
-		if(input_h != 0) x_speed += dash_force * input_h;
-		else x_speed += dash_force * mirror;
+		if(airborne){
+			if(input_h != 0) x_speed += dash_force * input_h;
+			else x_speed += dash_force * mirror;
+			y_speed += -4;
+			image_angle = (mirror) ? 22 : 338;
+			image_to_ground_angle = false;
+			airborne = true;
+			mirror = sign(x_speed);
+		} else {
+			if(input_h != 0) ground_spd += dash_force * input_h;
+			else ground_spd += dash_force * mirror;
+			mirror = sign(ground_spd);
+			state.change("sliding");
+		}
 		
-		y_speed += -4;
-		
-		mirror = sign(x_speed);
-		
-		ground_angle = (mirror) ? 22 : 338;
 		
 		squish(1.2,1.2,game_speed*0.2);
     },
@@ -329,6 +363,9 @@ state.add("dash", {
 		if(!airborne){
 			state.change("sliding");
 		}
+	},
+	leave: function(){
+		image_to_ground_angle = true;	
 	}
 });
 
@@ -375,6 +412,8 @@ state.add("sliding", {
 		
 		slope_factor		= slide_slope_factor;
 		
+		mask_index = spr_pengu_hitbox_prone;
+		
     },
 	step: function() {
 		sliding_subimg+=ground_spd/20;
@@ -395,6 +434,8 @@ state.add("sliding", {
 		h_radius = h_radius_normal;
 		
 		if(sliding_subimg<3) mirror = -1;	
+		
+		mask_index = spr_pengu_hitbox_tall;
 	}
 });
 

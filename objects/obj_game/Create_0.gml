@@ -27,7 +27,6 @@ global.tile_angles = [
 ////and array of pixel height left to right
 ////and pixel width from top to bottom
 //for (var tile = 0; tile < tile_count; ++tile) {
-	
 //	var height_arr = [];
 //	for (var x_ = 0; x_ < 16; ++x_) {
 		

@@ -5,33 +5,36 @@ subimg+= sprite_get_speed(sprite_index);
 state.step();
 
 #region input
-if(!airborne && !sliding && input_check_pressed("down")){
-	state.change("begin_slide");
+if(control_lock == 0){
+	if(!airborne && !sliding && input_check_pressed("down")){
+		state.change("begin_slide");
+	}
+	
+	if(input_check_pressed("up") && !airborne){
+		state.change("jump");
+	}
+	
+	if(input_check_pressed("action")){
+		if(airborne){
+			state.change("dash_ball");
+		} else {
+			state.change("dash");
+		}
+	}
+	
+	input_h = (input_check("right") - input_check("left"));
 }
 
-if(input_check_pressed("up") && !airborne){
-	airborne = true;
-	y_speed = - jump_force - gravity_force //subtracting gravity force cancels out gravity for one frame
-	state.change("jump");
-}
-
-if(input_check_pressed("action")){
-	state.change("dash_ball");
-}
-
-input_h = (input_check("right") - input_check("left"));
-
-#endregion
-
-#region force slide on incline
-//inclines above 45 degrees force you to slide
-if(!sliding && !force_slide_false && !airborne){
-	state.change("begin_slide")
-}
 #endregion
 
 #region movement on ground
 if(!airborne){
+	
+	//inclines above 45 degrees force you to slide
+	if(!sliding && !force_slide_false){
+		state.change("begin_slide")
+	}
+	
 	if(input_h != 0){
 		//if top speed has already been exceeded before this event
 		//that becomes the new temporary top speed
@@ -61,14 +64,24 @@ if(!airborne){
 		ground_spd -= min(abs(ground_spd), friction_speed) * sign(ground_spd); //decelerate
 	}
 	
-	ground_spd-=slope_factor * dsin(ground_angle);
+	ground_spd-=slope_factor * dsin(ground_angle);	
 	
-	// Calculate x and y_speed from ground_speed
+		// Calculate x and y_speed from ground_speed
 	x_speed = ground_spd * dcos(ground_angle)
 	y_speed = ground_spd * -dsin(ground_angle)
-	
-	x += x_speed;
-	y += y_speed;
+
+	//slipping and floor detatching
+	if(control_lock == 0){
+		//should player slip
+		if(abs(ground_spd) < ground_slip_min_spd && (ground_angle > force_slide_angle && ground_angle < 360-force_slide_angle)){
+			set_control_lock(game_speed*0.5);
+			//should player detatch
+			if(ground_angle >= force_detatch_angle || ground_angle <= 360-force_detatch_angle){
+				state.change("fall");
+			}
+		}
+		
+	}
 }
 #endregion
 
@@ -91,18 +104,15 @@ else {
 		x_speed -= floor(x_speed / 0.125) / 256;
 	}
 
-	
 	x_speed = clamp(x_speed,-x_top_speed,x_top_speed);
 	y_speed = clamp(y_speed,-y_top_speed,y_top_speed);
 	
-	x += x_speed;
-	y += y_speed;
-	
-	image_angle -= angle_difference(image_angle,0) * rotation_speed;
-	ground_spd = (x_speed * dcos(ground_angle)) + (y_speed * dsin(ground_angle));
-	
+	image_angle -= angle_difference(image_angle,0) * rotation_speed;	
 }
 #endregion
+
+x+=x_speed;
+y+=y_speed;
 
 //when airborne sensors aren't rotated at all
 sensor_angle = (airborne) ? 0 : ground_angle;
@@ -119,79 +129,74 @@ if((!airborne && ground_spd < 0) || (airborne && x_speed < 0)) { //left
 	push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,sensor_length_push(),1);
 }
 
-if(push_sensor != noone && push_sensor.distance < 0){
-	show_debug_message("");
-}
-
-if(push_sensor != noone && abs(angle_difference(push_sensor.angle,ground_angle)) >= 50 && push_sensor.distance < 0){
+if(push_sensor != noone && push_sensor.distance < 1){
 	x+= push_sensor.x;
 	y+= push_sensor.y;
 	
-	if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
-	
-	ground_spd = 0;
-	x_speed = 0;
+	if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
+		if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
+		//else if(state.state_is("pushing")) pick_move_state();
+		
+		ground_spd = 0;
+		x_speed = 0;
+	}
 }
-	
 #endregion
 
 #region ground sensors
-
-//bottom
-vec_b = new Vector2(0,h_radius+1);
-vec_b = vec_b.rotated(-snap_to_90(sensor_angle));
-//bottom left
-vec_bl = new Vector2(-w_radius,h_radius);
-vec_bl = vec_bl.rotated(-snap_to_90(sensor_angle));
-//bottom right
-vec_br = new Vector2(w_radius,h_radius);
-vec_br = vec_br.rotated(-snap_to_90(sensor_angle));
-
-
-var bl_sensor = sensor(vec_bl,snap_to_90(sensor_angle),sensor_length_vertical(),1);
-var br_sensor = sensor(vec_br,snap_to_90(sensor_angle),sensor_length_vertical(),1);
-
-//sensors check which is closest to the ground
-var winning_sensor = noone;
 if(!airborne || (airborne && y_speed > 0)){
-	if(bl_sensor != noone && br_sensor != noone){
-		//if both sensors collide, the one with the shortest distance wins
-		if(bl_sensor.distance < br_sensor.distance) winning_sensor = bl_sensor;
-		else winning_sensor = br_sensor;	
-	}
-	else if(bl_sensor != noone) winning_sensor = bl_sensor;
-	else if(br_sensor != noone) winning_sensor = br_sensor;
-}
-
-
-if(winning_sensor != noone){
-	x+= winning_sensor.x;
-	y+= winning_sensor.y;
-	ground_angle = winning_sensor.angle;	
-	airborne = false;
+	//bottom
+	vec_b = new Vector2(0,h_radius+1);
+	vec_b = vec_b.rotated(-snap_to_90(sensor_angle));
+	//bottom left
+	vec_bl = new Vector2(-w_radius,h_radius);
+	vec_bl = vec_bl.rotated(-snap_to_90(sensor_angle));
+	//bottom right
+	vec_br = new Vector2(w_radius,h_radius);
+	vec_br = vec_br.rotated(-snap_to_90(sensor_angle));
 	
-} else if(!airborne){ //going off ledges
 	
-	var test = sensor(vec_bl,snap_to_90(sensor_angle),sensor_length_vertical(),1);
-	var test = sensor(vec_br,snap_to_90(sensor_angle),sensor_length_vertical(),1);
+	var bl_sensor = sensor(vec_bl,snap_to_90(sensor_angle),sensor_length_vertical(),1);
+	var br_sensor = sensor(vec_br,snap_to_90(sensor_angle),sensor_length_vertical(),1);
 	
-	airborne = true;
+	//sensors check which is closest to the ground
+	var updown_sensor = noone;
 	
-	if(sliding){ //when sliding off a surface, you are angled
-		if(ground_spd > 0){
-			ground_angle -= 90;
-			mirror = 1;
-		} else{
-			ground_angle += 90;
-			mirror = 1;
+		if(bl_sensor != noone && br_sensor != noone){
+			//if both sensors collide, the one with the shortest distance wins
+			if(bl_sensor.distance < br_sensor.distance) updown_sensor = bl_sensor;
+			else updown_sensor = br_sensor;	
 		}
+		else if(bl_sensor != noone) updown_sensor = bl_sensor;
+		else if(br_sensor != noone) updown_sensor = br_sensor;
+	
+	
+	if(updown_sensor != noone){
+		x+= updown_sensor.x;
+		y+= updown_sensor.y;
+		ground_angle = updown_sensor.angle;	
+		
+		if(airborne){ //just as you land from being airborne
+			airborne = false;
+			set_ground_spd_from_air_spd();
+		}
+		
+	} else if(!airborne){ //going off ledges
+		airborne = true;
+		
+		if(sliding){ //when sliding off a surface, you are angled
+			if(ground_spd > 0){
+				ground_angle -= 90;
+				mirror = 1;
+			} else{
+				ground_angle += 90;
+				mirror = 1;
+			}
+		}	
+		//falling
+		state.change("begin_fall");
 	}
-	
-	//falling
-	state.change("begin_fall");
-	
-	//rising
-}
+} else
 
 #endregion
 
@@ -212,19 +217,19 @@ if(airborne && y_speed < 0){
 	var tr_sensor = sensor(vec_tr,snap_to_90(sensor_angle)+180,sensor_length_vertical(),1);
 	
 	//sensors check which is closest to the ground
-	winning_sensor = noone;
+	var updown_sensor = noone;
 	if(airborne && y_speed < 0){
 		if(tl_sensor != noone && tr_sensor != noone){
 			//if both sensors collide, the one with the shortest distance wins
-			if(tl_sensor.distance < tr_sensor.distance) winning_sensor = tl_sensor;
-			else winning_sensor = tr_sensor;	
+			if(tl_sensor.distance < tr_sensor.distance) updown_sensor = tl_sensor;
+			else updown_sensor = tr_sensor;	
 		}
-		else if(tl_sensor != noone) winning_sensor = tl_sensor;
-		else if(tr_sensor != noone) winning_sensor = tr_sensor;
+		else if(tl_sensor != noone) updown_sensor = tl_sensor;
+		else if(tr_sensor != noone) updown_sensor = tr_sensor;
 		
-		if(winning_sensor != noone && winning_sensor.distance < 0){
-			x+= winning_sensor.x;
-			y+= winning_sensor.y;
+		if(updown_sensor != noone && updown_sensor.distance < 0){
+			x+= updown_sensor.x;
+			y+= updown_sensor.y;
 		}
 	}
 	
@@ -265,3 +270,6 @@ if(squishing){
 #endregion
 
 if(image_to_ground_angle) image_angle = ground_angle;
+
+if(control_lock != 0) control_lock--;
+
