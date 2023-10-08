@@ -14,13 +14,13 @@ return {
     
     keyboard_and_mouse:
     {
-        up:    [input_binding_key(vk_up),    input_binding_key("W")],
+        up:    [input_binding_key(vk_up),input_binding_key(vk_space),input_binding_key("W")],
         down:  [input_binding_key(vk_down),  input_binding_key("S")],
         left:  [input_binding_key(vk_left),  input_binding_key("A")],
         right: [input_binding_key(vk_right), input_binding_key("D")],
-        
-        accept:  input_binding_key(vk_space),
-        cancel:  input_binding_key(vk_backspace),
+		
+		action: [input_binding_key(vk_enter), input_binding_key(vk_shift), input_binding_key("Z")],
+		cancel: [input_binding_key(vk_escape), input_binding_key("X")],
         
         pause: input_binding_key(vk_escape),
     },
@@ -32,8 +32,8 @@ return {
         left:  [input_binding_gamepad_axis(gp_axislh, true),  input_binding_gamepad_button(gp_padl)],
         right: [input_binding_gamepad_axis(gp_axislh, false), input_binding_gamepad_button(gp_padr)],
         
-        accept:  input_binding_gamepad_button(gp_face1),
-        cancel:  input_binding_gamepad_button(gp_face2),
+        action:  [input_binding_gamepad_button(gp_face1),input_binding_gamepad_button(gp_face3)],
+        cancel:  [input_binding_gamepad_button(gp_face2),input_binding_gamepad_button(gp_face4)],
         
         pause: input_binding_gamepad_button(gp_start),
     },    

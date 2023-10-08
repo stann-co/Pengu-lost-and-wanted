@@ -1,4 +1,5 @@
 /// @description
+debug = false;
 
 global.camera.follow = self;
 
@@ -12,18 +13,29 @@ force_slide_angle = 46; //if you walk on an incline above this angle you're forc
 #macro force_slide_false (ground_angle < force_slide_angle || ground_angle > 360-force_slide_angle)
 
 normal_acceleration_speed = 0.3;
-normal_deceleration_speed = 0.5;
+normal_deceleration_speed = 0.4;
 normal_friction_speed = 0.24;
-normal_top_speed = 2.4;
+normal_top_speed = 3;
 
 slide_acceleration_speed = 0.2;
 slide_deceleration_speed = 0.4;
 slide_friction_speed = 0.04;
-slide_top_speed = 6;
+slide_top_speed = 6.5;
+
+//absolute_top_speed = 9;
 
 gravity_force = 0.21875;
+air_acceleration_speed = 0.0937;
+air_top_speed = 6;
+jump_force = 6.5;
+jump_release_force = 4;
 
-normal_slope_factor = 0.115;
+dash_force = 7;
+dash_air_windup = game_speed*0.2;
+
+rotation_speed = 0.0725; //when going airborne how fast you rotate to be back upright
+
+normal_slope_factor = 0.215;
 slide_slope_factor = 0.425;
 slope_factor = normal_slope_factor;
 
@@ -32,14 +44,17 @@ deceleration_speed = normal_deceleration_speed;
 friction_speed = normal_friction_speed;
 top_speed = normal_top_speed;
 
-
 ground_spd = 0; //how fast it's moving on the ground
 ground_angle = 0; //the grounds angle
 
-w_radius = 6; //width radius
-h_radius = 9; //height radius
+w_radius_normal = 6;
+h_radius_normal = 9;
+w_radius_slide	= 8; 
+h_radius_slide	= 6; 
+w_radius		= w_radius_normal; //width radius
+h_radius		= h_radius_normal; //height radius
 
-grounded = true;
+airborne = false;
 sliding = false;
 
 mirror = 1; //+1 right | -1 left
@@ -52,6 +67,11 @@ scale_y_squish = 1;
 squishing = false;
 squishing_t = 0;
 squishing_duration = 0;
+
+subimg = 0;
+
+t = 0; //used for some states as a timer
+image_to_ground_angle = true;
 
 #endregion
 
@@ -69,6 +89,24 @@ squish = function(scale_x_,scale_y_,duration = game_speed*0.8){
 	squishing_duration = duration;
 }
 
+//set_ground_spd_from_air_spd = function(){
+//	if(ground_angle <= 23 || ground_angle >= 339){ //landing on mostly flat surface
+//		ground_spd = x_speed;
+//	} else if(ground_angle <= 45 || ground_angle >= 316){ //landing on mostly sloped surface
+//		if( abs(x_speed) >= abs(y_speed) ){ //moving mostly left/right
+//			ground_spd = x_speed;	
+//		} else {
+//			ground_spd = y_speed * -sign(dsin(ground_angle)) * 0.5;
+//		}				
+//	} else { //landing on mostly steep surface
+//		if( abs(x_speed) >= abs(y_speed) ){ //moving mostly left/right
+//			ground_spd = x_speed;	
+//		} else {
+//			ground_spd = y_speed * -sign(dsin(ground_angle));
+//		}				
+//	}
+//}
+
 #region sensors
 
 vec_r = new Vector2(0,0); //right
@@ -83,74 +121,233 @@ vec_br = new Vector2(0,0); //bottom right
 vec_tl = new Vector2(0,0); //top left
 vec_tr = new Vector2(0,0); //top right
 
+sensor_angle = 0;
+sensor_length_base = 8;
+
+sensor_length_push = function(){
+	if(airborne){
+		return sensor_length_base + (abs(x_speed) *	dcos(ground_angle));
+	} else {
+		return sensor_length_base + abs(ground_spd);
+	}
+}
+
+sensor_length_vertical = function(){
+	if(airborne){
+		return sensor_length_base + (abs(y_speed) * dsin(ground_angle));
+	} else {
+		return sensor_length_base + abs(ground_spd);
+	}
+}
+
+//sensor_length_vertical maybe??
+
 #endregion
 
 #region states
 state = new SnowState("idle");
 
 state.event_set_default_function("draw",function(){
-	draw_sprite_ext(sprite_index,image_index,x,y,scale_x*mirror,scale_y,image_angle,-1,1);
-	
+	draw_sprite_ext(sprite_index,subimg,x,y,scale_x*mirror,scale_y,image_angle,-1,1);
 });
+
+pick_move_state = function(){
+	if (input_h != 0){
+		if( input_h != mirror ) state.change("turning");
+		else state.change("running");
+	}
+}
 
 state.add("idle", {
     enter: function() {
 		sprite_index = spr_pengu_idle;
-		image_index = 0;
-		
-		w_radius = 6;
-		h_radius = 9;
+		subimg = 0;
+		w_radius = w_radius_normal;
+		h_radius = h_radius_normal;
     },
 	step: function() {
-		if (input_h != 0){
-			if( input_h != mirror ) state.change("turning");
-			else state.change("running");
-		}
-	},
+		pick_move_state();
+	}
 });
 
 state.add("turning", {
     enter: function() {
 		
 		sprite_index = spr_pengu_idle;
-		image_index = 0;
+		subimg = 0;
 		
 		mirror = -mirror;
 		
 		squish(1.2,0.8);
 		
-		state.change("idle");
-    },
-	step: function() {
-		//if (animation_end(sprite_index,image_index)){
-		//	state.change("idle");
-		//}
-	}
+		pick_move_state();
+    }
 });
 
 state.add("running", {
     enter: function() {
 		sprite_index = spr_pengu_idle;
-		image_index = 0;
+		subimg = 0;
     },
 	step: function() {
-		if (input_h == 0) state.change("idle");
-		else if (input_h != mirror) state.change("turning");
+		pick_move_state();
+	}
+});
+
+state.add("pushing", {
+    enter: function() {
+		mirror = sign(ground_spd);
+		sprite_index = spr_pengu_pushing;
+		subimg = 0;
+    },
+	
+	step: function(){
+		if(input_h != mirror){
+			state.change("idle");	
+		}
+	}
+});
+
+state.add("edge", {
+    enter: function() {
+		sprite_index = spr_pengu_edge;
+		subimg = 0;
+    },
+	step: function() {
+		pick_move_state();
+	}
+});
+
+state.add("begin_fall", {
+    enter: function() {
+		sprite_index = spr_pengu_begin_fall;
+		subimg = 0;
+    },
+	step: function() {
+		if (animation_end(sprite_index,subimg)){
+			state.change("fall");
+		}
+	}
+});
+
+state.add("fall", {
+    enter: function() {
+		sprite_index = spr_pengu_fall;
+		subimg = 0;
+		ground_angle = 0;
+		image_to_ground_angle = false;
+    },
+	step: function(){
+		if(!airborne){			
+			if(force_slide_false) state.change("idle");
+			else state.change("sliding");	
+		}
 	},
+	leave: function(){
+		image_to_ground_angle = true;
+	}
+});
+
+state.add("jump", {
+    enter: function() {
+		sprite_index = spr_pengu_jump;
+		image_to_ground_angle = false;
+		subimg = 0;
+		ground_angle = 0;
+		
+		//when jumping from a slide you start rotated
+		if(state.get_previous_state() == "sliding"){
+			image_angle -= 90 * mirror;
+		}
+    },
+	step: function() {
+		if(input_check_released("up") && y_speed < -jump_release_force){
+			y_speed = -jump_release_force;	
+		}
+		if(y_speed > 0) state.change("begin_fall");
+		if(!airborne) state.change("idle");
+	},
+	leave: function(){
+		image_to_ground_angle = true;	
+	}
+});
+	
+state.add("dash_ball",{
+	enter: function(){
+		sprite_index = spr_pengu_ball;
+		subimg = 0;
+		image_angle = 0;
+		y_speed = -2;
+		x_speed *= 0.8;
+		
+		t = 0;
+		
+		image_to_ground_angle = false;
+		
+		if(input_h != 0) mirror = input_h;
+		else if (x_speed != 0) mirror = sign(x_speed);
+		
+		squish(1.4,1.4,dash_air_windup);
+		
+	},
+	step: function(){
+		
+		var posx = (t/dash_air_windup);
+		image_angle = animcurve_read(ac_dash_ball_rotate,0,posx)*360 * -mirror;
+		t++
+		if(t == dash_air_windup){
+			state.change("dash");	
+		}
+	},
+	leave: function(){
+		image_to_ground_angle = true;
+	}
+
+})
+
+state.add("dash", {
+    enter: function() {
+		sprite_index = spr_pengu_dash;
+		subimg = 0;
+		
+		w_radius = w_radius_slide;
+		h_radius = h_radius_slide;
+		
+		airborne = true;
+		if(input_h != 0) x_speed += dash_force * input_h;
+		else x_speed += dash_force * mirror;
+		
+		y_speed += -4;
+		
+		mirror = sign(x_speed);
+		
+		ground_angle = (mirror) ? 22 : 338;
+		
+		squish(1.2,1.2,game_speed*0.2);
+    },
+	step: function() {
+		if(!airborne){
+			state.change("sliding");
+		}
+	}
 });
 
 state.add("begin_slide", {
     enter: function() {
 		sliding = true;
 		sprite_index = spr_pengu_begin_slide;
-		image_index = 0;
+		subimg = 0;
 		//var sound = audio_play_sound(snd_down,100,false);
 		//audio_sound_pitch(sound,pitch_change(random_range(-2,2)))
     },
 	step: function() {
-		if (animation_end()){
+		if (animation_end(sprite_index,subimg)){
 			state.change("sliding");
 		}
+	},
+	leave: function(){
+		sliding = false;	
+		
 	}
 });
 
@@ -163,14 +360,13 @@ state.add("sliding", {
 		squish(1.4,0.8);
 		// audio_play_sound(snd_slide_loop, 15, true); NEED TO FIX
 
-		w_radius = 6;
-		h_radius = 6;
+		w_radius = w_radius_slide;
+		h_radius = h_radius_slide;
 		
 		sliding_subimg = 0;
 		if(mirror > 0) sliding_subimg = 12; //decides wether to start pointing left or right
-		image_index = sliding_subimg;
+		subimg = sliding_subimg;
 		mirror = 1;
-		
 		
 		acceleration_speed	= slide_acceleration_speed;
 		deceleration_speed	= slide_deceleration_speed;
@@ -183,12 +379,7 @@ state.add("sliding", {
 	step: function() {
 		sliding_subimg+=ground_spd/20;
 		sliding_subimg = clamp(sliding_subimg,0,12);
-		image_index = sliding_subimg;
-		
-		if(!grounded){
-			//	state.change("falling_start")
-			//	angle = sign(hspd)*-90;
-		}
+		subimg = sliding_subimg;
 	},
 	leave: function() {
 		sliding = false;
@@ -200,6 +391,8 @@ state.add("sliding", {
 		
 		slope_factor		= normal_slope_factor;
 		
+		w_radius = w_radius_normal;
+		h_radius = h_radius_normal;
 		
 		if(sliding_subimg<3) mirror = -1;	
 	}

@@ -1,5 +1,7 @@
 /// @description
 
+/// feather ignore all in /Extensions/*
+
 #region collision tiles
 //function collision_tile(id,angle_,height_arr,width_arr) constructor{
 //	self.id 		= id;
@@ -17,7 +19,7 @@ global.tile_angles = [
 45,45,22,22,
 45,45,31,12,
 12,31,45,0
-]
+];
 
 //global.collision_tiles = array_create(tile_count,NaN);
 

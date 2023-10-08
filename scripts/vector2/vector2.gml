@@ -14,7 +14,7 @@ function Vector2(x, y) constructor {
 	/// @desc Returns this vector's angle with respect to the X axis.
 	static angle = function(return_radians) {
 		return (return_radians) ? arctan2(y, x) : darctan2(y, x);
-	}
+	}	
 	
 	/// @func add()
 	/// @param vector2
@@ -160,11 +160,10 @@ function Vector2(x, y) constructor {
 	
 	/// @func rotated()
 	/// @param by_amount
-	/// @param {bool} by_radians?
 	/// @desc Returns the vector rotated by the amount supplied in degrees or radians.
 	static rotated = function(by_amount, radians = false) {
-		var _sine = (radians) ? sin(by_amount) : dsin(by_amount); // 90 1
-		var _cosi = (radians) ? cos(by_amount) : dcos(by_amount); // 90 0
+		var _sine = dsin(by_amount); // 90 1
+		var _cosi = dcos(by_amount); // 90 0
 		return (new Vector2(x * _cosi - y * _sine, x * _sine + y * _cosi));
 	}
 	
