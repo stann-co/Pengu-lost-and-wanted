@@ -14,13 +14,16 @@ return {
     
     keyboard_and_mouse:
     {
-        up:    [input_binding_key(vk_up),input_binding_key(vk_space),input_binding_key("W")],
-        down:  [input_binding_key(vk_down),  input_binding_key("S")],
+        up:    [input_binding_key(vk_up),	 input_binding_key("W")],
+        down:  [input_binding_key(vk_down),  input_binding_key("S"), input_binding_key(vk_control)],
         left:  [input_binding_key(vk_left),  input_binding_key("A")],
         right: [input_binding_key(vk_right), input_binding_key("D")],
 		
-		action: [input_binding_key(vk_enter), input_binding_key(vk_shift), input_binding_key("Z")],
-		cancel: [input_binding_key(vk_escape), input_binding_key("X")],
+		jump: [input_binding_key(vk_space),input_binding_key("Z")],
+		dash: [input_binding_key(vk_shift),input_binding_key("X")],
+		
+		accept: [input_binding_key(vk_enter),input_binding_key("Z")],
+		cancel: [input_binding_key(vk_escape),input_binding_key("X")],
         
         pause: input_binding_key(vk_escape),
     },
@@ -32,8 +35,11 @@ return {
         left:  [input_binding_gamepad_axis(gp_axislh, true),  input_binding_gamepad_button(gp_padl)],
         right: [input_binding_gamepad_axis(gp_axislh, false), input_binding_gamepad_button(gp_padr)],
         
-        action:  [input_binding_gamepad_button(gp_face1),input_binding_gamepad_button(gp_face3)],
-        cancel:  [input_binding_gamepad_button(gp_face2),input_binding_gamepad_button(gp_face4)],
+        jump:  [input_binding_gamepad_button(gp_face1),input_binding_gamepad_button(gp_face2),input_binding_gamepad_button(gp_shoulderr),input_binding_gamepad_button(gp_shoulderrb)],
+        dash:  [input_binding_gamepad_button(gp_face3),input_binding_gamepad_button(gp_face4),input_binding_gamepad_button(gp_shoulderl),input_binding_gamepad_button(gp_shoulderlb)],
+		
+		accept: [input_binding_gamepad_button(gp_face1),input_binding_gamepad_button(gp_face2),input_binding_gamepad_button(gp_shoulderr),input_binding_gamepad_button(gp_shoulderrb)],
+		cancel: [input_binding_gamepad_button(gp_face3),input_binding_gamepad_button(gp_face4),input_binding_gamepad_button(gp_shoulderl),input_binding_gamepad_button(gp_shoulderlb)],
         
         pause: input_binding_gamepad_button(gp_start),
     },    

@@ -12,26 +12,35 @@ y_speed = 0;
 force_slide_angle = 46; //if you walk on an incline above this angle you're forced into sliding
 #macro force_slide_false (ground_angle < force_slide_angle || ground_angle > 360-force_slide_angle)
 
-normal_acceleration_speed = 0.3;
-normal_deceleration_speed = 0.4;
+normal_acceleration_speed = 0.1;
+normal_deceleration_speed = 0.2;
 normal_friction_speed = 0.24;
 normal_top_speed = 3;
 
-slide_acceleration_speed = 0.2;
+slide_acceleration_speed = 0.08;
 slide_deceleration_speed = 0.4;
 slide_friction_speed = 0.04;
-slide_top_speed = 5;
+slide_top_speed = 8;
 
-//absolute_top_speed = 9;
+absolute_top_speed = 10;
 
 gravity_force = 0.21875;
 air_acceleration_speed = 0.0937;
-air_top_speed = 6;
+air_horizontal_top_speed = 4;
+air_vertical_top_speed = 7;
+
 jump_force = 6.5;
 jump_release_force = 4;
+double_jump_force = 4;
+double_jump_count = 0;
 
-dash_force = 7;
+dash_air_force = 5.4;
 dash_air_windup = game_speed*0.2;
+dash_air_count = 0;
+
+dash_ground_force_min = 2;
+dash_ground_force_max = 8;
+dash_ground_windup = game_speed*0.2; //you can hold it down longer, but after this it's hit max potential
 
 rotation_speed = 0.0215; //when going airborne how fast you rotate to be back upright
 
@@ -47,7 +56,11 @@ top_speed = normal_top_speed;
 ground_spd = 0; //how fast it's moving on the ground
 ground_angle = 0; //the grounds angle
 
-ground_slip_min_spd = 2 //if abs ground_speed is less than this, and on steep slopes you will start slipping or even detatching
+ground_slip_min_spd = 4 //if abs ground_speed is less than this, and on steep slopes you will start slipping or even detatching
+//ground_slip_min_spd_ceiling = 4
+
+slip_control_lock_time = game_speed * 0.2;
+
 force_detatch_angle = 120;
 
 w_radius_normal = 6;
@@ -136,21 +149,21 @@ vec_tr = new Vector2(0,0); //top right
 sensor_angle = 0;
 sensor_length_base = 8;
 
-sensor_length_push = function(){
-	if(airborne){
-		return sensor_length_base + (abs(x_speed) *	dcos(ground_angle));
-	} else {
-		return sensor_length_base + abs(ground_spd);
-	}
-}
+//sensor_length_push = function(){
+//	if(airborne){
+//		return sensor_length_base + (abs(x_speed) *	dcos(ground_angle));
+//	} else {
+//		return sensor_length_base + abs(ground_spd);
+//	}
+//}
 
-sensor_length_vertical = function(){
-	if(airborne){
-		return sensor_length_base + (abs(y_speed) * dsin(ground_angle));
-	} else {
-		return sensor_length_base + abs(ground_spd);
-	}
-}
+//sensor_length_vertical = function(){
+//	if(airborne){
+//		return sensor_length_base + (abs(y_speed) * dsin(ground_angle));
+//	} else {
+//		return sensor_length_base + abs(ground_spd);
+//	}
+//}
 
 //sensor_length_vertical maybe??
 
@@ -232,6 +245,7 @@ state.add("edge", {
 
 state.add("begin_fall", {
     enter: function() {
+		image_to_ground_angle = false;
 		sprite_index = spr_pengu_begin_fall;
 		subimg = 0;
     },
@@ -252,8 +266,6 @@ state.add("fall", {
     },
 	step: function(){
 		if(!airborne){
-			image_to_ground_angle = true;
-			airborne = false;
 			squish(1.4,0.8,game_speed);
 			if(force_slide_false) state.change("idle");
 			else state.change("sliding");	
@@ -289,9 +301,10 @@ state.add("jump", {
 		}
     },
 	step: function() {
-		if(input_check_released("up") && y_speed < -jump_release_force){
+		if(input_check_released("jump") && y_speed < -jump_release_force){
 			y_speed = -jump_release_force;	
 		}
+
 		if(y_speed > 0) state.change("begin_fall");
 		if(!airborne) state.change("idle");
 	},
@@ -299,8 +312,33 @@ state.add("jump", {
 		image_to_ground_angle = true;	
 	}
 });
+
+state.add("double_jump", {
+    enter: function() {
+		sprite_index = spr_pengu_jump;
+		ground_angle = 0;
+		image_to_ground_angle = true;
+		subimg = 0;
+		
+		airborne = true;
+		
+		double_jump_count++;
+		
+		y_speed = -double_jump_force;
+
+		x_speed *= 0.6;
+		
+		//if(x_speed != 0) mirror = sign(x_speed);
+
+		squish(0.4,1.4,game_speed*1);
+    },
+	step: function() {
+		if(y_speed > 0) state.change("begin_fall");
+		if(!airborne) state.change("idle");
+	},
+});
 	
-state.add("dash_ball",{
+state.add("dash_air_charge",{
 	enter: function(){
 		sprite_index = spr_pengu_ball;
 		subimg = 0;
@@ -311,6 +349,8 @@ state.add("dash_ball",{
 		t = 0;
 		
 		image_to_ground_angle = false;
+		
+		dash_air_count++;
 		
 		if(input_h != 0) mirror = input_h;
 		else if (x_speed != 0) mirror = sign(x_speed);
@@ -324,12 +364,54 @@ state.add("dash_ball",{
 		image_angle = animcurve_read(ac_dash_ball_rotate,0,posx)*360 * -mirror;
 		t++
 		if(t == dash_air_windup){
-			state.change("dash");	
+			state.change("dash_air");	
 		}
 	},
 	leave: function(){
 		image_to_ground_angle = true;
 	}
+
+})
+
+state.add("dash_air", {
+    enter: function() {
+		sprite_index = spr_pengu_dash;
+		subimg = 0;
+		
+		w_radius = w_radius_slide;
+		h_radius = h_radius_slide;
+		
+		if(input_h != 0) x_speed += dash_air_force * input_h;
+		else x_speed += dash_air_force * mirror;
+		y_speed += -4;
+		image_angle = (mirror) ? 22 : 338;
+		image_to_ground_angle = false;
+		airborne = true;
+		mirror = sign(x_speed);
+		
+		
+		squish(1.2,1.2,game_speed*0.2);
+    },
+	step: function() {
+		if(!airborne){
+			state.change("sliding");
+		}
+	},
+	leave: function(){
+		image_to_ground_angle = true;
+	}
+});
+
+state.add("dash_charge", {
+
+	enter: function(){
+		sprite_index = spr_pengu_dash;
+		ground_spd = min(ground_spd,0.4);
+	},
+	step: function(){
+		
+	}
+
 
 })
 
@@ -341,31 +423,15 @@ state.add("dash", {
 		w_radius = w_radius_slide;
 		h_radius = h_radius_slide;
 		
-		if(airborne){
-			if(input_h != 0) x_speed += dash_force * input_h;
-			else x_speed += dash_force * mirror;
-			y_speed += -4;
-			image_angle = (mirror) ? 22 : 338;
-			image_to_ground_angle = false;
-			airborne = true;
-			mirror = sign(x_speed);
-		} else {
-			if(input_h != 0) ground_spd += dash_force * input_h;
-			else ground_spd += dash_force * mirror;
-			mirror = sign(ground_spd);
-			state.change("sliding");
-		}
-		
+		//state.change("sliding");
 		
 		squish(1.2,1.2,game_speed*0.2);
     },
 	step: function() {
-		if(!airborne){
-			state.change("sliding");
-		}
+
 	},
 	leave: function(){
-		image_to_ground_angle = true;	
+		
 	}
 });
 

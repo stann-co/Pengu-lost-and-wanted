@@ -7,8 +7,8 @@ if(debug){
 	//left
 	if(ground_spd < 0){
 		draw_set_color(cyan);
-		draw_sensor(x,y,vec_l,snap_to_90(sensor_angle)-90, sensor_length_push());
-		draw_sensor(x,y,vec_l,snap_to_90(sensor_angle)-90,-sensor_length_push());
+		draw_sensor(x,y,vec_l,snap_to_90(sensor_angle)-90, sensor_length_base);
+		draw_sensor(x,y,vec_l,snap_to_90(sensor_angle)-90,-sensor_length_base);
 		
 		draw_set_color(white);
 		draw_circle(x+vec_l.x,y+vec_l.y,1,0);
@@ -18,8 +18,8 @@ if(debug){
 	//right
 	if(ground_spd > 0){
 		draw_set_color(orange);
-		draw_sensor(x,y,vec_r,snap_to_90(sensor_angle)+90, sensor_length_push());
-		draw_sensor(x,y,vec_r,snap_to_90(sensor_angle)+90,-sensor_length_push());
+		draw_sensor(x,y,vec_r,snap_to_90(sensor_angle)+90, sensor_length_base);
+		draw_sensor(x,y,vec_r,snap_to_90(sensor_angle)+90,-sensor_length_base);
 		
 		draw_set_color(white);
 		draw_circle(x+vec_r.x,y+vec_r.y,1,0);
@@ -32,13 +32,13 @@ if(debug){
 		if(!airborne || (airborne && y_speed > 0)){
 		//bottom left
 		draw_set_color(red);
-		draw_sensor(x,y,vec_bl,snap_to_90(sensor_angle), sensor_length_vertical());
-		draw_sensor(x,y,vec_bl,snap_to_90(sensor_angle),-sensor_length_vertical());
+		draw_sensor(x,y,vec_bl,snap_to_90(sensor_angle), sensor_length_base);
+		draw_sensor(x,y,vec_bl,snap_to_90(sensor_angle),-sensor_length_base);
 		
 		//bottom right
 		draw_set_color(blue);
-		draw_sensor(x,y,vec_br,snap_to_90(sensor_angle), sensor_length_vertical());
-		draw_sensor(x,y,vec_br,snap_to_90(sensor_angle),-sensor_length_vertical());
+		draw_sensor(x,y,vec_br,snap_to_90(sensor_angle), sensor_length_base);
+		draw_sensor(x,y,vec_br,snap_to_90(sensor_angle),-sensor_length_base);
 		
 		draw_set_color(white);
 		draw_circle(x+vec_br.x,y+vec_br.y,1,0);
@@ -56,13 +56,13 @@ if(debug){
 	if(airborne && y_speed < 0){
 		//top left{
 		draw_set_color(green);
-		draw_sensor(x,y,vec_tl,snap_to_90(sensor_angle), sensor_length_vertical());
-		draw_sensor(x,y,vec_tl,snap_to_90(sensor_angle),-sensor_length_vertical());
+		draw_sensor(x,y,vec_tl,snap_to_90(sensor_angle), sensor_length_base);
+		draw_sensor(x,y,vec_tl,snap_to_90(sensor_angle),-sensor_length_base);
 		
 		//top right
 		draw_set_color(yellow);
-		draw_sensor(x,y,vec_tr,snap_to_90(sensor_angle), sensor_length_vertical());
-		draw_sensor(x,y,vec_tr,snap_to_90(sensor_angle),-sensor_length_vertical());
+		draw_sensor(x,y,vec_tr,snap_to_90(sensor_angle), sensor_length_base);
+		draw_sensor(x,y,vec_tr,snap_to_90(sensor_angle),-sensor_length_base);
 		
 		draw_set_color(white);
 		

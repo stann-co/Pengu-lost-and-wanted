@@ -5,24 +5,26 @@ subimg+= sprite_get_speed(sprite_index);
 state.step();
 
 #region input
+
 if(control_lock == 0){
-	if(!airborne && !sliding && input_check_pressed("down")){
+	if(!airborne && !sliding && input_check("down")){
 		state.change("begin_slide");
 	}
 	
-	if(input_check_pressed("up") && !airborne){
-		state.change("jump");
-	}
-	
-	if(input_check_pressed("action")){
+	if(input_check_pressed("dash")){
 		if(airborne){
-			state.change("dash_ball");
+			if(dash_air_count == 0)	state.change("dash_air_charge");
 		} else {
-			state.change("dash");
+			//state.change("dash_charge");
 		}
 	}
 	
 	input_h = (input_check("right") - input_check("left"));
+}
+
+if(input_check_pressed("jump")){
+	if(!airborne) state.change("jump");
+	else if(double_jump_count == 0) state.change("double_jump");
 }
 
 #endregion
@@ -41,6 +43,7 @@ if(!airborne){
 		//like for speed ramps and springs and dashing
 		if(abs(ground_spd) > top_speed) var ground_top_speed = abs(ground_spd); 
 		else ground_top_speed = top_speed;
+		ground_top_speed = min(ground_top_speed,absolute_top_speed);
 		
 		
 	    //if pressing in the opposite direction of ground_spd it decelerates
@@ -66,7 +69,7 @@ if(!airborne){
 	
 	ground_spd-=slope_factor * dsin(ground_angle);	
 	
-		// Calculate x and y_speed from ground_speed
+	// Calculate x and y_speed from ground_speed
 	x_speed = ground_spd * dcos(ground_angle)
 	y_speed = ground_spd * -dsin(ground_angle)
 
@@ -74,9 +77,9 @@ if(!airborne){
 	if(control_lock == 0){
 		//should player slip
 		if(abs(ground_spd) < ground_slip_min_spd && (ground_angle > force_slide_angle && ground_angle < 360-force_slide_angle)){
-			set_control_lock(game_speed*0.5);
+			set_control_lock(slip_control_lock_time);
 			//should player detatch
-			if(ground_angle >= force_detatch_angle || ground_angle <= 360-force_detatch_angle){
+			if(ground_angle >= force_detatch_angle && ground_angle <= 360-force_detatch_angle){
 				state.change("fall");
 			}
 		}
@@ -90,11 +93,13 @@ else {
 	//if top speed has already been exceeded before this event
 	//that becomes the new temporary top speed
 	//like for speed ramps and springs and dashing
-	if(abs(x_speed) > air_top_speed) var x_top_speed = abs(x_speed); 
-	else x_top_speed = air_top_speed;
+	if(abs(x_speed) > air_horizontal_top_speed) var x_top_speed = abs(x_speed); 
+	else x_top_speed = air_horizontal_top_speed;
+	x_top_speed = min(x_top_speed,absolute_top_speed);
 	
-	if(abs(y_speed) > air_top_speed) var y_top_speed = abs(y_speed); 
-	else y_top_speed = air_top_speed;
+	if(abs(y_speed) > air_vertical_top_speed) var y_top_speed = abs(y_speed); 
+	else y_top_speed = air_vertical_top_speed;
+	y_top_speed = min(y_top_speed,absolute_top_speed);
 	
 	x_speed += air_acceleration_speed * input_h;
 	y_speed += gravity_force;
@@ -122,11 +127,11 @@ var push_sensor = noone;
 if((!airborne && ground_spd < 0) || (airborne && x_speed < 0)) { //left
 	vec_l = new Vector2(-w_radius,0);
 	vec_l = vec_l.rotated(-snap_to_90(sensor_angle));
-	push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,sensor_length_push(),1);
+	push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,sensor_length_base,1);
 } else if((!airborne && ground_spd > 0) || (airborne && x_speed > 0)){ //right
 	vec_r = new Vector2(w_radius,0);
 	vec_r = vec_r.rotated(-snap_to_90(sensor_angle));
-	push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,sensor_length_push(),1);
+	push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,sensor_length_base,1);
 }
 
 if(push_sensor != noone && push_sensor.distance < 1){
@@ -156,8 +161,8 @@ if(!airborne || (airborne && y_speed > 0)){
 	vec_br = vec_br.rotated(-snap_to_90(sensor_angle));
 	
 	
-	var bl_sensor = sensor(vec_bl,snap_to_90(sensor_angle),sensor_length_vertical(),1);
-	var br_sensor = sensor(vec_br,snap_to_90(sensor_angle),sensor_length_vertical(),1);
+	var bl_sensor = sensor(vec_bl,snap_to_90(sensor_angle),sensor_length_base,1);
+	var br_sensor = sensor(vec_br,snap_to_90(sensor_angle),sensor_length_base,1);
 	
 	//sensors check which is closest to the ground
 	var updown_sensor = noone;
@@ -177,7 +182,10 @@ if(!airborne || (airborne && y_speed > 0)){
 		ground_angle = updown_sensor.angle;	
 		
 		if(airborne){ //just as you land from being airborne
+			image_to_ground_angle = true;
 			airborne = false;
+			dash_air_count = 0;
+			double_jump_count = 0;
 			set_ground_spd_from_air_spd();
 		}
 		
@@ -186,10 +194,10 @@ if(!airborne || (airborne && y_speed > 0)){
 		
 		if(sliding){ //when sliding off a surface, you are angled
 			if(ground_spd > 0){
-				ground_angle -= 90;
+				image_angle -= 90;
 				mirror = 1;
 			} else{
-				ground_angle += 90;
+				image_angle += 90;
 				mirror = 1;
 			}
 		}	
@@ -213,8 +221,8 @@ if(airborne && y_speed < 0){
 	vec_tr = vec_tr.rotated(-snap_to_90(sensor_angle));
 	
 	
-	var tl_sensor = sensor(vec_tl,snap_to_90(sensor_angle)+180,sensor_length_vertical(),1);
-	var tr_sensor = sensor(vec_tr,snap_to_90(sensor_angle)+180,sensor_length_vertical(),1);
+	var tl_sensor = sensor(vec_tl,snap_to_90(sensor_angle)+180,sensor_length_base,1);
+	var tr_sensor = sensor(vec_tr,snap_to_90(sensor_angle)+180,sensor_length_base,1);
 	
 	//sensors check which is closest to the ground
 	var updown_sensor = noone;
