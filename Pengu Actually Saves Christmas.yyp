@@ -81,7 +81,7 @@
   "isEcma": false,
   "LibraryEmitters": [],
   "MetaData": {
-    "IDEVersion": "2023.8.2.106",
+    "IDEVersion": "2023.8.2.108",
   },
   "resources": [
     {"id":{"name":"input_keyboard_check","path":"scripts/input_keyboard_check/input_keyboard_check.yy",},},
@@ -476,8 +476,10 @@
     {"id":{"name":"spr_pengu_pushing","path":"sprites/spr_pengu_pushing/spr_pengu_pushing.yy",},},
     {"id":{"name":"spr_pengu_edge","path":"sprites/spr_pengu_edge/spr_pengu_edge.yy",},},
     {"id":{"name":"spr_pengu_dash","path":"sprites/spr_pengu_dash/spr_pengu_dash.yy",},},
-    {"id":{"name":"spr_pengu_ball","path":"sprites/spr_pengu_ball/spr_pengu_ball.yy",},},
     {"id":{"name":"spring","path":"sprites/spring/spring.yy",},},
+    {"id":{"name":"spr_pengu_dash_charge","path":"sprites/spr_pengu_dash_charge/spr_pengu_dash_charge.yy",},},
+    {"id":{"name":"spr_pengu_dash_charge_air","path":"sprites/spr_pengu_dash_charge_air/spr_pengu_dash_charge_air.yy",},},
+    {"id":{"name":"spr_pengu_flap","path":"sprites/spr_pengu_flap/spr_pengu_flap.yy",},},
   ],
   "RoomOrderNodes": [
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
