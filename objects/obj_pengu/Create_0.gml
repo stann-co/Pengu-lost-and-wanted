@@ -17,12 +17,12 @@ normal_deceleration_speed = 0.2;
 normal_friction_speed = 0.24;
 normal_top_speed = 3;
 
-slide_acceleration_speed = 0.08;
+slide_acceleration_speed = 0.04;
 slide_deceleration_speed = 0.4;
 slide_friction_speed = 0.04;
-slide_top_speed = 8;
+slide_top_speed = 10 //8;
 
-absolute_top_speed = 10;
+absolute_top_speed = 12;
 
 gravity_force = 0.21875;
 air_acceleration_speed = 0.0937;
@@ -57,7 +57,7 @@ top_speed = normal_top_speed;
 ground_spd = 0; //how fast it's moving on the ground
 ground_angle = 0; //the grounds angle
 
-ground_slip_min_spd = 4 //if abs ground_speed is less than this, and on steep slopes you will start slipping or even detatching
+ground_slip_min_spd = 2 //if abs ground_speed is less than this, and on steep slopes you will start slipping or even detatching
 //ground_slip_min_spd_ceiling = 4
 
 slip_control_lock_time = game_speed * 0.2;
@@ -169,397 +169,371 @@ sensor_length_base = 8;
 
 #endregion
 
-#region states
-state = new SnowState("idle");
-
-state.event_set_default_function("draw",function(){
-	draw_sprite_ext(sprite_index,subimg,x,y,scale_x*mirror,scale_y,image_angle,-1,1);
-});
-
-pick_move_state = function(){
+pick_move_state = function(include_idle = true){
 	if (input_h != 0){
 		if( input_h != mirror ) state.change("turning");
 		else state.change("running");
+	} else if(include_idle && !state.state_is("idle")){
+		state.change("idle");
 	}
 }
 
-state.add("idle", {
-    enter: function() {
-		sprite_index = spr_pengu_idle;
-		mask_index = spr_pengu_hitbox_tall;
-		w_radius = w_radius_normal;
-		h_radius = h_radius_normal;
-		
-		subimg = 0;
-    },
-	step: function() {
-		pick_move_state();
-	}
-});
 
-state.add("turning", {
-    enter: function() {
-		
-		sprite_index = spr_pengu_idle;
-		subimg = 0;
-		
-		mirror = -mirror;
-		
-		squish(1.2,0.8);
-		
-		pick_move_state();
-    }
-});
-
-state.add("running", {
-    enter: function() {
-		sprite_index = spr_pengu_idle;
-		mask_index = spr_pengu_hitbox_tall;
-		w_radius = w_radius_normal;
-		h_radius = h_radius_normal;
-		subimg = 0;
-    },
-	step: function() {
-		pick_move_state();
-	}
-});
-
-state.add("pushing", {
-    enter: function() {
-		mirror = sign(ground_spd);
-		sprite_index = spr_pengu_pushing;
-		subimg = 0;
-    },
-	
-	step: function(){
-		if(input_h != mirror){
-			state.change("idle");	
-		}
-	}
-});
-
-state.add("edge", {
-    enter: function() {
-		sprite_index = spr_pengu_edge;
-		subimg = 0;
-    },
-	step: function() {
-		pick_move_state();
-	}
-});
-
-state.add("begin_fall", {
-    enter: function() {
-		image_to_ground_angle = false;
-		sprite_index = spr_pengu_begin_fall;
-		subimg = 0;
-    },
-	step: function() {
-		if (animation_end(sprite_index,subimg)){
-			state.change("fall");
-		}
-	}
-});
-
-state.add("fall", {
-    enter: function() {
-		airborne = true;
-		sprite_index = spr_pengu_fall;
-		subimg = 0;
-		ground_angle = 0;
-		image_to_ground_angle = false;
-    },
-	step: function(){
-		if(!airborne){
-			squish(1.4,0.8,game_speed);
-			if(force_slide_false) state.change("idle");
-			else state.change("sliding");	
-		}
-	}
-});
-
-state.add("jump", {
-    enter: function() {
-		sprite_index = spr_pengu_jump;
-		mask_index = spr_pengu_hitbox_tall;
-		w_radius = w_radius_normal;
-		h_radius = h_radius_normal;
-		image_to_ground_angle = false;
-		subimg = 0;
-		
-		
-		airborne = true;
-		
-		var up_down = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
-		
-		y_speed = (-jump_force*up_down) - gravity_force //subtracting gravity force cancels out gravity for one frame
-		x_speed -= jump_force *dsin(ground_angle) * 0.5;
-		
-		if(x_speed != 0) mirror = sign(x_speed);
-		
-		image_angle -= 90 * dsin(ground_angle);
-		
-		ground_angle = 0;
-		
-		squish(0.4,1.4,game_speed*1);
-		
-		//when jumping from a slide you start rotated
-		if(state.get_previous_state() == "sliding"){
-			image_angle -= 90 * mirror;
-		}
-    },
-	step: function() {
-		if(input_check_released("jump") && y_speed < -jump_release_force){
-			y_speed = -jump_release_force;	
-		}
-
-		if(y_speed > 0) state.change("begin_fall");
-		if(!airborne) state.change("idle");
-	},
-	leave: function(){
-		image_to_ground_angle = true;	
-	}
-});
-
-state.add("double_jump", {
-    enter: function() {
-		sprite_index = spr_pengu_flap;
-		ground_angle = 0;
-		image_to_ground_angle = true;
-		subimg = 0;
-		
-		airborne = true;
-		
-		double_jump_count++;
-		
-		y_speed = -double_jump_force;
-
-		x_speed *= 0.6;
-		
-		//if(x_speed != 0) mirror = sign(x_speed);
-
-		squish(0.4,1.4,game_speed*1);
-    },
-	step: function() {
-		if (subimg == sprite_get_number(spr_pengu_flap)) subimg = sprite_get_number(spr_pengu_flap)-1;
-		
-		if(y_speed > 0) state.change("begin_fall");
-		if(!airborne) state.change("idle");
-	},
-});
-	
-state.add("dash_air_charge",{
-	enter: function(){
-		sprite_index = spr_pengu_dash_charge_air;
-		subimg = 0;
-		image_angle = 0;
-		y_speed = -2;
-		x_speed *= 0.8;
-		
-		t = 0;
-		
-		image_to_ground_angle = false;
-		
-		dash_air_count++;
-		
-		if(input_h != 0) mirror = input_h;
-		else if (x_speed != 0) mirror = sign(x_speed);
-		
-		squish(1.4,1.4,dash_air_windup);
-		
-	},
-	step: function(){
-		
-		var posx = (t/dash_air_windup);
-		image_angle = animcurve_read(ac_dash_ball_rotate,0,posx)*360 * -mirror;
-		t++
-		if(t == dash_air_windup){
-			state.change("dash_air");	
-		}
-	},
-	leave: function(){
-		image_to_ground_angle = true;
-	}
-
-})
-
-state.add("dash_air", {
-    enter: function() {
-		sprite_index = spr_pengu_dash;
-		subimg = 0;
-		
-		w_radius = w_radius_slide;
-		h_radius = h_radius_slide;
-		
-		if(input_h != 0) x_speed += dash_air_force * input_h;
-		else x_speed += dash_air_force * mirror;
-		y_speed += -4;
-		image_angle = (mirror) ? 22 : 338;
-		image_to_ground_angle = false;
-		airborne = true;
-		mirror = sign(x_speed);
-		
-		
-		squish(1.2,1.2,game_speed*0.2);
-    },
-	step: function() {
-		if(!airborne){
-			state.change("sliding");
-		}
-	},
-	leave: function(){
-		image_to_ground_angle = true;
-	}
-});
-
-state.add("dash_charge", {
-
-	enter: function(){
-		sliding = true;
-		sprite_index = spr_pengu_dash_charge;
-		mask_index = spr_pengu_hitbox_prone;
-		w_radius = w_radius_slide;
-		h_radius = h_radius_slide;
-		
-		if(input_h != 0) mirror = input_h;
-		
-		//ground_spd = ground_spd*0.1;
-		//flash = false;
-		dash_ground_force = dash_ground_force_min;
-		t = 0;
-		t2 = 0;
-		flash = false;
-		control_lock = 10;
-		input_h = 0;
-	},
-	step: function(){
-		
-		control_lock = 10;
-		input_h = 0;
-		
-		if(t < dash_ground_windup) t++;
-		if(input_check_released("dash")){
-			state.change("dash");
-		}
-		
-		var amount = t/dash_ground_windup;
-		dash_ground_force = lerp(dash_ground_force_min,dash_ground_force_max,amount);
-		scale_x = lerp(1,1.2,amount);
-		scale_y = lerp(1,0.9,amount);
-		
-		var flash_steps = round(lerp(game_speed*0.2,game_speed*0.05,amount));
-		
-		t2++;
-		
-		if(t2 > flash_steps){
-			flash = !flash
-			t2 = 0;
-		}
-		
-	},
-	draw: function(){
-		gpu_set_fog(flash,white,0,0);
+#region states
+state = new SnowState("idle");
+state
+	.event_set_default_function("draw",function(){
 		draw_sprite_ext(sprite_index,subimg,x,y,scale_x*mirror,scale_y,image_angle,-1,1);
+	})
+	//parent states
+	.add("tall",{
+		enter: function(){
+			mask_index = spr_pengu_hitbox_tall;
+			w_radius = w_radius_normal;
+			h_radius = h_radius_normal;
+			subimg = 0;
+			image_to_ground_angle = true;
+			airborne = false;
+			sliding = false;
 		
-		gpu_set_fog(false,white,0,0);
-	}
-})
-
-state.add("dash", {
-    enter: function() {
-		sprite_index = spr_pengu_dash;
-		mask_index = spr_pengu_hitbox_prone;
-		w_radius = w_radius_slide;
-		h_radius = h_radius_slide;
-		
-		subimg = 0;
-		ground_spd = dash_ground_force * mirror
-		
-		squish(1.2,1.2,game_speed*0.2);
-		
-		t = 0;
-    },
-	step: function() {
-		
-		t++;
-		if(t >= game_speed*1){
-			state.change("sliding");
+			acceleration_speed	= normal_acceleration_speed;
+			deceleration_speed	= normal_deceleration_speed;
+			friction_speed		= normal_friction_speed;
+			top_speed			= normal_top_speed;
+			
+			slope_factor		= normal_slope_factor;
 		}
+	})
 
-	},
-	leave: function(){
+	.add("prone",{
+		enter: function(){
+			mask_index = spr_pengu_hitbox_prone;
+			w_radius = w_radius_slide;
+			h_radius = h_radius_slide;
+			subimg = 0;
+			image_to_ground_angle = true;
+			airborne = false;
+			sliding = true;
+			
+			acceleration_speed	= slide_acceleration_speed;
+			deceleration_speed	= slide_deceleration_speed;
+			friction_speed		= slide_friction_speed;
+			top_speed			= slide_top_speed;
+			
+			slope_factor		= slide_slope_factor;
 		
-	}
-});
-
-state.add("begin_slide", {
-    enter: function() {
-		sliding = true;
-		sprite_index = spr_pengu_begin_slide;
-		subimg = 0;
-		//var sound = audio_play_sound(snd_down,100,false);
-		//audio_sound_pitch(sound,pitch_change(random_range(-2,2)))
-    },
-	step: function() {
-		if (animation_end(sprite_index,subimg)){
-			state.change("sliding");
 		}
-	},
-	leave: function(){
-		sliding = false;	
-		
-	}
-});
+	})
 
-state.add("sliding", {
-    enter: function() {
+
+	.add("airborne",{
+		enter: function(){
+			mask_index = spr_pengu_hitbox_tall;
+			w_radius = w_radius_normal;
+			h_radius = h_radius_normal;
+			subimg = 0;
+			image_to_ground_angle = false;
+			airborne = true;
+			sliding = false;
 		
-		sprite_index = spr_pengu_sliding;
-		mask_index = spr_pengu_hitbox_prone;
-		w_radius = w_radius_slide;
-		h_radius = h_radius_slide;
+		}
+	})
+
+	//child states
+
+	.add_child("tall","idle", {
+		enter: function() {
+			state.inherit();
+			sprite_index = spr_pengu_idle;
+			
+		},
+		step: function() {
+			pick_move_state();
+		}
+	})
+
+	.add_child("tall","turning", {
+	    enter: function() {
+			state.inherit();
+			sprite_index = spr_pengu_idle;
+			
+			mirror = -mirror;
+			
+			squish(1.2,0.8);
+			
+			
+	    },
+		step:function(){
+			if(animation_end(sprite_index,subimg)){
+				pick_move_state();	
+			}
+		}
+	})
+
+	.add_child("tall","running", {
+	    enter: function() {
+			state.inherit();
+			sprite_index = spr_pengu_idle;
+	    },
+		step: function() {
+			pick_move_state();
+		}
+	})
+
+	.add_child("tall","pushing", {
+	    enter: function() {
+			state.inherit()
+			mirror = sign(ground_spd);
+			sprite_index = spr_pengu_pushing;
+	    },
 		
-		sliding = true;
-		squish(1.4,0.8);
-		// audio_play_sound(snd_slide_loop, 15, true); NEED TO FIX
+		step: function(){
+			//need to find a better solution than this
+			if(input_h != mirror){
+				pick_move_state();
+			}
+		}
+	})
+	
+	.add_child("tall","edge", {
+	    enter: function() {
+			state.inherit()
+			sprite_index = spr_pengu_edge;
+	    },
+		step: function() {
+			pick_move_state(false);
+		}
+	})
+	
+	.add_child("airborne","begin_fall", {
+	    enter: function() {
+			state.inherit()
+			sprite_index = spr_pengu_begin_fall;
+	    },
+		step: function() {
+			if (animation_end(sprite_index,subimg)){
+				state.change("fall");
+			}
+		}
+	})
+	
+	.add_child("airborne","fall", {
+	    enter: function() {
+			state.inherit()
+			sprite_index = spr_pengu_fall;
+			ground_angle = 0;
+	    },
+		step: function(){
+			if(!airborne){
+				squish(1.4,0.8,game_speed);
+				if(force_slide_false) state.change("idle");
+				else state.change("sliding");	
+			}
+		}
+	})
+	
+	.add_child("airborne","jump", {
+	    enter: function() {
+			state.inherit()
+			sprite_index = spr_pengu_jump;
+
+			var up_down = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
+			
+			y_speed = (-jump_force*up_down) - gravity_force //subtracting gravity force cancels out gravity for one frame
+			x_speed -= jump_force *dsin(ground_angle) * 0.5;
+			
+			if(x_speed != 0) mirror = sign(x_speed);
+			
+			image_angle -= 90 * dsin(ground_angle);
+			
+			squish(0.4,1.4,game_speed*1);
+			
+			//when jumping from a slide you start rotated
+			if(state.get_previous_state() == "sliding"){
+				image_angle -= 90 * mirror;
+			}
+	    },
+		step: function() {
+			if(input_check_released("jump") && y_speed < -jump_release_force){
+				y_speed = -jump_release_force;	
+			}
+	
+			if(y_speed > 0) state.change("begin_fall");
+			if(!airborne) state.change("idle");
+		}
+	})
+	
+	.add_child("airborne","double_jump", {
+	    enter: function() {
+			state.inherit()
+			sprite_index = spr_pengu_flap;
+
+			double_jump_count++;
+			y_speed = -double_jump_force;	
+			x_speed *= 0.6;
+	
+			squish(0.4,1.4,game_speed*1);
+	    },
+		step: function() {			
+			if(y_speed > 0) state.change("begin_fall");
+			if(!airborne) state.change("idle");
+		},
+	})
 		
-		sliding_subimg = 0;
-		if(mirror > 0) sliding_subimg = 12; //decides wether to start pointing left or right
-		subimg = sliding_subimg;
-		mirror = 1;
-		
-		acceleration_speed	= slide_acceleration_speed;
-		deceleration_speed	= slide_deceleration_speed;
-		friction_speed		= slide_friction_speed;
-		top_speed			= slide_top_speed;
-		
-		slope_factor		= slide_slope_factor;
-		
-		
-		
-    },
-	step: function() {
-		sliding_subimg+=ground_spd/20;
-		sliding_subimg = clamp(sliding_subimg,0,12);
-		subimg = sliding_subimg;
-	},
-	leave: function() {
-		sliding = false;
-		
-		acceleration_speed	= normal_acceleration_speed;
-		deceleration_speed	= normal_deceleration_speed;
-		friction_speed		= normal_friction_speed;
-		top_speed			= normal_top_speed;
-		
-		slope_factor		= normal_slope_factor;
-		
-		w_radius = w_radius_normal;
-		h_radius = h_radius_normal;
-		
-		if(sliding_subimg<3) mirror = -1;	
-		
-		mask_index = spr_pengu_hitbox_tall;
-	}
-});
+	.add_child("airborne","dash_air_charge",{
+		enter: function(){
+			state.inherit();
+			sprite_index = spr_pengu_dash_charge_air;
+			image_angle = 0;
+			y_speed = -2;
+			x_speed *= 0.8;
+			
+			t = 0;
+			dash_air_count++;
+			
+			if(input_h != 0) mirror = input_h;
+			else if (x_speed != 0) mirror = sign(x_speed);
+			
+			squish(1.4,1.4,dash_air_windup);
+			
+		},
+		step: function(){
+			
+			var posx = (t/dash_air_windup);
+			image_angle = animcurve_read(ac_dash_ball_rotate,0,posx)*360 * -mirror;
+			t++
+			if(t == dash_air_windup){
+				state.change("dash_air");	
+			}
+		},	
+	})
+	
+	.add_child("prone","dash_air", {
+	    enter: function() { 
+			state.inherit();
+			airborne = true;
+			image_to_ground_angle = false;
+			
+			sprite_index = spr_pengu_dash;
+			
+			if(input_h != 0) x_speed += dash_air_force * input_h;
+			else x_speed += dash_air_force * mirror;
+			y_speed += -4;
+			
+			image_angle = (mirror) ? 22 : 338;
+			
+			mirror = sign(x_speed);
+			
+			squish(1.2,1.2,game_speed*0.2);
+	    },
+		step: function() {
+			if(!airborne){
+				state.change("sliding");
+			}
+		}
+	})
+	
+	.add_child("prone","dash_charge", {
+	
+		enter: function(){
+			state.inherit();
+			sprite_index = spr_pengu_dash_charge;
+			
+			if(input_h != 0) mirror = input_h;
+			
+			dash_ground_force = dash_ground_force_min;
+			t = 0;
+			t2 = 0;
+			flash = false;
+			control_lock = 10;
+			input_h = 0;
+		},
+		step: function(){
+			
+			control_lock = 10;
+			input_h = 0;
+			
+			if(t < dash_ground_windup) t++;
+			if(input_check_released("dash")){
+				state.change("dash");
+			}
+			
+			var amount = t/dash_ground_windup;
+			dash_ground_force = lerp(dash_ground_force_min,dash_ground_force_max,amount);
+			scale_x = lerp(1,1.2,amount);
+			scale_y = lerp(1,0.9,amount);
+			
+			var flash_steps = round(lerp(game_speed*0.2,game_speed*0.05,amount));
+			
+			t2++;
+			
+			if(t2 > flash_steps){
+				flash = !flash
+				t2 = 0;
+			}
+			
+		},
+		draw: function(){
+			gpu_set_fog(flash,white,0,0);
+			draw_sprite_ext(sprite_index,subimg,x,y,scale_x*mirror,scale_y,image_angle,-1,1);
+			gpu_set_fog(false,c_black,0,1);
+		}
+	})
+	
+	.add_child("prone","dash", {
+	    enter: function() {
+			state.inherit()
+			sprite_index = spr_pengu_dash;
+			ground_spd = dash_ground_force * mirror
+			
+			squish(1.2,1.2,game_speed*0.2);
+			
+			t = 0;
+	    },
+		step: function() {
+			
+			t++;
+			if(t >= game_speed*1){
+				state.change("sliding");
+			}
+	
+		},
+	})
+	
+	.add_child("prone","begin_slide", {
+	    enter: function() {
+			state.inherit()
+			sprite_index = spr_pengu_begin_slide;
+
+	    },
+		step: function() {
+			if (animation_end(sprite_index,subimg)){
+				state.change("sliding");
+			}
+		},
+	})
+	
+	.add_child("prone","sliding", {
+	    enter: function() {
+			state.inherit()
+			sprite_index = spr_pengu_sliding;
+
+			squish(1.4,0.8);
+
+			if(mirror == 1) sliding_subimg = 12; //decides wether to start pointing left or right
+			else sliding_subimg = 0;
+			
+			subimg = sliding_subimg;
+			mirror = 1;
+	    },
+		step: function() {
+			sliding_subimg+=ground_spd/20;
+			sliding_subimg = clamp(sliding_subimg,0,12);
+			subimg = sliding_subimg;
+		},
+		leave: function() {			
+			if(sliding_subimg<6) mirror = -1;
+		}
+	})
 
 #endregion
