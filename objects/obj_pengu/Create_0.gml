@@ -9,9 +9,6 @@ input_h = 0;
 x_speed = 0;
 y_speed = 0;
 
-force_slide_angle = 46; //if you walk on an incline above this angle you're forced into sliding
-#macro force_slide_false (ground_angle < force_slide_angle || ground_angle > 360-force_slide_angle)
-
 normal_acceleration_speed = 0.1;
 normal_deceleration_speed = 0.2;
 normal_friction_speed = 0.24;
@@ -19,7 +16,7 @@ normal_top_speed = 3;
 
 slide_acceleration_speed = 0.04;
 slide_deceleration_speed = 0.4;
-slide_friction_speed = 0.04;
+slide_friction_speed = 0.08;
 slide_top_speed = 10 //8;
 
 absolute_top_speed = 12;
@@ -57,12 +54,18 @@ top_speed = normal_top_speed;
 ground_spd = 0; //how fast it's moving on the ground
 ground_angle = 0; //the grounds angle
 
+force_slide_angle = 45; //if you walk on an incline above this angle you're forced into sliding
+#macro force_slide_false (ground_angle < force_slide_angle || ground_angle > 360-force_slide_angle)
+
+force_detatch_angle = 120;
+
 ground_slip_min_spd = 2 //if abs ground_speed is less than this, and on steep slopes you will start slipping or even detatching
-//ground_slip_min_spd_ceiling = 4
+ground_slip_min_spd_ceiling = 4
+
+force_slide_angle_ceiling = 170; //above this angle ground_slip_min_spd_ceiling is used
 
 slip_control_lock_time = game_speed * 0.2;
 
-force_detatch_angle = 120;
 
 w_radius_normal = 6;
 h_radius_normal = 9;
@@ -73,6 +76,9 @@ h_radius		= h_radius_normal; //height radius`?=)
 
 airborne = false;
 sliding = false;
+
+on_land = false; //this is true on the frame you land again
+on_ceiling = false; //this is true whenever you are touching the ceiling
 
 mirror = 1; //+1 right | -1 left
 
@@ -324,7 +330,7 @@ state
 			ground_angle = 0;
 	    },
 		step: function(){
-			if(!airborne){
+			if(on_land){
 				squish(1.4,0.8,game_speed);
 				if(force_slide_false) state.change("idle");
 				else state.change("sliding");	
@@ -354,12 +360,23 @@ state
 			}
 	    },
 		step: function() {
-			if(input_check_released("jump") && y_speed < -jump_release_force){
+			if((input_check_released("jump") || on_ceiling) && y_speed < -jump_release_force){
 				y_speed = -jump_release_force;	
 			}
 	
 			if(y_speed > 0) state.change("begin_fall");
-			if(!airborne) state.change("idle");
+			if(on_land) state.change("idle");
+		}
+	})
+	
+	.add_child("jump","hurt", {
+	    enter: function() {
+			state.inherit()
+			sprite_index = spr_pengu_hurt;
+
+	    },
+		step: function() {	
+			if(on_land) state.change("idle");
 		}
 	})
 	
@@ -376,7 +393,7 @@ state
 	    },
 		step: function() {			
 			if(y_speed > 0) state.change("begin_fall");
-			if(!airborne) state.change("idle");
+			if(on_land) state.change("idle");
 		},
 	})
 		
@@ -427,7 +444,7 @@ state
 			squish(1.2,1.2,game_speed*0.2);
 	    },
 		step: function() {
-			if(!airborne){
+			if(on_land){
 				state.change("sliding");
 			}
 		}

@@ -7,21 +7,25 @@ if(only_grounded){
 } else var ground_check = true;
 
 if(ground_check){
-	//player is on yellow side
-	if(dir <= 180){
-		if(yellow_side_is == "A"){
-			global.tile_collisions = layer_tilemap_get_id(obj_game.collision_A);
-		} else {
-			global.tile_collisions = layer_tilemap_get_id(obj_game.collision_B);
-		}
+	
+	if(yellow_side_is == "A"){
+		var activate_a = true
 	} else {
-	//player is on orange side
-		if(yellow_side_is == "A"){
-			global.tile_collisions = layer_tilemap_get_id(obj_game.collision_B);
-		} else {
-			global.tile_collisions = layer_tilemap_get_id(obj_game.collision_A);
-		}
+		var activate_a = false
 	}
+	
+	//player is on yellow side
+	if(dir > 180) activate_a = !activate_a;
+		
+		
+	if(activate_a){
+		global.tile_collisions = layer_tilemap_get_id(obj_game.collision_A);
+		if(change_depth) obj_pengu.depth = global.depth_a;
+	} else {
+		global.tile_collisions = layer_tilemap_get_id(obj_game.collision_B);
+		if(change_depth) obj_pengu.depth = global.depth_b;
+	}	
+	
 }
 
 

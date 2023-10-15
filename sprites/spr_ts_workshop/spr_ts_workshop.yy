@@ -2,9 +2,9 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_ts_workshop",
-  "bbox_bottom": 47,
+  "bbox_bottom": 111,
   "bbox_left": 0,
-  "bbox_right": 47,
+  "bbox_right": 127,
   "bbox_top": 0,
   "bboxMode": 0,
   "collisionKind": 1,
@@ -13,14 +13,14 @@
   "edgeFiltering": false,
   "For3D": false,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"bba66b8b-85ec-4410-a398-e1ad9ad53a93",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"541e8705-8203-4c8d-9f52-81d9053725d7",},
   ],
   "gridX": 0,
   "gridY": 0,
-  "height": 48,
+  "height": 112,
   "HTile": false,
   "layers": [
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"b688a8d1-a662-4ecc-acfd-7fa1989336c0","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"916ba265-f938-4832-a290-641bacb71c87","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,
   "origin": 0,
@@ -54,7 +54,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"bba66b8b-85ec-4410-a398-e1ad9ad53a93","path":"sprites/spr_ts_workshop/spr_ts_workshop.yy",},},},"Disabled":false,"id":"302bfa3b-0ee5-4def-9a7a-05288d65ec2d","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"541e8705-8203-4c8d-9f52-81d9053725d7","path":"sprites/spr_ts_workshop/spr_ts_workshop.yy",},},},"Disabled":false,"id":"b906ce36-864c-4cd1-a10d-dce998f0f214","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,
@@ -70,5 +70,5 @@
   },
   "type": 0,
   "VTile": false,
-  "width": 48,
+  "width": 128,
 }

@@ -2,7 +2,6 @@
 
 /// feather ignore all in /Extensions/*
 
-
 //The angles from each collision tile
 //360 is for filled blocks, which top angle could be any direction
 global.tile_angles = [
@@ -10,15 +9,12 @@ global.tile_angles = [
 45,22,22,45,45,
 31,12,12,31,45,
 0 ,39,22,8 ,45,
-45,8 ,22,39
+45,8 ,22,39,45,22
+];
 
+show_collisions = false;
 
-]; //needs some more!!!
-
-show_collisions = true;
-
-
-
-
+global.depth_a = 300;
+global.depth_b = 400;
 
 room_goto_next();

@@ -2,7 +2,13 @@
 ///@function tile_collision()
 ///@desc returns tile collision
 function tile_collision(x_,y_){
-	return collision_point(round(x_),round(y_),[global.tile_collisions,obj_collision],true,true);
+	return collision_point(round(x_),round(y_),[global.tile_collisions,global.tile_collisions_oneway,obj_collision,obj_collision_oneway],true,true);
+}
+
+///@function tile_collision_oneway()
+///@desc returns if the position contains a oneway tile
+function tile_collision_oneway(x_,y_){
+	return collision_point(round(x_),round(y_),[global.tile_collisions_oneway,obj_collision_oneway],true,true);
 }
 
 ///@function point_sensor()
@@ -15,22 +21,26 @@ function point_sensor(vec){
 ///@desc returns vector2 with distance to be just next to the surface, or noone
 ///@param vec_start {Vector2}
 ///@param dir 0 is down
-///@param distance
-///@param delta {float} how much the scan point should move when scanning, lower is more accurate by slower
-function sensor(vec_start,dir,distance,delta = 1){
+///@param extention_dist
+///@param regression_dist
+///@param delta {float} how much the scan point should move when scanning lower is more accurate by slower
+function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,delta = 1){
 
-	var vec_dist = new Vector2(0,distance);
-		vec_dist = vec_dist.rotated(-dir);
+	var vec_ext = new Vector2(0,extention_dist);
+		vec_ext = vec_ext.rotated(-dir);
+		
+		var vec_reg = new Vector2(0,-(regression_dist+extention_dist));
+		vec_reg = vec_reg.rotated(-dir);
 	var angle = undefined;
 	
 	var coll = tile_collision(x+vec_start.x,y+vec_start.y);
-	
+	var oneway = (tile_collision_oneway(x+vec_start.x,y+vec_start.y) != noone);
 	var vec_sensor = vec_start;	
 	
 	if(coll != noone){	//regression - inside collision
-		if(tile_collision(x+vec_start.x -vec_dist.x,y+vec_start.y -vec_dist.y) == noone){ //checks if there's free space to regress towards
+		if(tile_collision(x+vec_start.x + vec_reg.x,y+vec_start.y + vec_reg.y) == noone){ //checks if there's free space to regress towards
 			
-			var vec_end = vec_start.subtract(vec_dist);
+			var vec_end = vec_start.add(vec_reg);
 			do{ //regresses until there's free space
 				vec_sensor = vec_sensor.move_toward(vec_end,delta);
 			}until(tile_collision(x+vec_sensor.x,y+vec_sensor.y) == noone)
@@ -41,9 +51,9 @@ function sensor(vec_start,dir,distance,delta = 1){
 			
 		} else return noone;
 	} else {			//extension - outside collision
-		if(tile_collision(x+vec_start.x +vec_dist.x,y+vec_start.y +vec_dist.y) != noone){ //checks if there's filled space to extend towards
+		if(tile_collision(x+vec_start.x +vec_ext.x,y+vec_start.y +vec_ext.y) != noone){ //checks if there's filled space to extend towards
 			
-			var vec_end = vec_start.add(vec_dist);
+			var vec_end = vec_start.add(vec_ext);
 			do{
 				vec_sensor = vec_sensor.move_toward(vec_end,delta);
 			}until(tile_collision(x+vec_sensor.x,y+vec_sensor.y) != noone)
@@ -65,6 +75,7 @@ function sensor(vec_start,dir,distance,delta = 1){
 	vec_dist.distance = vec_upright.y;
 	
 	vec_dist.angle = angle;
+	vec_dist.oneway = oneway;
 	
 	return vec_dist;
 	

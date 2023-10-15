@@ -25,7 +25,12 @@
   "physicsShape": 1,
   "physicsShapePoints": [],
   "physicsStartAwake": true,
-  "properties": [],
+  "properties": [
+    {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"depth_layer","filters":[],"listItems":[
+        "\"A\"",
+        "\"B\"",
+      ],"multiselect":false,"rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"value":"\"A\"","varType":6,},
+  ],
   "solid": false,
   "spriteId": null,
   "spriteMaskId": null,

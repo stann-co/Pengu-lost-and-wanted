@@ -25,8 +25,14 @@ if(control_lock == 0){
 }
 
 if(input_check_pressed("jump")){
-	if(!airborne) state.change("jump");
-	else if(double_jump_count == 0) state.change("double_jump");
+	vec_t = new Vector2(0,-h_radius-1);
+	if(sliding && sensor(vec_t,snap_to_90(sensor_angle)+180,sensor_length_base) != noone){
+		//if sliding it checks if you're under a block
+		squish(0.8,1.2,game_speed*0.2);
+	} else {
+		if(!airborne) state.change("jump");
+		else if(double_jump_count == 0) state.change("double_jump");
+	}
 }
 
 #endregion
@@ -78,7 +84,15 @@ if(!airborne){
 	//slipping and floor detatching
 	if(control_lock == 0){
 		//should player slip
-		if(abs(ground_spd) < ground_slip_min_spd && (ground_angle > force_slide_angle && ground_angle < 360-force_slide_angle)){
+		var slip = false;
+		
+		if(abs(ground_spd) < ground_slip_min_spd_ceiling && (ground_angle > force_slide_angle_ceiling && ground_angle < 360-force_slide_angle_ceiling)){
+			slip = true;	
+		} else if(abs(ground_spd) < ground_slip_min_spd && (ground_angle > force_slide_angle && ground_angle < 360-force_slide_angle)){
+			slip = true;
+		}
+		
+		if(slip){
 			set_control_lock(slip_control_lock_time);
 			//should player detatch
 			if(ground_angle >= force_detatch_angle && ground_angle <= 360-force_detatch_angle){
@@ -126,14 +140,24 @@ sensor_angle = (airborne) ? 0 : ground_angle;
 
 #region push sensors
 var push_sensor = noone;
+	var push_height = (sliding) ? 0 : -8;
 if((!airborne && ground_spd < 0) || (airborne && x_speed < 0)) { //left
-	vec_l = new Vector2(-w_radius,0);
+	vec_l = new Vector2(-w_radius,push_height);
 	vec_l = vec_l.rotated(-snap_to_90(sensor_angle));
-	push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,sensor_length_base,1);
+	if(airborne){
+		push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,sensor_length_base,abs(x_speed));
+	} else {
+		push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,sensor_length_base,abs(ground_spd));
+	}
 } else if((!airborne && ground_spd > 0) || (airborne && x_speed > 0)){ //right
-	vec_r = new Vector2(w_radius,0);
+	vec_r = new Vector2(w_radius,push_height);
 	vec_r = vec_r.rotated(-snap_to_90(sensor_angle));
-	push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,sensor_length_base,1);
+	if(airborne){
+		push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,sensor_length_base,abs(x_speed));
+	} else {
+		push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,sensor_length_base,abs(ground_spd));
+	}
+	
 }
 
 if(push_sensor != noone && push_sensor.distance < 1){
@@ -150,6 +174,8 @@ if(push_sensor != noone && push_sensor.distance < 1){
 }
 #endregion
 
+if(on_land) on_land = false;
+
 #region ground sensors
 if(!airborne || (airborne && y_speed > 0)){
 	//bottom
@@ -163,8 +189,8 @@ if(!airborne || (airborne && y_speed > 0)){
 	vec_br = vec_br.rotated(-snap_to_90(sensor_angle));
 	
 	
-	var bl_sensor = sensor(vec_bl,snap_to_90(sensor_angle),sensor_length_base,1);
-	var br_sensor = sensor(vec_br,snap_to_90(sensor_angle),sensor_length_base,1);
+	var bl_sensor = sensor(vec_bl,snap_to_90(sensor_angle),sensor_length_base);
+	var br_sensor = sensor(vec_br,snap_to_90(sensor_angle),sensor_length_base);
 	
 	//sensors check which is closest to the ground
 	var updown_sensor = noone;
@@ -186,6 +212,7 @@ if(!airborne || (airborne && y_speed > 0)){
 		if(airborne){ //just as you land from being airborne
 			image_to_ground_angle = true;
 			airborne = false;
+			on_land = true;
 			dash_air_count = 0;
 			double_jump_count = 0;
 			set_ground_spd_from_air_spd();
@@ -210,6 +237,7 @@ if(!airborne || (airborne && y_speed > 0)){
 
 #endregion
 
+if(on_ceiling) on_ceiling = false;
 #region ceiling sensors
 if(airborne && y_speed < 0){
 	//top
@@ -223,8 +251,8 @@ if(airborne && y_speed < 0){
 	vec_tr = vec_tr.rotated(-snap_to_90(sensor_angle));
 	
 	
-	var tl_sensor = sensor(vec_tl,snap_to_90(sensor_angle)+180,sensor_length_base,1);
-	var tr_sensor = sensor(vec_tr,snap_to_90(sensor_angle)+180,sensor_length_base,1);
+	var tl_sensor = sensor(vec_tl,snap_to_90(sensor_angle)+180,sensor_length_base);
+	var tr_sensor = sensor(vec_tr,snap_to_90(sensor_angle)+180,sensor_length_base);
 	
 	//sensors check which is closest to the ground
 	var updown_sensor = noone;
@@ -237,9 +265,13 @@ if(airborne && y_speed < 0){
 		else if(tl_sensor != noone) updown_sensor = tl_sensor;
 		else if(tr_sensor != noone) updown_sensor = tr_sensor;
 		
-		if(updown_sensor != noone && updown_sensor.distance < 0){
+		//ceiling sensors doesn't do anything if it's a oneway tile
+		
+		if(updown_sensor != noone && !updown_sensor.oneway && updown_sensor.distance < 0){
 			x+= updown_sensor.x;
 			y+= updown_sensor.y;
+						
+			on_ceiling = true;
 		}
 	}
 	
@@ -279,7 +311,9 @@ if(squishing){
 }
 #endregion
 
-if(image_to_ground_angle) image_angle = ground_angle;
+if(image_to_ground_angle){
+	image_angle += angle_difference(ground_angle,image_angle)*0.5;
+}
 
 if(control_lock != 0) control_lock--;
 
