@@ -30,6 +30,9 @@ jump_force = 6.5;
 jump_release_force = 4;
 double_jump_force = 4;
 double_jump_count = 0;
+enemy_jump_force = 5.4;
+
+hurt_force = 3.2;
 
 dash_air_force = 5.4;
 dash_air_windup = game_speed*0.2;
@@ -369,13 +372,32 @@ state
 		}
 	})
 	
+	.add_child("jump","enemy_jump", {
+	    enter: function() {
+			state.inherit()
+			
+			var up_down = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
+			y_speed = (-enemy_jump_force*up_down) - gravity_force //subtracting gravity force cancels out gravity for one frame
+			x_speed -= enemy_jump_force *dsin(ground_angle) * 0.5;
+
+	    },
+	})
+	
 	.add_child("jump","hurt", {
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_hurt;
+			
+			var up_down = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
+			y_speed = (-hurt_force*up_down) - gravity_force //subtracting gravity force cancels out gravity for one frame
+			x_speed -= hurt_force *dsin(ground_angle) * 0.5;
 
 	    },
 		step: function() {	
+			if(on_ceiling && y_speed < -jump_release_force){
+				y_speed = -jump_release_force;	
+			}
+			
 			if(on_land) state.change("idle");
 		}
 	})

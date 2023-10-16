@@ -266,7 +266,6 @@ if(airborne && y_speed < 0){
 		else if(tr_sensor != noone) updown_sensor = tr_sensor;
 		
 		//ceiling sensors doesn't do anything if it's a oneway tile
-		
 		if(updown_sensor != noone && !updown_sensor.oneway && updown_sensor.distance < 0){
 			x+= updown_sensor.x;
 			y+= updown_sensor.y;

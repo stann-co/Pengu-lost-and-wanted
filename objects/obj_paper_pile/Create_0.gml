@@ -2,6 +2,8 @@
 event_inherited();
 depth-=10;
 
+ps = part_system_create();
+part_system_depth( ps, depth-1 );
 
 trigger = function(){
 	if(obj_pengu.on_land){
@@ -24,6 +26,8 @@ state
 .add("land",{
 	enter: function(){
 		//would be based if it bursted out some paper particles when you landed
+		part_particles_burst(ps, x,y, ps_paper_explode);
+		subimg = 0;
 	},
 	step: function(){
 		subimg+=sprite_get_speed(sprite_index);

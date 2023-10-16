@@ -4,7 +4,7 @@
 
 //landing on the enemy
 if(airborne && y_speed > 0){
-	state.change("jump");
+	state.change("enemy_jump");
 	
 	other.hurt();
 } else {

@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "sprite_anim",
+  "name": "draw_sprite_ext_tiled",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

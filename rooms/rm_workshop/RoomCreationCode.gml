@@ -1,1 +1,1 @@
-set_layer_depths(300,400);
+set_background_workshop1();
