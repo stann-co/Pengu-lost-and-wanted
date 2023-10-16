@@ -17,7 +17,7 @@ normal_top_speed = 3;
 slide_acceleration_speed = 0.04;
 slide_deceleration_speed = 0.4;
 slide_friction_speed = 0.08;
-slide_top_speed = 10 //8;
+slide_top_speed = 8 //8;
 
 absolute_top_speed = 12;
 
