@@ -1,14 +1,26 @@
 /// @description step
 
-subimg+= sprite_get_speed(sprite_index);
+subimg+= (sprite_get_speed(sprite_index)*anim_speed);
 
 state.step();
 
 #region input
 
 if(control_lock == 0){
-	if(!airborne && !sliding && input_check("down")){
+	
+	input_h = (input_check("right") - input_check("left"));
+	input_v = (input_check("down") - input_check("up"));
+	
+	if(!airborne && !sliding && input_v == 1){
 		state.change("begin_slide");
+	} else
+	
+	if(input_v == -1 && !airborne && !state.state_is("end_slide") && !state.state_is("look_up")){
+		if(sliding){
+			state.change("end_slide");			
+		} else if(abs(ground_spd) < 2){
+			state.change("look_up");
+		}
 	}
 	
 	if(input_check_pressed("dash")){
@@ -21,7 +33,7 @@ if(control_lock == 0){
 		}
 	}
 	
-	input_h = (input_check("right") - input_check("left"));
+	
 }
 
 if(input_check_pressed("jump")){

@@ -5,6 +5,7 @@ global.camera.follow = self;
 
 #region variables
 input_h = 0;
+input_v = 0;
 
 x_speed = 0;
 y_speed = 0;
@@ -17,7 +18,7 @@ normal_top_speed = 3;
 slide_acceleration_speed = 0.04;
 slide_deceleration_speed = 0.4;
 slide_friction_speed = 0.08;
-slide_top_speed = 8 //8;
+slide_top_speed = 8;
 
 absolute_top_speed = 12;
 
@@ -95,6 +96,7 @@ squishing_t = 0;
 squishing_duration = 0;
 
 subimg = 0;
+anim_speed = 1; //set to -1 to reverse
 
 t = 0; //used for some states as a timer
 t2 = 0; //a secondary timer
@@ -181,7 +183,7 @@ sensor_length_base = 8;
 pick_move_state = function(include_idle = true){
 	if (input_h != 0){
 		if( input_h != mirror ) state.change("turning");
-		else state.change("running");
+		else if( !state.state_is("running") )state.change("running");
 	} else if(include_idle && !state.state_is("idle")){
 		state.change("idle");
 	}
@@ -201,6 +203,7 @@ state
 			w_radius = w_radius_normal;
 			h_radius = h_radius_normal;
 			subimg = 0;
+			anim_speed = 1;
 			image_to_ground_angle = true;
 			airborne = false;
 			sliding = false;
@@ -220,6 +223,7 @@ state
 			w_radius = w_radius_slide;
 			h_radius = h_radius_slide;
 			subimg = 0;
+			anim_speed = 1;
 			image_to_ground_angle = true;
 			airborne = false;
 			sliding = true;
@@ -234,13 +238,13 @@ state
 		}
 	})
 
-
 	.add("airborne",{
 		enter: function(){
 			mask_index = spr_pengu_hitbox_tall;
 			w_radius = w_radius_normal;
 			h_radius = h_radius_normal;
 			subimg = 0;
+			anim_speed = 1;
 			image_to_ground_angle = false;
 			airborne = true;
 			sliding = false;
@@ -264,13 +268,11 @@ state
 	.add_child("tall","turning", {
 	    enter: function() {
 			state.inherit();
-			sprite_index = spr_pengu_idle;
+			sprite_index = spr_pengu_turn;
 			
 			mirror = -mirror;
 			
-			squish(1.2,0.8);
-			
-			
+			//squish(1.2,0.8);
 	    },
 		step:function(){
 			if(animation_end(sprite_index,subimg)){
@@ -301,6 +303,39 @@ state
 			if(input_h != mirror){
 				pick_move_state();
 			}
+		}
+	})
+		
+	.add_child("tall","look_up", {
+	    enter: function() {
+			state.inherit()
+			sprite_index = spr_pengu_look_up;
+	    },
+		
+		step: function(){
+			subimg = clamp(subimg,0,1);
+			if(input_v == 0){
+				state.change("look_up_end")	
+			}
+			
+			pick_move_state(false);
+		}
+	})
+	
+	.add_child("tall","look_up_end", {
+	    enter: function() {
+			var _subimg = subimg;
+			state.inherit()
+			subimg = _subimg;
+			sprite_index = spr_pengu_look_up;
+			anim_speed = -1;
+	    },
+		
+		step: function(){
+			if(subimg <= 0){
+				state.change("idle")	
+			}
+			pick_move_state(false);
 		}
 	})
 	
@@ -548,6 +583,22 @@ state
 		step: function() {
 			if (animation_end(sprite_index,subimg)){
 				state.change("sliding");
+			}
+		},
+	})
+	
+	.add_child("tall","end_slide", {
+	    enter: function() {
+			state.inherit()
+			subimg = 1;
+			sprite_index = spr_pengu_begin_slide;
+			anim_speed = -0.8;
+			ground_spd *=0.4;
+	    },
+		step: function() {
+			if (subimg <= 0){
+				squish(0.8,1.1);
+				pick_move_state();
 			}
 		},
 	})

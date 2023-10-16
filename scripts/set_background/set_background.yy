@@ -5,7 +5,7 @@
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
-    "name": "parralax backgrounds",
-    "path": "folders/Scripts/parralax backgrounds.yy",
+    "name": "draw",
+    "path": "folders/Scripts/draw.yy",
   },
 }
