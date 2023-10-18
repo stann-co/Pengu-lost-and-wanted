@@ -2,9 +2,11 @@ function set_background_workshop1(){
 	global.background = function(){
 		//the background is scaled up so it appears smooth when being parralaxed
 		draw_background_depth(spr_bg_workshop_sky1,0);
-		draw_background_depth(spr_bg_workshop1,0.4);
+		draw_background_depth(spr_bg_workshop1,0.2);
+		draw_background_depth(spr_bg_workshop3,0.267);
+		draw_background_depth(spr_bg_workshop3,0.4);
 		draw_background_depth(spr_bg_workshop2,0.6);
-		draw_background_depth(spr_bg_workshop2,0.9);
+		
 	}
 }
 

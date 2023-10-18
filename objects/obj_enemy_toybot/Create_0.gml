@@ -1,8 +1,12 @@
 /// @description
 event_inherited();
 
-vec_r = new Vector2(0,0); //right
-vec_l = new Vector2(0,0); //left
+vec_rt = new Vector2(0,0); //right
+vec_lt = new Vector2(0,0); //left
+vec_rb = new Vector2(0,0); //right
+vec_lb = new Vector2(0,0); //left
+
+
 vec_b = new Vector2(0,0); //bottom
 
 t=0;

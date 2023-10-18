@@ -1,14 +1,10 @@
 /// @description
 event_inherited();
-depth-=10;
-
 ps = part_system_create();
-part_system_depth( ps, depth-1 );
 
 trigger = function(){
 	if(obj_pengu.on_land){
 		state.change("land")
-		
 	}
 }
 

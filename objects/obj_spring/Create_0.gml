@@ -19,7 +19,9 @@ trigger = function(){
 				x_speed =	 dcos(angle+90) * other.spring_force;	
 				y_speed =	 dsin(angle+90) * -other.spring_force;
 				
-			} else {		
+			} else {
+				input_h = 0;
+				set_control_lock(game_speed);
 				ground_spd = dcos(angle+90)  * other.spring_force;	
 				if(abs(angle_difference(angle,ground_angle)) < 90){
 					x_speed =	 dcos(angle+90) * other.spring_force;	

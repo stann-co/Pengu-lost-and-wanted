@@ -29,8 +29,8 @@
   "properties": [],
   "solid": false,
   "spriteId": {
-    "name": "spr_collision",
-    "path": "sprites/spr_collision/spr_collision.yy",
+    "name": "spr_collision_oneway",
+    "path": "sprites/spr_collision_oneway/spr_collision_oneway.yy",
   },
   "spriteMaskId": null,
   "visible": true,

@@ -1,5 +1,5 @@
 /// @description
-if(debug){
+if(global.debug){
 	draw_text(20,20,$"Airborne: {airborne}");
 	
 	draw_text(20,30,$"ground speed: {ground_spd}");

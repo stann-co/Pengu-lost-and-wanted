@@ -1,11 +1,11 @@
 /// @description
 
-if(debug){
+if(global.debug){
 	//draws vector lines
 	
 	#region side
 	//left
-	if(ground_spd < 0){
+	if(ground_spd < 0 || airborne){
 		draw_set_color(cyan);
 		draw_sensor(x,y,vec_l,snap_to_90(sensor_angle)-90, sensor_length_base);
 		draw_sensor(x,y,vec_l,snap_to_90(sensor_angle)-90,-sensor_length_base);
@@ -16,7 +16,7 @@ if(debug){
 	
 	
 	//right
-	if(ground_spd > 0){
+	if(ground_spd > 0 || airborne){
 		draw_set_color(orange);
 		draw_sensor(x,y,vec_r,snap_to_90(sensor_angle)+90, sensor_length_base);
 		draw_sensor(x,y,vec_r,snap_to_90(sensor_angle)+90,-sensor_length_base);
@@ -29,7 +29,7 @@ if(debug){
 	#endregion
 	
 	#region bottom
-		if(!airborne || (airborne && y_speed > 0)){
+		if(true){
 		//bottom left
 		draw_set_color(red);
 		draw_sensor(x,y,vec_bl,snap_to_90(sensor_angle), sensor_length_base);
@@ -53,7 +53,7 @@ if(debug){
 	#endregion
 	
 	#region top
-	if(airborne && y_speed < 0){
+	if(airborne){
 		//top left{
 		draw_set_color(green);
 		draw_sensor(x,y,vec_tl,snap_to_90(sensor_angle), sensor_length_base);

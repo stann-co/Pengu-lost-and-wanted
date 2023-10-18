@@ -1,5 +1,4 @@
 /// @description
-debug = false;
 
 global.camera.follow = self;
 

@@ -2,7 +2,7 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_ts_workshop",
-  "bbox_bottom": 111,
+  "bbox_bottom": 127,
   "bbox_left": 0,
   "bbox_right": 127,
   "bbox_top": 0,
@@ -13,14 +13,14 @@
   "edgeFiltering": false,
   "For3D": false,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"541e8705-8203-4c8d-9f52-81d9053725d7",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"7c9393a1-e42c-4a74-9b0d-522ed2d90fe2",},
   ],
   "gridX": 0,
   "gridY": 0,
-  "height": 112,
+  "height": 128,
   "HTile": false,
   "layers": [
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"916ba265-f938-4832-a290-641bacb71c87","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"45aa8827-671a-4b40-88dc-1fef25d465dd","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,
   "origin": 0,
@@ -54,7 +54,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"541e8705-8203-4c8d-9f52-81d9053725d7","path":"sprites/spr_ts_workshop/spr_ts_workshop.yy",},},},"Disabled":false,"id":"b906ce36-864c-4cd1-a10d-dce998f0f214","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"7c9393a1-e42c-4a74-9b0d-522ed2d90fe2","path":"sprites/spr_ts_workshop/spr_ts_workshop.yy",},},},"Disabled":false,"id":"7b8988ff-9152-4795-9b45-188cb31cafa0","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,

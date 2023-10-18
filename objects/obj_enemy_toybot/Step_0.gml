@@ -16,15 +16,28 @@ y+=y_speed;
 var side_sensor = noone;
 	var push_height = -8;
 if(ground_spd < 0) { //left
-	vec_l = new Vector2(-w_radius,push_height);
-	vec_l = vec_l.rotated(-snap_to_90(sensor_angle));
-	side_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,sensor_length_base,abs(ground_spd));
+	vec_lt = new Vector2(-w_radius,push_height);
+	vec_lt = vec_lt.rotated(-snap_to_90(sensor_angle));
+	
+	vec_lb = new Vector2(-w_radius,0);
+	vec_lb = vec_lb.rotated(-snap_to_90(sensor_angle));
+	
+	side_sensor = sensor(vec_lt,snap_to_90(sensor_angle)-90,sensor_length_base,abs(ground_spd));
+	if(side_sensor == noone){
+		side_sensor = sensor(vec_lb,snap_to_90(sensor_angle)-90,sensor_length_base,abs(ground_spd));
+	}
 	
 } else if(ground_spd > 0){ //right
-	vec_r = new Vector2(w_radius,push_height);
-	vec_r = vec_r.rotated(-snap_to_90(sensor_angle));
-	side_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,sensor_length_base,abs(ground_spd));
+	vec_rt = new Vector2(w_radius,push_height);
+	vec_rt = vec_rt.rotated(-snap_to_90(sensor_angle));
 	
+	vec_rb = new Vector2(w_radius,0);
+	vec_rb = vec_rb.rotated(-snap_to_90(sensor_angle));
+	
+	side_sensor = sensor(vec_rt,snap_to_90(sensor_angle)+90,sensor_length_base,abs(ground_spd));
+	if(side_sensor == noone){
+		side_sensor = sensor(vec_rb,snap_to_90(sensor_angle)+90,sensor_length_base,abs(ground_spd));
+	}
 }
 
 if(side_sensor != noone && side_sensor.distance < 1){
@@ -38,19 +51,19 @@ if(side_sensor != noone && side_sensor.distance < 1){
 #endregion
 
 #region ground sensors
-	//bottom
-	vec_b = new Vector2(0,h_radius+1);
-	vec_b = vec_b.rotated(-snap_to_90(sensor_angle));	
+//bottom
+vec_b = new Vector2(0,h_radius+1);
+vec_b = vec_b.rotated(-snap_to_90(sensor_angle));	
+
+var b_sensor = sensor(vec_b,snap_to_90(sensor_angle),sensor_length_base);
+
+if(b_sensor != noone){
+	x+= b_sensor.x;
+	y+= b_sensor.y;
+	ground_angle = b_sensor.angle;	
 	
-	var b_sensor = sensor(vec_b,snap_to_90(sensor_angle),sensor_length_base);
-	
-	if(b_sensor != noone){
-		x+= b_sensor.x;
-		y+= b_sensor.y;
-		ground_angle = b_sensor.angle;	
-		
-	} else {
-		state.change("turn");
-	}
+} else {
+	state.change("turn");
+}
 
 #endregion

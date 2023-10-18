@@ -2,6 +2,8 @@
 
 /// feather ignore all in /Extensions/*
 
+global.t = 0; //a global timer for different objects to refer to stay in sync even after being deactivated
+
 //The angles from each collision tile
 //360 is for filled blocks, which top angle could be any direction
 global.tile_angles = [
@@ -12,9 +14,36 @@ global.tile_angles = [
 45,8 ,22,39,45,22
 ];
 
-show_collisions = false;
-
 global.depth_a = 300;
 global.depth_b = 400;
+
+global.debug = true;
+active_collisions_A = true;
+
+show_collisions = function(){
+	layer_set_visible(collision_A,false);
+	layer_set_visible(collision_B,false);	
+	//layer_set_visible(collision_A_oneway,false);
+	//layer_set_visible(collision_B_oneway,false);	
+	layer_set_visible("backgrounds_1",false);
+	
+	if(global.debug){
+		
+		layer_set_visible("backgrounds_1",true);
+		
+		if(active_collisions_A){
+			layer_set_visible(collision_A,true);
+			//layer_set_visible(collision_A_oneway,true);
+		}else{
+			layer_set_visible(collision_B,true);
+			//layer_set_visible(collision_B_oneway,true);	
+		}
+	}
+}
+	
+	
+	
+//level stuff
+global.score = 0;
 
 room_goto_next();

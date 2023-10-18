@@ -3,17 +3,14 @@
 //you hurt the enemy
 
 //landing on the enemy
-if(airborne && y_speed > 0){
+if(airborne && y < other.y && y_speed > 0){
 	state.change("enemy_jump");
 	
 	other.hurt();
 } else {
 	
 //the enemy hurts you
-	
-	
-	state.change("hurt");
-	
+	state.change("hurt");	
 }
 
 

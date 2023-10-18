@@ -152,8 +152,10 @@ sensor_angle = (airborne) ? 0 : ground_angle;
 
 #region push sensors
 var push_sensor = noone;
-	var push_height = (sliding) ? 0 : -8;
-if((!airborne && ground_spd < 0) || (airborne && x_speed < 0)) { //left
+var push_height = (sliding || airborne) ? 0 : -8;
+
+
+if((!airborne && ground_spd < 0) || airborne) { //left
 	vec_l = new Vector2(-w_radius,push_height);
 	vec_l = vec_l.rotated(-snap_to_90(sensor_angle));
 	if(airborne){
@@ -161,7 +163,21 @@ if((!airborne && ground_spd < 0) || (airborne && x_speed < 0)) { //left
 	} else {
 		push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,sensor_length_base,abs(ground_spd));
 	}
-} else if((!airborne && ground_spd > 0) || (airborne && x_speed > 0)){ //right
+	
+	if(push_sensor != noone && !push_sensor.oneway && push_sensor.distance < 1){
+		x+= push_sensor.x;
+		y+= push_sensor.y;
+		
+		if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
+			if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
+			
+			ground_spd = 0;
+			x_speed = 0;
+		}
+	}
+}  
+
+if((!airborne && ground_spd > 0) || airborne){ //right
 	vec_r = new Vector2(w_radius,push_height);
 	vec_r = vec_r.rotated(-snap_to_90(sensor_angle));
 	if(airborne){
@@ -170,24 +186,23 @@ if((!airborne && ground_spd < 0) || (airborne && x_speed < 0)) { //left
 		push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,sensor_length_base,abs(ground_spd));
 	}
 	
-}
-
-if(push_sensor != noone && push_sensor.distance < 1){
-	x+= push_sensor.x;
-	y+= push_sensor.y;
-	
-	if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
-		if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
-		//else if(state.state_is("pushing")) pick_move_state();
+	if(push_sensor != noone && !push_sensor.oneway && push_sensor.distance < 1){
+		x+= push_sensor.x;
+		y+= push_sensor.y;
 		
-		ground_spd = 0;
-		x_speed = 0;
+		if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
+			if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
+			
+			ground_spd = 0;
+			x_speed = 0;
+		}
 	}
 }
+
+
 #endregion
 
 if(on_land) on_land = false;
-
 #region ground sensors
 if(!airborne || (airborne && y_speed > 0)){
 	//bottom
@@ -219,6 +234,10 @@ if(!airborne || (airborne && y_speed > 0)){
 	if(updown_sensor != noone){
 		x+= updown_sensor.x;
 		y+= updown_sensor.y;
+		
+		x+=updown_sensor.x_change;
+		y+=updown_sensor.y_change;
+		
 		ground_angle = updown_sensor.angle;	
 		
 		if(airborne){ //just as you land from being airborne
@@ -228,6 +247,10 @@ if(!airborne || (airborne && y_speed > 0)){
 			dash_air_count = 0;
 			double_jump_count = 0;
 			set_ground_spd_from_air_spd();
+		}
+		
+		if(updown_sensor.inst != noone && object_is_ancestor(updown_sensor.inst.object_index,obj_moving_platform) && (ground_angle >= 90 && ground_angle <= 270)){
+			state.change("begin_fall");	
 		}
 		
 	} else if(!airborne){ //going off ledges
@@ -251,7 +274,7 @@ if(!airborne || (airborne && y_speed > 0)){
 
 if(on_ceiling) on_ceiling = false;
 #region ceiling sensors
-if(airborne && y_speed < 0){
+if(airborne){
 	//top
 	vec_t = new Vector2(0,-h_radius-1);
 	vec_t = vec_t.rotated(-snap_to_90(sensor_angle));

@@ -2,13 +2,13 @@
 ///@function tile_collision()
 ///@desc returns tile collision
 function tile_collision(x_,y_){
-	return collision_point(round(x_),round(y_),[global.tile_collisions,global.tile_collisions_oneway,obj_collision,obj_collision_oneway],true,true);
+	return collision_point(round(x_),round(y_),[global.tile_collisions,obj_collision],true,true);
 }
 
 ///@function tile_collision_oneway()
 ///@desc returns if the position contains a oneway tile
 function tile_collision_oneway(x_,y_){
-	return collision_point(round(x_),round(y_),[global.tile_collisions_oneway,obj_collision_oneway],true,true);
+	return (collision_point(round(x_),round(y_),[obj_collision_oneway],true,true)!= noone);
 }
 
 ///@function point_sensor()
@@ -34,7 +34,6 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 	var angle = undefined;
 	
 	var coll = tile_collision(x+vec_start.x,y+vec_start.y);
-	var oneway = (tile_collision_oneway(x+vec_start.x,y+vec_start.y) != noone);
 	var vec_sensor = vec_start;	
 	
 	if(coll != noone){	//regression - inside collision
@@ -48,6 +47,9 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 			var vec_rot_check = vec_sensor.move_toward(vec_start,delta);
 			
 			angle = tile_rotation(x+vec_rot_check.x,y+vec_rot_check.y);
+			coll = tile_collision(x+vec_rot_check.x,y+vec_rot_check.y);
+			
+			var oneway = tile_collision_oneway(x+vec_rot_check.x,y+vec_rot_check.y);
 			
 		} else return noone;
 	} else {			//extension - outside collision
@@ -59,6 +61,8 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 			}until(tile_collision(x+vec_sensor.x,y+vec_sensor.y) != noone)
 			
 			angle = tile_rotation(x+vec_sensor.x,y+vec_sensor.y);			
+			var oneway = tile_collision_oneway(x+vec_sensor.x,y+vec_sensor.y);
+			coll = tile_collision(x+vec_sensor.x,y+vec_sensor.y);
 			
 			//when the solid space has been found it regresses back one unit to be next to it
 			vec_sensor = vec_sensor.move_toward(vec_start,delta);
@@ -66,19 +70,64 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 		} else return noone;
 	}
 	
-	if(angle == 360){
-		angle = snap_to_90(dir);
-	}
-	
 	vec_dist = vec_sensor.subtract(vec_start);
 	var vec_upright = vec_dist.rotated(dir);
 	vec_dist.distance = vec_upright.y;
-	
-	vec_dist.angle = angle;
 	vec_dist.oneway = oneway;
 	
-	return vec_dist;
+	vec_dist.x_change = 0;	
+	vec_dist.y_change = 0;
+	vec_dist.inst = noone;
 	
+	if(instance_exists(coll)){
+		vec_dist.inst = coll;
+		var x_ = x+vec_sensor.x;
+		var y_ = y+vec_sensor.y;
+
+		var coll_angle = coll.image_angle
+		var contact_vec = new Vector2(x_ -coll.x,y_ -coll.y)
+		contact_vec = contact_vec.rotated(coll.image_angle);
+		
+		coll.image_angle = 0//snap_to_90(coll.image_angle);
+		
+		var lt_vec = new Vector2(coll.bbox_left  - coll.x, coll.bbox_top    - coll.y);
+		var rt_vec = new Vector2(coll.bbox_right - coll.x, coll.bbox_top    - coll.y);
+		var lb_vec = new Vector2(coll.bbox_left  - coll.x, coll.bbox_bottom - coll.y);
+		var rb_vec = new Vector2(coll.bbox_right - coll.x, coll.bbox_bottom - coll.y);
+		
+		coll.image_angle = coll_angle;
+		
+		var contact_x = contact_vec.x + x;
+		var contact_y = contact_vec.y + y;
+		
+		if(rectangle_in_circle(x+lt_vec.x,y+lt_vec.y,x+rt_vec.x,y+rt_vec.y,contact_x,contact_y,4) != 0) angle = 0;else
+		if(rectangle_in_circle(x+lt_vec.x,y+lt_vec.y,x+lb_vec.x,y+lb_vec.y,contact_x,contact_y,4) != 0) angle = 90;else
+		if(rectangle_in_circle(x+rt_vec.x,y+rt_vec.y,x+rb_vec.x,y+rb_vec.y,contact_x,contact_y,4) != 0) angle = 270;else
+		if(rectangle_in_circle(x+lb_vec.x,y+lb_vec.y,x+rb_vec.x,y+rb_vec.y,contact_x,contact_y,4) != 0) angle = 180;
+					
+		angle+=coll.image_angle;
+					
+		if(angle < 0) angle+=360;
+		else if(angle >= 360) angle-=360;
+		
+		if(object_is_ancestor(coll.object_index,obj_moving_platform)){
+			
+			contact_vec = new Vector2(x+vec_start.x-coll.x,y+vec_start.y-coll.y)
+			var new_contact_vec = contact_vec.rotated(-coll.rot_change);
+			
+			var rot_x = new_contact_vec.x - contact_vec.x;
+			var rot_y = new_contact_vec.y - contact_vec.y;
+			
+			vec_dist.x_change = coll.x_change + rot_x;	
+			vec_dist.y_change = coll.y_change + rot_y;
+		}
+	} else if(angle == 360){
+		angle = snap_to_90(dir);
+	}	
+	
+	vec_dist.angle = angle;
+
+	return vec_dist;	
 }
 
 ///@function draw_sensor()

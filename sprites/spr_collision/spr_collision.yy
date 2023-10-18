@@ -7,7 +7,7 @@
   "bbox_right": 15,
   "bbox_top": 0,
   "bboxMode": 0,
-  "collisionKind": 1,
+  "collisionKind": 5,
   "collisionTolerance": 0,
   "DynamicTexturePage": false,
   "edgeFiltering": false,
@@ -21,7 +21,7 @@
   "HTile": false,
   "layers": [
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"0177d7a5-dba5-407d-b510-15c8a64d36a7","blendMode":0,"displayName":"Layer 1","isLocked":false,"opacity":62.0,"visible":true,},
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"c6f3c97b-131b-4458-b716-fae2c1e6d2d0","blendMode":0,"displayName":"default","isLocked":false,"opacity":30.0,"visible":true,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"2a933396-ac8a-4201-81a4-dac29cb8ddfd","blendMode":0,"displayName":"Layer 2","isLocked":false,"opacity":50.0,"visible":true,},
   ],
   "nineSlice": {
     "resourceType": "GMNineSliceData",

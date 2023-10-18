@@ -1,5 +1,10 @@
 /// @description
-debug = !debug;
+global.t++;
+
+
+
+
+
 
 
 
