@@ -6,5 +6,6 @@ draw_self();
 
 if(global.debug){
 	draw_text(x,y,image_angle)
+	draw_text(x,y+20,t);
 }
 

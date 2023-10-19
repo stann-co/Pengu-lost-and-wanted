@@ -43,7 +43,7 @@
         "\"cycle rotation continue\"",
       ],"multiselect":false,"rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"value":"\"ping pong\"","varType":6,},
     {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"pause_duration_seconds","filters":[],"listItems":[],"multiselect":false,"rangeEnabled":true,"rangeMax":4.0,"rangeMin":0.0,"value":"2","varType":0,},
-    {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"offset_duration_seconds","filters":[],"listItems":[],"multiselect":false,"rangeEnabled":true,"rangeMax":4.0,"rangeMin":0.0,"value":"0","varType":0,},
+    {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"offset_duration_seconds","filters":[],"listItems":[],"multiselect":false,"rangeEnabled":true,"rangeMax":8.0,"rangeMin":0.0,"value":"0","varType":0,},
   ],
   "solid": false,
   "spriteId": {

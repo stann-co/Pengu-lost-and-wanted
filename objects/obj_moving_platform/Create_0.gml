@@ -1,11 +1,12 @@
 /// @description
+
+
+
+pause_duration = pause_duration_seconds * game_speed
 duration = duration_seconds * game_speed;
-pause_duration = pause_duration_seconds * game_speed;
 offset_duration = offset_duration_seconds * game_speed;
 
-t = global.t + offset_duration mod duration;
-t_pause = 0;
-t_offset = 0;
+t = 0;
 
 start_rotation = image_angle;
 
