@@ -2,7 +2,7 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_pengu_begin_fall",
-  "bbox_bottom": 124,
+  "bbox_bottom": 32,
   "bbox_left": 0,
   "bbox_right": 32,
   "bbox_top": 0,

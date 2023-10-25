@@ -17,11 +17,11 @@
   "option_operagx_mod_team_id": "",
   "option_operagx_mod_team_name": "",
   "option_operagx_mod_version": "1.0.0.0",
-  "option_operagx_next_version": "1.0.0.19",
+  "option_operagx_next_version": "1.0.0.20",
   "option_operagx_publicShareUrl": "",
   "option_operagx_scale": 0,
   "option_operagx_team_id": "4da0899d-2c41-4f44-9f00-bbcd47fc3764",
   "option_operagx_team_name": "stann-co studio",
   "option_operagx_texture_page": "2048x2048",
-  "option_operagx_version": "1.0.0.18",
+  "option_operagx_version": "1.0.0.19",
 }

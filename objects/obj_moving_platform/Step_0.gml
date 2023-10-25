@@ -1,13 +1,23 @@
 /// @description
-last_x = x;
-last_y = y;
-last_rot = rotation;
 
-var global_time = (global.t + offset_duration);
-var total_duration = duration + pause_duration
-t = global_time - total_duration * (global_time div total_duration );
 
-if(active){	
+if(active){		
+	last_x = x;
+	last_y = y;
+	last_rot = rotation;
+	
+	var global_time = (global.t + offset_duration);
+	var total_duration = duration + pause_duration
+	
+	if(cycle != "do once"){
+		t = global_time - total_duration * (global_time div total_duration );
+	} else {
+		t++;
+		if(t >= total_duration){
+			active = false;	
+		}
+	}
+	
 	if(t == 0){
 		switch (cycle) {
 		   case "cycle":
@@ -16,9 +26,6 @@ if(active){
 			var new_end_rot = end_rot_ - start_rot_;
 			start_rot_ = end_rot_;
 			end_rot_ += new_end_rot;					
-		    break;
-		case "do once":
-		    active = false;
 		    break;
 		case "ping pong":
 			forward = !forward;
@@ -61,9 +68,9 @@ if(active){
 		rotation = lerp(start_rot_,end_rot_,val);
 		image_angle = rotation mod 360;
 	}
+	x_change = x - last_x;
+	y_change = y - last_y;
+	
+	rot_change = rotation - last_rot;
 }
 
-x_change = x - last_x;
-y_change = y - last_y;
-
-rot_change = rotation - last_rot;

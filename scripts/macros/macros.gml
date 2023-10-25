@@ -11,6 +11,9 @@
 #macro purple #a400ff
 #macro pink #ff14b9
 
+#macro pengu_blue #3978a8
+#macro pengu_white #dff6f5
+
 #macro white c_white
 #macro gray c_gray
 #macro black c_black
