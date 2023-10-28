@@ -18,11 +18,18 @@ if(super_speed){
 		if(array_length(super_speed_trace_arr) > super_speed_trace_count) array_resize(super_speed_trace_arr,super_speed_trace_count);
 	}
 	
+	
+}
+
+if(super_speed_fadeout != 0){
+	var fadeout = (super_speed_fadeout / super_speed_fadeout_time);
+	
 	for (var i = 0; i < array_length(super_speed_trace_arr); ++i) {
 		var trace = super_speed_trace_arr[i];
-		draw_sprite_ext(trace.sprite_index,trace.subimg,trace.x,trace.y,trace.scale_x*trace.mirror,trace.scale_y,trace.image_angle,-1,1-(i/super_speed_trace_count));
+		draw_sprite_ext(trace.sprite_index,trace.subimg,trace.x,trace.y,trace.scale_x*trace.mirror,trace.scale_y,trace.image_angle,-1,(1-(i/super_speed_trace_count))*fadeout);
 	}
 }
+
 state.draw();
 
 

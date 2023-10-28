@@ -78,11 +78,14 @@ h_radius		= h_radius_normal; //height radius`?=)
 
 airborne = false;
 sliding = false;
+
 super_speed = false;
 super_speed_min = 4;
 super_speed_trace_arr = [];
 super_speed_trace_count = 8;
 super_speed_trace_offset = 2;
+super_speed_fadeout = 0;
+super_speed_fadeout_time = game_speed * 1;
 
 on_land = false; //this is true on the frame you land again
 on_ceiling = false; //this is true whenever you are touching the ceiling
@@ -589,6 +592,10 @@ state
 			mirror = sign(x_speed);
 			
 			squish(1.2,1.2,game_speed*0.2);
+			
+			super_speed = true;
+			super_speed_fadeout = super_speed_fadeout_time;
+			super_speed_trace_arr = [];
 	    },
 		step: function() {
 			if(on_land){
@@ -656,6 +663,10 @@ state
 			squish(1.2,1.2,game_speed*0.2);
 			
 			t = 0;
+			
+			super_speed = true;
+			super_speed_fadeout = super_speed_fadeout_time;
+			super_speed_trace_arr = [];
 	    },
 		step: function() {
 			
