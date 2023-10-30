@@ -1,10 +1,12 @@
 /// @description
 
-var left = global.camera.get_x();
-var top = global.camera.get_y();
+var margin = 100;
 
-var width = global.camera.width;
-var height = global.camera.height;
+var left = global.camera.get_x() -margin;
+var top = global.camera.get_y() -margin;
+
+var width = global.camera.width   +	(margin*2);
+var height = global.camera.height +	(margin*2);
 
 instance_deactivate_region(left, top, width, height, false,true);
 instance_activate_region(left, top, width, height, true);

@@ -104,7 +104,7 @@
     {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
   ],
   "MetaData": {
-    "IDEVersion": "2023.8.2.108",
+    "IDEVersion": "2023.1100.0.425",
   },
   "resources": [
     {"id":{"name":"input_keyboard_check","path":"scripts/input_keyboard_check/input_keyboard_check.yy",},},
@@ -146,6 +146,7 @@
     {"id":{"name":"__input_trace_loud","path":"scripts/__input_trace_loud/__input_trace_loud.yy",},},
     {"id":{"name":"__input_config_verb_groups","path":"scripts/__input_config_verb_groups/__input_config_verb_groups.yy",},},
     {"id":{"name":"input_virtual_destroy_all","path":"scripts/input_virtual_destroy_all/input_virtual_destroy_all.yy",},},
+    {"id":{"name":"rm_wintery","path":"rooms/rm_wintery/rm_wintery.yy",},},
     {"id":{"name":"__input_class_trigger_effect_feedback","path":"scripts/__input_class_trigger_effect_feedback/__input_class_trigger_effect_feedback.yy",},},
     {"id":{"name":"input_keyboard_virtual_show","path":"scripts/input_keyboard_virtual_show/input_keyboard_virtual_show.yy",},},
     {"id":{"name":"__input_config_multiplayer","path":"scripts/__input_config_multiplayer/__input_config_multiplayer.yy",},},
@@ -467,6 +468,7 @@
     {"id":{"name":"input_binding_get","path":"scripts/input_binding_get/input_binding_get.yy",},},
     {"id":{"name":"spr_bg_workshop3","path":"sprites/spr_bg_workshop3/spr_bg_workshop3.yy",},},
     {"id":{"name":"__input_multiplayer_assignment_tick","path":"scripts/__input_multiplayer_assignment_tick/__input_multiplayer_assignment_tick.yy",},},
+    {"id":{"name":"sh_color","path":"shaders/sh_color/sh_color.yy",},},
     {"id":{"name":"input_check_opposing","path":"scripts/input_check_opposing/input_check_opposing.yy",},},
     {"id":{"name":"__input_load_type_csv","path":"scripts/__input_load_type_csv/__input_load_type_csv.yy",},},
     {"id":{"name":"input_icons_gamepad","path":"scripts/input_icons_gamepad/input_icons_gamepad.yy",},},
@@ -526,6 +528,7 @@
     {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
     {"id":{"name":"spr_ts_snow","path":"sprites/spr_ts_snow/spr_ts_snow.yy",},},
     {"id":{"name":"spr_ts_snow_bg","path":"sprites/spr_ts_snow_bg/spr_ts_snow_bg.yy",},},
+    {"id":{"name":"ac_super_speed_alpha","path":"animcurves/ac_super_speed_alpha/ac_super_speed_alpha.yy",},},
     {"id":{"name":"ts_collisions","path":"tilesets/ts_collisions/ts_collisions.yy",},},
     {"id":{"name":"draw_percentage_donut","path":"scripts/draw_percentage_donut/draw_percentage_donut.yy",},},
     {"id":{"name":"spr_pengu_idle","path":"sprites/spr_pengu_idle/spr_pengu_idle.yy",},},
@@ -560,10 +563,11 @@
   ],
   "RoomOrderNodes": [
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
+    {"roomId":{"name":"rm_wintery","path":"rooms/rm_wintery/rm_wintery.yy",},},
+    {"roomId":{"name":"rm_parent","path":"rooms/rm_parent/rm_parent.yy",},},
     {"roomId":{"name":"rm_workshop","path":"rooms/rm_workshop/rm_workshop.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
     {"roomId":{"name":"rm_level1","path":"rooms/rm_level1/rm_level1.yy",},},
-    {"roomId":{"name":"rm_parent","path":"rooms/rm_parent/rm_parent.yy",},},
   ],
   "templateType": "game",
   "TextureGroups": [

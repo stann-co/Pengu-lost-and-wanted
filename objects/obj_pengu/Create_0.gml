@@ -82,10 +82,14 @@ sliding = false;
 super_speed = false;
 super_speed_min = 4;
 super_speed_trace_arr = [];
-super_speed_trace_count = 8;
-super_speed_trace_offset = 2;
+super_speed_trace_count = 6;
+super_speed_trace_offset = 1;
 super_speed_fadeout = 0;
 super_speed_fadeout_time = game_speed * 1;
+super_speed_colors = [red,red,red,red,red,red,white,white,white,white,white,white]//[white,red,white,yellow,white,green,white,blue,white,pink];
+
+super_speed_u_color = shader_get_uniform(sh_color,"color");
+super_speed_u_intensity = shader_get_uniform(sh_color,"intensity");
 
 on_land = false; //this is true on the frame you land again
 on_ceiling = false; //this is true whenever you are touching the ceiling
@@ -577,6 +581,9 @@ state
 	
 	.add_child("prone","dash_air", {
 	    enter: function() { 
+			
+			global.camera.shake_screen(2,game_speed*0.2);
+			
 			state.inherit();
 			airborne = true;
 			image_to_ground_angle = false;
@@ -636,15 +643,6 @@ state
 			scale_x = lerp(1,1.2,amount);
 			scale_y = lerp(1,0.9,amount);
 			
-			//var flash_steps = round(lerp(game_speed*0.2,game_speed*0.05,amount));
-			
-			//t2++;
-			//
-			//if(t2 > flash_steps){
-			//	flash = !flash
-			//	t2 = 0;
-			//}
-			
 		},
 		draw: function(){
 			draw_sprite_ext(sprite_index,subimg,x,y,scale_x*mirror,scale_y,image_angle,-1,1);
@@ -656,6 +654,9 @@ state
 	
 	.add_child("prone","dash", {
 	    enter: function() {
+			
+			global.camera.shake_screen(2,game_speed*0.2);
+			
 			state.inherit()
 			sprite_index = spr_pengu_dash;
 			ground_spd = dash_ground_force * mirror
