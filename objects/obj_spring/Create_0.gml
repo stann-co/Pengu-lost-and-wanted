@@ -38,7 +38,7 @@ trigger = function(){
 				}
 				
 				set_control_lock(other.control_lock_time);
-				ground_spd = dcos(angle+90+image_angle)  * other.spring_force;	
+				ground_spd = (dcos(angle+90-image_angle))  * other.spring_force;	
 				
 				input_h = sign(ground_spd);
 				
