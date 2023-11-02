@@ -565,9 +565,9 @@
   ],
   "RoomOrderNodes": [
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
+    {"roomId":{"name":"rm_up_mountain","path":"rooms/rm_up_mountain/rm_up_mountain.yy",},},
     {"roomId":{"name":"rm_terry","path":"rooms/rm_terry/rm_terry.yy",},},
     {"roomId":{"name":"rm_lee","path":"rooms/rm_lee/rm_lee.yy",},},
-    {"roomId":{"name":"rm_up_mountain","path":"rooms/rm_up_mountain/rm_up_mountain.yy",},},
     {"roomId":{"name":"rm_wintery","path":"rooms/rm_wintery/rm_wintery.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
     {"roomId":{"name":"rm_parent","path":"rooms/rm_parent/rm_parent.yy",},},
