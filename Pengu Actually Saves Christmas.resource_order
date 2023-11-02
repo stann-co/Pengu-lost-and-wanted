@@ -436,6 +436,7 @@
     {"name":"input_trigger_effect_weapon","order":8,"path":"scripts/input_trigger_effect_weapon/input_trigger_effect_weapon.yy",},
     {"name":"ac_sine_ease","order":2,"path":"animcurves/ac_sine_ease/ac_sine_ease.yy",},
     {"name":"input_binding_set","order":8,"path":"scripts/input_binding_set/input_binding_set.yy",},
+    {"name":"rm_terry","order":8,"path":"rooms/rm_terry/rm_terry.yy",},
     {"name":"input_player_verify","order":4,"path":"scripts/input_player_verify/input_player_verify.yy",},
     {"name":"spr_ts_collisions","order":2,"path":"sprites/spr_ts_collisions/spr_ts_collisions.yy",},
     {"name":"spr_ts_snow_bg","order":1,"path":"sprites/spr_ts_snow_bg/spr_ts_snow_bg.yy",},

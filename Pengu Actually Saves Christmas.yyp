@@ -522,6 +522,7 @@
     {"id":{"name":"ts_snow","path":"tilesets/ts_snow/ts_snow.yy",},},
     {"id":{"name":"ac_sine_ease","path":"animcurves/ac_sine_ease/ac_sine_ease.yy",},},
     {"id":{"name":"input_binding_set","path":"scripts/input_binding_set/input_binding_set.yy",},},
+    {"id":{"name":"rm_terry","path":"rooms/rm_terry/rm_terry.yy",},},
     {"id":{"name":"input_player_verify","path":"scripts/input_player_verify/input_player_verify.yy",},},
     {"id":{"name":"spr_ts_collisions","path":"sprites/spr_ts_collisions/spr_ts_collisions.yy",},},
     {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
@@ -570,6 +571,7 @@
     {"roomId":{"name":"rm_parent","path":"rooms/rm_parent/rm_parent.yy",},},
     {"roomId":{"name":"rm_workshop","path":"rooms/rm_workshop/rm_workshop.yy",},},
     {"roomId":{"name":"rm_level1","path":"rooms/rm_level1/rm_level1.yy",},},
+    {"roomId":{"name":"rm_terry","path":"rooms/rm_terry/rm_terry.yy",},},
   ],
   "templateType": "game",
   "TextureGroups": [
