@@ -433,6 +433,7 @@
     {"name":"rm_parent","order":4,"path":"rooms/rm_parent/rm_parent.yy",},
     {"name":"input_profile_create","order":1,"path":"scripts/input_profile_create/input_profile_create.yy",},
     {"name":"__input_gamepad_tester_init","order":2,"path":"scripts/__input_gamepad_tester_init/__input_gamepad_tester_init.yy",},
+    {"name":"rm_ruby","order":9,"path":"rooms/rm_ruby/rm_ruby.yy",},
     {"name":"input_trigger_effect_weapon","order":8,"path":"scripts/input_trigger_effect_weapon/input_trigger_effect_weapon.yy",},
     {"name":"ac_sine_ease","order":2,"path":"animcurves/ac_sine_ease/ac_sine_ease.yy",},
     {"name":"input_binding_set","order":8,"path":"scripts/input_binding_set/input_binding_set.yy",},
