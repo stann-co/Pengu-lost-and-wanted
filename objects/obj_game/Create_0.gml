@@ -17,6 +17,8 @@ global.tile_angles = [
 global.depth_a = 300;
 global.depth_b = 400;
 
+global.activation_list = [];
+
 global.debug = true;
 active_collisions_A = true;
 

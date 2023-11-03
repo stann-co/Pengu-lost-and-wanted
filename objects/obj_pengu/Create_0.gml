@@ -261,6 +261,42 @@ state
 			sliding = false;
 		}
 	})
+	
+	//states where pengu is controlled by some object
+	.add_child("airborne","skilift", {
+		enter: function() {
+			image_angle = 0;
+			super_speed = false;
+			state.inherit();
+			sprite_index = spr_pengu_sitting;
+			controlled = false;
+			
+		}
+	})
+	
+	.add_child("airborne","tube", {
+		enter: function() {
+			state.inherit();
+			sprite_index = spr_pengu_spinning;
+			controlled = false;
+			active_layer = obj_game.active_collisions_A;
+			
+		},
+		step: function(){
+			image_angle = point_direction(xstart,ystart,x,y)-90;
+			xstart = x;
+			ystart = y;
+
+			if(path_position == 1){
+				x_speed = lengthdir_x(ground_spd,image_angle+90);
+				y_speed = lengthdir_y(ground_spd,image_angle+90);
+				
+				collision_layer_switch(active_layer,true);
+				controlled = true;		
+				state.change("launch");
+			}	
+		}
+	})
 
 	//child states
 
@@ -433,30 +469,6 @@ state
 	
 			if(y_speed > 0) state.change("begin_fall");
 			if(on_land) pick_move_state();
-		}
-	})
-		
-	.add_child("airborne","tube", {
-		enter: function() {
-			state.inherit();
-			sprite_index = spr_pengu_spinning;
-			controlled = false;
-			active_layer = obj_game.active_collisions_A;
-			
-		},
-		step: function(){
-			image_angle = point_direction(xstart,ystart,x,y)-90;
-			xstart = x;
-			ystart = y;
-
-			if(path_position == 1){
-				x_speed = lengthdir_x(ground_spd,image_angle+90);
-				y_speed = lengthdir_y(ground_spd,image_angle+90);
-				
-				collision_layer_switch(active_layer,true);
-				controlled = true;		
-				state.change("launch");
-			}	
 		}
 	})
 	
