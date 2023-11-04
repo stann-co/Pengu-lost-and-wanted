@@ -81,6 +81,7 @@ sliding = false;
 
 super_speed = false;
 super_speed_min = 4;
+super_speed_threshold = 10;
 super_speed_trace_arr = [];
 super_speed_trace_count = 6;
 super_speed_trace_offset = 1;

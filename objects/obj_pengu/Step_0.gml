@@ -150,8 +150,16 @@ else {
 	//when airborne sensors aren't rotated at all
 	sensor_angle = (airborne) ? 0 : ground_angle;
 	
+	
 	//super speed 
-	if(super_speed){
+	
+	if(abs(ground_spd) >= super_speed_threshold && !super_speed){
+		super_speed = true;
+		super_speed_fadeout = super_speed_fadeout_time;
+		super_speed_trace_arr = [];
+	} else
+	
+	if(super_speed){		
 		var abs_speed = airborne ? point_distance(0,0,x_speed,y_speed) : abs(ground_spd);
 		if(abs_speed < super_speed_min){
 			super_speed = false;
