@@ -31,7 +31,7 @@ show_collisions = function(){
 	
 	if(global.debug){
 		
-		layer_set_visible("backgrounds_1",true);
+		layer_set_visible("backgrounds_1",false);
 		
 		if(active_collisions_A){
 			layer_set_visible(collision_A,true);

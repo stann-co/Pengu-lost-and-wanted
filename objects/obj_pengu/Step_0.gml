@@ -185,26 +185,26 @@ if((!airborne && ground_spd < 0) || airborne) { //left
 		push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,sensor_length_base,abs(ground_spd));
 	}
 	
-	if(push_sensor != noone && push_sensor.distance < 1 && !sensor_is_oneway(push_sensor)){
-		x+= push_sensor.x;
-		y+= push_sensor.y;
-		
+	if(push_sensor != noone && push_sensor.distance < 1 && !sensor_is_oneway(push_sensor)){		
 		if(push_sensor.inst != noone && push_sensor.inst.object_index == obj_destructible_block && abs(ground_spd) > 5){
 		//destructible blocks don't stop you if you're fast enough
 			push_sensor.inst.trigger();
 				
-		}
-		else
-		if (sensor_is_spikes(push_sensor)){
-			state.change("hurt");
-		}
+		} else {
+			x+= push_sensor.x;
+			y+= push_sensor.y;
 			
-		if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
-			if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
-			ground_spd = 0;
-			x_speed = 0;
+			if (sensor_is_spikes(push_sensor)){
+				state.change("hurt");
+				
+			}
+			if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
+				if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
+				ground_spd = 0;
+				x_speed = 0;
+			}
 		}
-	}
+	} 
 }  
 
 if((!airborne && ground_spd > 0) || airborne){ //right
@@ -216,26 +216,26 @@ if((!airborne && ground_spd > 0) || airborne){ //right
 		push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,sensor_length_base,abs(ground_spd));
 	}
 	
-	if(push_sensor != noone && push_sensor.distance < 1 && !sensor_is_oneway(push_sensor)){
-		x+= push_sensor.x;
-		y+= push_sensor.y;
-		
+	if(push_sensor != noone && push_sensor.distance < 1 && !sensor_is_oneway(push_sensor)){		
 		if(push_sensor.inst != noone && push_sensor.inst.object_index == obj_destructible_block && abs(ground_spd) > 5){
 		//destructible blocks don't stop you if you're fast enough
-			push_sensor.inst.trigger();	
-		}
-		else
-		
-		if (sensor_is_spikes(push_sensor)){
-			state.change("hurt");
-		}
+			push_sensor.inst.trigger();
+				
+		} else {
+			x+= push_sensor.x;
+			y+= push_sensor.y;
 			
-		if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
-			if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
-			ground_spd = 0;
-			x_speed = 0;
+			if (sensor_is_spikes(push_sensor)){
+				state.change("hurt");
+				
+			}
+			if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
+				if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
+				ground_spd = 0;
+				x_speed = 0;
+			}
 		}
-	}
+	} 
 }
 
 
