@@ -42,8 +42,8 @@
   ],
   "solid": false,
   "spriteId": {
-    "name": "spring",
-    "path": "sprites/spring/spring.yy",
+    "name": "spr_spring",
+    "path": "sprites/spr_spring/spr_spring.yy",
   },
   "spriteMaskId": null,
   "visible": true,

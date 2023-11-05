@@ -14,10 +14,10 @@ normal_deceleration_speed = 0.2;
 normal_friction_speed = 0.24;
 normal_top_speed = 3;
 
-slide_acceleration_speed = 0.04;
+slide_acceleration_speed = 0.03;
 slide_deceleration_speed = 0.4;
 slide_friction_speed = 0.08;
-slide_top_speed = 8;
+slide_top_speed = 10;
 
 absolute_top_speed = 18;
 
@@ -81,6 +81,7 @@ sliding = false;
 
 super_speed = false;
 super_speed_min = 4;
+super_speed_threshold = 10;
 super_speed_trace_arr = [];
 super_speed_trace_count = 6;
 super_speed_trace_offset = 1;
@@ -261,6 +262,42 @@ state
 			sliding = false;
 		}
 	})
+	
+	//states where pengu is controlled by some object
+	.add_child("airborne","skilift", {
+		enter: function() {
+			image_angle = 0;
+			super_speed = false;
+			state.inherit();
+			sprite_index = spr_pengu_sitting;
+			controlled = false;
+			
+		}
+	})
+	
+	.add_child("airborne","tube", {
+		enter: function() {
+			state.inherit();
+			sprite_index = spr_pengu_spinning;
+			controlled = false;
+			active_layer = obj_game.active_collisions_A;
+			
+		},
+		step: function(){
+			image_angle = point_direction(xstart,ystart,x,y)-90;
+			xstart = x;
+			ystart = y;
+
+			if(path_position == 1){
+				x_speed = lengthdir_x(ground_spd,image_angle+90);
+				y_speed = lengthdir_y(ground_spd,image_angle+90);
+				
+				collision_layer_switch(active_layer,true);
+				controlled = true;		
+				state.change("launch");
+			}	
+		}
+	})
 
 	//child states
 
@@ -435,30 +472,6 @@ state
 			if(on_land) pick_move_state();
 		}
 	})
-		
-	.add_child("airborne","tube", {
-		enter: function() {
-			state.inherit();
-			sprite_index = spr_pengu_spinning;
-			controlled = false;
-			active_layer = obj_game.active_collisions_A;
-			
-		},
-		step: function(){
-			image_angle = point_direction(xstart,ystart,x,y)-90;
-			xstart = x;
-			ystart = y;
-
-			if(path_position == 1){
-				x_speed = lengthdir_x(ground_spd,image_angle+90);
-				y_speed = lengthdir_y(ground_spd,image_angle+90);
-				
-				collision_layer_switch(active_layer,true);
-				controlled = true;		
-				state.change("launch");
-			}	
-		}
-	})
 	
 	.add_child("airborne","launch", {
 	    enter: function() {
@@ -519,6 +532,17 @@ state
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_hurt;
+			
+			//var sound_file = (irandom_range(1,1000) != 1000) ? snd_pengu_hurt : snd_pengu_uwu;
+			//var sound = audio_play_sound(sound_file,100,false);
+			//audio_sound_pitch(sound,pitch_change(random_range(2,10)));			
+			
+			//if (global.points == 0){
+			//	state.change("dying");
+			//}else{
+			//	point_scatter();
+			//	global.points = 0;
+			//}
 			
 			var up_down = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
 			y_speed = (-hurt_force*up_down) - gravity_force //subtracting gravity force cancels out gravity for one frame
