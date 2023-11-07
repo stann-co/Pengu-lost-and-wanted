@@ -94,9 +94,10 @@
   "isEcma": false,
   "LibraryEmitters": [
     {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
+    {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
   ],
   "MetaData": {
-    "IDEVersion": "2023.1100.0.425",
+    "IDEVersion": "2023.8.2.108",
   },
   "resources": [
     {"id":{"name":"input_keyboard_check","path":"scripts/input_keyboard_check/input_keyboard_check.yy",},},
@@ -104,6 +105,7 @@
     {"id":{"name":"rm_level1","path":"rooms/rm_level1/rm_level1.yy",},},
     {"id":{"name":"__input_gamepad_set_blacklist","path":"scripts/__input_gamepad_set_blacklist/__input_gamepad_set_blacklist.yy",},},
     {"id":{"name":"input_controller_object","path":"objects/input_controller_object/input_controller_object.yy",},},
+    {"id":{"name":"path_terry_02","path":"paths/path_terry_02/path_terry_02.yy",},},
     {"id":{"name":"input_vibrate_stop","path":"scripts/input_vibrate_stop/input_vibrate_stop.yy",},},
     {"id":{"name":"input_binding_scan_start","path":"scripts/input_binding_scan_start/input_binding_scan_start.yy",},},
     {"id":{"name":"input_trigger_effect_get_state","path":"scripts/input_trigger_effect_get_state/input_trigger_effect_get_state.yy",},},
@@ -377,6 +379,7 @@
     {"id":{"name":"input_vibrate_adsr","path":"scripts/input_vibrate_adsr/input_vibrate_adsr.yy",},},
     {"id":{"name":"obj_spikes","path":"objects/obj_spikes/obj_spikes.yy",},},
     {"id":{"name":"__input_key_get_name","path":"scripts/__input_key_get_name/__input_key_get_name.yy",},},
+    {"id":{"name":"path_terry_01","path":"paths/path_terry_01/path_terry_01.yy",},},
     {"id":{"name":"input_keyboard_virtual_hide","path":"scripts/input_keyboard_virtual_hide/input_keyboard_virtual_hide.yy",},},
     {"id":{"name":"obj_tunnel_ride","path":"objects/obj_tunnel_ride/obj_tunnel_ride.yy",},},
     {"id":{"name":"input_mouse_dy","path":"scripts/input_mouse_dy/input_mouse_dy.yy",},},
@@ -572,8 +575,8 @@
   ],
   "RoomOrderNodes": [
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
-    {"roomId":{"name":"rm_up_mountain","path":"rooms/rm_up_mountain/rm_up_mountain.yy",},},
     {"roomId":{"name":"rm_terry","path":"rooms/rm_terry/rm_terry.yy",},},
+    {"roomId":{"name":"rm_up_mountain","path":"rooms/rm_up_mountain/rm_up_mountain.yy",},},
     {"roomId":{"name":"rm_lee","path":"rooms/rm_lee/rm_lee.yy",},},
     {"roomId":{"name":"rm_wintery","path":"rooms/rm_wintery/rm_wintery.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
