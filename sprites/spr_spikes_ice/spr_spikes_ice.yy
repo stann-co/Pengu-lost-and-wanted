@@ -46,7 +46,7 @@
     ],
     "top": 0,
   },
-  "origin": 7,
+  "origin": 9,
   "parent": {
     "name": "obstacles",
     "path": "folders/Sprites/obstacles.yy",
@@ -83,7 +83,7 @@
     "visibleRange": null,
     "volume": 1.0,
     "xorigin": 16,
-    "yorigin": 32,
+    "yorigin": 29,
   },
   "swatchColours": null,
   "swfPrecision": 2.525,

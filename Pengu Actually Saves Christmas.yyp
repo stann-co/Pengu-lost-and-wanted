@@ -204,6 +204,7 @@
     {"id":{"name":"input_direction","path":"scripts/input_direction/input_direction.yy",},},
     {"id":{"name":"__input_class_vibration_adsr","path":"scripts/__input_class_vibration_adsr/__input_class_vibration_adsr.yy",},},
     {"id":{"name":"ts_tubes","path":"tilesets/ts_tubes/ts_tubes.yy",},},
+    {"id":{"name":"spr_crystal_01","path":"sprites/spr_crystal_01/spr_crystal_01.yy",},},
     {"id":{"name":"input_player_copy","path":"scripts/input_player_copy/input_player_copy.yy",},},
     {"id":{"name":"__input_restart","path":"scripts/__input_restart/__input_restart.yy",},},
     {"id":{"name":"input_profile_set","path":"scripts/input_profile_set/input_profile_set.yy",},},
