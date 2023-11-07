@@ -14,9 +14,6 @@ function set_background_up_mountain(){
 	global.background = function(){
 		//the background is scaled up so it appears smooth when being parralaxed
 		draw_background_depth(spr_mountain,0,0		,true);
-		
-		gpu_set_colorwriteenable(1,1,1,0);
-		
 		draw_background_depth(spr_mountain,1,0.125	,true);
 		draw_background_depth(spr_mountain,2,0.25	,true);
 		draw_background_depth(spr_mountain,3,0.375	,true);
@@ -24,8 +21,6 @@ function set_background_up_mountain(){
 		draw_background_depth(spr_mountain,5,0.625	,true);
 		draw_background_depth(spr_mountain,6,0.75	,true);
 		draw_background_depth(spr_mountain,7,0.875	,true);
-		
-		gpu_set_colorwriteenable(1,1,1,1);
 	}
 }
 
