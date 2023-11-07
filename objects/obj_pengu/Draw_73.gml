@@ -29,7 +29,7 @@ if(global.debug){
 	#endregion
 	
 	#region bottom
-		if(true){
+	if(true){
 		//bottom left
 		draw_set_color(red);
 		draw_sensor(x,y,vec_bl,snap_to_90(sensor_angle), sensor_length_base);
@@ -82,4 +82,11 @@ if(global.debug){
 	draw_text(x,y-60,snap_to_90(sensor_angle));
 	
 	draw_sprite_ext(mask_index,0,x,y,image_xscale,image_yscale,image_angle,-1,0.1);
+	
+	
+	//check sides
+	var sens = sensor(vec_b,snap_to_90(sensor_angle), sensor_length_base)
+	if(sens != noone && sens.inst != noone){
+		draw_text(sens.inst.x,sens.inst.y,sens.side);
+	}
 }
