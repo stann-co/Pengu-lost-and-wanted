@@ -421,19 +421,23 @@ function stanncam(x_ = 0,y_ = 0,width_ = global.game_w,height_ = global.game_h, 
 		return ((y_-get_y()-y_frac) / get_zoom_y()) * stanncam_get_gui_scale_y();
 	}
 	
+	/// @function room_to_display_x
 	/// @description returns the room x position as the position on the display relative to camera
 	/// @param {Real} x_
 	/// @returns {Real}
-	// function room_to_display_x(x_){
-	// 	return (x_-get_x())*stanncam_get_res_scale_x()/zoom_amount;
-	// }
+	/// @ignore
+	static room_to_display_x = function(x_){
+		return ((x_-get_x()-x_frac) / get_zoom_x()) * stanncam_get_res_scale_x();
+	}
 	
+	/// @function room_to_display_y
 	/// @description returns the room y position as the position on the display relative to camera
 	/// @param {Real} y_
 	/// @returns {Real}
-	//function room_to_display_y(y_){
-	//	return (y_-get_y())*stanncam_get_res_scale_y()/zoom_amount;
-	//}
+	/// @ignore
+	static room_to_display_y = function(y_){
+		return ((y_-get_y()-y_frac) / get_zoom_y()) * stanncam_get_res_scale_y();
+	}
 	
 	/// @function out_of_bounds
 	/// @description returns if the position is outside camera bounds
