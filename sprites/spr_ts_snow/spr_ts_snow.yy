@@ -2,9 +2,9 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_ts_snow",
-  "bbox_bottom": 0,
+  "bbox_bottom": 159,
   "bbox_left": 0,
-  "bbox_right": 0,
+  "bbox_right": 159,
   "bbox_top": 0,
   "bboxMode": 0,
   "collisionKind": 1,
@@ -13,14 +13,14 @@
   "edgeFiltering": false,
   "For3D": false,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"09c40487-9709-4245-ae0c-ef79dbe1eb02",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"f05f5790-78a7-46a6-b891-5b77576dc063",},
   ],
   "gridX": 0,
   "gridY": 0,
-  "height": 512,
+  "height": 160,
   "HTile": false,
   "layers": [
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"c734d30d-78c9-4c13-acfa-26ad86a1251c","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"bd3b629c-4c23-4fad-bce9-82ca57a596e0","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,
   "origin": 0,
@@ -54,7 +54,7 @@
     "timeUnits": 1,
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
-            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"09c40487-9709-4245-ae0c-ef79dbe1eb02","path":"sprites/spr_ts_snow/spr_ts_snow.yy",},},},"Disabled":false,"id":"d638e2db-8b8d-432d-9471-885d79ff823a","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"f05f5790-78a7-46a6-b891-5b77576dc063","path":"sprites/spr_ts_snow/spr_ts_snow.yy",},},},"Disabled":false,"id":"5d4004b6-8361-4e79-a0cd-c1a079d46ca1","IsCreationKey":false,"Key":0.0,"Length":1.0,"Stretch":false,},
           ],},"modifiers":[],"spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange": null,
@@ -70,5 +70,5 @@
   },
   "type": 0,
   "VTile": false,
-  "width": 512,
+  "width": 160,
 }
