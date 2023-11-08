@@ -275,6 +275,16 @@ state
 		}
 	})
 	
+	.add_child("airborne","spring_ball", {
+		enter: function() {
+			super_speed = false;
+			state.inherit();
+			sprite_index = spr_pengu_grab_on;
+			controlled = false;
+			
+		}
+	})
+	
 	.add_child("airborne","tube", {
 		enter: function() {
 			state.inherit();
