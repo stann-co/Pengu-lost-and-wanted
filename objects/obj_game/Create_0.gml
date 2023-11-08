@@ -1,5 +1,12 @@
 /// @description
 
+saved_pengu = {
+x: -1,
+y: -1,
+
+}
+save_text = false;
+
 /// feather ignore all in /Extensions/*
 
 global.t = 0; //a global timer for different objects to refer to stay in sync even after being deactivated
