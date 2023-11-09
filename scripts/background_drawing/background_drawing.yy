@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "set_background",
+  "name": "background_drawing",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {
