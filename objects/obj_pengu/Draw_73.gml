@@ -85,8 +85,8 @@ if(global.debug){
 	
 	
 	//check sides
-	var sens = sensor(vec_b,snap_to_90(sensor_angle), sensor_length_base)
-	if(sens != noone && sens.inst != noone){
-		draw_text(sens.inst.x,sens.inst.y,sens.side);
-	}
+	//var sens = sensor(vec_b,snap_to_90(sensor_angle), sensor_length_base)
+	//if(sens != noone && sens.inst != noone){
+	//	draw_text(sens.inst.x,sens.inst.y,sens.side);
+	//}
 }
