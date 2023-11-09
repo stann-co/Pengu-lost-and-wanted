@@ -95,6 +95,7 @@
   "LibraryEmitters": [
     {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
     {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
+    {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
   ],
   "MetaData": {
     "IDEVersion": "2023.8.2.108",
