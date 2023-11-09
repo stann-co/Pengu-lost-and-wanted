@@ -75,6 +75,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"decorations","folderPath":"folders/Sprites/decorations.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"enemies","folderPath":"folders/Sprites/enemies.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"toybot","folderPath":"folders/Sprites/enemies/toybot.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"level elements","folderPath":"folders/Sprites/level elements.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"obstacles","folderPath":"folders/Sprites/obstacles.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"particles","folderPath":"folders/Sprites/particles.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"pengu","folderPath":"folders/Sprites/pengu.yy",},
@@ -84,7 +85,6 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"tool","folderPath":"folders/Sprites/tool.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Tile Sets","folderPath":"folders/Tile Sets.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Timelines","folderPath":"folders/Timelines.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"level elements","folderPath":"folders/Sprites/level elements.yy",},
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"controllerblacklist.csv","CopyToMask":-1,"filePath":"datafiles",},
@@ -526,6 +526,7 @@
     {"id":{"name":"input_verb_group_get_verbs","path":"scripts/input_verb_group_get_verbs/input_verb_group_get_verbs.yy",},},
     {"id":{"name":"__input_config_combos","path":"scripts/__input_config_combos/__input_config_combos.yy",},},
     {"id":{"name":"input_mouse_check_released","path":"scripts/input_mouse_check_released/input_mouse_check_released.yy",},},
+    {"id":{"name":"path_terry_03","path":"paths/path_terry_03/path_terry_03.yy",},},
     {"id":{"name":"input_check_pressed","path":"scripts/input_check_pressed/input_check_pressed.yy",},},
     {"id":{"name":"spr_skilift_pole","path":"sprites/spr_skilift_pole/spr_skilift_pole.yy",},},
     {"id":{"name":"obj_pengu","path":"objects/obj_pengu/obj_pengu.yy",},},
