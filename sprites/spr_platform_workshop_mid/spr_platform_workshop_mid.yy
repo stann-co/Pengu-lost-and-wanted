@@ -49,7 +49,7 @@
   "origin": 4,
   "parent": {
     "name": "platforms",
-    "path": "folders/Sprites/platforms.yy",
+    "path": "folders/Sprites/level elements/platforms.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

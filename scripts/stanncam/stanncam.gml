@@ -441,6 +441,8 @@ function stanncam(x_ = 0,y_ = 0,width_ = global.game_w,height_ = global.game_h, 
 	
 	/// @function out_of_bounds
 	/// @description returns if the position is outside camera bounds
+	/// @param {Real} x_
+	/// @param {Real} y_
 	/// @param {Real} margin_ = 0
 	/// @returns {Bool}
 	/// @ignore

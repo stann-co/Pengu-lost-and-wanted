@@ -14,6 +14,20 @@ function sensor_is_oneway(sensor_){
 	return (sensor_ != noone && sensor_.inst != noone && sensor_.inst.object_index == obj_collision_oneway);
 }
 
+///@function sensor_is_destructible()
+///@desc checks is sensor is destructible
+///@param sensor_
+function sensor_is_destructible(sensor_){
+	return (sensor_ != noone && sensor_.inst != noone && sensor_.inst.object_index == obj_destructible_block);
+}
+
+///@function sensor_is_falling_platform()
+///@desc checks is sensor is falling platform
+///@param sensor_
+function sensor_is_falling_platform(sensor_){
+	return (sensor_ != noone && sensor_.inst != noone && sensor_.inst.object_index == obj_falling_platform && sensor_.side == "top");
+}
+
 ///@function sensor_is_spikes()
 ///@desc checks is sensor is spikes
 ///@param sensor_

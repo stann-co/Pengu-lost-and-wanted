@@ -4,7 +4,7 @@ global.t++;
 
 /// @description deactivates objects out of view
 
-var margin = 100;
+var margin = camera_outer_margin;
 
 var left = global.camera.get_x() -margin;
 var top = global.camera.get_y() -margin;

@@ -186,7 +186,7 @@ if((!airborne && ground_spd < 0) || airborne) { //left
 	}
 	
 	if(push_sensor != noone && push_sensor.distance < 1 && !sensor_is_oneway(push_sensor)){		
-		if(push_sensor.inst != noone && push_sensor.inst.object_index == obj_destructible_block && abs(ground_spd) > 5){
+		if(sensor_is_destructible(push_sensor) && abs(ground_spd) > 5){
 		//destructible blocks don't stop you if you're fast enough
 			push_sensor.inst.trigger();
 				
@@ -217,7 +217,7 @@ if((!airborne && ground_spd > 0) || airborne){ //right
 	}
 	
 	if(push_sensor != noone && push_sensor.distance < 1 && !sensor_is_oneway(push_sensor)){		
-		if(push_sensor.inst != noone && push_sensor.inst.object_index == obj_destructible_block && abs(ground_spd) > 5){
+		if(sensor_is_destructible(push_sensor) && abs(ground_spd) > 5){
 		//destructible blocks don't stop you if you're fast enough
 			push_sensor.inst.trigger();
 				
@@ -291,6 +291,10 @@ if((!airborne && ground_spd > 0) || airborne){ //right
 			
 			if (sensor_is_spikes(updown_sensor)){
 				state.change("hurt");
+			} else
+			
+			if(sensor_is_falling_platform(updown_sensor)){
+				updown_sensor.inst.trigger();
 			} else
 			
 			if(updown_sensor.inst != noone && object_is_ancestor(updown_sensor.inst.object_index,obj_moving_platform) && (ground_angle >= 90 && ground_angle <= 270)){
@@ -372,14 +376,15 @@ if(airborne){
 	}
 }
 
-#endregion
+
 	
-	#region edge slipping animation
+#region edge slipping animation
 if(!state.state_is("edge") && !airborne && !sliding && (bl_sensor != noone xor br_sensor != noone) && !point_sensor(vec_b) && ground_angle == 0 && ground_spd == 0){
 	if(bl_sensor) mirror = 1;
 	else mirror = -1;
 	state.change("edge");
 }
+#endregion
 #endregion
 
 }
