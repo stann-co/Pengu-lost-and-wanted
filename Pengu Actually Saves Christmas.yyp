@@ -97,7 +97,7 @@
     {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
   ],
   "MetaData": {
-    "IDEVersion": "2023.1100.0.425",
+    "IDEVersion": "2023.8.2.108",
   },
   "resources": [
     {"id":{"name":"input_keyboard_check","path":"scripts/input_keyboard_check/input_keyboard_check.yy",},},
@@ -216,6 +216,7 @@
     {"id":{"name":"collisions","path":"scripts/collisions/collisions.yy",},},
     {"id":{"name":"obj_depth_set","path":"objects/obj_depth_set/obj_depth_set.yy",},},
     {"id":{"name":"__input_restart_get","path":"scripts/__input_restart_get/__input_restart_get.yy",},},
+    {"id":{"name":"rm_joshua","path":"rooms/rm_joshua/rm_joshua.yy",},},
     {"id":{"name":"__input_axis_is_directional","path":"scripts/__input_axis_is_directional/__input_axis_is_directional.yy",},},
     {"id":{"name":"__input_gamepad_set_mapping","path":"scripts/__input_gamepad_set_mapping/__input_gamepad_set_mapping.yy",},},
     {"id":{"name":"ac_falling_platform","path":"animcurves/ac_falling_platform/ac_falling_platform.yy",},},
@@ -591,6 +592,7 @@
   ],
   "RoomOrderNodes": [
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
+    {"roomId":{"name":"rm_joshua","path":"rooms/rm_joshua/rm_joshua.yy",},},
     {"roomId":{"name":"rm_up_mountain","path":"rooms/rm_up_mountain/rm_up_mountain.yy",},},
     {"roomId":{"name":"rm_terry","path":"rooms/rm_terry/rm_terry.yy",},},
     {"roomId":{"name":"rm_lee","path":"rooms/rm_lee/rm_lee.yy",},},
