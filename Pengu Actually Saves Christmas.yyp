@@ -563,11 +563,11 @@
   "RoomOrderNodes": [
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
     {"roomId":{"name":"rm_lee","path":"rooms/rm_lee/rm_lee.yy",},},
+    {"roomId":{"name":"rm_workshop","path":"rooms/rm_workshop/rm_workshop.yy",},},
     {"roomId":{"name":"rm_up_mountain","path":"rooms/rm_up_mountain/rm_up_mountain.yy",},},
     {"roomId":{"name":"rm_wintery","path":"rooms/rm_wintery/rm_wintery.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
     {"roomId":{"name":"rm_parent","path":"rooms/rm_parent/rm_parent.yy",},},
-    {"roomId":{"name":"rm_workshop","path":"rooms/rm_workshop/rm_workshop.yy",},},
     {"roomId":{"name":"rm_level1","path":"rooms/rm_level1/rm_level1.yy",},},
   ],
   "templateType": "game",
