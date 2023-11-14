@@ -6,6 +6,9 @@ cooldown = false;
 
 trigger = function(){
 	if(!cooldown){
+		
+		audio_play_sound(snd_bouncepad,0,false)
+		
 		cooldown = true;
 		call_later(0.2,time_source_units_seconds,function(){
 			cooldown = false;	

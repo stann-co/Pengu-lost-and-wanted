@@ -472,6 +472,8 @@ state
 			if(state.get_previous_state() == "sliding"){
 				image_angle -= 90 * mirror;
 			}
+			
+			audio_play_sound_random(0,0,snd_jump1,snd_jump2)
 	    },
 		step: function() {
 			if((input_check_released("jump") || on_ceiling) && y_speed < -jump_release_force){
@@ -530,6 +532,7 @@ state
 	.add_child("jump","enemy_jump", {
 	    enter: function() {
 			state.inherit()
+			audio_play_sound_random(0,0,snd_jump1,snd_jump2)
 			
 			var up_down = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
 			y_speed = (-enemy_jump_force*up_down) - gravity_force //subtracting gravity force cancels out gravity for one frame
@@ -578,6 +581,8 @@ state
 			x_speed *= 0.6;
 	
 			squish(0.4,1.4,game_speed*1);
+			
+			audio_play_sound_random(0,0,snd_wingflap1,snd_wingflap2);
 	    },
 		step: function() {			
 			if(y_speed > 0) state.change("begin_fall");
@@ -637,6 +642,8 @@ state
 			super_speed = true;
 			super_speed_fadeout = super_speed_fadeout_time;
 			super_speed_trace_arr = [];
+			
+			audio_play_sound(snd_dashing,0,false)
 	    },
 		step: function() {
 			if(on_land){
@@ -702,6 +709,8 @@ state
 			super_speed = true;
 			super_speed_fadeout = super_speed_fadeout_time;
 			super_speed_trace_arr = [];
+			
+			audio_play_sound(snd_dashing,0,false)
 	    },
 		step: function() {
 			

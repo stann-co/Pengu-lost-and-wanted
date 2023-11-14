@@ -21,6 +21,7 @@ instance_activate_object(input_controller_object)
 instance_activate_object(__obj_stanncam_manager);
 instance_activate_object(obj_game);
 instance_activate_object(obj_pengu);
+instance_activate_object(obj_depth_set);
 
 
 //connected instances will all be active if just one of them is active
