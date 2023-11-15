@@ -484,6 +484,7 @@
     {"name":"ac_super_speed_alpha","order":4,"path":"animcurves/ac_super_speed_alpha/ac_super_speed_alpha.yy",},
     {"name":"ts_collisions","order":1,"path":"tilesets/ts_collisions/ts_collisions.yy",},
     {"name":"draw_percentage_donut","order":3,"path":"scripts/draw_percentage_donut/draw_percentage_donut.yy",},
+    {"name":"path_lighthouse_02","order":3,"path":"paths/path_lighthouse_02/path_lighthouse_02.yy",},
     {"name":"spr_pengu_idle","order":9999,"path":"sprites/spr_pengu_idle/spr_pengu_idle.yy",},
     {"name":"spr_pengu_jump","order":9999,"path":"sprites/spr_pengu_jump/spr_pengu_jump.yy",},
     {"name":"spr_pengu_begin_fall","order":9999,"path":"sprites/spr_pengu_begin_fall/spr_pengu_begin_fall.yy",},

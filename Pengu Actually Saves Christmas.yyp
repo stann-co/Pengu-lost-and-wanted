@@ -577,6 +577,7 @@
     {"id":{"name":"ac_super_speed_alpha","path":"animcurves/ac_super_speed_alpha/ac_super_speed_alpha.yy",},},
     {"id":{"name":"ts_collisions","path":"tilesets/ts_collisions/ts_collisions.yy",},},
     {"id":{"name":"draw_percentage_donut","path":"scripts/draw_percentage_donut/draw_percentage_donut.yy",},},
+    {"id":{"name":"path_lighthouse_02","path":"paths/path_lighthouse_02/path_lighthouse_02.yy",},},
     {"id":{"name":"spr_pengu_idle","path":"sprites/spr_pengu_idle/spr_pengu_idle.yy",},},
     {"id":{"name":"spr_pengu_jump","path":"sprites/spr_pengu_jump/spr_pengu_jump.yy",},},
     {"id":{"name":"spr_pengu_begin_fall","path":"sprites/spr_pengu_begin_fall/spr_pengu_begin_fall.yy",},},
