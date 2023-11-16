@@ -18,7 +18,6 @@ if(!other.hurting){
 	//the enemy hurts you
 	} else if(invulnerable == 0){
 		global.camera.shake_screen(4,game_speed*0.5);
-		
 		hurt(sign(x-other.x));
 	}
 }
