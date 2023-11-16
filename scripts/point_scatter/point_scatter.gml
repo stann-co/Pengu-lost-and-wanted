@@ -3,16 +3,17 @@ function point_scatter(){
 	var angle = 184;
 	var flip = false;
 	var spd = 6;
-	repeat(clamp(global.points,0,16)) {
+	repeat(global.score) {
 		//create point
-		var point = instance_create_layer(x,y,"Instances",obj_coin);
-		point.fired = true;
-		point.hspd = cos(angle) * spd;
-		point.vspd = -sin(angle) * spd;
+		var point = instance_create_depth(x,y,depth,obj_coin);
+		//point.fired = true;
+		point.xspeed = cos(angle) * spd;
+		point.yspeed = -sin(angle) * spd;
+		point.state.change("physics");
 		
 		//flips around with every ring
 		if(flip){
-			point.hspd = point.hspd * -1;
+			point.xspeed = point.xspeed * -1;
 			angle += 240;
 		}
 		
@@ -28,4 +29,5 @@ function point_scatter(){
 			angle = 184; //reset the angle
 		}
 	}
+	global.score = 0;
 }
