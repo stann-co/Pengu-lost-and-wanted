@@ -34,8 +34,8 @@
   "properties": [],
   "solid": false,
   "spriteId": {
-    "name": "spr_deco_bear",
-    "path": "sprites/spr_deco_bear/spr_deco_bear.yy",
+    "name": "spr_points",
+    "path": "sprites/spr_points/spr_points.yy",
   },
   "spriteMaskId": null,
   "visible": true,

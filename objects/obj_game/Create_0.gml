@@ -29,8 +29,8 @@ global.activation_list = [];
 global.debug = true;
 active_collisions_A = true;
 
-#macro camera_outer_margin 100
-#macro camera_inner_margin 50
+#macro camera_outer_margin 200
+#macro camera_inner_margin 100
 
 show_collisions = function(){
 	layer_set_visible(collision_A,false);

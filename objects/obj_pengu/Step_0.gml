@@ -194,10 +194,8 @@ if((!airborne && ground_spd < 0) || airborne) { //left
 			x+= push_sensor.x;
 			y+= push_sensor.y;
 			
-			if (sensor_is_spikes(push_sensor)){
-				state.change("hurt");
-				
-			}
+			spike_hurt(push_sensor);
+			
 			if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
 				if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
 				ground_spd = 0;
@@ -225,10 +223,8 @@ if((!airborne && ground_spd > 0) || airborne){ //right
 			x+= push_sensor.x;
 			y+= push_sensor.y;
 			
-			if (sensor_is_spikes(push_sensor)){
-				state.change("hurt");
-				
-			}
+			spike_hurt(push_sensor);
+			
 			if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
 				if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
 				ground_spd = 0;
@@ -280,7 +276,8 @@ if((!airborne && ground_spd > 0) || airborne){ //right
 			
 			ground_angle = updown_sensor.angle;	
 			
-			if(airborne){ //just as you land from being airborne
+			var spikes = spike_hurt(updown_sensor)
+			if(!spikes && airborne){ //just as you land from being airborne
 				image_to_ground_angle = true;
 				airborne = false;
 				on_land = true;
@@ -288,10 +285,7 @@ if((!airborne && ground_spd > 0) || airborne){ //right
 				double_jump_count = 0;
 				set_ground_spd_from_air_spd();
 			}
-			
-			if (sensor_is_spikes(updown_sensor)){
-				state.change("hurt");
-			} else
+
 			
 			if(sensor_is_falling_platform(updown_sensor)){
 				updown_sensor.inst.trigger();
@@ -357,9 +351,7 @@ if(airborne){
 			on_ceiling = true;
 		}
 		
-		if (sensor_is_spikes(updown_sensor)){
-				state.change("hurt");
-		}
+		spike_hurt(updown_sensor);
 	}
 	
 	//up slipping, if you bump head on the ceiling at an edge, and there's space on the left/right you move in that direction
@@ -406,6 +398,8 @@ if(squishing){
 if(image_to_ground_angle){
 	image_angle += angle_difference(ground_angle,image_angle)*0.5;
 }
+
+if(invulnerable > 0) invulnerable--;
 
 if(control_lock != 0) control_lock--;
 
