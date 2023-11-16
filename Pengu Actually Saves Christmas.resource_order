@@ -414,6 +414,7 @@
     {"name":"__obj_stanncam_manager","order":3,"path":"objects/__obj_stanncam_manager/__obj_stanncam_manager.yy",},
     {"name":"input_binding_get","order":2,"path":"scripts/input_binding_get/input_binding_get.yy",},
     {"name":"spr_bg_workshop3","order":10000,"path":"sprites/spr_bg_workshop3/spr_bg_workshop3.yy",},
+    {"name":"path_terry_04","order":1,"path":"paths/path_terry_04/path_terry_04.yy",},
     {"name":"__input_multiplayer_assignment_tick","order":1,"path":"scripts/__input_multiplayer_assignment_tick/__input_multiplayer_assignment_tick.yy",},
     {"name":"spr_spring_ball_example","order":7,"path":"sprites/spr_spring_ball_example/spr_spring_ball_example.yy",},
     {"name":"sh_color","order":1,"path":"shaders/sh_color/sh_color.yy",},

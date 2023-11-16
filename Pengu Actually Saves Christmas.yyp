@@ -494,6 +494,7 @@
     {"id":{"name":"__obj_stanncam_manager","path":"objects/__obj_stanncam_manager/__obj_stanncam_manager.yy",},},
     {"id":{"name":"input_binding_get","path":"scripts/input_binding_get/input_binding_get.yy",},},
     {"id":{"name":"spr_bg_workshop3","path":"sprites/spr_bg_workshop3/spr_bg_workshop3.yy",},},
+    {"id":{"name":"path_terry_04","path":"paths/path_terry_04/path_terry_04.yy",},},
     {"id":{"name":"__input_multiplayer_assignment_tick","path":"scripts/__input_multiplayer_assignment_tick/__input_multiplayer_assignment_tick.yy",},},
     {"id":{"name":"spr_spring_ball_example","path":"sprites/spr_spring_ball_example/spr_spring_ball_example.yy",},},
     {"id":{"name":"sh_color","path":"shaders/sh_color/sh_color.yy",},},
