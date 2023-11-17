@@ -60,6 +60,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Objects","folderPath":"folders/Objects.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"decorations","folderPath":"folders/Objects/decorations.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"enemies","folderPath":"folders/Objects/enemies.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"obstacles","folderPath":"folders/Objects/obstacles.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"tool","folderPath":"folders/Objects/tool.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"persistent","folderPath":"folders/Objects/tool/persistent.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Particle Systems","folderPath":"folders/Particle Systems.yy",},
@@ -85,7 +86,6 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"tool","folderPath":"folders/Sprites/tool.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Tile Sets","folderPath":"folders/Tile Sets.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Timelines","folderPath":"folders/Timelines.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"obstacles","folderPath":"folders/Objects/obstacles.yy",},
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"controllerblacklist.csv","CopyToMask":-1,"filePath":"datafiles",},
@@ -98,7 +98,7 @@
     {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
   ],
   "MetaData": {
-    "IDEVersion": "2023.1100.0.425",
+    "IDEVersion": "2023.1100.0.441",
   },
   "resources": [
     {"id":{"name":"input_keyboard_check","path":"scripts/input_keyboard_check/input_keyboard_check.yy",},},
@@ -253,6 +253,7 @@
     {"id":{"name":"input_verb_get_icon","path":"scripts/input_verb_get_icon/input_verb_get_icon.yy",},},
     {"id":{"name":"ac_coin","path":"animcurves/ac_coin/ac_coin.yy",},},
     {"id":{"name":"__input_player_apply_trigger_effects","path":"scripts/__input_player_apply_trigger_effects/__input_player_apply_trigger_effects.yy",},},
+    {"id":{"name":"obj_snowball_thrown","path":"objects/obj_snowball_thrown/obj_snowball_thrown.yy",},},
     {"id":{"name":"input_cursor_coord_space_get","path":"scripts/input_cursor_coord_space_get/input_cursor_coord_space_get.yy",},},
     {"id":{"name":"input_cursor_speed_set","path":"scripts/input_cursor_speed_set/input_cursor_speed_set.yy",},},
     {"id":{"name":"__input_gamepad_stop_trigger_effects","path":"scripts/__input_gamepad_stop_trigger_effects/__input_gamepad_stop_trigger_effects.yy",},},
@@ -288,6 +289,7 @@
     {"id":{"name":"input_virtual_debug_draw","path":"scripts/input_virtual_debug_draw/input_virtual_debug_draw.yy",},},
     {"id":{"name":"input_trigger_effect_get_pause","path":"scripts/input_trigger_effect_get_pause/input_trigger_effect_get_pause.yy",},},
     {"id":{"name":"input_player_active_get","path":"scripts/input_player_active_get/input_player_active_get.yy",},},
+    {"id":{"name":"spr_snowball_thrown","path":"sprites/spr_snowball_thrown/spr_snowball_thrown.yy",},},
     {"id":{"name":"input_binding_mouse_wheel_down","path":"scripts/input_binding_mouse_wheel_down/input_binding_mouse_wheel_down.yy",},},
     {"id":{"name":"input_player_reset","path":"scripts/input_player_reset/input_player_reset.yy",},},
     {"id":{"name":"input_player_get_invalid_gamepad_bindings","path":"scripts/input_player_get_invalid_gamepad_bindings/input_player_get_invalid_gamepad_bindings.yy",},},
@@ -480,6 +482,7 @@
     {"id":{"name":"input_accessibility_verb_cooldown_set","path":"scripts/input_accessibility_verb_cooldown_set/input_accessibility_verb_cooldown_set.yy",},},
     {"id":{"name":"__input_config_cursor","path":"scripts/__input_config_cursor/__input_config_cursor.yy",},},
     {"id":{"name":"spr_collision_oneway","path":"sprites/spr_collision_oneway/spr_collision_oneway.yy",},},
+    {"id":{"name":"obj_enemy_snowman","path":"objects/obj_enemy_snowman/obj_enemy_snowman.yy",},},
     {"id":{"name":"__input_class_player","path":"scripts/__input_class_player/__input_class_player.yy",},},
     {"id":{"name":"__input_class_gamepad_motion","path":"scripts/__input_class_gamepad_motion/__input_class_gamepad_motion.yy",},},
     {"id":{"name":"input_keyboard_check_released","path":"scripts/input_keyboard_check_released/input_keyboard_check_released.yy",},},
@@ -615,6 +618,9 @@
     {"id":{"name":"spr_pengu_grab_on","path":"sprites/spr_pengu_grab_on/spr_pengu_grab_on.yy",},},
     {"id":{"name":"spr_points","path":"sprites/spr_points/spr_points.yy",},},
     {"id":{"name":"spr_falling_icicle","path":"sprites/spr_falling_icicle/spr_falling_icicle.yy",},},
+    {"id":{"name":"spr_snowman_idle","path":"sprites/spr_snowman_idle/spr_snowman_idle.yy",},},
+    {"id":{"name":"spr_snowman_throw","path":"sprites/spr_snowman_throw/spr_snowman_throw.yy",},},
+    {"id":{"name":"spr_snowman_hurt","path":"sprites/spr_snowman_hurt/spr_snowman_hurt.yy",},},
   ],
   "RoomOrderNodes": [
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
