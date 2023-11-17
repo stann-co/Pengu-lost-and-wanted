@@ -60,6 +60,7 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Objects","folderPath":"folders/Objects.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"decorations","folderPath":"folders/Objects/decorations.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"enemies","folderPath":"folders/Objects/enemies.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"obstacles","folderPath":"folders/Objects/obstacles.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"tool","folderPath":"folders/Objects/tool.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"persistent","folderPath":"folders/Objects/tool/persistent.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Particle Systems","folderPath":"folders/Particle Systems.yy",},
@@ -85,7 +86,6 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"tool","folderPath":"folders/Sprites/tool.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Tile Sets","folderPath":"folders/Tile Sets.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Timelines","folderPath":"folders/Timelines.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"obstacles","folderPath":"folders/Objects/obstacles.yy",},
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"controllerblacklist.csv","CopyToMask":-1,"filePath":"datafiles",},
