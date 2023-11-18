@@ -93,3 +93,5 @@ sprite_layer_parralax = function(sprite_array,parralax_amount = 1.1){
 
 
 room_goto_next();
+
+play_music(mus_pengus_theme);
