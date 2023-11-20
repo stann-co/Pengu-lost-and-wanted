@@ -1,6 +1,6 @@
 ///@description does draw_sprite_ext tiled x times on the horizontal and vertical axis
-///@function draw_sprite_ext_tiled(sprite_,subimg_,x_,y_,tile_h=1,tile_v=1,xscale_=1,yscale_=1,col_=-1,alpha_=1)
-function draw_sprite_ext_tiled(sprite_,subimg_,x_,y_,tile_h=1,tile_v=1,xscale_=1,yscale_=1,col_=-1,alpha_=1){
+///@function draw_sprite_tiled_ext2(sprite_,subimg_,x_,y_,tile_h=1,tile_v=1,xscale_=1,yscale_=1,col_=-1,alpha_=1)
+function draw_sprite_tiled_ext2(sprite_,subimg_,x_,y_,tile_h=1,tile_v=1,xscale_=1,yscale_=1,col_=-1,alpha_=1){
 	
 	//horizontal
 	for (var h = 0; h < tile_h; ++h) {

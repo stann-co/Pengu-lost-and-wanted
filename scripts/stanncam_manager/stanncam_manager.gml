@@ -77,7 +77,7 @@ function stanncam_set_window_mode(window_mode){
 			window_set_showborder(false);
 	        break;
 	}		
-	call_later(10,time_source_units_frames,function(){
+	call_later(30,time_source_units_frames,function(){
 		__stanncam_update_resolution();			
 	});
 }
