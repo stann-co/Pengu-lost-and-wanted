@@ -48,6 +48,7 @@
     {"name":"Objects","order":12,"path":"folders/Objects.yy",},
     {"name":"decorations","order":3,"path":"folders/Objects/decorations.yy",},
     {"name":"enemies","order":4,"path":"folders/Objects/enemies.yy",},
+    {"name":"obstacles","order":24,"path":"folders/Objects/obstacles.yy",},
     {"name":"tool","order":1,"path":"folders/Objects/tool.yy",},
     {"name":"persistent","order":12,"path":"folders/Objects/tool/persistent.yy",},
     {"name":"Particle Systems","order":17,"path":"folders/Particle Systems.yy",},
@@ -68,7 +69,6 @@
     {"name":"tool","order":1,"path":"folders/Sprites/tool.yy",},
     {"name":"Tile Sets","order":6,"path":"folders/Tile Sets.yy",},
     {"name":"Timelines","order":11,"path":"folders/Timelines.yy",},
-    {"name":"obstacles","order":24,"path":"folders/Objects/obstacles.yy",},
   ],
   "ResourceOrderSettings": [
     {"name":"input_player_ghost_get","order":9,"path":"scripts/input_player_ghost_get/input_player_ghost_get.yy",},
