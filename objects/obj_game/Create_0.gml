@@ -26,7 +26,7 @@ global.depth_b = 400;
 
 global.activation_list = [];
 
-global.debug = false;
+global.debug = true;
 active_collisions_A = true;
 
 #macro camera_outer_margin 200

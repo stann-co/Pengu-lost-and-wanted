@@ -58,6 +58,8 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Fonts","folderPath":"folders/Fonts.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Notes","folderPath":"folders/Notes.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Objects","folderPath":"folders/Objects.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Bloom","folderPath":"folders/Objects/Bloom.yy",},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Blur","folderPath":"folders/Objects/Blur.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"decorations","folderPath":"folders/Objects/decorations.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"enemies","folderPath":"folders/Objects/enemies.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"obstacles","folderPath":"folders/Objects/obstacles.yy",},
@@ -88,8 +90,6 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"tool","folderPath":"folders/Sprites/tool.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Tile Sets","folderPath":"folders/Tile Sets.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Timelines","folderPath":"folders/Timelines.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Blur","folderPath":"folders/Objects/Blur.yy",},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Bloom","folderPath":"folders/Objects/Bloom.yy",},
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"controllerblacklist.csv","CopyToMask":-1,"filePath":"datafiles",},
@@ -100,10 +100,9 @@
   "isEcma": false,
   "LibraryEmitters": [
     {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
-    {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
   ],
   "MetaData": {
-    "IDEVersion": "2023.8.2.108",
+    "IDEVersion": "2023.1100.0.441",
   },
   "resources": [
     {"id":{"name":"input_keyboard_check","path":"scripts/input_keyboard_check/input_keyboard_check.yy",},},
