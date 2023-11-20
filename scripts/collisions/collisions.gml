@@ -28,13 +28,6 @@ function sensor_is_falling_platform(sensor_){
 	return (sensor_ != noone && sensor_.inst != noone && sensor_.inst.object_index == obj_falling_platform && sensor_.side == "top");
 }
 
-///@function sensor_is_spikes()
-///@desc checks is sensor is spikes
-///@param sensor_
-function sensor_is_spikes(sensor_){
-	return (sensor_ != noone && sensor_.inst != noone && sensor_.inst.object_index == obj_spikes && sensor_.side == "top");
-}
-
 ///@desc return collision at point
 function point_sensor(vec){
 	return (tile_collision(x+vec.x,y+vec.y) != noone);
@@ -55,6 +48,7 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 		vec_reg = vec_reg.rotated(-dir);
 		
 	var info;
+	
 	#region extend regress
 	var coll = tile_collision(x+vec_start.x,y+vec_start.y);
 	
@@ -117,47 +111,60 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 	
 	if(instance_exists(info.inst)){
 		
+		//when colliding with an instance, it's internally rotated back to 0 degrees
+		//and the sensors origin is used to check which side of the instance it is, left right top bottom
+		
 		var inst = info.inst;
-		var x_ = x+info.vec_sensor.x;
-		var y_ = y+info.vec_sensor.y;
-
 		var inst_angle = inst.image_angle
+		
+		var x_ = round(x+vec_start.x+info.x);
+		var y_ = round(y+vec_start.y+info.y);
 		var contact_vec = new Vector2(x_ -inst.x,y_ -inst.y)
 		contact_vec = contact_vec.rotated(inst.image_angle);
 		
+		var contact_x = contact_vec.x + inst.x;
+		var contact_y = contact_vec.y + inst.y;
+		
 		inst.image_angle = 0;
 		
-		var lt_vec = new Vector2(inst.bbox_left  - inst.x, inst.bbox_top    - inst.y);
-		var rt_vec = new Vector2(inst.bbox_right - inst.x, inst.bbox_top    - inst.y);
-		var lb_vec = new Vector2(inst.bbox_left  - inst.x, inst.bbox_bottom - inst.y);
-		var rb_vec = new Vector2(inst.bbox_right - inst.x, inst.bbox_bottom - inst.y);
+		var mid_x = lerp(inst.bbox_left,inst.bbox_right,0.5);
+		var mid_y = lerp(inst.bbox_top,inst.bbox_bottom,0.5);
+		
+		var lt_vec = new Vector2(inst.bbox_left  - mid_x, inst.bbox_top    - mid_y);
+		var rt_vec = new Vector2(inst.bbox_right - mid_x, inst.bbox_top    - mid_y);
+		var lb_vec = new Vector2(inst.bbox_left  - mid_x, inst.bbox_bottom - mid_y);
+		var rb_vec = new Vector2(inst.bbox_right - mid_x, inst.bbox_bottom - mid_y);
 		
 		inst.image_angle = inst_angle;
 		
-		var contact_x = contact_vec.x + x;
-		var contact_y = contact_vec.y + y;
+		var lt_corner = new Vector2(mid_x + (lt_vec.x * 2),mid_y + (lt_vec.y * 2));
+		var rt_corner = new Vector2(mid_x + (rt_vec.x * 2),mid_y + (rt_vec.y * 2));
+		var lb_corner = new Vector2(mid_x + (lb_vec.x * 2),mid_y + (lb_vec.y * 2));
+		var rb_corner = new Vector2(mid_x + (rb_vec.x * 2),mid_y + (rb_vec.y * 2));
 		
-		if(rectangle_in_circle(x+lt_vec.x,y+lt_vec.y,x+rt_vec.x,y+rt_vec.y,contact_x,contact_y,4) != 0){
+		var ver = 0;
+		var hor = 0;
+		
+		info.side = noone;
+		if(point_in_triangle(contact_x,contact_y,mid_x,mid_y,lt_corner.x,lt_corner.y,rt_corner.x,rt_corner.y)){
 			info.angle = 0;
 			info.side = "top";
-		}
-		else
-		if(rectangle_in_circle(x+lt_vec.x,y+lt_vec.y,x+lb_vec.x,y+lb_vec.y,contact_x,contact_y,4) != 0){
+		}else
+		if(point_in_triangle(contact_x,contact_y,mid_x,mid_y,lb_corner.x,lb_corner.y,rb_corner.x,rb_corner.y)){
+			info.angle = 180;
+			info.side = "bottom";
+		}else
+		if(point_in_triangle(contact_x,contact_y,mid_x,mid_y,lt_corner.x,lt_corner.y,lb_corner.x,lb_corner.y)){
 			info.angle = 90;
 			info.side = "left";
-			
-		}
-		else
-		if(rectangle_in_circle(x+rt_vec.x,y+rt_vec.y,x+rb_vec.x,y+rb_vec.y,contact_x,contact_y,4) != 0){
+		}else
+		if(point_in_triangle(contact_x,contact_y,mid_x,mid_y,rt_corner.x,rt_corner.y,rb_corner.x,rb_corner.y)){
 			info.angle = 270;
 			info.side = "right";
 		}
-		else
-		if(rectangle_in_circle(x+lb_vec.x,y+lb_vec.y,x+rb_vec.x,y+rb_vec.y,contact_x,contact_y,4) != 0){
-			info.angle = 180;
-			info.side = "bottom";
-		}
-					
+		
+		inst.image_angle = inst_angle;
+		
 		info.angle+=inst.image_angle;
 					
 		if(info.angle < 0) info.angle+=360;
@@ -187,6 +194,8 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 
 ///@function draw_sensor()
 ///@desc draws a line the same way the sensor code works
+///@param x
+///@param y
 ///@param vec_start {Vector2}
 ///@param dir 0 is down
 ///@param distance
