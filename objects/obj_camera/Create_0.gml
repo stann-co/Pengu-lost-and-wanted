@@ -32,19 +32,30 @@ draw_sprite_layer = function(layer_name_,parralax_){
 }
 	
 	
-final_surface = surface_create(global.res_w,global.res_h);
+final_surface = surface_create(window_get_width(),window_get_height());
 	
 //shader vars
 
-//u_blursize = shader_get_uniform(shdr_bloom,"blurSize");
-//u_intensity = shader_get_uniform(shdr_bloom,"intensity");
+srf_bloom_loom = -1;
+srf_blur_hor = -1;
+srf_blur_ver = -1;
+srf_bloom = -1;
 
-blursize = 0.0;
-radius = 0.0;
+u_bloom_threshold		= shader_get_uniform(sh_bloom_loom, "bloom_threshold");
+u_bloom_range			= shader_get_uniform(sh_bloom_loom, "bloom_range");
 
-show_debug_overlay(true);
-dbg_view("bloom",true,50,50);
-dbg_section("bloom controls")
-dbg_slider(ref_create(self,"radius"),0,10);
-dbg_slider(ref_create(self,"blursize"),0,10);
+u_blur_steps	= shader_get_uniform(sh_blur, "blur_steps");
+u_blur_vector	= shader_get_uniform(sh_blur, "blur_vector");
+u_texel_size	= shader_get_uniform(sh_blur, "texel_size");
+u_sigma			= shader_get_uniform(sh_blur, "sigma");
+
+u_bloom_intensity		= shader_get_uniform(sh_bloom_blend, "bloom_intensity");
+u_bloom_darken			= shader_get_uniform(sh_bloom_blend, "bloom_darken");
+u_bloom_saturation		= shader_get_uniform(sh_bloom_blend, "bloom_saturation");
+u_bloom_texture			= shader_get_sampler_index(sh_bloom_blend, "bloom_texture");
+
+bloom_texture			= -1;
+
+texel_w			= 1 / window_get_width();
+texel_h			= 1 / window_get_height();
 

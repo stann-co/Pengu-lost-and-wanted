@@ -35,8 +35,9 @@ pickup_t = 0;
 pickup_t_max = game_speed * 1;
 
 disappear = false;
-disappear_t = 0;
-disappear_duration = game_speed * 10;
+disappear_duration = game_speed * 6;
+
+start_time = 0;
 
 state = new SnowState("idle");
 
@@ -54,7 +55,6 @@ state
 	enter: function(){
 		xstart = x;
 		ystart = y;
-		t = 0;
 		disappear = false;
 	},
 	
@@ -83,6 +83,7 @@ state
 
 .add("physics", {
 	enter: function(){
+		start_time = global.t;
 		pickup_t = pickup_t_max;
 		disappear = true;
 	},
@@ -115,5 +116,6 @@ state
 		else if(abs(xspeed) < 0.1 && abs(yspeed) < 0.1) {
 			state.change("idle");
 		}
+		
 	}
 })
