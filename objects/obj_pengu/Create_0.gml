@@ -3,6 +3,8 @@
 global.camera.follow = self;
 
 #region variables
+godmode = false;
+
 input_h = 0;
 input_v = 0;
 

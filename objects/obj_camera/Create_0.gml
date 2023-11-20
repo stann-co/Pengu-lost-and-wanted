@@ -30,3 +30,16 @@ draw_sprite_layer = function(layer_name_,parralax_){
 		},0,0,global.res_w,global.res_h,scalex,scaley);
 	}
 }
+	
+	
+final_surface = surface_create(global.res_w,global.res_h);
+	
+//shader vars
+
+u_blursize = shader_get_uniform(shdr_bloom,"blurSize");
+u_intensity = shader_get_uniform(shdr_bloom,"intensity");
+
+blursize = 0.0;
+radius = 0.0;
+
+	

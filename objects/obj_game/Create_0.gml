@@ -26,7 +26,7 @@ global.depth_b = 400;
 
 global.activation_list = [];
 
-global.debug = true;
+global.debug = false;
 active_collisions_A = true;
 
 #macro camera_outer_margin 200
@@ -93,3 +93,5 @@ sprite_layer_parralax = function(sprite_array,parralax_amount = 1.1){
 
 
 room_goto_next();
+
+play_music(mus_pengus_theme);

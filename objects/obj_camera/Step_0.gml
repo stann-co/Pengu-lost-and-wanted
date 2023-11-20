@@ -12,3 +12,9 @@
 //	
 //}
 
+
+if(keyboard_check_pressed(vk_numpad4)) blursize -= 0.005;
+if(keyboard_check_pressed(vk_numpad6)) blursize += 0.005;
+
+if(keyboard_check_pressed(vk_numpad8)) radius -= 0.001;
+if(keyboard_check_pressed(vk_numpad2)) radius += 0.001;

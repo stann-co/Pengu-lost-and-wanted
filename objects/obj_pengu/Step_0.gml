@@ -4,6 +4,14 @@ subimg+= (sprite_get_speed(sprite_index)*anim_speed);
 
 state.step();
 
+if(godmode){
+	input_h = (input_check("right") - input_check("left"));
+	input_v = (input_check("down") - input_check("up"));
+	
+	x+=input_h * 4;
+	y+=input_v * 4;
+	
+} else {
 if(controlled){
 	#region input
 	if(control_lock == 0){
@@ -403,3 +411,4 @@ if(invulnerable > 0) invulnerable--;
 
 if(control_lock != 0) control_lock--;
 
+}
