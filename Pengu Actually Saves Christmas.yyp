@@ -100,9 +100,10 @@
   "isEcma": false,
   "LibraryEmitters": [
     {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
+    {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
   ],
   "MetaData": {
-    "IDEVersion": "2023.1100.0.441",
+    "IDEVersion": "2023.8.2.108",
   },
   "resources": [
     {"id":{"name":"input_keyboard_check","path":"scripts/input_keyboard_check/input_keyboard_check.yy",},},
@@ -352,6 +353,7 @@
     {"id":{"name":"obj_icicle","path":"objects/obj_icicle/obj_icicle.yy",},},
     {"id":{"name":"spr_collision","path":"sprites/spr_collision/spr_collision.yy",},},
     {"id":{"name":"__input_config_mouse","path":"scripts/__input_config_mouse/__input_config_mouse.yy",},},
+    {"id":{"name":"path_lighthouse_03","path":"paths/path_lighthouse_03/path_lighthouse_03.yy",},},
     {"id":{"name":"spr_spring_ball","path":"sprites/spr_spring_ball/spr_spring_ball.yy",},},
     {"id":{"name":"spr_skilift_seat","path":"sprites/spr_skilift_seat/spr_skilift_seat.yy",},},
     {"id":{"name":"input_gamepads_get_status","path":"scripts/input_gamepads_get_status/input_gamepads_get_status.yy",},},
@@ -539,6 +541,7 @@
     {"id":{"name":"__input_load_sdl2_from_string_internal","path":"scripts/__input_load_sdl2_from_string_internal/__input_load_sdl2_from_string_internal.yy",},},
     {"id":{"name":"input_cursor_limit_get","path":"scripts/input_cursor_limit_get/input_cursor_limit_get.yy",},},
     {"id":{"name":"input_system_verify","path":"scripts/input_system_verify/input_system_verify.yy",},},
+    {"id":{"name":"path_lighthouse_05","path":"paths/path_lighthouse_05/path_lighthouse_05.yy",},},
     {"id":{"name":"input_system_import","path":"scripts/input_system_import/input_system_import.yy",},},
     {"id":{"name":"input_accessibility_global_toggle_get","path":"scripts/input_accessibility_global_toggle_get/input_accessibility_global_toggle_get.yy",},},
     {"id":{"name":"stanncam_ac_ease","path":"animcurves/stanncam_ac_ease/stanncam_ac_ease.yy",},},
@@ -603,6 +606,7 @@
     {"id":{"name":"spr_pengu_fall","path":"sprites/spr_pengu_fall/spr_pengu_fall.yy",},},
     {"id":{"name":"spr_pengu_begin_slide","path":"sprites/spr_pengu_begin_slide/spr_pengu_begin_slide.yy",},},
     {"id":{"name":"spr_pengu_sliding","path":"sprites/spr_pengu_sliding/spr_pengu_sliding.yy",},},
+    {"id":{"name":"path_lighthouse_04","path":"paths/path_lighthouse_04/path_lighthouse_04.yy",},},
     {"id":{"name":"obj_collision","path":"objects/obj_collision/obj_collision.yy",},},
     {"id":{"name":"spr_platform_workshop_mid","path":"sprites/spr_platform_workshop_mid/spr_platform_workshop_mid.yy",},},
     {"id":{"name":"snd_jump1","path":"sounds/snd_jump1/snd_jump1.yy",},},
