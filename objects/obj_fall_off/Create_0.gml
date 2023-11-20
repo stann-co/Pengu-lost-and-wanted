@@ -4,7 +4,7 @@
 
 trigger = function(){
 	with(obj_pengu){
-		if(!state.state_is("airborne") && abs(ground_spd > other.minimum_speed)){
+		if(!state.state_is("airborne") && abs(ground_spd) > other.minimum_speed){
 			state.change("begin_fall");	
 		}
 	}

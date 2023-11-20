@@ -677,15 +677,31 @@ function stanncam(x_ = 0,y_ = 0,width_ = global.game_w,height_ = global.game_h, 
 	/// @param {Real} scale_x_
 	/// @param {Real} scale_y_
 	/// @ignore
-	static draw_special = function(draw_func,x_,y_,surf_width_=width,surf_height_=height,scale_x_ = 1, scale_y_ = 1){
+	static draw_special = function(draw_func,x_,y_,surf_width_=width,surf_height_=height,scale_x_ = 1, scale_y_ = 1,shader_function = function(){}){
+
+		
+		var previous_surface = surface_get_target();
 
 		var surface_special = surface_create(floor(surf_width_*zoom_amount),floor(surf_height_*zoom_amount));
+		
+		if(previous_surface != -1){
+			surface_reset_target();
+		}
+		
 		surface_set_target(surface_special);
 		draw_clear_alpha(c_black,0);
 		draw_func();
 		surface_reset_target();
+		
+		if(previous_surface != -1){ //resets to previous surface when done
+			surface_set_target(previous_surface);
+		}
+		shader_function();
 		draw_surf(surface_special,x_,y_,scale_x_,scale_y_,0,0,surf_width_,surf_height_);
+		shader_reset();
 		surface_free(surface_special);
+		
+
 	}
 	
 	/// @function draw_surf

@@ -42,3 +42,8 @@ function pitch_change(semitones) {
 //	if (global.scale_pitches_i == array_length(array)) global.scale_pitches_i = 0;
 //	return pitch_change(array[global.scale_pitches_i]);
 //}
+
+/// @function play_music
+function play_music(song){
+	global.song = audio_play_sound(song,1000,true);
+}

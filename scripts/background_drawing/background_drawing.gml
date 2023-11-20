@@ -1,44 +1,55 @@
 function set_background_workshop1(){
 	global.background = function(){
 		//the background is scaled up so it appears smooth when being parralaxed
-		draw_background_depth(spr_bg_workshop_sky1	,0, 0	);
-		draw_background_depth(spr_bg_workshop1		,0, 0.2	);
-		draw_background_depth(spr_bg_workshop3		,0, 0.267);
-		draw_background_depth(spr_bg_workshop3		,0, 0.4	);
-		draw_background_depth(spr_bg_workshop2		,0, 0.6	);
+		
+		draw_clear(black);
+		gpu_set_colorwriteenable(1,1,1,0);
+		draw_background_depth(spr_bg_workshop,0, 0		,,,,,false);
+		draw_background_depth(spr_bg_workshop,1, 0.2	,,,,,true);
+		draw_background_depth(spr_bg_workshop,2, 0.4	,,,,,false);
+		draw_background_depth(spr_bg_workshop,3, 0.6	,,,,,false);
+		draw_background_depth(spr_bg_workshop,4, 0.8	,,,,,false);
+		gpu_set_colorwriteenable(1,1,1,1);
+		
+		
 		
 	}
 }
 
 function set_background_up_mountain(){
 	global.background = function(){
-		//the background is scaled up so it appears smooth when being parralaxed
-		draw_background_depth(spr_mountain,0,0		,true);
-		draw_background_depth(spr_mountain,1,0.125	,true);
-		draw_background_depth(spr_mountain,2,0.25	,true);
-		draw_background_depth(spr_mountain,3,0.375	,true);
-		draw_background_depth(spr_mountain,4,0.5	,true);
-		draw_background_depth(spr_mountain,5,0.625	,true);
-		draw_background_depth(spr_mountain,6,0.75	,true);
-		draw_background_depth(spr_mountain,7,0.875	,true);
+		
+		draw_background_depth(spr_mountain,0,0		,,,,,true);
+		draw_background_depth(spr_mountain,1,0.01	,,,,,true);
+		draw_background_depth(spr_mountain,2,0.04	,,80,,,true);
+		draw_background_depth(spr_mountain,3,0.06	,,80,,,true);
+		draw_background_depth(spr_mountain,4,0.08	,,80,,,true);
+		draw_background_depth(spr_mountain,5,0.1	,,80,,,true);
+		
+		draw_background_depth(spr_mountain,6,0.12	,,200,,,true);
+		draw_background_depth(spr_mountain,7,0.15	,,200,,,true);
+		
 	}
 }
 
 
-function draw_background_depth(_sprite,_subimg,_depth,only_horizontal = false){
+function draw_background_depth(_sprite,_subimg,_depth,offset_x=0,offset_y=0,scalex=1,scaley=1,only_horizontal = false){
 	var cam_ = global.camera;
-	var scalex = stanncam_get_res_scale_x();
-	var scaley = stanncam_get_res_scale_y();
+	scalex *= stanncam_get_res_scale_x();
+	scaley *= stanncam_get_res_scale_y();
 		
 	//the offset the camera is from the middle of the room
-	var offset_x = ((-cam_.get_x() -cam_.x_frac) * scalex)*_depth;
-	
-	var offset_y = 0;	
+	offset_x += ((-cam_.get_x() -cam_.x_frac) * scalex)*_depth;
+		
 	if(!only_horizontal){
-		offset_y = ((-cam_.get_y() -cam_.y_frac) * scaley)*_depth;
+		offset_y += ((-cam_.get_y() -cam_.y_frac) * scaley)*_depth;
 	}
 	
-	draw_sprite_tiled_ext(_sprite,_subimg,offset_x,offset_y,scalex,scaley,-1,1);
+	if(only_horizontal){
+		draw_sprite_tiled_ext2(_sprite,_subimg,offset_x mod (sprite_get_width(_sprite)*scalex),offset_y,3,1,scalex,scaley,-1,1);
+	} else {
+		draw_sprite_tiled_ext(_sprite,_subimg,offset_x,offset_y,scalex,scaley,-1,1);
+	}
 }
 
 ///@function draw_layer_parralaxed()
