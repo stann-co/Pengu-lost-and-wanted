@@ -579,14 +579,13 @@ state
 			var sound = audio_play_sound(snd_hurt,0,false);
 			audio_sound_pitch(sound,pitch_change(random_range(2,10)));			
 			
-			//if (global.points == 0){
-			//	state.change("dying");
-			//}else{
-			//	point_scatter();
-			//	global.points = 0;
-			//}
-			
-			point_scatter();
+			if (global.score == 0){
+				//state.change("dying");
+				room_restart();
+				
+			}else{
+				point_scatter();
+			}
 			
 			gravity_force = hurt_gravity_force;			
 			invulnerable = invulnerable_duration;

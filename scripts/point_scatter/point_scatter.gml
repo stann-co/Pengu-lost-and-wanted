@@ -3,7 +3,9 @@ function point_scatter(){
 	var angle = 184;
 	var flip = false;
 	var spd = 6;
-	repeat(global.score) {
+	
+	var points = min(global.score,16);
+	repeat(points) {
 		//create point
 		var point = instance_create_depth(x,y,depth,obj_coin);
 		//point.fired = true;

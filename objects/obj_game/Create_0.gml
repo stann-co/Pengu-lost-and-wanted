@@ -26,7 +26,10 @@ global.depth_b = 400;
 
 global.activation_list = [];
 
-global.debug = true;
+global.debug = false;
+global.checkpoint = -1;
+
+taken_points = [];
 active_collisions_A = true;
 
 #macro camera_outer_margin 200
@@ -40,7 +43,6 @@ show_collisions = function(){
 	layer_set_visible("backgrounds_1",false);
 	
 	if(global.debug){
-		
 		layer_set_visible("backgrounds_1",false);
 		
 		if(active_collisions_A){
@@ -51,9 +53,7 @@ show_collisions = function(){
 			//layer_set_visible(collision_B_oneway,true);	
 		}
 	}
-}
-	
-	
+}	
 	
 //level stuff
 global.score = 0;
@@ -90,8 +90,37 @@ sprite_layer_parralax = function(sprite_array,parralax_amount = 1.1){
 	}
 }
 
-
-
 room_goto_next();
 
 play_music(mus_pengus_theme);
+
+
+#region debugging variables
+dbg_section("levels")
+
+dbg_button("workshop",function(){
+	room_goto(rm_workshop);	
+})
+dbg_same_line();
+dbg_button("up_mountain",function(){
+	room_goto(rm_up_mountain);	
+})
+
+dbg_section("debug")	
+dbg_button("toggle debug drawing",function(){
+	global.debug = !global.debug;	
+})
+
+var camera = instance_find(obj_camera,0);
+
+dbg_section("bloom controls")
+dbg_slider(ref_create(camera,"blur_steps_D"),0,30);
+dbg_slider(ref_create(camera,"sigma_D"),0,1);
+dbg_slider(ref_create(camera,"bloom_threshold"),0,1);
+dbg_slider(ref_create(camera,"bloom_range"),0,1);
+dbg_slider(ref_create(camera,"bloom_intensity"),0,2);
+dbg_slider(ref_create(camera,"bloom_darken"),0,1);
+dbg_slider(ref_create(camera,"bloom_saturation"),0,2);
+
+show_debug_overlay(false);
+#endregion

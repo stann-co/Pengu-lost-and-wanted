@@ -4,15 +4,22 @@ function set_background_workshop1(){
 		
 		draw_clear(black);
 		gpu_set_colorwriteenable(1,1,1,0);
-		draw_background_depth(spr_bg_workshop,0, 0		,,,,,false);
-		draw_background_depth(spr_bg_workshop,1, 0.2	,,,,,true);
+		draw_background_depth(spr_bg_workshop_sky,0, 0		,,,,,false);
+		draw_background_depth(spr_bg_workshop,1, 0.1	,,,,,true);
 		draw_background_depth(spr_bg_workshop,2, 0.4	,,,,,false);
 		draw_background_depth(spr_bg_workshop,3, 0.6	,,,,,false);
 		draw_background_depth(spr_bg_workshop,4, 0.8	,,,,,false);
 		gpu_set_colorwriteenable(1,1,1,1);
-		
-		
-		
+	}
+	
+	with(obj_camera){
+		blur_steps_D	= 30.0;		// blur steps for discrete samples
+		sigma_D			= 0.2;		// sigma for discrete samples
+		bloom_threshold = 0.293;
+		bloom_range		= 0.467;
+		bloom_intensity	= 0.23;
+		bloom_darken	= 1.0;
+		bloom_saturation= 2.0;
 	}
 }
 
@@ -27,8 +34,17 @@ function set_background_up_mountain(){
 		draw_background_depth(spr_mountain,5,0.1	,,80,,,true);
 		
 		draw_background_depth(spr_mountain,6,0.12	,,200,,,true);
-		draw_background_depth(spr_mountain,7,0.15	,,200,,,true);
-		
+		draw_background_depth(spr_mountain,7,0.15	,,200,,,true);	
+	}
+	
+	with(obj_camera){
+	  blur_steps_D		= 30.0;
+	  sigma_D			= 0.25699999928474426;
+	  bloom_threshold	= 0.80299997329711914;
+	  bloom_range		= 0.24699999392032623;
+	  bloom_intensity	= 0.15600000321865082;
+	  bloom_darken		= 0.95599997043609619;
+	  bloom_saturation	= 2.0;
 	}
 }
 

@@ -7,6 +7,11 @@ image_index = irandom(image_number-1);
 
 
 trigger = function(){
+	if(!touched){
+		touched = true;
+		array_push(obj_game.taken_points,id);
+	}
+	
 	if(pickup_t == 0){
 		state.change("collect");
 	}
@@ -19,6 +24,8 @@ anim_duration = game_speed * 1.2;
 collect_duration = game_speed * 0.4;
 
 collect_t = 0;
+
+touched = false;
 
 xspeed = 0;
 yspeed = 0;
@@ -35,8 +42,9 @@ pickup_t = 0;
 pickup_t_max = game_speed * 1;
 
 disappear = false;
-disappear_t = 0;
-disappear_duration = game_speed * 10;
+disappear_duration = game_speed * 6;
+
+start_time = 0;
 
 state = new SnowState("idle");
 
@@ -54,7 +62,6 @@ state
 	enter: function(){
 		xstart = x;
 		ystart = y;
-		t = 0;
 		disappear = false;
 	},
 	
@@ -75,6 +82,7 @@ state
 			global.score++;
 			var sound = audio_play_sound(snd_point,0,0);
 			audio_sound_pitch(sound,pitch_change(random_range(2,10)));	
+			
 			instance_destroy();
 		}
 	}
@@ -83,6 +91,7 @@ state
 
 .add("physics", {
 	enter: function(){
+		start_time = global.t;
 		pickup_t = pickup_t_max;
 		disappear = true;
 	},
@@ -115,5 +124,6 @@ state
 		else if(abs(xspeed) < 0.1 && abs(yspeed) < 0.1) {
 			state.change("idle");
 		}
+		
 	}
 })

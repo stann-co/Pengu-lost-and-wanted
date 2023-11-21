@@ -29,8 +29,8 @@
   "nineSlice": null,
   "origin": 0,
   "parent": {
-    "name": "workshop",
-    "path": "folders/Sprites/backgrounds/workshop.yy",
+    "name": "backgrounds",
+    "path": "folders/Sprites/backgrounds.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {
