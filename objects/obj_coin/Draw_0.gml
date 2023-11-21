@@ -3,21 +3,17 @@
 var disappearing = 1;
 
 if(disappear){
-	disappearing = round(animcurve_read(ac_disappear,0,disappear_t/disappear_duration));
-	disappear_t++;
-	
-	if(disappear_t == disappear_duration) instance_destroy();
+	disappearing = round(animcurve_read(ac_disappear,0,(global.t-start_time)/disappear_duration));
 }
 
-if(disappearing == 1){
+var alpha = disappearing ? 1 : 0.5;
 
-	var anim_t = (global.t mod anim_duration) / anim_duration
-	
-	var y_offset   = animcurve_read(ac_coin,"anim_y"  ,anim_t) * y_offset_max;
-	var rot_offset = animcurve_read(ac_coin,"anim_rot",anim_t) * rot_offset_max;
-	
-	draw_sprite_ext(sprite_index,image_index,x,y+y_offset,image_xscale,image_yscale,rot_offset,-1,1);
-}
+var anim_t = (global.t mod anim_duration) / anim_duration
+
+var y_offset   = animcurve_read(ac_coin,"anim_y"  ,anim_t) * y_offset_max;
+var rot_offset = animcurve_read(ac_coin,"anim_rot",anim_t) * rot_offset_max;
+
+draw_sprite_ext(sprite_index,image_index,x,y+y_offset,image_xscale,image_yscale,rot_offset,-1,alpha);
 
 if(global.debug && state.state_is("physics")){
 	draw_set_color(red);
