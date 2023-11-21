@@ -98,9 +98,10 @@
   "isEcma": false,
   "LibraryEmitters": [
     {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
+    {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
   ],
   "MetaData": {
-    "IDEVersion": "2023.1100.0.441",
+    "IDEVersion": "2023.8.2.108",
   },
   "resources": [
     {"id":{"name":"input_keyboard_check","path":"scripts/input_keyboard_check/input_keyboard_check.yy",},},
@@ -569,6 +570,7 @@
     {"id":{"name":"__input_player_tick_sources","path":"scripts/__input_player_tick_sources/__input_player_tick_sources.yy",},},
     {"id":{"name":"stanncam_animcurve","path":"scripts/stanncam_animcurve/stanncam_animcurve.yy",},},
     {"id":{"name":"input_profile_import","path":"scripts/input_profile_import/input_profile_import.yy",},},
+    {"id":{"name":"path_terry_01","path":"paths/path_terry_01/path_terry_01.yy",},},
     {"id":{"name":"input_verb_get_group","path":"scripts/input_verb_get_group/input_verb_get_group.yy",},},
     {"id":{"name":"rm_parent","path":"rooms/rm_parent/rm_parent.yy",},},
     {"id":{"name":"input_profile_create","path":"scripts/input_profile_create/input_profile_create.yy",},},
@@ -633,9 +635,9 @@
   ],
   "RoomOrderNodes": [
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
+    {"roomId":{"name":"rm_terry","path":"rooms/rm_terry/rm_terry.yy",},},
     {"roomId":{"name":"rm_workshop","path":"rooms/rm_workshop/rm_workshop.yy",},},
     {"roomId":{"name":"rm_up_mountain","path":"rooms/rm_up_mountain/rm_up_mountain.yy",},},
-    {"roomId":{"name":"rm_terry","path":"rooms/rm_terry/rm_terry.yy",},},
     {"roomId":{"name":"rm_lee","path":"rooms/rm_lee/rm_lee.yy",},},
     {"roomId":{"name":"rm_wintery","path":"rooms/rm_wintery/rm_wintery.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},

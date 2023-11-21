@@ -2,7 +2,6 @@
   "resourceType": "GMtvOSOptions",
   "resourceVersion": "1.3",
   "name": "tvOS",
-  "option_tvos_build_number": 0,
   "option_tvos_bundle_name": "com.company.game",
   "option_tvos_cocoapods_checkbox": true,
   "option_tvos_display_cursor": false,
