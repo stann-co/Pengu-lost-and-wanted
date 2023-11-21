@@ -3,7 +3,7 @@ function set_background_workshop1(){
 		//the background is scaled up so it appears smooth when being parralaxed
 		
 		draw_clear(black);
-		//gpu_set_colorwriteenable(1,1,1,0);
+		gpu_set_colorwriteenable(1,1,1,0);
 		draw_background_depth(spr_bg_workshop,0, 0		,,,,,false);
 		draw_background_depth(spr_bg_workshop,1, 0.2	,,,,,true);
 		draw_background_depth(spr_bg_workshop,2, 0.4	,,,,,false);
