@@ -27,6 +27,9 @@ global.depth_b = 400;
 global.activation_list = [];
 
 global.debug = false;
+global.checkpoint = -1;
+
+taken_points = [];
 active_collisions_A = true;
 
 #macro camera_outer_margin 200
@@ -86,8 +89,6 @@ sprite_layer_parralax = function(sprite_array,parralax_amount = 1.1){
 		layer_sprite_y(element.sprite, global.camera.y + offset_y * parralax_amount );
 	}
 }
-
-
 
 room_goto_next();
 

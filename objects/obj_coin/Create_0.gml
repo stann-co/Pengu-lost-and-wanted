@@ -7,6 +7,11 @@ image_index = irandom(image_number-1);
 
 
 trigger = function(){
+	if(!touched){
+		touched = true;
+		array_push(obj_game.taken_points,id);
+	}
+	
 	if(pickup_t == 0){
 		state.change("collect");
 	}
@@ -19,6 +24,8 @@ anim_duration = game_speed * 1.2;
 collect_duration = game_speed * 0.4;
 
 collect_t = 0;
+
+touched = false;
 
 xspeed = 0;
 yspeed = 0;
@@ -75,6 +82,7 @@ state
 			global.score++;
 			var sound = audio_play_sound(snd_point,0,0);
 			audio_sound_pitch(sound,pitch_change(random_range(2,10)));	
+			
 			instance_destroy();
 		}
 	}

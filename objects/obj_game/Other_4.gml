@@ -26,3 +26,14 @@ show_collisions();
 //sets sprite layers to global array and saves their initial position, so they can be parralaxed
 //background_sprites = sprite_layer_parralax_init("foreground_sprites");
 //foreground_sprites = sprite_layer_parralax_init("background_sprites");
+
+//checkpoint load
+if(global.checkpoint != -1){
+	obj_pengu.x = global.checkpoint.x;	
+	obj_pengu.y = global.checkpoint.y;
+	global.t = global.checkpoint.time;
+	
+	for (var i = 0; i < array_length(global.checkpoint.taken_points); ++i) {
+		instance_destroy(global.checkpoint.taken_points[i]);
+	}
+}
