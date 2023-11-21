@@ -57,6 +57,7 @@
     {"name":"inst_76FB395B","path":"rooms/rm_ruby/rm_ruby.yy",},
     {"name":"inst_2995E3EE","path":"rooms/rm_ruby/rm_ruby.yy",},
     {"name":"inst_484050BE","path":"rooms/rm_ruby/rm_ruby.yy",},
+    {"name":"inst_4D5BC3C","path":"rooms/rm_ruby/rm_ruby.yy",},
   ],
   "isDnd": false,
   "layers": [
@@ -133,6 +134,7 @@
         {"resourceType":"GMRInstance","resourceVersion":"1.0","name":"inst_76FB395B","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"objectId":{"name":"obj_falling_platform","path":"objects/obj_falling_platform/obj_falling_platform.yy",},"properties":[],"rotation":-36.013844,"scaleX":1.0,"scaleY":1.0,"x":688.0,"y":1856.0,},
         {"resourceType":"GMRInstance","resourceVersion":"1.0","name":"inst_2995E3EE","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"objectId":{"name":"obj_falling_platform","path":"objects/obj_falling_platform/obj_falling_platform.yy",},"properties":[],"rotation":59.74326,"scaleX":1.0,"scaleY":1.0,"x":592.0,"y":1872.0,},
         {"resourceType":"GMRInstance","resourceVersion":"1.0","name":"inst_484050BE","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":180,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"objectId":{"name":"obj_falling_platform","path":"objects/obj_falling_platform/obj_falling_platform.yy",},"properties":[],"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":720.0,"y":1968.0,},
+        {"resourceType":"GMRInstance","resourceVersion":"1.0","name":"inst_4D5BC3C","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"objectId":{"name":"obj_collision_oneway","path":"objects/obj_collision_oneway/obj_collision_oneway.yy",},"properties":[],"rotation":90.0,"scaleX":4.0,"scaleY":5.0,"x":1248.0,"y":2016.0,},
       ],"layers":[],"properties":[],"userdefinedDepth":false,"visible":true,},
     {"resourceType":"GMRTileLayer","resourceVersion":"1.1","name":"decor_01_A","depth":300,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"properties":[],"tiles":{"SerialiseHeight":0,"SerialiseWidth":0,"TileSerialiseData":[
 ],},"tilesetId":null,"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
