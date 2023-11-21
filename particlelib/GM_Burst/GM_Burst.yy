@@ -61,8 +61,8 @@
   "speedWiggle": 0.0,
   "spriteAnimate": false,
   "spriteId": {
-    "name": "spr_particle_confetti",
-    "path": "sprites/spr_particle_confetti/spr_particle_confetti.yy",
+    "name": "spr_particle_paper",
+    "path": "sprites/spr_particle_paper/spr_particle_paper.yy",
   },
   "spriteRandom": true,
   "spriteStretch": false,
