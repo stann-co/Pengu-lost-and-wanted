@@ -59,3 +59,11 @@ bloom_texture			= -1;
 texel_w			= 1 / window_get_width();
 texel_h			= 1 / window_get_height();
 
+blur_steps_D	= 30.0;		// blur steps for discrete samples
+sigma_D			= 0.2;		// sigma for discrete samples
+bloom_threshold = 0.293;
+bloom_range		= 0.467;
+bloom_intensity	= 0.23;
+bloom_darken	= 1.0;
+bloom_saturation= 2.0;
+

@@ -1,63 +1,14 @@
-/// @description
-
-saved_pengu = {
-x: -1,
-y: -1,
-
-}
-save_text = false;
-
+/// @description starts the game and inits globals
 /// feather ignore all in /Extensions/*
 
-global.t = 0; //a global timer for different objects to refer to stay in sync even after being deactivated
-
-//The angles from each collision tile
-//360 is for filled blocks, which top angle could be any direction
-global.tile_angles = [
-0,360,22,22,45,
-45,22,22,45,45,
-31,12,12,31,45,
-0 ,39,22,8 ,45,
-45,8 ,22,39,45,22
-];
-
-global.depth_a = 300;
-global.depth_b = 400;
-
-global.activation_list = [];
-
-global.debug = false;
-global.checkpoint = -1;
-
+//vars
+saved_pengu = {
+	x: -1,
+	y: -1,
+}
+save_text = false;
 taken_points = [];
 active_collisions_A = true;
-
-#macro camera_outer_margin 200
-#macro camera_inner_margin 100
-
-show_collisions = function(){
-	layer_set_visible(collision_A,false);
-	layer_set_visible(collision_B,false);	
-	//layer_set_visible(collision_A_oneway,false);
-	//layer_set_visible(collision_B_oneway,false);	
-	layer_set_visible("backgrounds_1",false);
-	
-	if(global.debug){
-		layer_set_visible("backgrounds_1",false);
-		
-		if(active_collisions_A){
-			layer_set_visible(collision_A,true);
-			//layer_set_visible(collision_A_oneway,true);
-		}else{
-			layer_set_visible(collision_B,true);
-			//layer_set_visible(collision_B_oneway,true);	
-		}
-	}
-}	
-	
-//level stuff
-global.score = 0;
-
 background_sprites = [];
 foreground_sprites = [];
 
@@ -89,13 +40,468 @@ sprite_layer_parralax = function(sprite_array,parralax_amount = 1.1){
 		layer_sprite_y(element.sprite, global.camera.y + offset_y * parralax_amount );
 	}
 }
+	
+	
+//loads settings or initializes the default ones
+settings_load();
 
-room_goto_next();
+//lexicon / languages
+if (file_exists("local_en.json")){
+	lexicon_index_declare_from_json("local_en.json");
+	//lexicon_index_declare_from_json("local_da.json");
+	//lexicon_index_declare_from_json("local_ru.json");
+} else show_error("no language file", true);
 
-play_music(mus_pengus_theme);
+lexicon_index_fallback_language_set("English");
+
+enum LANGUAGES {
+	English,
+	Danish,
+	Russian,
+	TOTAL
+}
+
+var lang_array = lexicon_languages_get_array();
+lexicon_language_set(lang_array[global.settings.language][0]);
+
+//sets text
+draw_set_font(f_pixel);
+draw_set_halign(fa_left);
+draw_set_valign(fa_top);
+
+#region menu states
+state = new SnowState("start_menu");
+//state = new SnowState("start_menu");
+
+#region menu off
+state.add("idle", {
+	enter: function(){
+		
+	},
+	step: function(){
+		if (can_move && input_check_pressed("pause")){
+			//audio_play_sound(snd_ui_confirm,0,0);
+			state.change("pause_menu");	
+		}
+	},
+	draw: function(){
+		draw_set_halign(fa_right);
+		draw_text(global.gui_w-10,10,global.score);	
+		draw_set_halign(fa_left);
+	}
+});
+#endregion
+#region quick start for debugging quickly
+//state.add("quick_start", {
+//	enter: function(){
+//		call_later(1,time_source_units_frames,function(){
+//			user_new("save"+string(3));
+//			global.save_slot = 3;
+//			enable_effect_all();
+//			global.camera.follow = obj_player;
+//			state.change("idle");	
+//			room_goto_next();
+//		});
+//	}
+//});
+#endregion
+#region start menu
+state.add("start_menu", {
+	enter: function(){
+		selection = 0;
+	},
+	step: function(){
+		if(input_check_pressed("down") || input_check_pressed("up")){
+			//audio_play_sound(snd_ui_hover,0,0);
+			if(input_check_pressed("down")) selection++;
+			else if(input_check_pressed("up")) selection--;
+			selection = clamp(selection,0,2);
+		}
+		
+		if(input_check_pressed("accept")){
+			//audio_play_sound(snd_ui_confirm,0,0);
+			if(selection == 0){
+				//state.change("level_select");
+				state.change("idle");
+				room_goto_next();
+			}
+			if(selection == 1){
+				state.change("settings");
+			}
+			else if(selection == 2) game_end(); 
+		}
+	},
+	draw: function(){		
+		var middle = global.game_w/2;
+		
+		var w = 80;
+		var h = text_height*5;
+		var x_ = middle-(w/2);
+		var y_ = (global.game_h/5)*3;
+		
+		//draw_box(x_,y_,w,h,0);
+		
+		draw_text(x_,y_				 ,lexicon_text("gui.menu.level_select_name"));
+		draw_text(x_,y_+text_height*1,lexicon_text("gui.menu.settings_name"));
+		draw_text(x_,y_+text_height*2,lexicon_text("gui.menu.quit"));
+		
+		draw_circle(x_-10,y_+6+(text_height*selection),4,false);
+		
+		//draw_selection(x_,y_+(text_height*selection),w);
+	}
+
+})
+#endregion
+
+#region level select
+state.add("level_select", {
+	enter: function(){
+		state.inherit();
+		//header_text = lexicon_text("gui.menu.load_game.text");
+		//popup_text = lexicon_text("gui.menu.load_game.popup_confirm")
+	},
+	step: function(){
+		state.inherit();
+		
+		//toggles wether saves should be loaded or deleted
+		if(!popup && input_check_pressed("left") && load_delete == 1){
+				audio_play_sound(snd_ui_hover,0,0);
+				load_delete = 0;
+				
+		}
+		if(!popup && input_check_pressed("right") && load_delete == 0){
+				audio_play_sound(snd_ui_hover,0,0);
+				load_delete = 1;
+		}
+		
+		if(input_check_pressed("action")){
+			//override popup
+			if(popup){
+				if(popup_selection == 0){
+					audio_play_sound(snd_ui_decline,0,0);
+					popup = false;
+				} else if(popup_selection == 1){
+					audio_play_sound(snd_ui_confirm,0,0);
+					user_delete("save"+string(selection));
+					save_files = user_get_all();
+					popup = false;
+				}
+			}
+			//checks if selected slot has a save file
+			else if(save_files[selection] != ""){
+				if(load_delete == 0){
+					audio_play_sound(snd_ui_confirm,0,0);
+					user_load("save"+string(selection));
+					global.save_slot = selection;
+					state.change("idle");
+					room_goto_next();
+				} else if(load_delete == 1){
+					audio_play_sound(snd_ui_confirm,0,0);
+					popup = true;
+					popup_selection = 0;
+				}
+			} else {
+				audio_play_sound(snd_ui_decline,0,0);
+			}
+		}
+
+	},
+	draw: function(){		
+		state.inherit();
+		//draws selection
+		if(!popup){
+			var y_select = y_+(text_height*selection);
+			draw_selection(x_,y_select,w_);
+			
+			var load_delete_x = x_+(w_/3);
+			var load_delete_w = ((w_/3)*2)/4;
+			
+			draw_set_halign(fa_center);
+			
+			if(load_delete == 1){
+				var load_color1   = color1;
+				var load_color2   = color2;
+				var delete_color1 = yellow;
+				var delete_color2 = yellow_light;
+			} else {
+				var load_color1   = yellow;
+				var load_color2   = yellow_light;
+				var delete_color1 = color1;
+				var delete_color2 = color2;	
+			}
+			
+			draw_text_style(load_delete_x+(load_delete_w*1)-8,y_select,lexicon_text("gui.menu.load_game.load"),	load_color1,load_color2);
+			draw_text_style(load_delete_x+(load_delete_w*2)-8,y_select,"/",										color1,color2);
+			draw_text_style(load_delete_x+(load_delete_w*3)-8,y_select,lexicon_text("gui.menu.load_game.delete"),delete_color1,delete_color2);
+
+			
+			draw_set_halign(fa_left);
+		}
+		//draw_selection(x_+(w*load_delete),y_+(text_height*selection),w);
+	}
+});
+#endregion
+#region pause menu
+state.add("pause_menu",{
+	enter: function(){
+		selection = 0;
+	},
+	step: function(){
+		if(input_check_pressed("down") || input_check_pressed("up")){
+			audio_play_sound(snd_ui_hover,0,0);
+			if(input_check_pressed("down")) selection++;
+			else if(input_check_pressed("up")) selection--;
+			selection = clamp(selection,0,2);
+		}
+		
+		if(input_check_pressed("action")){
+			audio_play_sound(snd_ui_confirm,0,0);
+			if(selection == 0){
+				state.change("effects");
+			} else if(selection == 1){
+				state.change("settings");
+			} else if(selection == 2){
+				game_restart();
+			}
+		}
+		
+		if(input_check_pressed("back")){
+			audio_play_sound(snd_ui_decline,0,0);
+			state.change("idle");
+		}
+	},
+	draw: function(){		
+		draw_set_color(black);
+		draw_set_alpha(0.5);
+		draw_rectangle(0,0,global.game_w,global.game_h,0);
+		draw_reset_color();
+		
+		var col = global.game_w/3;
+		
+		draw_box(0,0,col,text_height*4,0);
+		draw_box(0,global.game_h-(text_height*2),col,text_height*2,0);
+		
+		draw_box(col,0,col*2,global.game_h,0);
+		
+		draw_text_style(0,0,lexicon_text("gui.menu.effects"),color1,color2);
+		draw_text_style(0,text_height,lexicon_text("gui.menu.settings_name"),color1,color2);
+		draw_text_style(0,text_height*2,lexicon_text("gui.menu.quit"),color1,color2);
+		
+		draw_selection(0,text_height*selection,col);
+		
+	}
+});
+#endregion
+
+#region settings menu
+state.add("settings",{
+	enter: function(){
+		selection = 0;
+		enum MENU_SETTINGS {
+			resolution,
+			window_mode,
+			keep_aspect_ratio,
+			language,
+			TOTAL
+		}
+		
+		resolution_new = global.settings.resolution;
+		language_new = global.settings.language;
+		languages = lexicon_languages_get_array();
+
+	},
+	step: function(){
+		//can't leave until new settings are confirmed
+		if(resolution_new == global.settings.resolution && language_new == global.settings.language){
+			if(input_check_pressed("down") || input_check_pressed("up")){
+				audio_play_sound(snd_ui_hover,0,0);
+				if(input_check_pressed("down")) selection++;
+				else if(input_check_pressed("up")) selection--;
+				selection = clamp(selection,0,MENU_SETTINGS.TOTAL-1);
+			}
+		}
+		
+		var side_input = 0;
+		if(input_check_pressed("left") || input_check_pressed("right")){
+			audio_play_sound(snd_ui_hover,0,0);
+			if(input_check_pressed("left")) side_input = -1;
+			if(input_check_pressed("right")) side_input = 1;
+		}
+		
+		var action = false;
+		if(input_check_pressed("action")){
+			action = true
+			audio_play_sound(snd_ui_confirm,0,0);
+		}
+		
+		switch (selection) {
+		    case MENU_SETTINGS.resolution:
+				if(global.settings.window_mode == STANNCAM_WINDOW_MODE.windowed){ //can only change res in windowed mode
+				    resolution_new+= side_input;
+					if (resolution_new < 0) resolution_new = RES_LIB.TOTAL-1;
+					if (resolution_new >= RES_LIB.TOTAL) resolution_new = 0;
+					
+					if(action){
+						var new_res = global.resLib[resolution_new];
+						stanncam_set_resolution(new_res.width,new_res.height);
+						global.settings.resolution = resolution_new;
+						settings_save();
+					}
+				}
+		        break;
+		    case MENU_SETTINGS.window_mode:
+		        if(action || side_input != 0){
+					var new_mode = global.window_mode;
+					if(action) new_mode++;
+					else new_mode+= side_input;	
+					if(new_mode == 3) new_mode = 0;
+					else if (new_mode == -1) new_mode = 2;
+					
+					stanncam_set_window_mode(new_mode);
+					global.settings.window_mode = global.window_mode;
+					settings_save();
+				}
+		        break;
+			case MENU_SETTINGS.keep_aspect_ratio:
+		        if(action || side_input != 0){
+					var keep_aspect_ratio = !stanncam_get_keep_aspect_ratio();
+					stanncam_set_keep_aspect_ratio(keep_aspect_ratio);
+					global.settings.keep_aspect_ratio = keep_aspect_ratio;
+					settings_save();
+				}
+		        break;
+			case MENU_SETTINGS.language:
+				language_new+= side_input;
+				if (language_new < 0) language_new = LANGUAGES.TOTAL-1;
+				if (language_new >= LANGUAGES.TOTAL) language_new = 0;
+				
+				if(action){
+					var new_lang = languages[language_new][0];
+					lexicon_language_set(new_lang);
+					global.settings.language = language_new;
+					settings_save();
+				}
+		        break;
+		}
+		
+		if(input_check_pressed("back")){
+			audio_play_sound(snd_ui_decline,0,0);
+			if(resolution_new != global.settings.resolution || language_new != global.settings.language){
+				//if new settings aren't confirmed "back" resets them
+				resolution_new = global.settings.resolution;
+				language_new = global.settings.language
+			} else {
+				state.change(state.get_previous_state());	
+			}			
+		}
+	},
+	draw: function(){		
+		draw_set_color(black);
+		draw_set_alpha(0.5);
+		draw_rectangle(0,0,global.game_w,global.game_h,0);
+		draw_reset_color();
+		
+		var col = global.game_w/2;
+		
+		//draws boxes
+		draw_box(0,0,global.game_w,text_height*2,0);
+		draw_box(0,text_height*2,global.game_w,global.game_h-text_height,0);
+		
+		//resolution
+		var res_color1 = color1;
+		var res_color2 = color2;
+		if(resolution_new != global.settings.resolution){
+			var res_color1 = yellow;
+			var res_color2 = yellow_light;
+		}
+		//resolution is greyed out when not in windowed mode
+		var alpha = (global.settings.window_mode == STANNCAM_WINDOW_MODE.windowed) ? 1 : 0.5;
+		draw_text_style(0,text_height*2,lexicon_text("gui.menu.settings.resolution"),color1,color2,alpha);
+		var res = string(global.resLib[resolution_new].width) + " / " + string(global.resLib[resolution_new].height);
+		draw_text_style(col,text_height*2,res,res_color1,res_color2,alpha);
+		
+		//window mode
+		draw_text_style(0,text_height*3,lexicon_text("gui.menu.settings.window_mode"),color1,color2);
+		switch (global.settings.window_mode) {
+		    case STANNCAM_WINDOW_MODE.windowed:
+		        var window_mode = lexicon_text("gui.menu.settings.window_mode.windowed");
+		        break;
+		    case STANNCAM_WINDOW_MODE.fullscreen:
+		        var window_mode = lexicon_text("gui.menu.settings.window_mode.fullscreen");
+		        break;
+			case STANNCAM_WINDOW_MODE.borderless:
+		        var window_mode = lexicon_text("gui.menu.settings.window_mode.borderless");
+		        break;
+		}
+		draw_text_style(col,text_height*3,window_mode,color1,color2);
+		
+		//keep_aspect_ratio
+		draw_text_style(0,text_height*4,lexicon_text("gui.menu.settings.keep_aspect_ratio"),color1,color2);
+		var keep_aspect_ratio = global.settings.keep_aspect_ratio ? lexicon_text("gui.on") : lexicon_text("gui.off");
+		draw_text_style(col,text_height*4,keep_aspect_ratio,color1,color2);
+		
+		//language
+		var res_color1 = color1;
+		var res_color2 = color2;
+		if(language_new != global.settings.language){
+			var res_color1 = yellow;
+			var res_color2 = yellow_light;
+		}
+		draw_text_style(0,text_height*5,lexicon_text("gui.menu.settings.language"),color1,color2);
+		draw_text_style(col,text_height*5,languages[language_new][0],res_color1,res_color2);
+		
+		//draws selection
+		var y_ = (selection*text_height)+(text_height*2);
+		draw_selection(0,y_, global.game_w);
+		
+		//draws description
+		switch (selection) {
+		    case MENU_SETTINGS.resolution:
+				var description = lexicon_text("gui.menu.settings.resolution.description")
+		        break;
+		    case MENU_SETTINGS.window_mode:
+				var description = lexicon_text("gui.menu.settings.window_mode.description")
+		        break;
+			case MENU_SETTINGS.keep_aspect_ratio:
+				var description = lexicon_text("gui.menu.settings.keep_aspect_ratio.description")
+		        break;
+			case MENU_SETTINGS.language:
+				var description = lexicon_text("gui.menu.settings.language.description")
+		        break;
+		}	
+		draw_text_style(0,0,description,color1,color2);
+		
+	}
+});
+#endregion
+
+#endregion
 
 
-#region debugging variables
+
+#region debugging
+
+show_collisions = function(){
+	layer_set_visible(collision_A,false);
+	layer_set_visible(collision_B,false);	
+	//layer_set_visible(collision_A_oneway,false);
+	//layer_set_visible(collision_B_oneway,false);	
+	layer_set_visible("backgrounds_1",false);
+	
+	if(global.debug){
+		layer_set_visible("backgrounds_1",false);
+		
+		if(active_collisions_A){
+			layer_set_visible(collision_A,true);
+			//layer_set_visible(collision_A_oneway,true);
+		}else{
+			layer_set_visible(collision_B,true);
+			//layer_set_visible(collision_B_oneway,true);	
+		}
+	}
+}	
+
+//debugging variables
 dbg_section("levels")
 
 dbg_button("workshop",function(){

@@ -1,6 +1,7 @@
 /// @description
-global.t++;
+state.step();
 
+global.t++;
 
 /// @description deactivates objects out of view
 
