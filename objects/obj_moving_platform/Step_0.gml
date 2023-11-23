@@ -1,5 +1,5 @@
 /// @description
-
+if(can_move){
 
 if(active){		
 	last_x = x;
@@ -74,3 +74,4 @@ if(active){
 	rot_change = rotation - last_rot;
 }
 
+}

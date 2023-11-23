@@ -1,4 +1,5 @@
 /// @description
+if(can_move){
 
 if(falling){
 		
@@ -26,7 +27,7 @@ if(falling){
 }
 
 
-
+}
 
 
 

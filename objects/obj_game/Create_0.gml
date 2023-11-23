@@ -40,12 +40,11 @@ sprite_layer_parralax = function(sprite_array,parralax_amount = 1.1){
 		layer_sprite_y(element.sprite, global.camera.y + offset_y * parralax_amount );
 	}
 }
-	
-	
+
 //loads settings or initializes the default ones
 settings_load();
 
-//lexicon / languages
+#region lexicon / languages
 if (file_exists("local_en.json")){
 	lexicon_index_declare_from_json("local_en.json");
 	//lexicon_index_declare_from_json("local_da.json");
@@ -54,22 +53,33 @@ if (file_exists("local_en.json")){
 
 lexicon_index_fallback_language_set("English");
 
+var lang_array = lexicon_languages_get_array();
+lexicon_language_set(lang_array[global.settings.language][0]);
+
 enum LANGUAGES {
 	English,
-	Danish,
-	Russian,
+	//Danish,
+	//Russian,
 	TOTAL
 }
 
-var lang_array = lexicon_languages_get_array();
-lexicon_language_set(lang_array[global.settings.language][0]);
+#endregion
+
+#region menu states
 
 //sets text
 draw_set_font(f_pixel);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
-#region menu states
+enum MENU_SETTINGS {
+	resolution,
+	window_mode,
+	keep_aspect_ratio,
+	language,
+	TOTAL
+}
+
 state = new SnowState("start_menu");
 //state = new SnowState("start_menu");
 
@@ -92,18 +102,14 @@ state.add("idle", {
 });
 #endregion
 #region quick start for debugging quickly
-//state.add("quick_start", {
-//	enter: function(){
-//		call_later(1,time_source_units_frames,function(){
-//			user_new("save"+string(3));
-//			global.save_slot = 3;
-//			enable_effect_all();
-//			global.camera.follow = obj_player;
-//			state.change("idle");	
-//			room_goto_next();
-//		});
-//	}
-//});
+state.add("quick_start", {
+	enter: function(){
+		call_later(1,time_source_units_frames,function(){
+			state.change("idle");	
+			room_goto_next();
+		});
+	}
+});
 #endregion
 #region start menu
 state.add("start_menu", {
@@ -156,53 +162,27 @@ state.add("start_menu", {
 #region level select
 state.add("level_select", {
 	enter: function(){
-		state.inherit();
-		//header_text = lexicon_text("gui.menu.load_game.text");
-		//popup_text = lexicon_text("gui.menu.load_game.popup_confirm")
+		
 	},
 	step: function(){
-		state.inherit();
 		
-		//toggles wether saves should be loaded or deleted
-		if(!popup && input_check_pressed("left") && load_delete == 1){
-				audio_play_sound(snd_ui_hover,0,0);
-				load_delete = 0;
-				
-		}
-		if(!popup && input_check_pressed("right") && load_delete == 0){
-				audio_play_sound(snd_ui_hover,0,0);
-				load_delete = 1;
-		}
-		
-		if(input_check_pressed("action")){
-			//override popup
-			if(popup){
-				if(popup_selection == 0){
-					audio_play_sound(snd_ui_decline,0,0);
-					popup = false;
-				} else if(popup_selection == 1){
-					audio_play_sound(snd_ui_confirm,0,0);
-					user_delete("save"+string(selection));
-					save_files = user_get_all();
-					popup = false;
-				}
-			}
+		if(input_check_pressed("accept")){
 			//checks if selected slot has a save file
-			else if(save_files[selection] != ""){
-				if(load_delete == 0){
-					audio_play_sound(snd_ui_confirm,0,0);
-					user_load("save"+string(selection));
-					global.save_slot = selection;
-					state.change("idle");
-					room_goto_next();
-				} else if(load_delete == 1){
-					audio_play_sound(snd_ui_confirm,0,0);
-					popup = true;
-					popup_selection = 0;
-				}
-			} else {
-				audio_play_sound(snd_ui_decline,0,0);
-			}
+			//else if(save_files[selection] != ""){
+			//	if(load_delete == 0){
+			//		audio_play_sound(snd_ui_confirm,0,0);
+			//		user_load("save"+string(selection));
+			//		global.save_slot = selection;
+			//		state.change("idle");
+			//		room_goto_next();
+			//	} else if(load_delete == 1){
+			//		audio_play_sound(snd_ui_confirm,0,0);
+			//		popup = true;
+			//		popup_selection = 0;
+			//	}
+			//} else {
+			//	audio_play_sound(snd_ui_decline,0,0);
+			//}
 		}
 
 	},
@@ -248,16 +228,16 @@ state.add("pause_menu",{
 	},
 	step: function(){
 		if(input_check_pressed("down") || input_check_pressed("up")){
-			audio_play_sound(snd_ui_hover,0,0);
+			//audio_play_sound(snd_ui_hover,0,0);
 			if(input_check_pressed("down")) selection++;
 			else if(input_check_pressed("up")) selection--;
 			selection = clamp(selection,0,2);
 		}
 		
-		if(input_check_pressed("action")){
-			audio_play_sound(snd_ui_confirm,0,0);
+		if(input_check_pressed("accept")){
+			//audio_play_sound(snd_ui_confirm,0,0);
 			if(selection == 0){
-				state.change("effects");
+				state.change("idle");
 			} else if(selection == 1){
 				state.change("settings");
 			} else if(selection == 2){
@@ -265,29 +245,43 @@ state.add("pause_menu",{
 			}
 		}
 		
-		if(input_check_pressed("back")){
-			audio_play_sound(snd_ui_decline,0,0);
+		if(input_check_pressed("cancel")){
+			//audio_play_sound(snd_ui_decline,0,0);
 			state.change("idle");
 		}
 	},
 	draw: function(){		
-		draw_set_color(black);
-		draw_set_alpha(0.5);
-		draw_rectangle(0,0,global.game_w,global.game_h,0);
-		draw_reset_color();
+		//draw_set_color(black);
+		//draw_set_alpha(0.5);
+		//draw_rectangle(0,0,global.game_w,global.game_h,0);
 		
 		var col = global.game_w/3;
 		
-		draw_box(0,0,col,text_height*4,0);
-		draw_box(0,global.game_h-(text_height*2),col,text_height*2,0);
+		//draw_box(0,0,col,text_height*4,0);
+		//draw_box(0,global.game_h-(text_height*2),col,text_height*2,0);
+		//
+		//draw_box(col,0,col*2,global.game_h,0);
 		
-		draw_box(col,0,col*2,global.game_h,0);
+		var middle = global.game_w/2;
 		
-		draw_text_style(0,0,lexicon_text("gui.menu.effects"),color1,color2);
-		draw_text_style(0,text_height,lexicon_text("gui.menu.settings_name"),color1,color2);
-		draw_text_style(0,text_height*2,lexicon_text("gui.menu.quit"),color1,color2);
+		var w = 80;
+		var h = text_height*5;
+		var x_ = middle-(w/2);
+		var y_ = (global.game_h/5)*3;
 		
-		draw_selection(0,text_height*selection,col);
+		//draw_box(x_,y_,w,h,0);
+		
+		draw_set_color(black);
+		draw_set_alpha(0.5);
+		draw_rectangle(0,0,global.gui_w,global.gui_h,false);
+		draw_set_color(white);
+		draw_set_alpha(1);
+		
+		draw_text(x_,y_,lexicon_text("gui.menu.continue"));
+		draw_text(x_,y_+text_height,lexicon_text("gui.menu.settings_name"));
+		draw_text(x_,y_+text_height*2,lexicon_text("gui.menu.quit"));
+		
+		draw_circle(x_-10,y_+6+(text_height*selection),4,false);
 		
 	}
 });
@@ -296,15 +290,7 @@ state.add("pause_menu",{
 #region settings menu
 state.add("settings",{
 	enter: function(){
-		selection = 0;
-		enum MENU_SETTINGS {
-			resolution,
-			window_mode,
-			keep_aspect_ratio,
-			language,
-			TOTAL
-		}
-		
+		selection = 0;		
 		resolution_new = global.settings.resolution;
 		language_new = global.settings.language;
 		languages = lexicon_languages_get_array();
@@ -314,7 +300,7 @@ state.add("settings",{
 		//can't leave until new settings are confirmed
 		if(resolution_new == global.settings.resolution && language_new == global.settings.language){
 			if(input_check_pressed("down") || input_check_pressed("up")){
-				audio_play_sound(snd_ui_hover,0,0);
+				//audio_play_sound(snd_ui_hover,0,0);
 				if(input_check_pressed("down")) selection++;
 				else if(input_check_pressed("up")) selection--;
 				selection = clamp(selection,0,MENU_SETTINGS.TOTAL-1);
@@ -323,15 +309,15 @@ state.add("settings",{
 		
 		var side_input = 0;
 		if(input_check_pressed("left") || input_check_pressed("right")){
-			audio_play_sound(snd_ui_hover,0,0);
+			//audio_play_sound(snd_ui_hover,0,0);
 			if(input_check_pressed("left")) side_input = -1;
 			if(input_check_pressed("right")) side_input = 1;
 		}
 		
 		var action = false;
-		if(input_check_pressed("action")){
+		if(input_check_pressed("accept")){
 			action = true
-			audio_play_sound(snd_ui_confirm,0,0);
+			//audio_play_sound(snd_ui_confirm,0,0);
 		}
 		
 		switch (selection) {
@@ -384,8 +370,8 @@ state.add("settings",{
 		        break;
 		}
 		
-		if(input_check_pressed("back")){
-			audio_play_sound(snd_ui_decline,0,0);
+		if(input_check_pressed("cancel")){
+			//audio_play_sound(snd_ui_decline,0,0);
 			if(resolution_new != global.settings.resolution || language_new != global.settings.language){
 				//if new settings aren't confirmed "back" resets them
 				resolution_new = global.settings.resolution;
@@ -398,30 +384,32 @@ state.add("settings",{
 	draw: function(){		
 		draw_set_color(black);
 		draw_set_alpha(0.5);
-		draw_rectangle(0,0,global.game_w,global.game_h,0);
-		draw_reset_color();
+		draw_rectangle(0,0,global.gui_w,global.gui_h,false);
+		draw_set_color(white);
+		draw_set_alpha(1);
 		
 		var col = global.game_w/2;
 		
 		//draws boxes
-		draw_box(0,0,global.game_w,text_height*2,0);
-		draw_box(0,text_height*2,global.game_w,global.game_h-text_height,0);
+		//draw_box(0,0,global.game_w,text_height*2,0);
+		//draw_box(0,text_height*2,global.game_w,global.game_h-text_height,0);
 		
 		//resolution
-		var res_color1 = color1;
-		var res_color2 = color2;
-		if(resolution_new != global.settings.resolution){
-			var res_color1 = yellow;
-			var res_color2 = yellow_light;
-		}
+		//var res_color1 = color1;
+		//var res_color2 = color2;
+		//if(resolution_new != global.settings.resolution){
+		//	var res_color1 = yellow;
+		//	var res_color2 = yellow_light;
+		//}
 		//resolution is greyed out when not in windowed mode
 		var alpha = (global.settings.window_mode == STANNCAM_WINDOW_MODE.windowed) ? 1 : 0.5;
-		draw_text_style(0,text_height*2,lexicon_text("gui.menu.settings.resolution"),color1,color2,alpha);
+		
+		draw_text(0,text_height*2,lexicon_text("gui.menu.settings.resolution"));
 		var res = string(global.resLib[resolution_new].width) + " / " + string(global.resLib[resolution_new].height);
-		draw_text_style(col,text_height*2,res,res_color1,res_color2,alpha);
+		draw_text(col,text_height*2,res);
 		
 		//window mode
-		draw_text_style(0,text_height*3,lexicon_text("gui.menu.settings.window_mode"),color1,color2);
+		draw_text(0,text_height*3,lexicon_text("gui.menu.settings.window_mode"));
 		switch (global.settings.window_mode) {
 		    case STANNCAM_WINDOW_MODE.windowed:
 		        var window_mode = lexicon_text("gui.menu.settings.window_mode.windowed");
@@ -433,26 +421,28 @@ state.add("settings",{
 		        var window_mode = lexicon_text("gui.menu.settings.window_mode.borderless");
 		        break;
 		}
-		draw_text_style(col,text_height*3,window_mode,color1,color2);
+		draw_text(col,text_height*3,window_mode);
 		
 		//keep_aspect_ratio
-		draw_text_style(0,text_height*4,lexicon_text("gui.menu.settings.keep_aspect_ratio"),color1,color2);
+		draw_text(0,text_height*4,lexicon_text("gui.menu.settings.keep_aspect_ratio"));
 		var keep_aspect_ratio = global.settings.keep_aspect_ratio ? lexicon_text("gui.on") : lexicon_text("gui.off");
-		draw_text_style(col,text_height*4,keep_aspect_ratio,color1,color2);
+		draw_text(col,text_height*4,keep_aspect_ratio);
 		
 		//language
-		var res_color1 = color1;
-		var res_color2 = color2;
-		if(language_new != global.settings.language){
-			var res_color1 = yellow;
-			var res_color2 = yellow_light;
-		}
-		draw_text_style(0,text_height*5,lexicon_text("gui.menu.settings.language"),color1,color2);
-		draw_text_style(col,text_height*5,languages[language_new][0],res_color1,res_color2);
+		//var res_color1 = color1;
+		//var res_color2 = color2;
+		//if(language_new != global.settings.language){
+		//	var res_color1 = yellow;
+		//	var res_color2 = yellow_light;
+		//}
+		draw_text(0,text_height*5,lexicon_text("gui.menu.settings.language"));
+		draw_text(col,text_height*5,languages[language_new][0]);
 		
 		//draws selection
 		var y_ = (selection*text_height)+(text_height*2);
-		draw_selection(0,y_, global.game_w);
+		//draw_selection(0,y_, global.game_w);
+		
+		draw_circle(0,y_,4,false);
 		
 		//draws description
 		switch (selection) {
@@ -469,15 +459,13 @@ state.add("settings",{
 				var description = lexicon_text("gui.menu.settings.language.description")
 		        break;
 		}	
-		draw_text_style(0,0,description,color1,color2);
+		draw_text(0,0,description);
 		
 	}
 });
 #endregion
 
 #endregion
-
-
 
 #region debugging
 

@@ -1,5 +1,6 @@
 /// @description step
-
+if(can_move){
+	
 subimg+= (sprite_get_speed(sprite_index)*anim_speed);
 
 state.step();
@@ -410,5 +411,7 @@ if(image_to_ground_angle){
 if(invulnerable > 0) invulnerable--;
 
 if(control_lock != 0) control_lock--;
+
+}
 
 }

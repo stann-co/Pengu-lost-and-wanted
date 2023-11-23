@@ -1,4 +1,5 @@
 /// @description
+if(can_move){
 if(moving){
 	
 	var val = animcurve_read(ac_skilift,0,t/(duration*2));
@@ -34,10 +35,4 @@ if(moving){
 		t = 0;
 	}
 }
-
-
-
-
-
-
-
+}

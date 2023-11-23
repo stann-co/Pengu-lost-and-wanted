@@ -10,7 +10,7 @@
 			"menu": {
 				"level_select_name": "Level select",
 				"quit" : "Quit",
-				"effects" : "Effects",
+				"continue" : "Continue",
 				"settings_name" : "Settings",
 				"settings": {
 					"resolution": "Resolution",

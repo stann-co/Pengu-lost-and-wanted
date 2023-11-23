@@ -1,4 +1,7 @@
 /// @description
+
+if(can_move){
+
 state.step();
 
 x+=x_speed;
@@ -57,3 +60,5 @@ if(!hurting){
 }
 
 #endregion
+
+}

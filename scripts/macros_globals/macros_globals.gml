@@ -4,7 +4,7 @@
 #macro camera_outer_margin 200
 #macro camera_inner_margin 100
 
-#macro can_move obj_init.state.state_is("idle")
+#macro can_move obj_game.state.state_is("idle")
 
 #macro text_height 14
 
