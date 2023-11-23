@@ -8,7 +8,7 @@
 			"yes": "Yes",
 			"no": "No",
 			"menu": {
-				"level_select_name": "Level select",
+				"level_select_name": "Start game",
 				"quit" : "Quit",
 				"continue" : "Continue",
 				"settings_name" : "Settings",

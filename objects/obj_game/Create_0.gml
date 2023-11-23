@@ -147,6 +147,8 @@ state.add("start_menu", {
 		
 		//draw_box(x_,y_,w,h,0);
 		
+		draw_clear(black);
+		
 		draw_text(x_,y_				 ,lexicon_text("gui.menu.level_select_name"));
 		draw_text(x_,y_+text_height*1,lexicon_text("gui.menu.settings_name"));
 		draw_text(x_,y_+text_height*2,lexicon_text("gui.menu.quit"));
