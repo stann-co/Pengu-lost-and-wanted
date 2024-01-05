@@ -421,22 +421,28 @@ function stanncam(x_ = 0,y_ = 0,width_ = global.game_w,height_ = global.game_h, 
 		return ((y_-get_y()-y_frac) / get_zoom_y()) * stanncam_get_gui_scale_y();
 	}
 	
+	/// @function room_to_display_x
 	/// @description returns the room x position as the position on the display relative to camera
 	/// @param {Real} x_
 	/// @returns {Real}
-	// function room_to_display_x(x_){
-	// 	return (x_-get_x())*stanncam_get_res_scale_x()/zoom_amount;
-	// }
+	/// @ignore
+	static room_to_display_x = function(x_){
+		return ((x_-get_x()-x_frac) / get_zoom_x()) * stanncam_get_res_scale_x();
+	}
 	
+	/// @function room_to_display_y
 	/// @description returns the room y position as the position on the display relative to camera
 	/// @param {Real} y_
 	/// @returns {Real}
-	//function room_to_display_y(y_){
-	//	return (y_-get_y())*stanncam_get_res_scale_y()/zoom_amount;
-	//}
+	/// @ignore
+	static room_to_display_y = function(y_){
+		return ((y_-get_y()-y_frac) / get_zoom_y()) * stanncam_get_res_scale_y();
+	}
 	
 	/// @function out_of_bounds
 	/// @description returns if the position is outside camera bounds
+	/// @param {Real} x_
+	/// @param {Real} y_
 	/// @param {Real} margin_ = 0
 	/// @returns {Bool}
 	/// @ignore
@@ -671,15 +677,31 @@ function stanncam(x_ = 0,y_ = 0,width_ = global.game_w,height_ = global.game_h, 
 	/// @param {Real} scale_x_
 	/// @param {Real} scale_y_
 	/// @ignore
-	static draw_special = function(draw_func,x_,y_,surf_width_=width,surf_height_=height,scale_x_ = 1, scale_y_ = 1){
+	static draw_special = function(draw_func,x_,y_,surf_width_=width,surf_height_=height,scale_x_ = 1, scale_y_ = 1,shader_function = function(){}){
+
+		
+		var previous_surface = surface_get_target();
 
 		var surface_special = surface_create(floor(surf_width_*zoom_amount),floor(surf_height_*zoom_amount));
+		
+		if(previous_surface != -1){
+			surface_reset_target();
+		}
+		
 		surface_set_target(surface_special);
 		draw_clear_alpha(c_black,0);
 		draw_func();
 		surface_reset_target();
+		
+		if(previous_surface != -1){ //resets to previous surface when done
+			surface_set_target(previous_surface);
+		}
+		shader_function();
 		draw_surf(surface_special,x_,y_,scale_x_,scale_y_,0,0,surf_width_,surf_height_);
+		shader_reset();
 		surface_free(surface_special);
+		
+
 	}
 	
 	/// @function draw_surf

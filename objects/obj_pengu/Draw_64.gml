@@ -9,3 +9,4 @@ if(global.debug){
 	draw_text(20,70,$"control lock: {control_lock}");
 }
 
+state.draw_gui();

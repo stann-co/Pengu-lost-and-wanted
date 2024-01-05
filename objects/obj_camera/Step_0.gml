@@ -1,34 +1,20 @@
-/// @description
+/// @description 
 
-var left = global.camera.get_x();
-var top = global.camera.get_y();
-
-var width = global.camera.width;
-var height = global.camera.height;
-
-instance_deactivate_region(left, top, width, height, false,true);
-instance_activate_region(left, top, width, height, true);
-
-//these should always be active
-instance_activate_object(obj_camera);
-instance_activate_object(input_controller_object)
-instance_activate_object(__obj_stanncam_manager);
-instance_activate_object(obj_game);
-instance_activate_object(obj_pengu);
+//with(obj_pengu){
+//	var spd = airborne ? point_distance(0,0,x_speed,y_speed) : abs(ground_spd);	
+//	
+//	spd = clamp(spd,6,20);
+//	var zoom_level = map_value(spd,6,20,1,1.4);
+//	
+//	other.zoom_level = lerp(other.zoom_level,zoom_level,0.01);
+//	
+//	global.camera.zoom(other.zoom_level);
+//	
+//}
 
 
+if(keyboard_check_pressed(vk_numpad4)) blursize -= 0.005;
+if(keyboard_check_pressed(vk_numpad6)) blursize += 0.005;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+if(keyboard_check_pressed(vk_numpad8)) radius -= 0.001;
+if(keyboard_check_pressed(vk_numpad2)) radius += 0.001;

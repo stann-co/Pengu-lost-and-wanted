@@ -6,14 +6,26 @@ vec_lt = new Vector2(0,0); //left
 vec_rb = new Vector2(0,0); //right
 vec_lb = new Vector2(0,0); //left
 
-
 vec_b = new Vector2(0,0); //bottom
 
 t=0;
 walk_duration = game_speed*0.2;
 wait_duration = game_speed*0.4;
 
-state = new SnowState("forward_1");
+
+no_floor = function(){
+	ground_spd = 0;
+	x_speed = 0;
+	state.change("turn");
+}
+
+touch_wall = function(){
+	ground_spd = 0;
+	x_speed = 0;
+	state.change("turn");
+}
+
+
 
 state
 .event_set_default_function("draw",function(){
@@ -29,12 +41,26 @@ state
 		next_state = "forward_2";
 	},
 	step:function(){
+		
+		
+		ground_spd = top_speed * input_h;
+		ground_spd-=slope_factor * dsin(ground_angle);	
+		
+		// Calculate x and y_speed from ground_speed
+		x_speed = ground_spd * dcos(ground_angle)
+		y_speed = ground_spd * -dsin(ground_angle)
+		
+		
 		subimg+= sprite_get_speed(sprite_index);
 		subimg = clamp(subimg,0,2);
 		
 		if(t++ >= walk_duration){
 			state.change("wait");
 		}
+	},
+	leave:function(){
+		x_speed = 0;
+		y_speed = 0;
 	}
 })
 
@@ -66,7 +92,7 @@ state
 	}
 })
 
-
+state.change("forward_1")
 
 
 

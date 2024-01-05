@@ -1,8 +1,11 @@
 /// @description
 
 global.camera.follow = self;
+global.camera.move(x,y,0);
 
 #region variables
+godmode = false;
+
 input_h = 0;
 input_v = 0;
 
@@ -14,14 +17,16 @@ normal_deceleration_speed = 0.2;
 normal_friction_speed = 0.24;
 normal_top_speed = 3;
 
-slide_acceleration_speed = 0.04;
+slide_acceleration_speed = 0.03;
 slide_deceleration_speed = 0.4;
 slide_friction_speed = 0.08;
-slide_top_speed = 8;
+slide_top_speed = 10;
 
 absolute_top_speed = 18;
 
-gravity_force = 0.21875;
+normal_gravity_force = 0.21875;
+gravity_force = normal_gravity_force;
+
 air_acceleration_speed = 0.0937;
 air_horizontal_top_speed = 4;
 air_vertical_top_speed = 7;
@@ -32,7 +37,9 @@ double_jump_force = 4;
 double_jump_count = 0;
 enemy_jump_force = 5.4;
 
-hurt_force = 3.2;
+hurt_x_force = 2;
+hurt_y_force = -5.4;
+hurt_gravity_force = 0.1875;
 
 dash_air_force = 5.4;
 dash_air_windup = game_speed*0.2;
@@ -81,11 +88,16 @@ sliding = false;
 
 super_speed = false;
 super_speed_min = 4;
+super_speed_threshold = 10;
 super_speed_trace_arr = [];
-super_speed_trace_count = 8;
-super_speed_trace_offset = 2;
+super_speed_trace_count = 6;
+super_speed_trace_offset = 1;
 super_speed_fadeout = 0;
 super_speed_fadeout_time = game_speed * 1;
+super_speed_colors = [red,red,red,red,red,red,white,white,white,white,white,white]//[white,red,white,yellow,white,green,white,blue,white,pink];
+
+super_speed_u_color = shader_get_uniform(sh_color,"color");
+super_speed_u_intensity = shader_get_uniform(sh_color,"intensity");
 
 on_land = false; //this is true on the frame you land again
 on_ceiling = false; //this is true whenever you are touching the ceiling
@@ -110,6 +122,8 @@ image_to_ground_angle = true;
 
 control_lock = 0; //When control lock is non-zero input is disabled, for when slipping down super steep slopes, or springs/speed ramps
 controlled = true;
+invulnerable = 0; //when over 0, pengu flashes and cannot take damage
+invulnerable_duration = game_speed * 1.6;
 
 #endregion
 
@@ -118,6 +132,38 @@ controlled = true;
 set_control_lock = function(duration = game_speed*1){
 	control_lock = duration;
 	input_h = 0;
+}
+
+spike_hurt = function(sensor_){
+	if(
+		sensor_ != noone &&
+		sensor_.inst != noone &&
+		sensor_.inst.object_index == obj_spikes &&
+		sensor_.side == "top" &&
+		invulnerable == 0
+	)
+	{	
+		var should_hurt = true;
+		if(airborne){
+			var angle_ = point_direction(0,0,x_speed,y_speed);
+			if (angle_difference(angle_,sensor_.angle+90) < 45){
+				should_hurt = false;
+			};
+		}
+		
+		if(should_hurt){
+			hurt(sign(x - sensor_.inst.x));		
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+///@function hurt()
+hurt = function(x_side = 0){
+	x_speed = hurt_x_force * x_side;
+	state.change("hurt");
 }
 
 ///@function squish()
@@ -169,22 +215,6 @@ vec_tr = new Vector2(0,0); //top right
 sensor_angle = 0;
 sensor_length_base = 8;
 
-//sensor_length_push = function(){
-//	if(airborne){
-//		return sensor_length_base + (abs(x_speed) *	dcos(ground_angle));
-//	} else {
-//		return sensor_length_base + abs(ground_spd);
-//	}
-//}
-
-//sensor_length_vertical = function(){
-//	if(airborne){
-//		return sensor_length_base + (abs(y_speed) * dsin(ground_angle));
-//	} else {
-//		return sensor_length_base + abs(ground_spd);
-//	}
-//}
-
 #endregion
 
 pick_move_state = function(include_idle = true){
@@ -203,6 +233,11 @@ state
 	.event_set_default_function("draw",function(){
 		draw_sprite_ext(sprite_index,subimg,x,y,scale_x*mirror,scale_y,image_angle,-1,1);
 	})
+	
+	.event_set_default_function("draw_gui",function(){
+		
+	})
+	
 	//parent states
 	.add("tall",{
 		enter: function(){
@@ -255,6 +290,52 @@ state
 			image_to_ground_angle = false;
 			airborne = true;
 			sliding = false;
+		}
+	})
+	
+	//states where pengu is controlled by some object
+	.add_child("airborne","skilift", {
+		enter: function() {
+			image_angle = 0;
+			super_speed = false;
+			state.inherit();
+			sprite_index = spr_pengu_sitting;
+			controlled = false;
+			
+		}
+	})
+	
+	.add_child("airborne","spring_ball", {
+		enter: function() {
+			super_speed = false;
+			state.inherit();
+			sprite_index = spr_pengu_grab_on;
+			controlled = false;
+			
+		}
+	})
+	
+	.add_child("airborne","tube", {
+		enter: function() {
+			state.inherit();
+			sprite_index = spr_pengu_spinning;
+			controlled = false;
+			active_layer = obj_game.active_collisions_A;
+			
+		},
+		step: function(){
+			image_angle = point_direction(xstart,ystart,x,y)-90;
+			xstart = x;
+			ystart = y;
+
+			if(path_position == 1){
+				x_speed = lengthdir_x(ground_spd,image_angle+90);
+				y_speed = lengthdir_y(ground_spd,image_angle+90);
+				
+				collision_layer_switch(active_layer,true);
+				controlled = true;		
+				state.change("launch");
+			}	
 		}
 	})
 
@@ -421,6 +502,8 @@ state
 			if(state.get_previous_state() == "sliding"){
 				image_angle -= 90 * mirror;
 			}
+			
+			audio_play_sound_random(0,0,snd_jump1,snd_jump2)
 	    },
 		step: function() {
 			if((input_check_released("jump") || on_ceiling) && y_speed < -jump_release_force){
@@ -429,30 +512,6 @@ state
 	
 			if(y_speed > 0) state.change("begin_fall");
 			if(on_land) pick_move_state();
-		}
-	})
-		
-	.add_child("airborne","tube", {
-		enter: function() {
-			state.inherit();
-			sprite_index = spr_pengu_spinning;
-			controlled = false;
-			active_layer = obj_game.active_collisions_A;
-			
-		},
-		step: function(){
-			image_angle = point_direction(xstart,ystart,x,y)-90;
-			xstart = x;
-			ystart = y;
-
-			if(path_position == 1){
-				x_speed = lengthdir_x(ground_spd,image_angle+90);
-				y_speed = lengthdir_y(ground_spd,image_angle+90);
-				
-				collision_layer_switch(active_layer,true);
-				controlled = true;		
-				state.change("launch");
-			}	
 		}
 	})
 	
@@ -503,6 +562,7 @@ state
 	.add_child("jump","enemy_jump", {
 	    enter: function() {
 			state.inherit()
+			audio_play_sound_random(0,0,snd_jump1,snd_jump2)
 			
 			var up_down = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
 			y_speed = (-enemy_jump_force*up_down) - gravity_force //subtracting gravity force cancels out gravity for one frame
@@ -516,17 +576,36 @@ state
 			state.inherit()
 			sprite_index = spr_pengu_hurt;
 			
-			var up_down = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
-			y_speed = (-hurt_force*up_down) - gravity_force //subtracting gravity force cancels out gravity for one frame
-			x_speed -= hurt_force *dsin(ground_angle) * 0.5;
+			//var sound_file = (irandom_range(1,1000) != 1000) ? snd_pengu_hurt : snd_pengu_uwu;
+			var sound = audio_play_sound(snd_hurt,0,false);
+			audio_sound_pitch(sound,pitch_change(random_range(2,10)));			
+			
+			if (global.score == 0){
+				//state.change("dying");
+				room_restart();
+				
+			}else{
+				point_scatter();
+			}
+			
+			gravity_force = hurt_gravity_force;			
+			invulnerable = invulnerable_duration;
+			
+			set_control_lock(game_speed*0.8);
+			
+			//var up_down = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
+			y_speed = hurt_y_force; //(-hurt_force*up_down)
 
 	    },
 		step: function() {	
-			if(on_ceiling && y_speed < -jump_release_force){
-				y_speed = -jump_release_force;	
-			}
 			
-			if(on_land) state.change("idle");
+			if(on_land) {
+				gravity_force = normal_gravity_force;
+				x_speed = 0;
+				y_speed = 0;
+				ground_spd = 0;
+				state.change("idle");
+			}
 		}
 	})
 	
@@ -540,6 +619,8 @@ state
 			x_speed *= 0.6;
 	
 			squish(0.4,1.4,game_speed*1);
+			
+			audio_play_sound_random(0,0,snd_wingflap1,snd_wingflap2);
 	    },
 		step: function() {			
 			if(y_speed > 0) state.change("begin_fall");
@@ -577,6 +658,9 @@ state
 	
 	.add_child("prone","dash_air", {
 	    enter: function() { 
+			
+			global.camera.shake_screen(2,game_speed*0.2);
+			
 			state.inherit();
 			airborne = true;
 			image_to_ground_angle = false;
@@ -596,6 +680,8 @@ state
 			super_speed = true;
 			super_speed_fadeout = super_speed_fadeout_time;
 			super_speed_trace_arr = [];
+			
+			audio_play_sound(snd_dashing,0,false)
 	    },
 		step: function() {
 			if(on_land){
@@ -636,26 +722,23 @@ state
 			scale_x = lerp(1,1.2,amount);
 			scale_y = lerp(1,0.9,amount);
 			
-			//var flash_steps = round(lerp(game_speed*0.2,game_speed*0.05,amount));
-			
-			//t2++;
-			//
-			//if(t2 > flash_steps){
-			//	flash = !flash
-			//	t2 = 0;
-			//}
-			
 		},
-		draw: function(){
-			draw_sprite_ext(sprite_index,subimg,x,y,scale_x*mirror,scale_y,image_angle,-1,1);
+		draw_gui: function(){
 			var offset = 18;
 			var radius = 6;
-			draw_percentage_donut((t/dash_ground_windup),radius,x-(offset*mirror),y-offset,pengu_blue,pengu_white);
+			
+			var x_ = global.camera.room_to_gui_x(x-(offset*mirror));
+			var y_ = global.camera.room_to_gui_y(y-offset);
+			
+			draw_percentage_donut((t/dash_ground_windup),radius,x_,y_,pengu_blue,pengu_white);
 		}
 	})
 	
 	.add_child("prone","dash", {
 	    enter: function() {
+			
+			global.camera.shake_screen(2,game_speed*0.2);
+			
 			state.inherit()
 			sprite_index = spr_pengu_dash;
 			ground_spd = dash_ground_force * mirror
@@ -667,6 +750,8 @@ state
 			super_speed = true;
 			super_speed_fadeout = super_speed_fadeout_time;
 			super_speed_trace_arr = [];
+			
+			audio_play_sound(snd_dashing,0,false)
 	    },
 		step: function() {
 			

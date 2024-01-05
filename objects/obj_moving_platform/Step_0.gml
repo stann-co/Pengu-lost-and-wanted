@@ -1,5 +1,5 @@
 /// @description
-
+if(can_move){
 
 if(active){		
 	last_x = x;
@@ -32,10 +32,10 @@ if(active){
 			if(forward){
 				//go forwards
 				if(info_target != -1){
-					start_x_ = info_target.x;
-					start_y_ = info_target.y;
-					end_x_ = xstart;
-					end_y_ = ystart;
+					start_x_ = xstart;
+					start_y_ = ystart;
+					end_x_ = info_target.x;
+					end_y_ = info_target.y;
 				}
 				
 				start_rot_ = start_rotation;
@@ -44,10 +44,10 @@ if(active){
 			} else {
 				//go backwards
 				if(info_target != -1){
-					start_x_ = xstart;
-					start_y_ = ystart;
-					end_x_ = info_target.x;
-					end_y_ = info_target.y;
+					start_x_ = info_target.x;
+					start_y_ = info_target.y;
+					end_x_ = xstart;
+					end_y_ = ystart;
 				}
 				start_rot_ = end_rotation;
 				end_rot_ = start_rotation;
@@ -74,3 +74,4 @@ if(active){
 	rot_change = rotation - last_rot;
 }
 
+}

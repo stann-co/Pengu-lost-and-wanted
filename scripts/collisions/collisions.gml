@@ -1,68 +1,36 @@
 
 ///@function tile_collision()
 ///@desc returns tile collision
-function tile_collision(x_,y_,oneway = false){
-	if(!oneway){
-		return collision_point(round(x_),round(y_),[global.tile_collisions,obj_collision],true,true);
-	} else {
-		return collision_point(round(x_),round(y_),obj_collision_oneway,true,true);	
-	}
+function tile_collision(x_,y_){
+	return collision_point(round(x_),round(y_),[global.tile_collisions,obj_collision],true,true);
 }
 
 ///@function point_sensor()
+
+///@function sensor_is_oneway()
+///@desc checks is sensor is a oneway
+///@param sensor_
+function sensor_is_oneway(sensor_){
+	return (sensor_ != noone && sensor_.inst != noone && sensor_.inst.object_index == obj_collision_oneway);
+}
+
+///@function sensor_is_destructible()
+///@desc checks is sensor is destructible
+///@param sensor_
+function sensor_is_destructible(sensor_){
+	return (sensor_ != noone && sensor_.inst != noone && sensor_.inst.object_index == obj_destructible_block);
+}
+
+///@function sensor_is_falling_platform()
+///@desc checks is sensor is falling platform
+///@param sensor_
+function sensor_is_falling_platform(sensor_){
+	return (sensor_ != noone && sensor_.inst != noone && sensor_.inst.object_index == obj_falling_platform && sensor_.side == "top");
+}
+
 ///@desc return collision at point
 function point_sensor(vec){
 	return (tile_collision(x+vec.x,y+vec.y) != noone);
-}
-
-function extend_regress(vec_start,vec_ext,vec_reg,oneway,delta){
-	
-	var coll = tile_collision(x+vec_start.x,y+vec_start.y,oneway);
-	
-	var vec_sensor = vec_start;
-	
-	if(coll != noone){	//regression - inside collision
-		if(tile_collision(x+vec_start.x + vec_reg.x,y+vec_start.y + vec_reg.y,oneway) == noone){ //checks if there's free space to regress towards
-			
-			var vec_end = vec_start.add(vec_reg);
-			do{ //regresses until there's free space
-				vec_sensor = vec_sensor.move_toward(vec_end,delta);
-			}until(tile_collision(x+vec_sensor.x,y+vec_sensor.y,oneway) == noone)
-			
-			var vec_rot_check = vec_sensor.move_toward(vec_start,delta);
-			
-			coll = tile_collision(x+vec_rot_check.x,y+vec_rot_check.y,oneway);
-			angle = tile_rotation(x+vec_rot_check.x,y+vec_rot_check.y,coll);
-			
-			return {
-				inst : coll,
-				angle : angle,
-				vec_sensor : vec_sensor
-			}
-		} else return noone;
-	} else {			//extension - outside collision
-		if(tile_collision(x+vec_start.x +vec_ext.x,y+vec_start.y +vec_ext.y,oneway) != noone){ //checks if there's filled space to extend towards
-			
-			var vec_end = vec_start.add(vec_ext);
-			do{
-				vec_sensor = vec_sensor.move_toward(vec_end,delta);
-			}until(tile_collision(x+vec_sensor.x,y+vec_sensor.y,oneway) != noone)
-			
-				
-			coll = tile_collision(x+vec_sensor.x,y+vec_sensor.y,oneway);
-			angle = tile_rotation(x+vec_sensor.x,y+vec_sensor.y,coll);
-			
-			//when the solid space has been found it regresses back one unit to be next to it
-			vec_sensor = vec_sensor.move_toward(vec_start,delta);
-			
-			return {
-				inst : coll,
-				angle : angle,
-				vec_sensor : vec_sensor
-			}
-			
-		} else return noone;
-	}
 }
 
 ///@function sensor()
@@ -76,22 +44,59 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 	var vec_ext = new Vector2(0,extention_dist);
 		vec_ext = vec_ext.rotated(-dir);
 		
-		var vec_reg = new Vector2(0,-(regression_dist+extention_dist));
+	var vec_reg = new Vector2(0,-(regression_dist+extention_dist));
 		vec_reg = vec_reg.rotated(-dir);
-	var oneway = false;
-	
-	//first check for solids
-	var info = extend_regress(vec_start,vec_ext,vec_reg,false,delta)
-	
-	//else check for oneway collisions
-	if(info == noone){
-		info = extend_regress(vec_start,vec_ext,vec_reg,true,delta)
 		
-		if(info == noone) return noone;
-		
-		info.oneway = true;
-	} else info.oneway = false;
+	var info;
 	
+	#region extend regress
+	var coll = tile_collision(x+vec_start.x,y+vec_start.y);
+	
+	var vec_sensor = vec_start;
+	
+	if(coll != noone){	//regression - inside collision
+		if(tile_collision(x+vec_start.x + vec_reg.x,y+vec_start.y + vec_reg.y) == noone){ //checks if there's free space to regress towards
+			
+			var vec_end = vec_start.add(vec_reg);
+			do{ //regresses until there's free space
+				vec_sensor = vec_sensor.move_toward(vec_end,delta);
+			}until(tile_collision(x+vec_sensor.x,y+vec_sensor.y) == noone)
+			
+			var vec_rot_check = vec_sensor.move_toward(vec_start,delta);
+			
+			coll = tile_collision(x+vec_rot_check.x,y+vec_rot_check.y);
+			angle = tile_rotation(x+vec_rot_check.x,y+vec_rot_check.y,coll);
+			
+			info = {
+				inst : coll,
+				angle : angle,
+				vec_sensor : vec_sensor
+			}
+		} else return noone;
+	} else {			//extension - outside collision
+		if(tile_collision(x+vec_start.x +vec_ext.x,y+vec_start.y +vec_ext.y) != noone){ //checks if there's filled space to extend towards
+			
+			var vec_end = vec_start.add(vec_ext);
+			do{
+				vec_sensor = vec_sensor.move_toward(vec_end,delta);
+			}until(tile_collision(x+vec_sensor.x,y+vec_sensor.y) != noone)
+			
+				
+			coll = tile_collision(x+vec_sensor.x,y+vec_sensor.y);
+			angle = tile_rotation(x+vec_sensor.x,y+vec_sensor.y,coll);
+			
+			//when the solid space has been found it regresses back one unit to be next to it
+			vec_sensor = vec_sensor.move_toward(vec_start,delta);
+			
+			info = {
+				inst : coll,
+				angle : angle,
+				vec_sensor : vec_sensor
+			}
+			
+		} else return noone;
+	}
+	#endregion
 	
 	var vec_dist = info.vec_sensor.subtract(vec_start);
 	info.x = vec_dist.x;
@@ -106,31 +111,60 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 	
 	if(instance_exists(info.inst)){
 		
+		//when colliding with an instance, it's internally rotated back to 0 degrees
+		//and the sensors origin is used to check which side of the instance it is, left right top bottom
+		
 		var inst = info.inst;
-		var x_ = x+info.vec_sensor.x;
-		var y_ = y+info.vec_sensor.y;
-
 		var inst_angle = inst.image_angle
+		
+		var x_ = round(x+vec_start.x+info.x);
+		var y_ = round(y+vec_start.y+info.y);
 		var contact_vec = new Vector2(x_ -inst.x,y_ -inst.y)
 		contact_vec = contact_vec.rotated(inst.image_angle);
 		
-		inst.image_angle = 0//snap_to_90(inst.image_angle);
+		var contact_x = contact_vec.x + inst.x;
+		var contact_y = contact_vec.y + inst.y;
 		
-		var lt_vec = new Vector2(inst.bbox_left  - inst.x, inst.bbox_top    - inst.y);
-		var rt_vec = new Vector2(inst.bbox_right - inst.x, inst.bbox_top    - inst.y);
-		var lb_vec = new Vector2(inst.bbox_left  - inst.x, inst.bbox_bottom - inst.y);
-		var rb_vec = new Vector2(inst.bbox_right - inst.x, inst.bbox_bottom - inst.y);
+		inst.image_angle = 0;
+		
+		var mid_x = lerp(inst.bbox_left,inst.bbox_right,0.5);
+		var mid_y = lerp(inst.bbox_top,inst.bbox_bottom,0.5);
+		
+		var lt_vec = new Vector2(inst.bbox_left  - mid_x, inst.bbox_top    - mid_y);
+		var rt_vec = new Vector2(inst.bbox_right - mid_x, inst.bbox_top    - mid_y);
+		var lb_vec = new Vector2(inst.bbox_left  - mid_x, inst.bbox_bottom - mid_y);
+		var rb_vec = new Vector2(inst.bbox_right - mid_x, inst.bbox_bottom - mid_y);
 		
 		inst.image_angle = inst_angle;
 		
-		var contact_x = contact_vec.x + x;
-		var contact_y = contact_vec.y + y;
+		var lt_corner = new Vector2(mid_x + (lt_vec.x * 2),mid_y + (lt_vec.y * 2));
+		var rt_corner = new Vector2(mid_x + (rt_vec.x * 2),mid_y + (rt_vec.y * 2));
+		var lb_corner = new Vector2(mid_x + (lb_vec.x * 2),mid_y + (lb_vec.y * 2));
+		var rb_corner = new Vector2(mid_x + (rb_vec.x * 2),mid_y + (rb_vec.y * 2));
 		
-		if(rectangle_in_circle(x+lt_vec.x,y+lt_vec.y,x+rt_vec.x,y+rt_vec.y,contact_x,contact_y,4) != 0) info.angle = 0;else
-		if(rectangle_in_circle(x+lt_vec.x,y+lt_vec.y,x+lb_vec.x,y+lb_vec.y,contact_x,contact_y,4) != 0) info.angle = 90;else
-		if(rectangle_in_circle(x+rt_vec.x,y+rt_vec.y,x+rb_vec.x,y+rb_vec.y,contact_x,contact_y,4) != 0) info.angle = 270;else
-		if(rectangle_in_circle(x+lb_vec.x,y+lb_vec.y,x+rb_vec.x,y+rb_vec.y,contact_x,contact_y,4) != 0) info.angle = 180;
-					
+		var ver = 0;
+		var hor = 0;
+		
+		info.side = noone;
+		if(point_in_triangle(contact_x,contact_y,mid_x,mid_y,lt_corner.x,lt_corner.y,rt_corner.x,rt_corner.y)){
+			info.angle = 0;
+			info.side = "top";
+		}else
+		if(point_in_triangle(contact_x,contact_y,mid_x,mid_y,lb_corner.x,lb_corner.y,rb_corner.x,rb_corner.y)){
+			info.angle = 180;
+			info.side = "bottom";
+		}else
+		if(point_in_triangle(contact_x,contact_y,mid_x,mid_y,lt_corner.x,lt_corner.y,lb_corner.x,lb_corner.y)){
+			info.angle = 90;
+			info.side = "left";
+		}else
+		if(point_in_triangle(contact_x,contact_y,mid_x,mid_y,rt_corner.x,rt_corner.y,rb_corner.x,rb_corner.y)){
+			info.angle = 270;
+			info.side = "right";
+		}
+		
+		inst.image_angle = inst_angle;
+		
 		info.angle+=inst.image_angle;
 					
 		if(info.angle < 0) info.angle+=360;
@@ -152,6 +186,7 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 		if(info.angle == 360){
 			info.angle = snap_to_90(dir);
 		}
+		info.side = noone;
 	}	
 
 	return info;	
@@ -159,6 +194,8 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 
 ///@function draw_sensor()
 ///@desc draws a line the same way the sensor code works
+///@param x
+///@param y
 ///@param vec_start {Vector2}
 ///@param dir 0 is down
 ///@param distance
@@ -200,12 +237,12 @@ function tile_rotation(x_,y_,inst){
 			
 			if(rotation < 0) rotation += 360; //ensures the rotation is a positive number
 			else if (rotation > 360) rotation -= 360;
+			
 		}
 		
 		return rotation;
 	} else {
 		//objects and instances
-		
 		return 360
 	}
 }
@@ -215,6 +252,7 @@ function tile_rotation(x_,y_,inst){
 function snap_to_90(rotation){
 	
 	if (rotation < 0) rotation+=360;
+	else if (rotation >= 360 ) rotation-=360;
 
 	if(rotation <= 45 || rotation >= 315) return 0; //down
 	if(rotation > 45 && rotation < 135) return 90; //right

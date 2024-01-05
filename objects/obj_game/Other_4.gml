@@ -1,4 +1,5 @@
 /// @description
+
 global.t = 0;
 
 
@@ -19,6 +20,20 @@ if(room != rm_init && !instance_exists(obj_depth_set)){
 //the active collision layer can be switched between
 global.tile_collisions = layer_tilemap_get_id(collision_A);
 //global.tile_collisions_oneway = layer_tilemap_get_id(collision_A_oneway);
-obj_pengu.depth = global.depth_a;
 
 show_collisions();
+
+//sets sprite layers to global array and saves their initial position, so they can be parralaxed
+//background_sprites = sprite_layer_parralax_init("foreground_sprites");
+//foreground_sprites = sprite_layer_parralax_init("background_sprites");
+
+//checkpoint load
+if(global.checkpoint != -1){
+	obj_pengu.x = global.checkpoint.x;	
+	obj_pengu.y = global.checkpoint.y;
+	global.t = global.checkpoint.time;
+	
+	for (var i = 0; i < array_length(global.checkpoint.taken_points); ++i) {
+		instance_destroy(global.checkpoint.taken_points[i]);
+	}
+}

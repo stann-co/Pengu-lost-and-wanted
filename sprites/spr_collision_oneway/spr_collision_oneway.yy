@@ -2,7 +2,7 @@
   "resourceType": "GMSprite",
   "resourceVersion": "1.0",
   "name": "spr_collision_oneway",
-  "bbox_bottom": 15,
+  "bbox_bottom": 7,
   "bbox_left": 0,
   "bbox_right": 15,
   "bbox_top": 0,
@@ -17,11 +17,11 @@
   ],
   "gridX": 0,
   "gridY": 0,
-  "height": 16,
+  "height": 8,
   "HTile": false,
   "layers": [
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"0177d7a5-dba5-407d-b510-15c8a64d36a7","blendMode":0,"displayName":"Layer 1","isLocked":false,"opacity":62.0,"visible":true,},
-    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"2a933396-ac8a-4201-81a4-dac29cb8ddfd","blendMode":0,"displayName":"Layer 2","isLocked":false,"opacity":50.0,"visible":true,},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"2a933396-ac8a-4201-81a4-dac29cb8ddfd","blendMode":0,"displayName":"Layer 2","isLocked":false,"opacity":75.0,"visible":true,},
   ],
   "nineSlice": {
     "resourceType": "GMNineSliceData",

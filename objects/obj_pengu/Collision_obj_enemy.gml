@@ -2,22 +2,25 @@
 
 //you hurt the enemy
 
-//landing on the enemy
-if(airborne && y < other.y && y_speed > 0){
-	state.change("enemy_jump");
-	
-	other.hurt();
-} else {
-	
-//the enemy hurts you
-	state.change("hurt");	
+if(!other.hurting){	
+	//landing on the enemy
+	if(airborne && y < other.y && y_speed > 0){		
+		global.camera.shake_screen(4,game_speed*0.5);
+		state.change("enemy_jump");
+		double_jump_count = 0;
+		dash_air_count = 0;
+		other.hurt();
+		
+	//dashing through the enemy
+	} else if(super_speed){	
+		global.camera.shake_screen(4,game_speed*0.5);
+		other.hurt();
+	//the enemy hurts you
+	} else if(invulnerable == 0){
+		global.camera.shake_screen(4,game_speed*0.5);
+		hurt(sign(x-other.x));
+	}
 }
-
-
-
-
-
-
 
 
 

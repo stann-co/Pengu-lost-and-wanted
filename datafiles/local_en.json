@@ -1,0 +1,32 @@
+{
+    "language": "English",
+    "locale": "en-US",
+    "text": {
+		"gui": {
+			"on": "On",
+			"off": "Off",
+			"yes": "Yes",
+			"no": "No",
+			"menu": {
+				"level_select_name": "Start game",
+				"quit" : "Quit",
+				"continue" : "Continue",
+				"settings_name" : "Settings",
+				"settings": {
+					"resolution": "Resolution",
+					"resolution.description": "The display resolution",
+					"window_mode": "Window mode",
+					"window_mode.description": "Cycle between window modes",
+					"window_mode.windowed": "Windowed",
+					"window_mode.fullscreen": "Fullscreen",
+					"window_mode.borderless": "Borderless windowed",
+					"keep_aspect_ratio": "Keep aspect ratio",
+					"keep_aspect_ratio.description": "Keep the games aspect ratio",
+					"volume": "Volume",
+					"language": "Language",
+					"language.description": "Change the language"
+				}
+			}
+		}
+	}
+}

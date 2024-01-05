@@ -1,9 +1,18 @@
 /// @description step
-
+if(can_move){
+	
 subimg+= (sprite_get_speed(sprite_index)*anim_speed);
 
 state.step();
 
+if(godmode){
+	input_h = (input_check("right") - input_check("left"));
+	input_v = (input_check("down") - input_check("up"));
+	
+	x+=input_h * 4;
+	y+=input_v * 4;
+	
+} else {
 if(controlled){
 	#region input
 	if(control_lock == 0){
@@ -150,8 +159,16 @@ else {
 	//when airborne sensors aren't rotated at all
 	sensor_angle = (airborne) ? 0 : ground_angle;
 	
+	
 	//super speed 
-	if(super_speed){
+	
+	if(abs(ground_spd) >= super_speed_threshold && !super_speed){
+		super_speed = true;
+		super_speed_fadeout = super_speed_fadeout_time;
+		super_speed_trace_arr = [];
+	} else
+	
+	if(super_speed){		
 		var abs_speed = airborne ? point_distance(0,0,x_speed,y_speed) : abs(ground_spd);
 		if(abs_speed < super_speed_min){
 			super_speed = false;
@@ -163,8 +180,7 @@ else {
 	}
 	
 	
-	
-	#region push sensors
+#region push sensors
 var push_sensor = noone;
 var push_height = (sliding || airborne) ? 0 : -8;
 
@@ -178,24 +194,24 @@ if((!airborne && ground_spd < 0) || airborne) { //left
 		push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,sensor_length_base,abs(ground_spd));
 	}
 	
-	if(push_sensor != noone && !push_sensor.oneway && push_sensor.distance < 1){
-		
+	if(push_sensor != noone && push_sensor.distance < 1 && !sensor_is_oneway(push_sensor)){		
+		if(sensor_is_destructible(push_sensor) && abs(ground_spd) > 5){
 		//destructible blocks don't stop you if you're fast enough
-		if(push_sensor.inst != noone && push_sensor.inst.object_index == obj_destructible_block && abs(ground_spd) > 5){
 			push_sensor.inst.trigger();
+				
 		} else {
-		
 			x+= push_sensor.x;
 			y+= push_sensor.y;
 			
+			spike_hurt(push_sensor);
+			
 			if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
 				if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
-				
 				ground_spd = 0;
 				x_speed = 0;
 			}
 		}
-	}
+	} 
 }  
 
 if((!airborne && ground_spd > 0) || airborne){ //right
@@ -207,32 +223,31 @@ if((!airborne && ground_spd > 0) || airborne){ //right
 		push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,sensor_length_base,abs(ground_spd));
 	}
 	
-	if(push_sensor != noone && !push_sensor.oneway && push_sensor.distance < 1){
-		
-		
+	if(push_sensor != noone && push_sensor.distance < 1 && !sensor_is_oneway(push_sensor)){		
+		if(sensor_is_destructible(push_sensor) && abs(ground_spd) > 5){
 		//destructible blocks don't stop you if you're fast enough
-		if(push_sensor.inst != noone && push_sensor.inst.object_index == obj_destructible_block && abs(ground_spd) > 5){
 			push_sensor.inst.trigger();
+				
 		} else {
-			
 			x+= push_sensor.x;
 			y+= push_sensor.y;
 			
+			spike_hurt(push_sensor);
+			
 			if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
 				if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
-				
 				ground_spd = 0;
 				x_speed = 0;
 			}
 		}
-	}
+	} 
 }
 
 
 #endregion
 	
 	if(on_land) on_land = false;
-	#region ground sensors
+#region ground sensors
 	if(!airborne || (airborne && y_speed > 0)){
 		//bottom
 		vec_b = new Vector2(0,h_radius+1);
@@ -270,7 +285,8 @@ if((!airborne && ground_spd > 0) || airborne){ //right
 			
 			ground_angle = updown_sensor.angle;	
 			
-			if(airborne){ //just as you land from being airborne
+			var spikes = spike_hurt(updown_sensor)
+			if(!spikes && airborne){ //just as you land from being airborne
 				image_to_ground_angle = true;
 				airborne = false;
 				on_land = true;
@@ -278,11 +294,16 @@ if((!airborne && ground_spd > 0) || airborne){ //right
 				double_jump_count = 0;
 				set_ground_spd_from_air_spd();
 			}
+
+			
+			if(sensor_is_falling_platform(updown_sensor)){
+				updown_sensor.inst.trigger();
+			} else
 			
 			if(updown_sensor.inst != noone && object_is_ancestor(updown_sensor.inst.object_index,obj_moving_platform) && (ground_angle >= 90 && ground_angle <= 270)){
 				state.change("begin_fall");	
 			}
-			
+
 		} else if(!airborne){ //going off ledges
 			airborne = true;
 			
@@ -304,7 +325,7 @@ if((!airborne && ground_spd > 0) || airborne){ //right
 	#endregion
 	
 	if(on_ceiling) on_ceiling = false;
-	#region ceiling sensors
+#region ceiling sensors
 if(airborne){
 	//top
 	vec_t = new Vector2(0,-h_radius-1);
@@ -332,34 +353,39 @@ if(airborne){
 		else if(tr_sensor != noone) updown_sensor = tr_sensor;
 		
 		//ceiling sensors doesn't do anything if it's a oneway tile
-		if(updown_sensor != noone && !updown_sensor.oneway && updown_sensor.distance < 0){
+		if(updown_sensor != noone && updown_sensor.distance < 0 && !sensor_is_oneway(updown_sensor)){
 			x+= updown_sensor.x;
 			y+= updown_sensor.y;
 						
 			on_ceiling = true;
 		}
+		
+		spike_hurt(updown_sensor);
 	}
 	
 	//up slipping, if you bump head on the ceiling at an edge, and there's space on the left/right you move in that direction
 	if(airborne && (tl_sensor != noone xor tr_sensor != noone) && !point_sensor(vec_t)){
-		if(tl_sensor){
+		
+		if(tl_sensor && !sensor_is_oneway(tl_sensor)){
 			x_speed += 0.1;
 			x += 1;
-		} else {
+		} else
+		if(tr_sensor && !sensor_is_oneway(tr_sensor)){
 			x_speed  -= 0.1;
 			x -= 1;
 		}
 	}
 }
 
-#endregion
+
 	
-	#region edge slipping animation
+#region edge slipping animation
 if(!state.state_is("edge") && !airborne && !sliding && (bl_sensor != noone xor br_sensor != noone) && !point_sensor(vec_b) && ground_angle == 0 && ground_spd == 0){
 	if(bl_sensor) mirror = 1;
 	else mirror = -1;
 	state.change("edge");
 }
+#endregion
 #endregion
 
 }
@@ -382,5 +408,10 @@ if(image_to_ground_angle){
 	image_angle += angle_difference(ground_angle,image_angle)*0.5;
 }
 
+if(invulnerable > 0) invulnerable--;
+
 if(control_lock != 0) control_lock--;
 
+}
+
+}
