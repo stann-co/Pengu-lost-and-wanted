@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "sprite_anim",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "draw",
-    "path": "folders/Scripts/draw.yy",
+  "$GMScript":"v1",
+  "%Name":"sprite_anim",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"sprite_anim",
+  "parent":{
+    "name":"draw",
+    "path":"folders/Scripts/draw.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

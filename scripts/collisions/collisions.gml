@@ -5,13 +5,28 @@ function tile_collision(x_,y_){
 	return collision_point(round(x_),round(y_),[global.tile_collisions,obj_collision],true,true);
 }
 
+///@function tile_collision_line()
+///@desc returns tile collision
+function tile_collision_line(x_,y_,x_2,y_2, _delta = 1){
+	var _coll = noone;
+	var _vec_start = new Vector2(x_,y_);
+	var _vec_end = new Vector2(x_2,y_2);
+	
+	do{
+		_vec_start = _vec_start.move_toward(_vec_end,_delta);
+		_coll = tile_collision(_vec_start.x,_vec_start.y);
+	}until(_coll !=  noone || (_vec_start.x == _vec_end.x && _vec_start.y == _vec_end.y))
+	
+	return _coll;
+}
+
 ///@function point_sensor()
 
 ///@function sensor_is_oneway()
 ///@desc checks is sensor is a oneway
 ///@param sensor_
 function sensor_is_oneway(sensor_){
-	return (sensor_ != noone && sensor_.inst != noone && sensor_.inst.object_index == obj_collision_oneway);
+	return (sensor_ != noone && sensor_.inst != noone && variable_instance_exists(sensor_.inst,"oneway") && sensor_.inst.oneway);
 }
 
 ///@function sensor_is_destructible()
@@ -39,7 +54,7 @@ function point_sensor(vec){
 ///@param dir 0 is down
 ///@param extention_dist
 ///@param regression_dist
-///@param delta {float} how much the scan point should move when scanning lower is more accurate by slower
+///@param delta {float} how much the scan point should move when scanning lower is more accurate but slower
 function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,delta = 1){
 	var vec_ext = new Vector2(0,extention_dist);
 		vec_ext = vec_ext.rotated(-dir);
@@ -74,9 +89,10 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 			}
 		} else return noone;
 	} else {			//extension - outside collision
-		if(tile_collision(x+vec_start.x +vec_ext.x,y+vec_start.y +vec_ext.y) != noone){ //checks if there's filled space to extend towards
+		
+		var vec_end = vec_start.add(vec_ext);
+		if(tile_collision_line( x+vec_start.x , y+vec_start.y , x+vec_end.x , y+vec_end.y , delta ) != noone){ //checks if there's filled space to extend towards
 			
-			var vec_end = vec_start.add(vec_ext);
 			do{
 				vec_sensor = vec_sensor.move_toward(vec_end,delta);
 			}until(tile_collision(x+vec_sensor.x,y+vec_sensor.y) != noone)
@@ -170,16 +186,25 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 		if(info.angle < 0) info.angle+=360;
 		else if(info.angle >= 360) info.angle-=360;
 		
-		if(object_is_ancestor(inst.object_index,obj_moving_platform)){
+		if(	object_is_ancestor(inst.object_index,obj_collision_activate) ||
+			inst.object_index == obj_collision_activate
+			){
 			
 			contact_vec = new Vector2(x+vec_start.x-inst.x,y+vec_start.y-inst.y)
-			var new_contact_vec = contact_vec.rotated(-inst.rot_change);
+			var new_contact_vec = contact_vec.rotated(-(inst.image_angle - inst.angle_previous));
 			
 			var rot_x = new_contact_vec.x - contact_vec.x;
 			var rot_y = new_contact_vec.y - contact_vec.y;
 			
-			info.x_change = inst.x_change + rot_x;	
-			info.y_change = inst.y_change + rot_y;
+			info.x_change = (inst.x - inst.xprevious) + rot_x;	
+			info.y_change = (inst.y - inst.yprevious) + rot_y;
+			
+			if(!inst.standing_on){
+				inst.standing_on = true;
+				inst.trigger();
+			}
+			inst.triggering = true;
+			if(inst.parent != noone) inst.parent.triggering = true;
 		}
 	} else{
 		info.inst = noone;
@@ -258,4 +283,17 @@ function snap_to_90(rotation){
 	if(rotation > 45 && rotation < 135) return 90; //right
 	if(rotation >= 135 && rotation <= 225) return 180; //up
 	if(rotation > 225 && rotation < 315) return 270; //left
+}
+
+///@function add_collision_child()
+function add_collision_child(_x_offset,_y_offset,_width,_height,_oneway = false){
+	var child = instance_create_depth(x+_x_offset,y+_y_offset,global.depth_a,obj_collision_activate);
+	child.image_xscale = _width  / sprite_get_width(spr_collision);
+	child.image_yscale = _height / sprite_get_height(spr_collision);
+	child.x_offset = _x_offset;
+	child.y_offset = _y_offset;
+	child.oneway = _oneway;
+	child.parent = self;	
+		
+	return child;
 }

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Inspectron",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Inspectron",
+  "parent":{
+    "name":"Inspectron",
+    "path":"folders/Extensions/Inspectron.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

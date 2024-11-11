@@ -1,14 +1,14 @@
 {
-  "resourceType": "GMPath",
-  "resourceVersion": "1.0",
-  "name": "path_rubylevel_01",
-  "closed": false,
-  "kind": 0,
-  "parent": {
-    "name": "Paths",
-    "path": "folders/Paths.yy",
+  "$GMPath":"",
+  "%Name":"path_rubylevel_01",
+  "closed":false,
+  "kind":0,
+  "name":"path_rubylevel_01",
+  "parent":{
+    "name":"Paths",
+    "path":"folders/Paths.yy",
   },
-  "points": [
+  "points":[
     {"speed":100.0,"x":6328.0,"y":1840.0,},
     {"speed":100.0,"x":6328.0,"y":1952.0,},
     {"speed":100.0,"x":6320.0,"y":1968.0,},
@@ -29,5 +29,7 @@
     {"speed":100.0,"x":4568.0,"y":1248.0,},
     {"speed":100.0,"x":4568.0,"y":1392.0,},
   ],
-  "precision": 4,
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
 }

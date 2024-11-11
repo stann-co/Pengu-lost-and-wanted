@@ -1,4 +1,4 @@
-/// @description
+/// @description Debug draw
 
 if(global.debug){
 	//draws vector lines

@@ -1,9 +1,8 @@
 {
-  "resourceType": "GMAnimCurve",
-  "resourceVersion": "1.2",
-  "name": "ac_disappear",
-  "channels": [
-    {"resourceType":"GMAnimCurveChannel","resourceVersion":"1.0","name":"curve1","colour":4279234797,"points":[
+  "$GMAnimCurve":"",
+  "%Name":"ac_disappear",
+  "channels":[
+    {"$GMAnimCurveChannel":"","%Name":"curve1","colour":4279234797,"name":"curve1","points":[
         {"th0":-0.1,"th1":0.009080197,"tv0":0.0,"tv1":0.0,"x":0.0,"y":0.99848485,},
         {"th0":-0.019961238,"th1":0.0,"tv0":0.0,"tv1":0.0,"x":0.19949646,"y":1.0,},
         {"th0":0.0,"th1":0.00016474724,"tv0":0.0,"tv1":0.00028780103,"x":0.19949646,"y":0.0,},
@@ -52,11 +51,14 @@
         {"th0":1.0,"th1":-1.0,"tv0":0.0,"tv1":0.0,"x":0.99087906,"y":1.0,},
         {"th0":1.0,"th1":-1.0,"tv0":0.0,"tv1":0.0,"x":0.99087906,"y":0.0015151501,},
         {"th0":-0.0014693737,"th1":0.1,"tv0":0.0,"tv1":0.0,"x":1.0,"y":0.0015151501,},
-      ],"visible":true,},
+      ],"resourceType":"GMAnimCurveChannel","resourceVersion":"2.0","visible":true,},
   ],
-  "function": 0,
-  "parent": {
-    "name": "Animation Curves",
-    "path": "folders/Animation Curves.yy",
+  "function":0,
+  "name":"ac_disappear",
+  "parent":{
+    "name":"Animation Curves",
+    "path":"folders/Animation Curves.yy",
   },
+  "resourceType":"GMAnimCurve",
+  "resourceVersion":"2.0",
 }

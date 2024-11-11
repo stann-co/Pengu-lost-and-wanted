@@ -1,14 +1,14 @@
 {
-  "resourceType": "GMPath",
-  "resourceVersion": "1.0",
-  "name": "path_workshop_01",
-  "closed": false,
-  "kind": 0,
-  "parent": {
-    "name": "Paths",
-    "path": "folders/Paths.yy",
+  "$GMPath":"",
+  "%Name":"path_workshop_01",
+  "closed":false,
+  "kind":0,
+  "name":"path_workshop_01",
+  "parent":{
+    "name":"Paths",
+    "path":"folders/Paths.yy",
   },
-  "points": [
+  "points":[
     {"speed":100.0,"x":400.0,"y":1496.0,},
     {"speed":100.0,"x":384.0,"y":1496.0,},
     {"speed":100.0,"x":368.0,"y":1504.0,},
@@ -40,5 +40,7 @@
     {"speed":100.0,"x":3584.0,"y":904.0,},
     {"speed":100.0,"x":3696.0,"y":904.0,},
   ],
-  "precision": 4,
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
 }

@@ -85,9 +85,9 @@ function settings_struct() constructor {
 
     // Set default values for empty settings file
 
-    window_mode = STANNCAM_WINDOW_MODE.windowed;
+    window_mode = STANNCAM_WINDOW_MODE.WINDOWED;
 	keep_aspect_ratio = false;
-	resolution = RES_LIB.DESKTOP_4_3_960_X_720;
+	resolution = stanncam_get_preset_resolution(STANNCAM_RES_PRESETS.DESKTOP_720P);
 	volume_master = 1;
 	volume_fx = 1;
 	volume_music = 1;

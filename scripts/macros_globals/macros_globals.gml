@@ -22,8 +22,12 @@
 #macro pengu_white #dff6f5
 
 #macro white c_white
+#macro light_gray #BCBCBC
 #macro gray c_gray
+#macro dark_gray #373737
 #macro black c_black
+
+#macro normal_blank #8080F9
 
 
 
@@ -33,11 +37,11 @@ global.t = 0; //a global timer for different objects to refer to stay in sync ev
 //The angles from each collision tile
 //360 is for filled blocks, which top angle could be any direction
 global.tile_angles = [
-0,360,22,22,45,
-45,22,22,45,45,
-31,12,12,31,45,
-0 ,39,22,8 ,45,
-45,8 ,22,39,45,22
+0  , 360, 25, 25,   45,
+360, 45 , 25, 135,  127,
+109, 100, 72, 60,   45,
+50,  35,  40,  9,   10,
+12,  21
 ];
 
 global.depth_a = 300;

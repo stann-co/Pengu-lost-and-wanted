@@ -11,36 +11,6 @@ taken_points = [];
 active_collisions_A = true;
 background_sprites = [];
 foreground_sprites = [];
-
-///@function sprite_layer_parralax_init()
-sprite_layer_parralax_init = function(layer_name){
-	if(!layer_exists(layer_name)) return [];
-	
-	var sprites = layer_get_all_elements(layer_name);
-	var array = [];
-	for (var i = 0; i < array_length(sprites); ++i) {
-	    array[i] = {
-			sprite: sprites[i],
-			x: layer_sprite_get_x(sprites[i]),
-			y: layer_sprite_get_y(sprites[i])
-		}
-	}
-	return array;
-}
-
-///@function sprite_layer_parralax()
-sprite_layer_parralax = function(sprite_array,parralax_amount = 1.1){
-	for (var i = 0; i < array_length(sprite_array); ++i) {
-		var element = sprite_array[i];
-		
-		var offset_x = element.x - global.camera.x;
-		var offset_y = element.y - global.camera.y;
-		
-		layer_sprite_x(element.sprite, global.camera.x + offset_x * parralax_amount );
-		layer_sprite_y(element.sprite, global.camera.y + offset_y * parralax_amount );
-	}
-}
-
 //loads settings or initializes the default ones
 settings_load();
 
@@ -80,7 +50,7 @@ enum MENU_SETTINGS {
 	TOTAL
 }
 
-state = new SnowState("start_menu");
+state = new SnowState("quick_start");
 //state = new SnowState("start_menu");
 
 #region menu off
@@ -324,13 +294,13 @@ state.add("settings",{
 		
 		switch (selection) {
 		    case MENU_SETTINGS.resolution:
-				if(global.settings.window_mode == STANNCAM_WINDOW_MODE.windowed){ //can only change res in windowed mode
+				if(global.settings.window_mode == STANNCAM_WINDOW_MODE.WINDOWED){ //can only change res in windowed mode
 				    resolution_new+= side_input;
-					if (resolution_new < 0) resolution_new = RES_LIB.TOTAL-1;
-					if (resolution_new >= RES_LIB.TOTAL) resolution_new = 0;
+					if (resolution_new < 0) resolution_new = array_length(global.stanncam_res_presets);
+					if (resolution_new >= array_length(global.stanncam_res_presets)) resolution_new = 0;
 					
 					if(action){
-						var new_res = global.resLib[resolution_new];
+						var new_res = global.stanncam_res_presets[resolution_new];
 						stanncam_set_resolution(new_res.width,new_res.height);
 						global.settings.resolution = resolution_new;
 						settings_save();
@@ -404,7 +374,7 @@ state.add("settings",{
 		//	var res_color2 = yellow_light;
 		//}
 		//resolution is greyed out when not in windowed mode
-		var alpha = (global.settings.window_mode == STANNCAM_WINDOW_MODE.windowed) ? 1 : 0.5;
+		var alpha = (global.settings.window_mode == STANNCAM_WINDOW_MODE.WINDOWED) ? 1 : 0.5;
 		
 		draw_text(0,text_height*2,lexicon_text("gui.menu.settings.resolution"));
 		var res = string(global.resLib[resolution_new].width) + " / " + string(global.resLib[resolution_new].height);
@@ -413,13 +383,13 @@ state.add("settings",{
 		//window mode
 		draw_text(0,text_height*3,lexicon_text("gui.menu.settings.window_mode"));
 		switch (global.settings.window_mode) {
-		    case STANNCAM_WINDOW_MODE.windowed:
+		    case STANNCAM_WINDOW_MODE.WINDOWED:
 		        var window_mode = lexicon_text("gui.menu.settings.window_mode.windowed");
 		        break;
-		    case STANNCAM_WINDOW_MODE.fullscreen:
+		    case STANNCAM_WINDOW_MODE.FULLSCREEN:
 		        var window_mode = lexicon_text("gui.menu.settings.window_mode.fullscreen");
 		        break;
-			case STANNCAM_WINDOW_MODE.borderless:
+			case STANNCAM_WINDOW_MODE.BORDERLESS:
 		        var window_mode = lexicon_text("gui.menu.settings.window_mode.borderless");
 		        break;
 		}
@@ -474,49 +444,72 @@ state.add("settings",{
 show_collisions = function(){
 	layer_set_visible(collision_A,false);
 	layer_set_visible(collision_B,false);	
-	//layer_set_visible(collision_A_oneway,false);
-	//layer_set_visible(collision_B_oneway,false);	
 	layer_set_visible("backgrounds_1",false);
 	
 	if(global.debug){
-		layer_set_visible("backgrounds_1",false);
+		layer_set_visible("backgrounds_1",true);
 		
 		if(active_collisions_A){
 			layer_set_visible(collision_A,true);
-			//layer_set_visible(collision_A_oneway,true);
 		}else{
 			layer_set_visible(collision_B,true);
-			//layer_set_visible(collision_B_oneway,true);	
 		}
 	}
 }	
 
+#region fmod
+
+var max_channels_ = 1024;
+var fmod_flags_ = FMOD_INIT.NORMAL;
+fmod_system = fmod_system_create();
+fmod_system_init(max_channels_,fmod_flags_);
+
+//fmod_system_create_sound()
+
+#endregion
+
+#region
 //debugging variables
-dbg_section("levels")
+	//#region levels
+	//dbg_section("levels")
+	//
+	//dbg_button("workshop",function(){
+	//	room_goto(rm_workshop);	
+	//})
+	//dbg_same_line();
+	//dbg_button("up_mountain",function(){
+	//	room_goto(rm_up_mountain);	
+	//})
+	//#endregion
+	//
+	//#region debug
+	//dbg_section("debug")	
+	//dbg_button("toggle debug drawing",function(){
+	//	global.debug = !global.debug;
+	//	show_collisions();
+	//})
+	//
+	//show_debug_overlay(false);
+	//#endregion
+	//
+	//dbg_section("resolution");
+	//dbg_button("windowed",function(){
+	//	stanncam_set_windowed()
+	//})
+	//dbg_same_line()
+	//dbg_button("borderless",function(){
+	//	stanncam_set_borderless()
+	//})
+	//dbg_same_line()
+	//dbg_button("fullscreen",function(){
+	//	stanncam_set_fullscreen();
+	//})
+	//
+	//dbg_button("maintain aspect ratio",function(){
+	//	stanncam_set_keep_aspect_ratio(!stanncam_get_keep_aspect_ratio());
+	//})
+	//
+	//dbg_watch(ref_create(__obj_stanncam_manager, "keep_aspect_ratio"), "keep_aspect_ratio"); 
+	//#endregion
 
-dbg_button("workshop",function(){
-	room_goto(rm_workshop);	
-})
-dbg_same_line();
-dbg_button("up_mountain",function(){
-	room_goto(rm_up_mountain);	
-})
-
-dbg_section("debug")	
-dbg_button("toggle debug drawing",function(){
-	global.debug = !global.debug;	
-})
-
-var camera = instance_find(obj_camera,0);
-
-dbg_section("bloom controls")
-dbg_slider(ref_create(camera,"blur_steps_D"),0,30);
-dbg_slider(ref_create(camera,"sigma_D"),0,1);
-dbg_slider(ref_create(camera,"bloom_threshold"),0,1);
-dbg_slider(ref_create(camera,"bloom_range"),0,1);
-dbg_slider(ref_create(camera,"bloom_intensity"),0,2);
-dbg_slider(ref_create(camera,"bloom_darken"),0,1);
-dbg_slider(ref_create(camera,"bloom_saturation"),0,2);
-
-show_debug_overlay(false);
 #endregion

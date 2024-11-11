@@ -24,7 +24,7 @@ if(can_move){
 	instance_activate_object(obj_game);
 	instance_activate_object(obj_pengu);
 	instance_activate_object(obj_depth_set);
-	
+	instance_activate_object(obj_layer_draw);	
 	
 	//connected instances will all be active if just one of them is active
 	for (var i1 = 0; i1 < array_length(global.activation_list); ++i1) {

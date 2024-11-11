@@ -1,14 +1,14 @@
 {
-  "resourceType": "GMPath",
-  "resourceVersion": "1.0",
-  "name": "path_lighthouse_02",
-  "closed": false,
-  "kind": 0,
-  "parent": {
-    "name": "Paths",
-    "path": "folders/Paths.yy",
+  "$GMPath":"",
+  "%Name":"path_lighthouse_02",
+  "closed":false,
+  "kind":0,
+  "name":"path_lighthouse_02",
+  "parent":{
+    "name":"Paths",
+    "path":"folders/Paths.yy",
   },
-  "points": [
+  "points":[
     {"speed":100.0,"x":4288.0,"y":11864.0,},
     {"speed":100.0,"x":3840.0,"y":11864.0,},
     {"speed":100.0,"x":3824.0,"y":11856.0,},
@@ -22,5 +22,7 @@
     {"speed":100.0,"x":3764.4521,"y":10060.407,},
     {"speed":100.0,"x":3770.251,"y":10055.225,},
   ],
-  "precision": 4,
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
 }

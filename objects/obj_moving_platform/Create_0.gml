@@ -1,6 +1,5 @@
 /// @description
-
-
+event_inherited();
 
 pause_duration = pause_duration_seconds * game_speed
 duration = duration_seconds * game_speed;
@@ -28,7 +27,3 @@ forward = true;
 last_x = x;
 last_y = y;
 last_rot = image_angle;
-
-x_change = 0;
-y_change = 0;
-rot_change = 0;

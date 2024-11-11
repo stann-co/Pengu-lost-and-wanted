@@ -1,6 +1,6 @@
 /// @description
 
-global.t = 0;
+//global.t = 0;
 
 
 collision_A = layer_get_id("collision_A");

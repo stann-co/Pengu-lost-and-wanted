@@ -1,9 +1,8 @@
 {
-  "resourceType": "GMAnimCurve",
-  "resourceVersion": "1.2",
-  "name": "ac_invulnerable",
-  "channels": [
-    {"resourceType":"GMAnimCurveChannel","resourceVersion":"1.0","name":"curve1","colour":4290799884,"points":[
+  "$GMAnimCurve":"",
+  "%Name":"ac_invulnerable",
+  "channels":[
+    {"$GMAnimCurveChannel":"","%Name":"curve1","colour":4290799884,"name":"curve1","points":[
         {"th0":-0.1,"th1":0.43129772,"tv0":0.0,"tv1":-0.003333333,"x":0.0,"y":0.0,},
         {"th0":1.0,"th1":-1.0,"tv0":0.0,"tv1":0.0,"x":0.115776084,"y":0.0,},
         {"th0":1.0,"th1":-1.0,"tv0":0.0,"tv1":0.0,"x":0.115776084,"y":1.0,},
@@ -36,11 +35,14 @@
         {"th0":1.0,"th1":-1.0,"tv0":0.0,"tv1":0.0,"x":0.9866412,"y":0.0,},
         {"th0":1.0,"th1":-1.0,"tv0":0.0,"tv1":0.0,"x":0.9866412,"y":1.0,},
         {"th0":-0.3633588,"th1":0.1,"tv0":0.0033333302,"tv1":0.0,"x":1.0,"y":1.0,},
-      ],"visible":true,},
+      ],"resourceType":"GMAnimCurveChannel","resourceVersion":"2.0","visible":true,},
   ],
-  "function": 0,
-  "parent": {
-    "name": "Animation Curves",
-    "path": "folders/Animation Curves.yy",
+  "function":0,
+  "name":"ac_invulnerable",
+  "parent":{
+    "name":"Animation Curves",
+    "path":"folders/Animation Curves.yy",
   },
+  "resourceType":"GMAnimCurve",
+  "resourceVersion":"2.0",
 }

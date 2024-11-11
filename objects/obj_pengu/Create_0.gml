@@ -50,7 +50,7 @@ dash_ground_force_max = 12;
 dash_ground_force = undefined;
 dash_ground_windup = game_speed*1; //you can hold it down longer, but after this it's hit max potential
 
-rotation_speed = 0.0215; //when going airborne how fast you rotate to be back upright
+rotation_speed = 0.0215 * 2; //when going airborne how fast you rotate to be back upright
 
 normal_slope_factor = 0.215;
 slide_slope_factor = 0.425;
@@ -228,18 +228,19 @@ pick_move_state = function(include_idle = true){
 
 
 #region states
+// feather disable gm1065
 state = new SnowState("idle");
-state
-	.event_set_default_function("draw",function(){
+
+	state.event_set_default_function("draw",function(){
 		draw_sprite_ext(sprite_index,subimg,x,y,scale_x*mirror,scale_y,image_angle,-1,1);
 	})
 	
-	.event_set_default_function("draw_gui",function(){
+	state.event_set_default_function("draw_gui",function(){
 		
 	})
 	
 	//parent states
-	.add("tall",{
+	state.add("tall",{
 		enter: function(){
 			mask_index = spr_pengu_hitbox_tall;
 			w_radius = w_radius_normal;
@@ -259,7 +260,7 @@ state
 		}
 	})
 
-	.add("prone",{
+	state.add("prone",{
 		enter: function(){
 			mask_index = spr_pengu_hitbox_prone;
 			w_radius = w_radius_slide;
@@ -280,7 +281,7 @@ state
 		}
 	})
 
-	.add("airborne",{
+	state.add("airborne",{
 		enter: function(){
 			mask_index = spr_pengu_hitbox_tall;
 			w_radius = w_radius_normal;
@@ -294,7 +295,7 @@ state
 	})
 	
 	//states where pengu is controlled by some object
-	.add_child("airborne","skilift", {
+	state.add_child("airborne","skilift", {
 		enter: function() {
 			image_angle = 0;
 			super_speed = false;
@@ -305,7 +306,7 @@ state
 		}
 	})
 	
-	.add_child("airborne","spring_ball", {
+	state.add_child("airborne","spring_ball", {
 		enter: function() {
 			super_speed = false;
 			state.inherit();
@@ -315,7 +316,7 @@ state
 		}
 	})
 	
-	.add_child("airborne","tube", {
+	state.add_child("airborne","tube", {
 		enter: function() {
 			state.inherit();
 			sprite_index = spr_pengu_spinning;
@@ -341,7 +342,7 @@ state
 
 	//child states
 
-	.add_child("tall","idle", {
+	state.add_child("tall","idle", {
 		enter: function() {
 			state.inherit();
 			sprite_index = spr_pengu_idle;
@@ -352,7 +353,7 @@ state
 		}
 	})
 
-	.add_child("tall","turning", {
+	state.add_child("tall","turning", {
 	    enter: function() {
 			state.inherit();
 			sprite_index = spr_pengu_turn;
@@ -368,7 +369,7 @@ state
 		}
 	})
 
-	.add_child("tall","running", {
+	state.add_child("tall","running", {
 	    enter: function() {
 			state.inherit();
 			sprite_index = spr_pengu_idle;
@@ -378,7 +379,7 @@ state
 		}
 	})
 
-	.add_child("tall","pushing", {
+	state.add_child("tall","pushing", {
 	    enter: function() {
 			state.inherit()
 			mirror = sign(ground_spd);
@@ -393,7 +394,7 @@ state
 		}
 	})
 		
-	.add_child("tall","look_up", {
+	state.add_child("tall","look_up", {
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_look_up;
@@ -409,7 +410,7 @@ state
 		}
 	})
 	
-	.add_child("tall","look_up_end", {
+	state.add_child("tall","look_up_end", {
 	    enter: function() {
 			var _subimg = subimg;
 			state.inherit()
@@ -426,7 +427,7 @@ state
 		}
 	})
 	
-	.add_child("tall","edge", {
+	state.add_child("tall","edge", {
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_edge;
@@ -436,7 +437,7 @@ state
 		}
 	})
 		
-	.add_child("airborne","fall_up", {
+	state.add_child("airborne","fall_up", {
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_jump;
@@ -455,7 +456,7 @@ state
 		}
 	})
 	
-	.add_child("airborne","begin_fall", {
+	state.add_child("airborne","begin_fall", {
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_begin_fall;
@@ -467,7 +468,7 @@ state
 		}
 	})
 	
-	.add_child("airborne","fall", {
+	state.add_child("airborne","fall", {
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_fall;
@@ -482,7 +483,7 @@ state
 		}
 	})
 	
-	.add_child("airborne","jump", {
+	state.add_child("airborne","jump", {
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_jump;
@@ -515,7 +516,7 @@ state
 		}
 	})
 	
-	.add_child("airborne","launch", {
+	state.add_child("airborne","launch", {
 	    enter: function() {
 			state.inherit();
 			sprite_index = spr_pengu_spinning;		
@@ -542,7 +543,7 @@ state
 		}
 	})
 
-	.add_child("airborne","launch_end", {
+	state.add_child("airborne","launch_end", {
 	    enter: function() {
 			state.inherit();
 			sprite_index = spr_pengu_spinning_end;
@@ -559,7 +560,7 @@ state
 		},
 	})
 	
-	.add_child("jump","enemy_jump", {
+	state.add_child("jump","enemy_jump", {
 	    enter: function() {
 			state.inherit()
 			audio_play_sound_random(0,0,snd_jump1,snd_jump2)
@@ -571,7 +572,7 @@ state
 	    },
 	})
 	
-	.add_child("jump","hurt", {
+	state.add_child("jump","hurt", {
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_hurt;
@@ -609,7 +610,7 @@ state
 		}
 	})
 	
-	.add_child("airborne","double_jump", {
+	state.add_child("airborne","double_jump", {
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_flap;
@@ -628,7 +629,7 @@ state
 		},
 	})
 		
-	.add_child("airborne","dash_air_charge",{
+	state.add_child("airborne","dash_air_charge",{
 		enter: function(){
 			state.inherit();
 			sprite_index = spr_pengu_dash_charge_air;
@@ -656,7 +657,7 @@ state
 		},	
 	})
 	
-	.add_child("prone","dash_air", {
+	state.add_child("prone","dash_air", {
 	    enter: function() { 
 			
 			global.camera.shake_screen(2,game_speed*0.2);
@@ -690,7 +691,7 @@ state
 		}
 	})
 	
-	.add_child("prone","dash_charge", {
+	state.add_child("prone","dash_charge", {
 	
 		enter: function(){
 			state.inherit();
@@ -734,7 +735,7 @@ state
 		}
 	})
 	
-	.add_child("prone","dash", {
+	state.add_child("prone","dash", {
 	    enter: function() {
 			
 			global.camera.shake_screen(2,game_speed*0.2);
@@ -763,7 +764,7 @@ state
 		},
 	})
 	
-	.add_child("prone","begin_slide", {
+	state.add_child("prone","begin_slide", {
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_begin_slide;
@@ -776,7 +777,7 @@ state
 		},
 	})
 	
-	.add_child("tall","end_slide", {
+	state.add_child("tall","end_slide", {
 	    enter: function() {
 			state.inherit()
 			subimg = 1;
@@ -792,7 +793,7 @@ state
 		},
 	})
 	
-	.add_child("prone","sliding", {
+	state.add_child("prone","sliding", {
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_sliding;
@@ -816,3 +817,4 @@ state
 	})
 
 #endregion
+// feather restore gm1065

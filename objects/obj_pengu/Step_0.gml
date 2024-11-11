@@ -96,6 +96,7 @@ if(controlled){
 			ground_spd -= min(abs(ground_spd), friction_speed) * sign(ground_spd); //decelerate
 		}
 		
+		//speed depends on the angle of the floor
 		ground_spd-=slope_factor * dsin(ground_angle);	
 		
 		// Calculate x and y_speed from ground_speed
@@ -149,9 +150,10 @@ else {
 	x_speed = clamp(x_speed,-x_top_speed,x_top_speed);
 	y_speed = clamp(y_speed,-y_top_speed,y_top_speed);
 	
-	image_angle -= angle_difference(image_angle,0) * rotation_speed;	
+	image_angle -= angle_difference(image_angle,0) * rotation_speed;
+	if(abs(angle_difference(image_angle,0)) < 1 ) image_angle = 0;
 }
-#endregion
+	#endregion
 	
 	x+=x_speed;
 	y+=y_speed;
@@ -161,7 +163,6 @@ else {
 	
 	
 	//super speed 
-	
 	if(abs(ground_spd) >= super_speed_threshold && !super_speed){
 		super_speed = true;
 		super_speed_fadeout = super_speed_fadeout_time;
@@ -182,6 +183,8 @@ else {
 	
 #region push sensors
 var push_sensor = noone;
+
+//push sensors start from the center of the player if sliding or airborne
 var push_height = (sliding || airborne) ? 0 : -8;
 
 
@@ -246,7 +249,7 @@ if((!airborne && ground_spd > 0) || airborne){ //right
 
 #endregion
 	
-	if(on_land) on_land = false;
+if(on_land) on_land = false;
 #region ground sensors
 	if(!airborne || (airborne && y_speed > 0)){
 		//bottom
@@ -275,8 +278,9 @@ if((!airborne && ground_spd > 0) || airborne){ //right
 			else if(bl_sensor != noone) updown_sensor = bl_sensor;
 			else if(br_sensor != noone) updown_sensor = br_sensor;
 		
-		
-		if(updown_sensor != noone){
+		//if airborne, you only get snapped to the ground, when sensor is inside the ground
+		if(updown_sensor != noone && ( !airborne || (airborne && updown_sensor.y < 0) )){
+			
 			x+= updown_sensor.x;
 			y+= updown_sensor.y;
 			
@@ -313,7 +317,7 @@ if((!airborne && ground_spd > 0) || airborne){ //right
 					mirror = 1;
 				} else{
 					image_angle += 90;
-					mirror = 1;
+					mirror = -1;
 				}
 			}	
 			//falling
@@ -341,7 +345,7 @@ if(airborne){
 	var tl_sensor = sensor(vec_tl,snap_to_90(sensor_angle)+180,sensor_length_base);
 	var tr_sensor = sensor(vec_tr,snap_to_90(sensor_angle)+180,sensor_length_base);
 	
-	//sensors check which is closest to the ground
+	//sensors check which is closest to the ceiling
 	var updown_sensor = noone;
 	if(airborne && y_speed < 0){
 		if(tl_sensor != noone && tr_sensor != noone){
@@ -391,17 +395,20 @@ if(!state.state_is("edge") && !airborne && !sliding && (bl_sensor != noone xor b
 }
 
 #region squish scale_x & scale_y
-if(squishing){
-	if(squishing_t != squishing_duration){
-		var channel = animcurve_get_channel(ac_squish,0);
-		var val = animcurve_channel_evaluate(channel, squishing_t/squishing_duration);
-		
-		scale_x = lerp(1,scale_x_squish,val);
-		scale_y = lerp(1,scale_y_squish,val);
-		
-		squishing_t++;
-	} else squishing = false;	
-}
+//if(squishing){
+//	if(squishing_t != squishing_duration){
+//		var channel = animcurve_get_channel(ac_squish,0);
+//		var val = animcurve_channel_evaluate(channel, squishing_t/squishing_duration);
+//		
+//		scale_x = lerp(1,scale_x_squish,val);
+//		scale_y = lerp(1,scale_y_squish,val);
+//		
+//		squishing_t++;
+//	} else squishing = false;	
+//}
+
+scale_x = 1//lerp(scale_x,1,0.12);
+scale_y = 1//lerp(scale_y,1,0.12);
 #endregion
 
 if(image_to_ground_angle){

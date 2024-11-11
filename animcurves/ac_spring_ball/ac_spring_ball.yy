@@ -1,9 +1,8 @@
 {
-  "resourceType": "GMAnimCurve",
-  "resourceVersion": "1.2",
-  "name": "ac_spring_ball",
-  "channels": [
-    {"resourceType":"GMAnimCurveChannel","resourceVersion":"1.0","name":"curve1","colour":4290799884,"points":[
+  "$GMAnimCurve":"",
+  "%Name":"ac_spring_ball",
+  "channels":[
+    {"$GMAnimCurveChannel":"","%Name":"curve1","colour":4290799884,"name":"curve1","points":[
         {"th0":-0.1,"th1":0.011745094,"tv0":0.0,"tv1":0.53723145,"x":0.0,"y":0.0,},
         {"th0":-0.051830348,"th1":0.0797085,"tv0":0.045879245,"tv1":-0.07055646,"x":0.11139241,"y":0.98951757,},
         {"th0":-0.04249896,"th1":0.05268053,"tv0":0.88090163,"tv1":-1.091941,"x":0.25,"y":-1.0,},
@@ -17,11 +16,14 @@
         {"th0":-0.009553373,"th1":0.0048266216,"tv0":0.010746743,"tv1":-0.0054295436,"x":0.9620353,"y":-0.026707094,},
         {"th0":-0.0058444142,"th1":0.008119583,"tv0":-0.004701823,"tv1":0.0065086596,"x":0.9808911,"y":0.0034156628,},
         {"th0":-0.0027521253,"th1":0.1,"tv0":0.0,"tv1":0.0,"x":1.0,"y":0.0,},
-      ],"visible":true,},
+      ],"resourceType":"GMAnimCurveChannel","resourceVersion":"2.0","visible":true,},
   ],
-  "function": 2,
-  "parent": {
-    "name": "Animation Curves",
-    "path": "folders/Animation Curves.yy",
+  "function":2,
+  "name":"ac_spring_ball",
+  "parent":{
+    "name":"Animation Curves",
+    "path":"folders/Animation Curves.yy",
   },
+  "resourceType":"GMAnimCurve",
+  "resourceVersion":"2.0",
 }

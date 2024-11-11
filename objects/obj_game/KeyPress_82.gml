@@ -1,14 +1,2 @@
 /// @description
 game_restart();
-
-
-
-
-
-
-
-
-
-
-
-
