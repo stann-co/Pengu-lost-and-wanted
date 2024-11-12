@@ -10,11 +10,3 @@ save_text = true;
 call_later(1,time_source_units_seconds,function(){
 	save_text = false;	
 })
-
-
-
-
-
-
-
-

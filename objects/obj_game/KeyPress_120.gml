@@ -10,12 +10,3 @@ call_later(1,time_source_units_frames,function(){
 		obj_pengu.state.change(saved_pengu.state);
 	}		
 });
-
-
-
-
-
-
-
-
-

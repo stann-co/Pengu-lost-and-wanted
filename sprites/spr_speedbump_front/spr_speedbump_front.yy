@@ -26,7 +26,7 @@
   ],
   "name":"spr_speedbump_front",
   "nineSlice":null,
-  "origin":9,
+  "origin":7,
   "parent":{
     "name":"level elements",
     "path":"folders/Sprites/level elements.yy",
@@ -88,7 +88,7 @@
     "visibleRange":null,
     "volume":1.0,
     "xorigin":16,
-    "yorigin":13,
+    "yorigin":16,
   },
   "swatchColours":null,
   "swfPrecision":2.525,

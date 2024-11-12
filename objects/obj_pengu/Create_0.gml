@@ -22,7 +22,7 @@ slide_deceleration_speed = 0.4;
 slide_friction_speed = 0.08;
 slide_top_speed = 10;
 
-absolute_top_speed = 18;
+absolute_top_speed = 30;
 
 normal_gravity_force = 0.21875;
 gravity_force = normal_gravity_force;

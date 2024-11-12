@@ -27,9 +27,9 @@ var tileset_name = tileset_get_name(tileset);
 tileset_n = asset_get_index(tileset_name+"_n");
 tileset_r = asset_get_index(tileset_name+"_r");
 
-Inspectron()
-	.Slider("roughness_strength",0,1)
-	.Slider("normal_strength",0,1)
-	.Slider("scale",0,4)
-	.Slider("offset_scale",-1,1)
-	.render()
+//Inspectron()
+//	.Slider("roughness_strength",0,1)
+//	.Slider("normal_strength",0,1)
+//	.Slider("scale",0,4)
+//	.Slider("offset_scale",-1,1)
+//	.render()

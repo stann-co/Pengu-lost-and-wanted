@@ -18,6 +18,7 @@ trigger = function(){
 				if(ground_angle >= 360) ground_angle-=360;
 				image_angle = ground_angle;
 				ground_spd = -ground_spd;
+				input_h = -input_h;
 			}
 		}
 	}

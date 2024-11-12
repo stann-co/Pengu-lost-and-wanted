@@ -37,11 +37,13 @@ global.t = 0; //a global timer for different objects to refer to stay in sync ev
 //The angles from each collision tile
 //360 is for filled blocks, which top angle could be any direction
 global.tile_angles = [
-0  , 360, 25, 25,   45,
-360, 45 , 25, 135,  127,
-109, 100, 72, 60,   45,
-50,  35,  40,  9,   10,
-12,  21
+  0,360, 25, 25, 45,360, 45,
+ 25,135,127,109,100, 72, 60,
+ 45, 50, 35, 40,  9, 10, 12,
+ 12, 45, 12, 45, 25, 12, 25,
+ 20,  8, 45, 85, 60, 55, 45,
+ 30, 20, 15, 12, 10,  8,  0,
+  0,  0,  0,
 ];
 
 global.depth_a = 300;
