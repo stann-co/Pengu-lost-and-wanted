@@ -253,7 +253,7 @@
           1,9,-600,-2147483648,1,9,-19,-2147483648,-2,0,-2,-2147483648,1,9,-600,-2147483648,2,805306375,1610612742,
           -18,-2147483648,-2,0,3,-2147483648,536870918,536870919,-600,-2147483648,2,805306373,1610612743,-21,1879048201,
           2,1073741831,1073741829,-118354,-2147483648,
-        ],"TileDataFormat":1,},"tilesetId":{"name":"ts_tubes","path":"tilesets/ts_tubes/ts_tubes.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
+        ],"TileDataFormat":1,},"tilesetId":null,"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
     {"$GMRPathLayer":"","%Name":"Path_1","colour":4278190335,"depth":100,"effectEnabled":true,"effectType":null,"gridX":8,"gridY":8,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Path_1","pathId":{"name":"path_rubylevel_01","path":"paths/path_rubylevel_01/path_rubylevel_01.yy",},"properties":[],"resourceType":"GMRPathLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRTileLayer":"","%Name":"collision_A","depth":200,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"collision_A","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":313,"SerialiseWidth":625,"TileCompressedData":[
           -1880,-2147483648,-19,0,-606,-2147483648,-19,0,-606,-2147483648,-19,0,-606,-2147483648,-19,0,-606,-2147483648,
@@ -822,8 +822,8 @@
   ],
   "name":"rm_ruby_2",
   "parent":{
-    "name":"ruby",
-    "path":"folders/Rooms/map tryouts/ruby.yy",
+    "name":"map tryouts",
+    "path":"folders/Rooms/map tryouts.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

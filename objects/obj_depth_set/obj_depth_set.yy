@@ -8,8 +8,8 @@
   "name":"obj_depth_set",
   "overriddenProperties":[],
   "parent":{
-    "name":"tool",
-    "path":"folders/Objects/tool.yy",
+    "name":"Objects",
+    "path":"folders/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,
@@ -26,8 +26,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"depth_A","filters":[],"listItems":[],"multiselect":false,"name":"depth_A","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":null,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"300","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"depth_B","filters":[],"listItems":[],"multiselect":false,"name":"depth_B","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":null,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"400","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"depth_A","filters":[],"listItems":[],"multiselect":false,"name":"depth_A","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"300","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"depth_B","filters":[],"listItems":[],"multiselect":false,"name":"depth_B","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"400","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

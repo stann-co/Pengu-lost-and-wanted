@@ -33,7 +33,7 @@
     {"$GMObjectProperty":"v1","%Name":"depth_layer","filters":[],"listItems":[
         "\"A\"",
         "\"B\"",
-      ],"multiselect":false,"name":"depth_layer","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":null,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"A\"","varType":6,},
+      ],"multiselect":false,"name":"depth_layer","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"A\"","varType":6,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

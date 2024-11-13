@@ -10,8 +10,8 @@
   "name":"obj_spring",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"level element",
+    "path":"folders/Objects/level element.yy",
   },
   "parentObjectId":{
     "name":"obj_hitbox_trigger",

@@ -634,7 +634,7 @@
           -623,-2147483648,3,1073741828,1073741827,1073741826,-623,-2147483648,1,1073741828,-1248,-2147483648,
           1,1073741826,-623,-2147483648,3,1073741828,1073741827,1073741826,-623,-2147483648,3,1073741828,1073741827,
           1073741826,-623,-2147483648,1,1073741828,-254766,-2147483648,
-        ],"TileDataFormat":1,},"tilesetId":{"name":"ts_tubes","path":"tilesets/ts_tubes/ts_tubes.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
+        ],"TileDataFormat":1,},"tilesetId":null,"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
     {"$GMRTileLayer":"","%Name":"tubes_01_A","depth":100,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"tubes_01_A","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":938,"SerialiseWidth":625,"TileCompressedData":[
           -313981,-2147483648,4,8,-2147483648,-2147483648,8,-621,-2147483648,4,9,-2147483648,-2147483648,9,-621,
           -2147483648,4,9,-2147483648,-2147483648,9,-621,-2147483648,4,9,-2147483648,-2147483648,9,-621,-2147483648,
@@ -748,7 +748,7 @@
           -2147483648,1,9,-605,-2147483648,2,536870918,536870919,-17,-2147483648,2,805306375,1610612742,-583,-2147483648,
           1,1879048200,-20,1879048201,2,1073741831,1073741829,-17,-2147483648,2,805306373,1610612743,-27,1879048201,
           1,1342177288,-122857,-2147483648,
-        ],"TileDataFormat":1,},"tilesetId":{"name":"ts_tubes","path":"tilesets/ts_tubes/ts_tubes.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
+        ],"TileDataFormat":1,},"tilesetId":null,"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
     {"$GMRPathLayer":"","%Name":"Path_5","colour":4278190335,"depth":200,"effectEnabled":true,"effectType":null,"gridX":8,"gridY":8,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Path_5","pathId":{"name":"path_lighthouse_05","path":"paths/path_lighthouse_05/path_lighthouse_05.yy",},"properties":[],"resourceType":"GMRPathLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRPathLayer":"","%Name":"Path_4","colour":4278190335,"depth":300,"effectEnabled":true,"effectType":null,"gridX":8,"gridY":8,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Path_4","pathId":{"name":"path_lighthouse_04","path":"paths/path_lighthouse_04/path_lighthouse_04.yy",},"properties":[],"resourceType":"GMRPathLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRPathLayer":"","%Name":"Path_3","colour":4278190335,"depth":400,"effectEnabled":true,"effectType":null,"gridX":8,"gridY":8,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"Path_3","pathId":{"name":"path_lighthouse_03","path":"paths/path_lighthouse_03/path_lighthouse_03.yy",},"properties":[],"resourceType":"GMRPathLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
@@ -1985,8 +1985,8 @@
   ],
   "name":"rm_ruby_lighthouse",
   "parent":{
-    "name":"ruby",
-    "path":"folders/Rooms/map tryouts/ruby.yy",
+    "name":"map tryouts",
+    "path":"folders/Rooms/map tryouts.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

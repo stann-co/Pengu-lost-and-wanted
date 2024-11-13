@@ -1,3 +1,5 @@
+#region backgrounds
+
 function set_background_workshop1(){
 	global.background = function(){
 		//the background is scaled up so it appears smooth when being parralaxed
@@ -26,15 +28,15 @@ function set_background_workshop1(){
 function set_background_up_mountain(){
 	global.background = function(){
 		
-		draw_background_depth(spr_mountain,0,0		,,,,,true);
-		draw_background_depth(spr_mountain,1,0.01	,,,,,true);
-		draw_background_depth(spr_mountain,2,0.04	,,80,,,true);
-		draw_background_depth(spr_mountain,3,0.06	,,80,,,true);
-		draw_background_depth(spr_mountain,4,0.08	,,80,,,true);
-		draw_background_depth(spr_mountain,5,0.1	,,80,,,true);
+		draw_background_depth(spr_bg_original,0,0		,,,,,true);
+		draw_background_depth(spr_bg_original,1,0.01	,,,,,true);
+		draw_background_depth(spr_bg_original,2,0.04	,,80,,,true);
+		draw_background_depth(spr_bg_original,3,0.06	,,80,,,true);
+		draw_background_depth(spr_bg_original,4,0.08	,,80,,,true);
+		draw_background_depth(spr_bg_original,5,0.1	,,80,,,true);
 		
-		draw_background_depth(spr_mountain,6,0.12	,,200,,,true);
-		draw_background_depth(spr_mountain,7,0.15	,,200,,,true);	
+		draw_background_depth(spr_bg_original,6,0.12	,,200,,,true);
+		draw_background_depth(spr_bg_original,7,0.15	,,200,,,true);	
 	}
 	
 	with(obj_camera){
@@ -48,17 +50,50 @@ function set_background_up_mountain(){
 	}
 }
 
+function set_background_original(){
+	global.background = function(){
+		
+		with(obj_camera){
+			if(!surface_exists(bg_layer)){
+				bg_layer = surface_create(global.game_w,global.game_h);
+			}
+			surface_set_target(bg_layer);
+		
+			draw_clear(#162451);
+			draw_background_depth(spr_bg_original,0,0.05,0,0,1,1,true);
+			draw_background_depth(spr_bg_original,1,0.1 ,0,0,1,1,true);
+			draw_background_depth(spr_bg_original,2,0.15,0,0,1,1,true);
+			draw_background_depth(spr_bg_original,3,0.2 ,0,0,1,1,true);
+		
+			for (var i = 0; i < 16; ++i) {
+			    draw_sprite_tiled_area(spr_bg_ocean,0,(-global.camera.x+global.t)*(0.25+(i*0.05)),130,0,i*5+130,global.game_w,(i*5)+135);
+			}
+		
+			surface_reset_target();
+		
+			draw_surface(bg_layer,global.camera.get_x(),global.camera.get_y())
+		
+		  blur_steps_D		= 30.0;
+		  sigma_D			= 0.25699999928474426;
+		  bloom_threshold	= 0.80299997329711914;
+		  bloom_range		= 0.24699999392032623;
+		  bloom_intensity	= 0.15600000321865082;
+		  bloom_darken		= 0.95599997043609619;
+		  bloom_saturation	= 2.0;
+		}
+	}
+}
+
+#endregion
 
 function draw_background_depth(_sprite,_subimg,_depth,offset_x=0,offset_y=0,scalex=1,scaley=1,only_horizontal = false){
 	var cam_ = global.camera;
-	scalex *= stanncam_get_res_scale_x();
-	scaley *= stanncam_get_res_scale_y();
-		
+
 	//the offset the camera is from the middle of the room
-	offset_x += ((-cam_.get_x() -cam_.x_frac) * scalex)*_depth;
+	offset_x += (-cam_.get_x() * scalex)*_depth;
 		
 	if(!only_horizontal){
-		offset_y += ((-cam_.get_y() -cam_.y_frac) * scaley)*_depth;
+		offset_y += (-cam_.get_y() * scaley)*_depth;
 	}
 	
 	if(only_horizontal){

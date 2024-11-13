@@ -6,8 +6,8 @@
   "name":"obj_moving_platform_mid",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"platforms",
+    "path":"folders/Objects/level element/platforms.yy",
   },
   "parentObjectId":{
     "name":"obj_moving_platform",

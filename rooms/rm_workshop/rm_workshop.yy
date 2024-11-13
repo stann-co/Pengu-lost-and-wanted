@@ -1047,7 +1047,7 @@
           2,1073741831,1073741829,-105,0,-28,-2147483648,-14,0,-278,-2147483648,-180,0,-28,-2147483648,-14,0,-278,
           -2147483648,-180,0,-28,-2147483648,-14,0,-278,-2147483648,-180,0,-28,-2147483648,-14,0,-278,-2147483648,
           -180,0,-320,-2147483648,-180,0,-320,-2147483648,-180,0,-320,-2147483648,-180,0,-301,-2147483648,
-        ],"TileDataFormat":1,},"tilesetId":{"name":"ts_tubes","path":"tilesets/ts_tubes/ts_tubes.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
+        ],"TileDataFormat":1,},"tilesetId":null,"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
     {"$GMRAssetLayer":"","%Name":"foreground_sprites_1","assets":[],"depth":500,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"foreground_sprites_1","properties":[],"resourceType":"GMRAssetLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRTileLayer":"","%Name":"decor_01_A","depth":600,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":true,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":false,"layers":[],"name":"decor_01_A","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":125,"SerialiseWidth":500,"TileCompressedData":[
           -76,-2147483648,20,3,16,17,10,7,8,8,9,7,8,8,9,7,9,7,8,8,9,7,9,-3,0,-477,-2147483648,20,10,11,10,19,3,
@@ -1967,8 +1967,8 @@
   ],
   "name":"rm_workshop",
   "parent":{
-    "name":"Rooms",
-    "path":"folders/Rooms.yy",
+    "name":"map tryouts",
+    "path":"folders/Rooms/map tryouts.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

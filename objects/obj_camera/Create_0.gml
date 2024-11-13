@@ -19,23 +19,23 @@ global.background = function(){ //empty background function, gets replaced in ea
 
 zoom_level = 1;
 
-draw_sprite_layer = function(layer_name_,parralax_){
+//draw_sprite_layer = function(layer_name_,parralax_){
 	
-	var scalex = 1/stanncam_get_res_scale_x();
-	var scaley = 1/stanncam_get_res_scale_y();
+//	var scalex = 1/stanncam_get_res_scale_x();
+//	var scaley = 1/stanncam_get_res_scale_y();
 	
-	layer_name = layer_name_;
-	parralax = parralax_;
+//	layer_name = layer_name_;
+//	parralax = parralax_;
 	
-	if(layer_exists(layer_name)){
+//	if(layer_exists(layer_name)){
 		
-		global.camera.draw_special(function(){
+//		global.camera.draw_special(function(){
 			
-			draw_layer_parralaxed(layer_name,parralax);
+//			draw_layer_parralaxed(layer_name,parralax);
 			
-		},0,0,global.res_w,global.res_h,scalex,scaley);
-	}
-}
+//		},0,0,global.res_w,global.res_h,scalex,scaley);
+//	}
+//}
 	
 #region shader vars
 
@@ -84,6 +84,7 @@ bg_speed_x = 2;
 bg_speed_y = 0;
 bg_x = 0;
 bg_y = 0;
+bg_layer = -1
 
 #region debugging
 	//dbg_section("Shaders")

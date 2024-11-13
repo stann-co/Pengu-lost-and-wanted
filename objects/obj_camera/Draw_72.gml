@@ -1,12 +1,12 @@
 /// @description draw background
 
 
-var sprite = spr_bg_future_city;
-var x_ = global.camera.get_x() + bg_x;
-var y_ = global.camera.get_y() + bg_y;
+//var sprite = spr_bg_future_city;
+//var x_ = global.camera.get_x() + bg_x;
+//var y_ = global.camera.get_y() + bg_y;
 
-bg_x+=bg_speed_x;
-bg_y+=bg_speed_y;
+//bg_x+=bg_speed_x;
+//bg_y+=bg_speed_y;
 
 //draw_clear(white);
 
@@ -16,6 +16,7 @@ bg_y+=bg_speed_y;
 //draw_sprite_tiled(spr_bg_future_city,3,x_*0.6,y_*0.6);
 //draw_sprite_tiled(spr_bg_future_city,4,x_*0.5,y_);
 
+global.background()
 
 
 

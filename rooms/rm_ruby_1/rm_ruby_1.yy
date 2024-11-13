@@ -257,8 +257,8 @@
   ],
   "name":"rm_ruby_1",
   "parent":{
-    "name":"ruby",
-    "path":"folders/Rooms/map tryouts/ruby.yy",
+    "name":"map tryouts",
+    "path":"folders/Rooms/map tryouts.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

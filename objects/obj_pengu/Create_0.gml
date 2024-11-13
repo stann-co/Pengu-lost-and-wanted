@@ -138,7 +138,7 @@ spike_hurt = function(sensor_){
 	if(
 		sensor_ != noone &&
 		sensor_.inst != noone &&
-		sensor_.inst.object_index == obj_spikes &&
+		(object_is_ancestor(sensor_.inst.object_index,obj_spikes) or sensor_.inst.object_index == obj_spikes) &&
 		sensor_.side == "top" &&
 		invulnerable == 0
 	)

@@ -3639,7 +3639,7 @@
           34,35,268435491,268435490,34,35,268435491,268435490,34,35,268435491,268435490,34,35,268435491,268435490,
           34,35,268435491,268435490,34,35,268435491,268435490,34,35,268435491,268435490,34,35,268435491,268435490,
           34,35,268435491,268435490,-215,-2147483648,
-        ],"TileDataFormat":1,},"tilesetId":{"name":"ts_snow","path":"tilesets/ts_snow/ts_snow.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
+        ],"TileDataFormat":1,},"tilesetId":null,"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
     {"$GMRTileLayer":"","%Name":"decor_01_B","depth":500,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"decor_01_B","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":500,"SerialiseWidth":625,"TileCompressedData":[
           -188421,-2147483648,1,59,-10,60,1,268435515,-613,-2147483648,1,58,-10,57,1,268435514,-613,-2147483648,
           1,58,-10,57,1,268435514,-613,-2147483648,1,58,-10,57,1,268435514,-613,-2147483648,1,58,-10,57,1,268435514,
@@ -3899,7 +3899,7 @@
           73,72,-584,-2147483648,41,70,71,70,71,70,71,70,71,70,71,70,71,70,71,70,71,70,71,70,71,70,71,70,71,70,
           71,70,71,70,71,70,71,70,71,70,71,70,71,70,71,70,-584,-2147483648,41,72,73,72,73,72,73,72,73,72,73,72,
           73,72,73,72,73,72,73,72,73,72,73,72,73,72,73,72,73,72,73,72,73,72,73,72,73,72,73,72,73,72,-584,-2147483648,
-        ],"TileDataFormat":1,},"tilesetId":{"name":"ts_snow","path":"tilesets/ts_snow/ts_snow.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
+        ],"TileDataFormat":1,},"tilesetId":null,"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
     {"$GMRAssetLayer":"","%Name":"background_sprites_1","assets":[
         {"$GMRSpriteGraphic":"","%Name":"graphic_71DC02A4","animationSpeed":1.0,"colour":4294967295,"frozen":false,"headPosition":0.0,"ignore":false,"inheritedItemId":null,"inheritItemSettings":false,"name":"graphic_71DC02A4","resourceType":"GMRSpriteGraphic","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"spriteId":{"name":"spr_tree_blue1","path":"sprites/spr_tree_blue1/spr_tree_blue1.yy",},"x":1036.0,"y":7516.0,},
         {"$GMRSpriteGraphic":"","%Name":"graphic_6B65562","animationSpeed":1.0,"colour":4294967295,"frozen":false,"headPosition":0.0,"ignore":false,"inheritedItemId":null,"inheritItemSettings":false,"name":"graphic_6B65562","resourceType":"GMRSpriteGraphic","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"spriteId":{"name":"spr_tree_blue1","path":"sprites/spr_tree_blue1/spr_tree_blue1.yy",},"x":1261.0,"y":7512.0,},
@@ -3960,8 +3960,8 @@
   ],
   "name":"rm_up_mountain",
   "parent":{
-    "name":"Rooms",
-    "path":"folders/Rooms.yy",
+    "name":"map tryouts",
+    "path":"folders/Rooms/map tryouts.yy",
   },
   "parentRoom":null,
   "physicsSettings":{
