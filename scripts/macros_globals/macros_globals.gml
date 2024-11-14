@@ -58,3 +58,6 @@ global.debug = false;
 global.checkpoint = -1;
 
 global.score = 0;
+
+//when a layer get's set to a obj_layer_draw, it's added to this with the layer name as the key
+global.tile_draw_layers = ds_map_create()

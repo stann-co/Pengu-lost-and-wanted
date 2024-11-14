@@ -20,6 +20,13 @@ start_y_ = y;
 if(info_target != -1){
 	end_x_ = info_target.x;
 	end_y_ = info_target.y;
+	
+	//a target gets places at start, so even if the platform is out of view
+	//it's active as long as start or end pos is in view
+	var start_target = instance_create_depth(x,y,depth,obj_info_target);
+	
+	//if either self or target is in view, the platform will move
+	activation_link(self,info_target,start_target);
 }
 
 forward = true;

@@ -1,4 +1,4 @@
-function draw_sprite_cubemap(_sprite,_subimg,_x,_y,_texture,_n_strength = 0.5,_r_strength = 1,_scale = 1,_offset_scale = -0.25,_xscale=1,_yscale=1,_rot = 0){
+function draw_sprite_cubemap(_sprite,_subimg,_x,_y,_texture,_n_strength = 0.5,_r_strength = 1,_scale = 1,_offset_scale = -0.25,_xscale=1,_yscale=1,_rot = 0, _opacity = 1.0){
 	
 	var s_texture =	shader_get_sampler_index(sh_shine,"s_Texture");
 
@@ -8,11 +8,14 @@ function draw_sprite_cubemap(_sprite,_subimg,_x,_y,_texture,_n_strength = 0.5,_r
 	var u_dimensions			= shader_get_uniform(sh_shine,"u_dimensions");
 	var u_texture_offset		= shader_get_uniform(sh_shine,"u_texture_offset");
 	var u_texture_scale			= shader_get_uniform(sh_shine,"u_texture_scale");
+	var u_opacity				= shader_get_uniform(sh_shine,"u_opacity");
 	
 	var u_texcoord_n = shader_get_uniform(sh_shine,"u_texcoord_n");
 	var u_texcoord_r = shader_get_uniform(sh_shine,"u_texcoord_r");
 		
 	shader_set(sh_shine);
+	
+	shader_set_uniform_f(u_opacity,_opacity)
 	
 	var t_tex = sprite_get_texture(_texture,0);
 
@@ -63,7 +66,7 @@ function draw_sprite_cubemap(_sprite,_subimg,_x,_y,_texture,_n_strength = 0.5,_r
 	shader_reset();	
 }
 
-function draw_tilemap_cubemap(_tilemap,_texture,_n_strength = 0.5,_r_strength = 1 ,_scale = 1 ,_offset_scale = -0.25){
+function draw_tilemap_cubemap(_tilemap,_texture,_n_strength = 0.5,_r_strength = 1 ,_scale = 1 ,_offset_scale = -0.25, _opacity = 1.0){
 	
 	var _tileset = tilemap_get_tileset(_tilemap);
 	
@@ -75,11 +78,14 @@ function draw_tilemap_cubemap(_tilemap,_texture,_n_strength = 0.5,_r_strength = 
 	var u_dimensions			= shader_get_uniform(sh_shine,"u_dimensions");
 	var u_texture_offset		= shader_get_uniform(sh_shine,"u_texture_offset");
 	var u_texture_scale			= shader_get_uniform(sh_shine,"u_texture_scale");
+	var u_opacity				= shader_get_uniform(sh_shine,"u_opacity");
 	
 	var u_texcoord_n = shader_get_uniform(sh_shine,"u_texcoord_n");
 	var u_texcoord_r = shader_get_uniform(sh_shine,"u_texcoord_r");
 		
 	shader_set(sh_shine);
+	
+	shader_set_uniform_f(u_opacity,_opacity)
 	
 	var t_tex = sprite_get_texture(_texture,0);
 

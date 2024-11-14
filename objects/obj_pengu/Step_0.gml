@@ -92,7 +92,7 @@ if(controlled){
 			//clamps to top speed
 			ground_spd = clamp(ground_spd,-ground_top_speed,ground_top_speed);
 			
-		} else { //stop | apply friction
+		} else if(!place_meeting(x,y,obj_slippery)) { //stop | apply friction
 			ground_spd -= min(abs(ground_spd), friction_speed) * sign(ground_spd); //decelerate
 		}
 		
@@ -393,8 +393,7 @@ if(!state.state_is("edge") && !airborne && !sliding && (bl_sensor != noone xor b
 #region squish scale_x & scale_y
 if(squishing){
 	if(squishing_t != squishing_duration){
-		var channel = animcurve_get_channel(ac_squish,0);
-		var val = animcurve_channel_evaluate(channel, squishing_t/squishing_duration);
+		var val = animcurve_read(ac_squish,0,squishing_t/squishing_duration)
 		
 		scale_x = lerp(1,scale_x_squish,val);
 		scale_y = lerp(1,scale_y_squish,val);

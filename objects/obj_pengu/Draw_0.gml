@@ -1,17 +1,17 @@
 /// @description
 
-draw_sensor(x,y,vec_l,-90,sensor_length_base);
-draw_sensor(x,y,vec_r,+90,sensor_length_base);
+//draw_sensor(x,y,vec_l,-90,sensor_length_base);
+//draw_sensor(x,y,vec_r,+90,sensor_length_base);
 
 
-draw_sensor(x,y,vec_bl,0,sensor_length_base);
-draw_sensor(x,y,vec_b,0,sensor_length_base);
-draw_sensor(x,y,vec_br,0,sensor_length_base);
+//draw_sensor(x,y,vec_bl,0,sensor_length_base);
+//draw_sensor(x,y,vec_b,0,sensor_length_base);
+//draw_sensor(x,y,vec_br,0,sensor_length_base);
 
 
-draw_sensor(x,y,vec_tl,180,sensor_length_base);
-draw_sensor(x,y,vec_t, 180,sensor_length_base);
-draw_sensor(x,y,vec_tr,180,sensor_length_base);
+//draw_sensor(x,y,vec_tl,180,sensor_length_base);
+//draw_sensor(x,y,vec_t, 180,sensor_length_base);
+//draw_sensor(x,y,vec_tr,180,sensor_length_base);
 
 var invulnerable_flash = 0;
 if(invulnerable != 0){

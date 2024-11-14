@@ -9,6 +9,7 @@ uniform sampler2D s_Texture;
 uniform float u_normal_strength;
 uniform float u_roughness_strength;
 uniform float u_texture_scale;
+uniform float u_opacity;
 
 uniform vec2 u_dimensions;
 uniform vec2 u_texture_offset;
@@ -55,7 +56,7 @@ void main()
 
 	vec4 final = vec4(1.0,1.0,1.0,1.0);
 	final.rgb = blended;
-	final.a = basecol.a;
+	final.a = basecol.a * u_opacity;
 
 	//final.rgb = texture
 

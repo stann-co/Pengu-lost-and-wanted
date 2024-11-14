@@ -25,6 +25,8 @@ if(other_pole != noone) {
 	point4 = new Vector2( x+wire_x_offset, y+top_wire_y_offset);
 	
 	other_pole.other_pole = self.id;
+	
+	activation_link(self,other_pole);
 }
 else {
 	main_pole = false;

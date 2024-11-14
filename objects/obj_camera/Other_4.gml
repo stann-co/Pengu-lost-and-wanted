@@ -17,6 +17,7 @@
 //	layer_set_visible("foreground_sprites_2",false);
 //}
 
+ds_map_clear(global.tile_draw_layers)
 
 #region tiles
 
@@ -26,9 +27,11 @@ for (var i = 0; i < array_length(layers); ++i) {
     var lay = layers[i];
 	var name = layer_get_name(lay);
 	if(string_starts_with(name,"decor_")){
-		instance_create_depth(0,0,layer_get_depth(lay),obj_layer_draw,{
+		var layer_draw = instance_create_depth(0,0,layer_get_depth(lay),obj_layer_draw,{
 			lay: lay
 		});
+		ds_map_set(global.tile_draw_layers,name,layer_draw);
+		
 	}
 }
 

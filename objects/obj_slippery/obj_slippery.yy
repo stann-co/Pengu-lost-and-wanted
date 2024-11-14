@@ -1,15 +1,15 @@
 {
   "$GMObject":"",
-  "%Name":"obj_info_target",
+  "%Name":"obj_slippery",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_info_target",
+  "name":"obj_slippery",
   "overriddenProperties":[],
   "parent":{
-    "name":"level element",
-    "path":"folders/Objects/level element.yy",
+    "name":"Objects",
+    "path":"folders/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,
@@ -30,8 +30,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_info_target",
-    "path":"sprites/spr_info_target/spr_info_target.yy",
+    "name":"spr_slippery",
+    "path":"sprites/spr_slippery/spr_slippery.yy",
   },
   "spriteMaskId":null,
   "visible":true,
