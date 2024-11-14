@@ -4,13 +4,17 @@
 triggered = false;
 
 trigger = function(){
-	if(!triggered){
+	var on_layer = false
+	if(depth_layer == "A"){
+		on_layer = (global.tile_collisions == layer_tilemap_get_id(obj_game.collision_A))
+	} else {
+		on_layer = (global.tile_collisions == layer_tilemap_get_id(obj_game.collision_B))
+	}
+	
+	if(!triggered && on_layer){
 		triggered = true;
 		with(obj_pengu){
 			if(state.state_is("prone")){
-				
-				//x += lengthdir_x(6,ground_angle+90);
-				//y += lengthdir_y(6,ground_angle+90);
 				
 				mirror = -mirror;
 				

@@ -213,7 +213,7 @@ vec_tl = new Vector2(0,0); //top left
 vec_tr = new Vector2(0,0); //top right
 
 sensor_angle = 0;
-sensor_length_base = 8;
+sensor_length_base = 16;
 
 #endregion
 

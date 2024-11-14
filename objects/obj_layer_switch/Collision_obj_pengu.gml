@@ -31,5 +31,3 @@ if(ground_check){
 
 
 
-
-

@@ -803,8 +803,8 @@
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
-    {"roomId":{"name":"rm_1_pico","path":"rooms/rm_1_pico/rm_1_pico.yy",},},
     {"roomId":{"name":"rm_level_1","path":"rooms/rm_level_1/rm_level_1.yy",},},
+    {"roomId":{"name":"rm_1_pico","path":"rooms/rm_1_pico/rm_1_pico.yy",},},
     {"roomId":{"name":"rm_level_template","path":"rooms/rm_level_template/rm_level_template.yy",},},
     {"children":[
         {"roomId":{"name":"rm_workshop","path":"rooms/rm_workshop/rm_workshop.yy",},},
