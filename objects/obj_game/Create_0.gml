@@ -457,17 +457,6 @@ show_collisions = function(){
 	}
 }	
 
-#region fmod
-
-var max_channels_ = 1024;
-var fmod_flags_ = FMOD_INIT.NORMAL;
-fmod_system = fmod_system_create();
-fmod_system_init(max_channels_,fmod_flags_);
-
-//fmod_system_create_sound()
-
-#endregion
-
 #region
 //debugging variables
 	//#region levels
