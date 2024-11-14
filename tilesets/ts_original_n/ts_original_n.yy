@@ -28,10 +28,10 @@
   "resourceType":"GMTileSet",
   "resourceVersion":"2.0",
   "spriteId":{
-    "name":"spr_ts_original",
-    "path":"sprites/spr_ts_original/spr_ts_original.yy",
+    "name":"spr_ts_original_n",
+    "path":"sprites/spr_ts_original_n/spr_ts_original_n.yy",
   },
-  "spriteNoExport":false,
+  "spriteNoExport":true,
   "textureGroupId":{
     "name":"Default",
     "path":"texturegroups/Default",

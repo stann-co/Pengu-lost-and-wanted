@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"draw_sprite_ext_cubemap",
+  "%Name":"draw_cubemap",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"draw_sprite_ext_cubemap",
+  "name":"draw_cubemap",
   "parent":{
     "name":"draw",
     "path":"folders/Scripts/draw.yy",

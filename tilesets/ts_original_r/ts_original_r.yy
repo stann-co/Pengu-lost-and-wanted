@@ -31,7 +31,7 @@
     "name":"spr_ts_original_r",
     "path":"sprites/spr_ts_original_r/spr_ts_original_r.yy",
   },
-  "spriteNoExport":false,
+  "spriteNoExport":true,
   "textureGroupId":{
     "name":"Default",
     "path":"texturegroups/Default",
