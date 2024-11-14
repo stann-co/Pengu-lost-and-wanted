@@ -194,10 +194,13 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 			var new_contact_vec = contact_vec.rotated(-(inst.image_angle - inst.angle_previous));
 			
 			var rot_x = new_contact_vec.x - contact_vec.x;
-			var rot_y = new_contact_vec.y - contact_vec.y;
+			//var rot_y = new_contact_vec.y - contact_vec.y;
 			
-			info.x_change = (inst.x - inst.xprevious) + rot_x;	
-			info.y_change = (inst.y - inst.yprevious) + rot_y;
+			var x_change = (inst.x - inst.xprevious) + rot_x;
+			//var y_change = (inst.y - inst.yprevious) + rot_y;
+			
+			info.x += x_change
+			//info.y += y_change
 			
 			if(!inst.standing_on){
 				inst.standing_on = true;

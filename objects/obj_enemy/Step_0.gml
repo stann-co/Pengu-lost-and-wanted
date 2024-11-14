@@ -37,9 +37,11 @@ if(!hurting){
 	}
 	
 	if(side_sensor != noone && side_sensor.distance < 1){
-		x+= side_sensor.x;
-		y+= side_sensor.y;
-		touch_wall();
+		if(abs(angle_difference(side_sensor.angle,ground_angle)) >= 50){
+			x+= side_sensor.x;
+			y+= side_sensor.y;
+			touch_wall();
+		}
 	}
 	#endregion
 	

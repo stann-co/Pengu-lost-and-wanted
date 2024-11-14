@@ -5,7 +5,9 @@
     {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
   "configs":{
-    "children":[],
+    "children":[
+      {"children":[],"name":"NewConfig1",},
+    ],
     "name":"Default",
   },
   "defaultScriptType":1,
@@ -93,6 +95,7 @@
     {"$GMFolder":"","%Name":"original","folderPath":"folders/Sprites/backgrounds/original.yy","name":"original","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"decorations","folderPath":"folders/Sprites/decorations.yy","name":"decorations","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"enemies","folderPath":"folders/Sprites/enemies.yy","name":"enemies","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"seal","folderPath":"folders/Sprites/enemies/seal.yy","name":"seal","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"toybot","folderPath":"folders/Sprites/enemies/toybot.yy","name":"toybot","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"level elements","folderPath":"folders/Sprites/level elements.yy","name":"level elements","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"cars","folderPath":"folders/Sprites/level elements/cars.yy","name":"cars","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -125,7 +128,7 @@
     {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
   ],
   "MetaData":{
-    "IDEVersion":"2024.8.0.169",
+    "IDEVersion":"2024.8.1.171",
   },
   "name":"Pengu Actually Saves Christmas",
   "resources":[
@@ -158,10 +161,12 @@
     {"id":{"name":"obj_collision_activate","path":"objects/obj_collision_activate/obj_collision_activate.yy",},},
     {"id":{"name":"obj_collision_oneway","path":"objects/obj_collision_oneway/obj_collision_oneway.yy",},},
     {"id":{"name":"obj_collision","path":"objects/obj_collision/obj_collision.yy",},},
+    {"id":{"name":"obj_cubemap_test_export","path":"objects/obj_cubemap_test_export/obj_cubemap_test_export.yy",},},
     {"id":{"name":"obj_cubemap_test","path":"objects/obj_cubemap_test/obj_cubemap_test.yy",},},
     {"id":{"name":"obj_depth_set","path":"objects/obj_depth_set/obj_depth_set.yy",},},
     {"id":{"name":"obj_destructible_block","path":"objects/obj_destructible_block/obj_destructible_block.yy",},},
     {"id":{"name":"obj_enemy_block","path":"objects/obj_enemy_block/obj_enemy_block.yy",},},
+    {"id":{"name":"obj_enemy_seal","path":"objects/obj_enemy_seal/obj_enemy_seal.yy",},},
     {"id":{"name":"obj_enemy_snowman","path":"objects/obj_enemy_snowman/obj_enemy_snowman.yy",},},
     {"id":{"name":"obj_enemy_toybot","path":"objects/obj_enemy_toybot/obj_enemy_toybot.yy",},},
     {"id":{"name":"obj_enemy","path":"objects/obj_enemy/obj_enemy.yy",},},
@@ -717,6 +722,7 @@
     {"id":{"name":"spr_mech_body","path":"sprites/spr_mech_body/spr_mech_body.yy",},},
     {"id":{"name":"spr_mech_example","path":"sprites/spr_mech_example/spr_mech_example.yy",},},
     {"id":{"name":"spr_mech_foot","path":"sprites/spr_mech_foot/spr_mech_foot.yy",},},
+    {"id":{"name":"spr_normal_noise","path":"sprites/spr_normal_noise/spr_normal_noise.yy",},},
     {"id":{"name":"spr_paper_pile","path":"sprites/spr_paper_pile/spr_paper_pile.yy",},},
     {"id":{"name":"spr_particle_block_a","path":"sprites/spr_particle_block_a/spr_particle_block_a.yy",},},
     {"id":{"name":"spr_particle_icicle","path":"sprites/spr_particle_icicle/spr_particle_icicle.yy",},},
@@ -746,6 +752,8 @@
     {"id":{"name":"spr_platform_workshop_mid","path":"sprites/spr_platform_workshop_mid/spr_platform_workshop_mid.yy",},},
     {"id":{"name":"spr_platform_workshop","path":"sprites/spr_platform_workshop/spr_platform_workshop.yy",},},
     {"id":{"name":"spr_points","path":"sprites/spr_points/spr_points.yy",},},
+    {"id":{"name":"spr_seal_hurt","path":"sprites/spr_seal_hurt/spr_seal_hurt.yy",},},
+    {"id":{"name":"spr_seal","path":"sprites/spr_seal/spr_seal.yy",},},
     {"id":{"name":"spr_skilift_pole","path":"sprites/spr_skilift_pole/spr_skilift_pole.yy",},},
     {"id":{"name":"spr_skilift_seat","path":"sprites/spr_skilift_seat/spr_skilift_seat.yy",},},
     {"id":{"name":"spr_snow_pile","path":"sprites/spr_snow_pile/spr_snow_pile.yy",},},
@@ -803,8 +811,8 @@
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
-    {"roomId":{"name":"rm_level_1","path":"rooms/rm_level_1/rm_level_1.yy",},},
     {"roomId":{"name":"rm_1_pico","path":"rooms/rm_1_pico/rm_1_pico.yy",},},
+    {"roomId":{"name":"rm_level_1","path":"rooms/rm_level_1/rm_level_1.yy",},},
     {"roomId":{"name":"rm_level_template","path":"rooms/rm_level_template/rm_level_template.yy",},},
     {"children":[
         {"roomId":{"name":"rm_workshop","path":"rooms/rm_workshop/rm_workshop.yy",},},
@@ -818,6 +826,12 @@
   ],
   "templateType":"game",
   "TextureGroups":[
-    {"$GMTextureGroup":"","%Name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"Default","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMTextureGroup":"","%Name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","ConfigValues":{
+        "NewConfig1":{
+          "groupParent":"null",
+          "compressFormat":"bz2",
+          "loadType":"default",
+        },
+      },"customOptions":"","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"name":"Default","resourceType":"GMTextureGroup","resourceVersion":"2.0","targets":-1,},
   ],
 }

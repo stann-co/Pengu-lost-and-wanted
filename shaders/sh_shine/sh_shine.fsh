@@ -54,8 +54,10 @@ void main()
 	vec3 blended = blendScreen(basecol.rgb,texture,roughness * u_roughness_strength);
 
 	vec4 final = vec4(1.0,1.0,1.0,1.0);
-	final.rgb = blended;
-	final.a = basecol.a;
+	//final.rgb = blended;
+	//final.a = basecol.a;
+
+	final.rgb = texture
 
 	gl_FragColor = final;
 }

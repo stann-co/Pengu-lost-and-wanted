@@ -281,11 +281,8 @@ if(on_land) on_land = false;
 		//if airborne, you only get snapped to the ground, when sensor is inside the ground
 		if(updown_sensor != noone && ( !airborne || (airborne && updown_sensor.y < 0) )){
 			
-			x+= updown_sensor.x;
-			y+= updown_sensor.y;
-			
-			x+=updown_sensor.x_change;
-			y+=updown_sensor.y_change;
+			x+= updown_sensor.x
+			y+= updown_sensor.y
 			
 			ground_angle = updown_sensor.angle;	
 			
@@ -381,7 +378,6 @@ if(airborne){
 	}
 }
 
-
 	
 #region edge slipping animation
 if(!state.state_is("edge") && !airborne && !sliding && (bl_sensor != noone xor br_sensor != noone) && !point_sensor(vec_b) && ground_angle == 0 && ground_spd == 0){
@@ -395,20 +391,20 @@ if(!state.state_is("edge") && !airborne && !sliding && (bl_sensor != noone xor b
 }
 
 #region squish scale_x & scale_y
-//if(squishing){
-//	if(squishing_t != squishing_duration){
-//		var channel = animcurve_get_channel(ac_squish,0);
-//		var val = animcurve_channel_evaluate(channel, squishing_t/squishing_duration);
-//		
-//		scale_x = lerp(1,scale_x_squish,val);
-//		scale_y = lerp(1,scale_y_squish,val);
-//		
-//		squishing_t++;
-//	} else squishing = false;	
-//}
+if(squishing){
+	if(squishing_t != squishing_duration){
+		var channel = animcurve_get_channel(ac_squish,0);
+		var val = animcurve_channel_evaluate(channel, squishing_t/squishing_duration);
+		
+		scale_x = lerp(1,scale_x_squish,val);
+		scale_y = lerp(1,scale_y_squish,val);
+		
+		squishing_t++;
+	} else squishing = false;	
+}
 
-scale_x = 1//lerp(scale_x,1,0.12);
-scale_y = 1//lerp(scale_y,1,0.12);
+//scale_x = lerp(scale_x,1,0.5);
+//scale_y = lerp(scale_y,1,0.5);
 #endregion
 
 if(image_to_ground_angle){

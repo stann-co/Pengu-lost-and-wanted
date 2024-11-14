@@ -60,8 +60,8 @@ if(can_move){
 		var val = animcurve_read(animcurve,animcurve_channel,clamp_t/duration);
 		
 		if(info_target != -1){
-			x = lerp(start_x_,end_x_,val);
-			y = lerp(start_y_,end_y_,val);
+			x = round(lerp(start_x_,end_x_,val));
+			y = round(lerp(start_y_,end_y_,val));
 		}
 		
 		if(end_rotation != 0){

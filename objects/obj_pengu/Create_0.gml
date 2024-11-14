@@ -170,7 +170,7 @@ hurt = function(x_side = 0){
 ///@param scale_x_
 ///@param scale_y_
 ///@param duration
-squish = function(scale_x_,scale_y_,duration = game_speed*0.8){
+squish = function(scale_x_,scale_y_,duration = game_speed*0.4){
 	scale_x = scale_x_;
 	scale_y = scale_y_;
 	scale_x_squish = scale_x_;
@@ -360,7 +360,7 @@ state = new SnowState("idle");
 			
 			mirror = -mirror;
 			
-			//squish(1.2,0.8);
+			squish(1.2,0.8);
 	    },
 		step:function(){
 			if(animation_end(sprite_index,subimg)){
@@ -497,7 +497,7 @@ state = new SnowState("idle");
 			
 			image_angle -= 90 * dsin(ground_angle);
 			
-			squish(0.4,1.4,game_speed*1);
+			squish(0.4,1.4,game_speed*0.4);
 			
 			//when jumping from a slide you start rotated
 			if(state.get_previous_state() == "sliding"){
@@ -619,7 +619,7 @@ state = new SnowState("idle");
 			y_speed = -double_jump_force;	
 			x_speed *= 0.6;
 	
-			squish(0.4,1.4,game_speed*1);
+			squish(0.4,1.4,game_speed*0.4);
 			
 			audio_play_sound_random(0,0,snd_wingflap1,snd_wingflap2);
 	    },
@@ -744,7 +744,7 @@ state = new SnowState("idle");
 			sprite_index = spr_pengu_dash;
 			ground_spd = dash_ground_force * mirror
 			
-			squish(1.2,1.2,game_speed*0.2);
+			squish(1.2,1.2,game_speed*0.8);
 			
 			t = 0;
 			
