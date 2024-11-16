@@ -1,3 +1,13 @@
 /// @description sets depth
-if(depth_layer == "A") depth = global.depth_a+10;
-else depth = global.depth_b+10;
+switch (depth_layer) {
+    case "A":
+        depth = global.depth_a+10;
+        break;
+	case "B":
+        depth = global.depth_b+10;
+        break;
+	case "C":
+        depth = global.depth_c+10;
+        break;
+}
+

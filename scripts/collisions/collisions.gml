@@ -54,8 +54,10 @@ function point_sensor(vec){
 ///@param dir 0 is down
 ///@param extention_dist
 ///@param regression_dist
-///@param delta {float} how much the scan point should move when scanning lower is more accurate but slower
-function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,delta = 1){
+function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist){
+	
+	var delta = 1;
+	
 	var vec_ext = new Vector2(0,extention_dist);
 		vec_ext = vec_ext.rotated(-dir);
 		
@@ -87,7 +89,8 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 				angle : angle,
 				vec_sensor : vec_sensor
 			}
-		} else return noone;
+		} else 
+		return noone;
 	} else {			//extension - outside collision
 		
 		var vec_end = vec_start.add(vec_ext);
@@ -110,7 +113,8 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist,de
 				vec_sensor : vec_sensor
 			}
 			
-		} else return noone;
+		} else 
+		return noone;
 	}
 	#endregion
 	

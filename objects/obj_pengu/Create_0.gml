@@ -17,7 +17,7 @@ normal_deceleration_speed = 0.2;
 normal_friction_speed = 0.24;
 normal_top_speed = 3;
 
-slide_acceleration_speed = 0.03;
+slide_acceleration_speed = 0.01;
 slide_deceleration_speed = 0.4;
 slide_friction_speed = 0.08;
 slide_top_speed = 10;
@@ -52,8 +52,8 @@ dash_ground_windup = game_speed*1; //you can hold it down longer, but after this
 
 rotation_speed = 0.0215 * 2; //when going airborne how fast you rotate to be back upright
 
-normal_slope_factor = 0.215;
-slide_slope_factor = 0.425;
+normal_slope_factor = 0.129;
+slide_slope_factor  = 0.255;
 slope_factor = normal_slope_factor;
 
 acceleration_speed = normal_acceleration_speed;
@@ -69,8 +69,8 @@ force_slide_angle = 45; //if you walk on an incline above this angle you're forc
 
 force_detatch_angle = 120;
 
-ground_slip_min_spd = 2 //if abs ground_speed is less than this, and on steep slopes you will start slipping or even detatching
-ground_slip_min_spd_ceiling = 4
+ground_slip_min_spd = 4 //if abs ground_speed is less than this, and on steep slopes you will start slipping or even detatching
+ground_slip_min_spd_ceiling = 5
 
 force_slide_angle_ceiling = 170; //above this angle ground_slip_min_spd_ceiling is used
 
@@ -213,7 +213,7 @@ vec_tl = new Vector2(0,0); //top left
 vec_tr = new Vector2(0,0); //top right
 
 sensor_angle = 0;
-sensor_length_base = 16;
+sensor_length_base = 8;
 
 #endregion
 

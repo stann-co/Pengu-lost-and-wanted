@@ -46,11 +46,3 @@ if(can_move){
 		}
 	}
 }
-
-//browser specific
-if(os_browser != browser_not_a_browser){
-	if mouse_check_button(mb_any) {
-		WindowFocus();
-		show_debug_message(os_type)
-	}
-}

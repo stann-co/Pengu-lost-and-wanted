@@ -2,7 +2,7 @@
   "$GMSprite":"",
   "%Name":"spr_ts_winter_r",
   "bboxMode":0,
-  "bbox_bottom":175,
+  "bbox_bottom":351,
   "bbox_left":0,
   "bbox_right":191,
   "bbox_top":0,
@@ -12,14 +12,14 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"7cbfda93-c471-4f5d-b2a8-50a3a65acb7a","name":"7cbfda93-c471-4f5d-b2a8-50a3a65acb7a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"","%Name":"2bcfbe62-0748-4fe1-943e-dc95b229c775","name":"2bcfbe62-0748-4fe1-943e-dc95b229c775","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
-  "height":176,
+  "height":352,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"54b512bf-c6c4-4f9f-a0ab-38d0ce6f5281","blendMode":0,"displayName":"default","isLocked":false,"name":"54b512bf-c6c4-4f9f-a0ab-38d0ce6f5281","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"951d8d36-b124-43e8-bb64-9ae80ee82e90","blendMode":0,"displayName":"default","isLocked":false,"name":"951d8d36-b124-43e8-bb64-9ae80ee82e90","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_ts_winter_r",
   "nineSlice":null,
@@ -69,8 +69,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"7cbfda93-c471-4f5d-b2a8-50a3a65acb7a","path":"sprites/spr_ts_winter_r/spr_ts_winter_r.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"b287ae2e-a9b3-46c8-9ecd-aec314033254","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"2bcfbe62-0748-4fe1-943e-dc95b229c775","path":"sprites/spr_ts_winter_r/spr_ts_winter_r.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"bde927ee-6749-4b66-a1c4-462033d1997a","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
