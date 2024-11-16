@@ -1,0 +1,1 @@
+//set_background_up_mountain()
