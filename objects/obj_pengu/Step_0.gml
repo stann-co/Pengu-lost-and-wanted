@@ -66,6 +66,11 @@ if(controlled){
 			state.change("begin_slide")
 		}
 		
+		var slippery = 1;
+		if(place_meeting(x,y,obj_slippery)){
+			slippery = slippery_multiplier
+		}
+		
 		if(input_h != 0){
 			//if top speed has already been exceeded before this event
 			//that becomes the new temporary top speed
@@ -74,15 +79,14 @@ if(controlled){
 			else ground_top_speed = top_speed;
 			ground_top_speed = min(ground_top_speed,absolute_top_speed);
 			
-			
 		    //if pressing in the opposite direction of ground_spd it decelerates
 			if(ground_spd != 0 && sign(ground_spd) != input_h){ //decelerates
 				
 				//deceleration speed is a bit higher than acceleration speed. but it's only used if ground_speed has already surpassed it
 				if(abs(ground_spd) >= deceleration_speed){
-					ground_spd += deceleration_speed * input_h;
+					ground_spd += deceleration_speed * input_h * slippery;
 				} else {
-					ground_spd += acceleration_speed * input_h;
+					ground_spd += acceleration_speed * input_h * slippery;
 				}
 				
 			} else { //accelerate
@@ -92,7 +96,7 @@ if(controlled){
 			//clamps to top speed
 			ground_spd = clamp(ground_spd,-ground_top_speed,ground_top_speed);
 			
-		} else if(!place_meeting(x,y,obj_slippery)) { //stop | apply friction
+		} else if(slippery == 1) { //stop | apply friction
 			ground_spd -= min(abs(ground_spd), friction_speed) * sign(ground_spd); //decelerate
 		}
 		
