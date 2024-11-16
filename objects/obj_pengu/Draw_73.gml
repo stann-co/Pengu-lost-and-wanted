@@ -7,7 +7,6 @@ if(global.debug){
 	//left
 	if(ground_spd < 0 || airborne){
 		draw_set_color(cyan);
-		draw_sensor(x,y,vec_l,snap_to_90(sensor_angle)-90, sensor_length_base);
 		draw_sensor(x,y,vec_l,snap_to_90(sensor_angle)-90,-sensor_length_base);
 		
 		draw_set_color(white);
@@ -18,7 +17,6 @@ if(global.debug){
 	//right
 	if(ground_spd > 0 || airborne){
 		draw_set_color(orange);
-		draw_sensor(x,y,vec_r,snap_to_90(sensor_angle)+90, sensor_length_base);
 		draw_sensor(x,y,vec_r,snap_to_90(sensor_angle)+90,-sensor_length_base);
 		
 		draw_set_color(white);
@@ -31,12 +29,16 @@ if(global.debug){
 	#region bottom
 	if(true){
 		//bottom left
-		draw_set_color(red);
+		if(sensor(vec_bl,snap_to_90(sensor_angle),sensor_length_base,sensor_length_base)){
+			draw_set_color(orange);
+		} else draw_set_color(white);
 		draw_sensor(x,y,vec_bl,snap_to_90(sensor_angle), sensor_length_base);
 		draw_sensor(x,y,vec_bl,snap_to_90(sensor_angle),-sensor_length_base);
 		
 		//bottom right
-		draw_set_color(blue);
+		if(sensor(vec_br,snap_to_90(sensor_angle),sensor_length_base,sensor_length_base)){
+			draw_set_color(blue);
+		} else draw_set_color(white);
 		draw_sensor(x,y,vec_br,snap_to_90(sensor_angle), sensor_length_base);
 		draw_sensor(x,y,vec_br,snap_to_90(sensor_angle),-sensor_length_base);
 		

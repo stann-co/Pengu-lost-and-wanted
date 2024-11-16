@@ -8,9 +8,9 @@ saved_pengu = {
 }
 save_text = false;
 taken_points = [];
-active_collisions_A = true;
-background_sprites = [];
-foreground_sprites = [];
+active_collisions = -1;
+//background_sprites = [];
+//foreground_sprites = [];
 //loads settings or initializes the default ones
 settings_load();
 
@@ -220,6 +220,14 @@ state.add("pause_menu",{
 		if(input_check_pressed("cancel")){
 			//audio_play_sound(snd_ui_decline,0,0);
 			state.change("idle");
+		}
+		
+		if(keyboard_check_pressed(vk_f1)){
+			state.change("idle");
+			show_debug_message("frame step through")
+			call_later(2,time_source_units_frames,function(){
+				state.change("pause_menu");		
+			})
 		}
 	},
 	draw: function(){		
@@ -441,19 +449,36 @@ state.add("settings",{
 
 #region debugging
 
-show_collisions = function(){
-	layer_set_visible(collision_A,false);
-	layer_set_visible(collision_B,false);	
-	layer_set_visible("backgrounds_1",false);
-	
+show_collisions = function(){	
 	if(global.debug){
+		layer_set_visible(collision_A,true);
+		layer_set_visible(collision_B,true);
+		layer_set_visible(collision_C,true);
 		layer_set_visible("backgrounds_1",true);
 		
-		if(active_collisions_A){
-			layer_set_visible(collision_A,true);
-		}else{
-			layer_set_visible(collision_B,true);
+		switch (active_collisions) {
+		    case collision_A:
+		        layer_shader(collision_A,sh_default)
+				layer_shader(collision_B,sh_half_alpha)
+				layer_shader(collision_C,sh_half_alpha)
+		        break;
+			case collision_B:
+		        layer_shader(collision_A,sh_half_alpha)
+				layer_shader(collision_B,sh_default)
+				layer_shader(collision_C,sh_half_alpha)
+		        break;
+			case collision_C:
+		        layer_shader(collision_A,sh_half_alpha)
+				layer_shader(collision_B,sh_half_alpha)
+				layer_shader(collision_C,sh_default)
+		        break;
 		}
+		
+	} else {
+		layer_set_visible(collision_A,false);
+		layer_set_visible(collision_B,false);
+		layer_set_visible(collision_C,false);
+		layer_set_visible("backgrounds_1",false);
 	}
 }	
 
@@ -501,4 +526,5 @@ show_collisions = function(){
 	//dbg_watch(ref_create(__obj_stanncam_manager, "keep_aspect_ratio"), "keep_aspect_ratio"); 
 	//#endregion
 
+#endregion
 #endregion

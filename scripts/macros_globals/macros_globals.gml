@@ -29,7 +29,12 @@
 
 #macro normal_blank #8080F9
 
-
+//enums
+enum COLLISION_LAYERS {
+	A,
+	B,
+	C,
+}
 
 //globals
 global.t = 0; //a global timer for different objects to refer to stay in sync even after being deactivated
@@ -46,11 +51,11 @@ global.tile_angles = [
  15, 45,  7, 22, 45, 30, 15, 15,
  30,
  
- 
 ];
 
 global.depth_a = 300;
 global.depth_b = 400;
+global.depth_c = 500;
 
 global.activation_list = [];
 

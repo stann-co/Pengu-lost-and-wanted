@@ -155,228 +155,235 @@ else {
 }
 	#endregion
 	
-	x+=x_speed;
-	y+=y_speed;
+	if(on_land) on_land = false;
 	
-	//when airborne sensors aren't rotated at all
-	sensor_angle = (airborne) ? 0 : ground_angle;
+	var substeps = 1
+	if(!airborne) substeps += abs(ground_spd) div 10;
+	//additional substeps if you are going fast
 	
+	repeat(substeps){
 	
-	//super speed 
-	if(abs(ground_spd) >= super_speed_threshold && !super_speed){
-		super_speed = true;
-		super_speed_fadeout = super_speed_fadeout_time;
-		super_speed_trace_arr = [];
-	} else
+		x+=x_speed / substeps;
+		y+=y_speed / substeps;
 	
-	if(super_speed){		
-		var abs_speed = airborne ? point_distance(0,0,x_speed,y_speed) : abs(ground_spd);
-		if(abs_speed < super_speed_min){
-			super_speed = false;
-		}
-	} else{
-		if(super_speed_fadeout != 0){
-			super_speed_fadeout--;
-		}
-	}
+		//when airborne sensors aren't rotated at all
+		sensor_angle = (airborne) ? 0 : ground_angle;
 	
 	
-#region push sensors
-var push_sensor = noone;
-
-//push sensors start from the center of the player if sliding or airborne
-var push_height = (sliding || airborne) ? 0 : -8;
-
-
-if((!airborne && ground_spd < 0) || airborne) { //left
-	vec_l = new Vector2(-w_radius,push_height);
-	vec_l = vec_l.rotated(-snap_to_90(sensor_angle));
-	if(airborne){
-		push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,sensor_length_base,abs(x_speed));
-	} else {
-		push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,sensor_length_base,abs(ground_spd));
-	}
-	
-	if(push_sensor != noone && push_sensor.distance < 1 && !sensor_is_oneway(push_sensor)){		
-		if(sensor_is_destructible(push_sensor) && abs(ground_spd) > 5){
-		//destructible blocks don't stop you if you're fast enough
-			push_sensor.inst.trigger();
-				
-		} else {
-			x+= push_sensor.x;
-			y+= push_sensor.y;
-			
-			spike_hurt(push_sensor);
-			
-			if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
-				if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
-				ground_spd = 0;
-				x_speed = 0;
-			}
-		}
-	} 
-}  
-
-if((!airborne && ground_spd > 0) || airborne){ //right
-	vec_r = new Vector2(w_radius,push_height);
-	vec_r = vec_r.rotated(-snap_to_90(sensor_angle));
-	if(airborne){
-		push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,sensor_length_base,abs(x_speed));
-	} else {
-		push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,sensor_length_base,abs(ground_spd));
-	}
-	
-	if(push_sensor != noone && push_sensor.distance < 1 && !sensor_is_oneway(push_sensor)){		
-		if(sensor_is_destructible(push_sensor) && abs(ground_spd) > 5){
-		//destructible blocks don't stop you if you're fast enough
-			push_sensor.inst.trigger();
-				
-		} else {
-			x+= push_sensor.x;
-			y+= push_sensor.y;
-			
-			spike_hurt(push_sensor);
-			
-			if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
-				if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
-				ground_spd = 0;
-				x_speed = 0;
-			}
-		}
-	} 
-}
-
-
-#endregion
-	
-if(on_land) on_land = false;
-#region ground sensors
-	if(!airborne || (airborne && y_speed > 0)){
-		//bottom
-		vec_b = new Vector2(0,h_radius+1);
-		vec_b = vec_b.rotated(-snap_to_90(sensor_angle));
-		//bottom left
-		vec_bl = new Vector2(-w_radius,h_radius);
-		vec_bl = vec_bl.rotated(-snap_to_90(sensor_angle));
-		//bottom right
-		vec_br = new Vector2(w_radius,h_radius);
-		vec_br = vec_br.rotated(-snap_to_90(sensor_angle));
-		
-		var sensor_length = airborne ? sensor_length_base+y_speed : sensor_length_base;
-		
-		var bl_sensor = sensor(vec_bl,snap_to_90(sensor_angle),sensor_length_base,sensor_length);
-		var br_sensor = sensor(vec_br,snap_to_90(sensor_angle),sensor_length_base,sensor_length);
-		
-		//sensors check which is closest to the ground
-		var updown_sensor = noone;
-		
-			if(bl_sensor != noone && br_sensor != noone){
-				//if both sensors collide, the one with the shortest distance wins
-				if(bl_sensor.distance < br_sensor.distance) updown_sensor = bl_sensor;
-				else updown_sensor = br_sensor;	
-			}
-			else if(bl_sensor != noone) updown_sensor = bl_sensor;
-			else if(br_sensor != noone) updown_sensor = br_sensor;
-		
-		//if airborne, you only get snapped to the ground, when sensor is inside the ground
-		if(updown_sensor != noone && ( !airborne || (airborne && updown_sensor.y < 0) )){
-			
-			x+= updown_sensor.x
-			y+= updown_sensor.y
-			
-			ground_angle = updown_sensor.angle;	
-			
-			var spikes = spike_hurt(updown_sensor)
-			if(!spikes && airborne){ //just as you land from being airborne
-				image_to_ground_angle = true;
-				airborne = false;
-				on_land = true;
-				dash_air_count = 0;
-				double_jump_count = 0;
-				set_ground_spd_from_air_spd();
-			}
-
-			
-			if(sensor_is_falling_platform(updown_sensor)){
-				updown_sensor.inst.trigger();
-			} else
-			
-			if(updown_sensor.inst != noone && object_is_ancestor(updown_sensor.inst.object_index,obj_moving_platform) && (ground_angle >= 90 && ground_angle <= 270)){
-				state.change("begin_fall");	
-			}
-
-		} else if(!airborne){ //going off ledges
-			airborne = true;
-			
-			if(sliding){ //when sliding off a surface, you are angled
-				if(ground_spd > 0){
-					image_angle -= 90;
-					mirror = 1;
-				} else{
-					image_angle += 90;
-					mirror = -1;
-				}
-			}	
-			//falling
-			if(y_speed < 0) state.change("fall_up");
-			else state.change("begin_fall");
-		}
-	} else
-	
-	#endregion
-	
-	if(on_ceiling) on_ceiling = false;
-#region ceiling sensors
-if(airborne){
-	//top
-	vec_t = new Vector2(0,-h_radius-1);
-	vec_t = vec_t.rotated(-snap_to_90(sensor_angle));
-	//top left
-	vec_tl = new Vector2(-w_radius,-h_radius);
-	vec_tl = vec_tl.rotated(-snap_to_90(sensor_angle));
-	//top right
-	vec_tr = new Vector2(w_radius,-h_radius);
-	vec_tr = vec_tr.rotated(-snap_to_90(sensor_angle));
-	
-	
-	var tl_sensor = sensor(vec_tl,snap_to_90(sensor_angle)+180,sensor_length_base);
-	var tr_sensor = sensor(vec_tr,snap_to_90(sensor_angle)+180,sensor_length_base);
-	
-	//sensors check which is closest to the ceiling
-	var updown_sensor = noone;
-	if(airborne && y_speed < 0){
-		if(tl_sensor != noone && tr_sensor != noone){
-			//if both sensors collide, the one with the shortest distance wins
-			if(tl_sensor.distance < tr_sensor.distance) updown_sensor = tl_sensor;
-			else updown_sensor = tr_sensor;	
-		}
-		else if(tl_sensor != noone) updown_sensor = tl_sensor;
-		else if(tr_sensor != noone) updown_sensor = tr_sensor;
-		
-		//ceiling sensors doesn't do anything if it's a oneway tile
-		if(updown_sensor != noone && updown_sensor.distance < 0 && !sensor_is_oneway(updown_sensor)){
-			x+= updown_sensor.x;
-			y+= updown_sensor.y;
-						
-			on_ceiling = true;
-		}
-		
-		spike_hurt(updown_sensor);
-	}
-	
-	//up slipping, if you bump head on the ceiling at an edge, and there's space on the left/right you move in that direction
-	if(airborne && (tl_sensor != noone xor tr_sensor != noone) && !point_sensor(vec_t)){
-		
-		if(tl_sensor && !sensor_is_oneway(tl_sensor)){
-			x_speed += 0.1;
-			x += 1;
+		//super speed 
+		if(abs(ground_spd) >= super_speed_threshold && !super_speed){
+			super_speed = true;
+			super_speed_fadeout = super_speed_fadeout_time;
+			super_speed_trace_arr = [];
 		} else
-		if(tr_sensor && !sensor_is_oneway(tr_sensor)){
-			x_speed  -= 0.1;
-			x -= 1;
+	
+		if(super_speed){		
+			var abs_speed = airborne ? point_distance(0,0,x_speed,y_speed) : abs(ground_spd);
+			if(abs_speed < super_speed_min){
+				super_speed = false;
+			}
+		} else{
+			if(super_speed_fadeout != 0){
+				super_speed_fadeout--;
+			}
+		}
+	
+	
+		#region push sensors
+		var push_sensor = noone;
+
+		//push sensors start from the center of the player if sliding or airborne
+		var push_height = (sliding || airborne) ? 0 : -8;
+
+
+		if((!airborne && ground_spd < 0) || airborne) { //left
+			vec_l = new Vector2(-w_radius,push_height);
+			vec_l = vec_l.rotated(-snap_to_90(sensor_angle));
+			if(airborne){
+				push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,0,abs(x_speed));
+			} else {
+				push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,0,abs(ground_spd));
+			}
+	
+			if(push_sensor != noone && push_sensor.distance < 1 && !sensor_is_oneway(push_sensor)){		
+				if(sensor_is_destructible(push_sensor) && abs(ground_spd) > 5){
+				//destructible blocks don't stop you if you're fast enough
+					push_sensor.inst.trigger();
+				
+				} else {
+					x+= push_sensor.x;
+					y+= push_sensor.y;
+			
+					spike_hurt(push_sensor);
+			
+					if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
+						if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
+						ground_spd = 0;
+						x_speed = 0;
+					}
+				}
+			} 
+		}  
+
+		if((!airborne && ground_spd > 0) || airborne){ //right
+			vec_r = new Vector2(w_radius,push_height);
+			vec_r = vec_r.rotated(-snap_to_90(sensor_angle));
+			if(airborne){
+				push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,0,abs(x_speed));
+			} else {
+				push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,0,abs(ground_spd));
+			}
+	
+			if(push_sensor != noone && push_sensor.distance < 1 && !sensor_is_oneway(push_sensor)){		
+				if(sensor_is_destructible(push_sensor) && abs(ground_spd) > 5){
+				//destructible blocks don't stop you if you're fast enough
+					push_sensor.inst.trigger();
+				
+				} else {
+					x+= push_sensor.x;
+					y+= push_sensor.y;
+			
+					spike_hurt(push_sensor);
+			
+					if(abs(angle_difference(push_sensor.angle,ground_angle)) >= 50){
+						if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
+						ground_spd = 0;
+						x_speed = 0;
+					}
+				}
+			} 
+		}
+
+		#endregion
+	
+		#region ground sensors
+			if(!airborne || (airborne && y_speed > 0)){
+				//bottom
+				vec_b = new Vector2(0,h_radius+1);
+				vec_b = vec_b.rotated(-snap_to_90(sensor_angle));
+				//bottom left
+				vec_bl = new Vector2(-w_radius,h_radius);
+				vec_bl = vec_bl.rotated(-snap_to_90(sensor_angle));
+				//bottom right
+				vec_br = new Vector2(w_radius,h_radius);
+				vec_br = vec_br.rotated(-snap_to_90(sensor_angle));
+		
+				var sensor_length = airborne ? sensor_length_base+y_speed : sensor_length_base;
+		
+				var bl_sensor = sensor(vec_bl,snap_to_90(sensor_angle),sensor_length_base,sensor_length);
+				var br_sensor = sensor(vec_br,snap_to_90(sensor_angle),sensor_length_base,sensor_length);
+		
+				//sensors check which is closest to the ground
+				var updown_sensor = noone;
+		
+					if(bl_sensor != noone && br_sensor != noone){
+						//if both sensors collide, the one with the shortest distance wins
+						if(bl_sensor.distance < br_sensor.distance) updown_sensor = bl_sensor;
+						else updown_sensor = br_sensor;	
+					}
+					else if(bl_sensor != noone) updown_sensor = bl_sensor;
+					else if(br_sensor != noone) updown_sensor = br_sensor;
+		
+				//if airborne, you only get snapped to the ground, when sensor is inside the ground
+				if(updown_sensor != noone && ( !airborne || (airborne && updown_sensor.y < 0) )){
+			
+					x+= updown_sensor.x
+					y+= updown_sensor.y
+			
+					ground_angle = updown_sensor.angle;	
+			
+					var spikes = spike_hurt(updown_sensor)
+					if(!spikes && airborne){ //just as you land from being airborne
+						image_to_ground_angle = true;
+						airborne = false;
+						on_land = true;
+						dash_air_count = 0;
+						double_jump_count = 0;
+						set_ground_spd_from_air_spd();
+					}
+
+			
+					if(sensor_is_falling_platform(updown_sensor)){
+						updown_sensor.inst.trigger();
+					} else
+			
+					if(updown_sensor.inst != noone && object_is_ancestor(updown_sensor.inst.object_index,obj_moving_platform) && (ground_angle >= 90 && ground_angle <= 270)){
+						state.change("begin_fall");	
+					}
+
+				} else if(!airborne){ //going off ledges
+					airborne = true;
+			
+					if(sliding){ //when sliding off a surface, you are angled
+						if(ground_spd > 0){
+							image_angle -= 90;
+							mirror = 1;
+						} else{
+							image_angle += 90;
+							mirror = -1;
+						}
+					}	
+					//falling
+					if(y_speed < 0) state.change("fall_up");
+					else state.change("begin_fall");
+				}
+			} else
+	
+			#endregion
+	
+			if(on_ceiling) on_ceiling = false;
+		#region ceiling sensors
+		if(airborne){
+			//top
+			vec_t = new Vector2(0,-h_radius-1);
+			vec_t = vec_t.rotated(-snap_to_90(sensor_angle));
+			//top left
+			vec_tl = new Vector2(-w_radius,-h_radius);
+			vec_tl = vec_tl.rotated(-snap_to_90(sensor_angle));
+			//top right
+			vec_tr = new Vector2(w_radius,-h_radius);
+			vec_tr = vec_tr.rotated(-snap_to_90(sensor_angle));
+	
+	
+			var tl_sensor = sensor(vec_tl,snap_to_90(sensor_angle)+180,sensor_length_base);
+			var tr_sensor = sensor(vec_tr,snap_to_90(sensor_angle)+180,sensor_length_base);
+	
+			//sensors check which is closest to the ceiling
+			var updown_sensor = noone;
+			if(airborne && y_speed < 0){
+				if(tl_sensor != noone && tr_sensor != noone){
+					//if both sensors collide, the one with the shortest distance wins
+					if(tl_sensor.distance < tr_sensor.distance) updown_sensor = tl_sensor;
+					else updown_sensor = tr_sensor;	
+				}
+				else if(tl_sensor != noone) updown_sensor = tl_sensor;
+				else if(tr_sensor != noone) updown_sensor = tr_sensor;
+		
+				//ceiling sensors doesn't do anything if it's a oneway tile
+				if(updown_sensor != noone && updown_sensor.distance < 0 && !sensor_is_oneway(updown_sensor)){
+					x+= updown_sensor.x;
+					y+= updown_sensor.y;
+						
+					on_ceiling = true;
+				}
+		
+				spike_hurt(updown_sensor);
+			}
+	
+			//up slipping, if you bump head on the ceiling at an edge, and there's space on the left/right you move in that direction
+			if(airborne && (tl_sensor != noone xor tr_sensor != noone) && !point_sensor(vec_t)){
+		
+				if(tl_sensor && !sensor_is_oneway(tl_sensor)){
+					x_speed += 0.1;
+					x += 1;
+				} else
+				if(tr_sensor && !sensor_is_oneway(tr_sensor)){
+					x_speed  -= 0.1;
+					x -= 1;
+				}
+			}
 		}
 	}
-}
 
 	
 #region edge slipping animation

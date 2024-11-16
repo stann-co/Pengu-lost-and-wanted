@@ -21,7 +21,7 @@ trigger = function(){
 				other.animate = true;
 				
 				if(other.change_layer != noone){
-					collision_layer_switch(other.change_layer == "A",true);
+					collision_layer_switch(other.change_layer,true);
 				}
 				
 				x_speed =	 dcos(angle+90) * other.spring_force;	
@@ -37,7 +37,7 @@ trigger = function(){
 				other.animate = true;
 				
 				if(other.change_layer != noone){
-					collision_layer_switch(other.change_layer == "A" ,true);
+					collision_layer_switch(other.change_layer ,true);
 				}
 				
 				set_control_lock(other.control_lock_time);

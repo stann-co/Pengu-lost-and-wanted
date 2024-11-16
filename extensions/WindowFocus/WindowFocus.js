@@ -1,4 +1,0 @@
-function WindowFocus()
-	{
-  	window.focus();
-	}
