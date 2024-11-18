@@ -79,3 +79,6 @@ part_type_direction(global.part_stars,0,360,0,10);
 part_type_life(global.part_stars,20,30);
 part_type_speed(global.part_stars,2,2,0,2);
 part_type_alpha3(global.part_stars,1,1,0);
+
+//fonts
+global.gui_font = font_add_sprite_ext(spr_gui_font,"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",false,0);

@@ -717,6 +717,7 @@
     {"id":{"name":"spr_flip","path":"sprites/spr_flip/spr_flip.yy",},},
     {"id":{"name":"spr_flying","path":"sprites/spr_flying/spr_flying.yy",},},
     {"id":{"name":"spr_fuzzy_die","path":"sprites/spr_fuzzy_die/spr_fuzzy_die.yy",},},
+    {"id":{"name":"spr_gui_font","path":"sprites/spr_gui_font/spr_gui_font.yy",},},
     {"id":{"name":"spr_heart","path":"sprites/spr_heart/spr_heart.yy",},},
     {"id":{"name":"spr_hidden_area","path":"sprites/spr_hidden_area/spr_hidden_area.yy",},},
     {"id":{"name":"spr_info_target","path":"sprites/spr_info_target/spr_info_target.yy",},},
