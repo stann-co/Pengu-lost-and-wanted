@@ -374,6 +374,7 @@
     {"id":{"name":"draw_sprite_ext_tiled","path":"scripts/draw_sprite_ext_tiled/draw_sprite_ext_tiled.yy",},},
     {"id":{"name":"draw_sprite_tiled_area","path":"scripts/draw_sprite_tiled_area/draw_sprite_tiled_area.yy",},},
     {"id":{"name":"draw_text_outline","path":"scripts/draw_text_outline/draw_text_outline.yy",},},
+    {"id":{"name":"freeze_frame","path":"scripts/freeze_frame/freeze_frame.yy",},},
     {"id":{"name":"input_accessibility_global_cooldown_get","path":"scripts/input_accessibility_global_cooldown_get/input_accessibility_global_cooldown_get.yy",},},
     {"id":{"name":"input_accessibility_global_cooldown_set","path":"scripts/input_accessibility_global_cooldown_set/input_accessibility_global_cooldown_set.yy",},},
     {"id":{"name":"input_accessibility_global_toggle_get","path":"scripts/input_accessibility_global_toggle_get/input_accessibility_global_toggle_get.yy",},},
@@ -651,6 +652,7 @@
     {"id":{"name":"particle_burst","path":"scripts/particle_burst/particle_burst.yy",},},
     {"id":{"name":"point_scatter","path":"scripts/point_scatter/point_scatter.yy",},},
     {"id":{"name":"save_load","path":"scripts/save_load/save_load.yy",},},
+    {"id":{"name":"score_increase","path":"scripts/score_increase/score_increase.yy",},},
     {"id":{"name":"set_layer_depths","path":"scripts/set_layer_depths/set_layer_depths.yy",},},
     {"id":{"name":"SnowState","path":"scripts/SnowState/SnowState.yy",},},
     {"id":{"name":"sprite_anim","path":"scripts/sprite_anim/sprite_anim.yy",},},
@@ -823,9 +825,9 @@
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
+    {"roomId":{"name":"rm_level_1","path":"rooms/rm_level_1/rm_level_1.yy",},},
     {"roomId":{"name":"rm_level_bobby_POC","path":"rooms/rm_level_bobby_POC/rm_level_bobby_POC.yy",},},
     {"roomId":{"name":"rm_1_pico","path":"rooms/rm_1_pico/rm_1_pico.yy",},},
-    {"roomId":{"name":"rm_level_1","path":"rooms/rm_level_1/rm_level_1.yy",},},
     {"roomId":{"name":"rm_level_template","path":"rooms/rm_level_template/rm_level_template.yy",},},
     {"children":[
         {"roomId":{"name":"rm_workshop","path":"rooms/rm_workshop/rm_workshop.yy",},},

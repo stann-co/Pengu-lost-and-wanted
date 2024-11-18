@@ -4,7 +4,7 @@ state.step();
 if(can_move){
 	global.t++;
 	
-	/// @description deactivates objects out of view
+	//deactivates objects out of view
 	
 	var margin = camera_outer_margin;
 	
@@ -44,5 +44,12 @@ if(can_move){
 			   instance_activate_object(linked_array[i2]);
 			}
 		}
+	}
+	
+	//score multiplier reset
+	if(score_combo_t > 0) score_combo_t--;
+	else if(score_combo > 0){
+		score+=score_combo
+		score_combo = 0;
 	}
 }

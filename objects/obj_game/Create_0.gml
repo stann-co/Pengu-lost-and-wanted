@@ -14,6 +14,15 @@ active_collisions = -1;
 //loads settings or initializes the default ones
 settings_load();
 
+score = 0;
+score_combo = 0;
+score_combo_t = 0;
+score_combo_t_max = game_speed * 3;
+
+//particles
+layer_create(-100,"particles");
+global.particles = part_system_create_layer("particles", true);
+
 #region lexicon / languages
 if (file_exists("local_en.json")){
 	lexicon_index_declare_from_json("local_en.json");
@@ -65,9 +74,7 @@ state.add("idle", {
 		}
 	},
 	draw: function(){
-		draw_set_halign(fa_right);
-		draw_text(global.gui_w-10,10,global.score);	
-		draw_set_halign(fa_left);
+
 	}
 });
 #endregion
@@ -482,11 +489,10 @@ show_collisions = function(){
 	}
 }	
 
-#region
-//debugging variables
-	//#region levels
+#region debugging
+	#region levels
 	//dbg_section("levels")
-	//
+	
 	//dbg_button("workshop",function(){
 	//	room_goto(rm_workshop);	
 	//})
@@ -494,37 +500,43 @@ show_collisions = function(){
 	//dbg_button("up_mountain",function(){
 	//	room_goto(rm_up_mountain);	
 	//})
-	//#endregion
-	//
-	//#region debug
-	//dbg_section("debug")	
-	//dbg_button("toggle debug drawing",function(){
-	//	global.debug = !global.debug;
-	//	show_collisions();
-	//})
-	//
-	//show_debug_overlay(false);
-	//#endregion
-	//
-	//dbg_section("resolution");
-	//dbg_button("windowed",function(){
-	//	stanncam_set_windowed()
-	//})
-	//dbg_same_line()
-	//dbg_button("borderless",function(){
-	//	stanncam_set_borderless()
-	//})
-	//dbg_same_line()
-	//dbg_button("fullscreen",function(){
-	//	stanncam_set_fullscreen();
-	//})
-	//
-	//dbg_button("maintain aspect ratio",function(){
-	//	stanncam_set_keep_aspect_ratio(!stanncam_get_keep_aspect_ratio());
-	//})
-	//
-	//dbg_watch(ref_create(__obj_stanncam_manager, "keep_aspect_ratio"), "keep_aspect_ratio"); 
-	//#endregion
+	#endregion
+	
+	#region debug
+	dbg_section("debug",false)	
+	dbg_button("toggle debug drawing",function(){
+		global.debug = !global.debug;
+		show_collisions();
+	})
+	#endregion
+	
+	#region resolution
+	dbg_section("resolution",false);
+	dbg_button("windowed",function(){
+		stanncam_set_windowed()
+	})
+	dbg_same_line()
+	dbg_button("borderless",function(){
+		stanncam_set_borderless()
+	})
+	dbg_same_line()
+	dbg_button("fullscreen",function(){
+		stanncam_set_fullscreen();
+	})
+	
+	dbg_button("maintain aspect ratio",function(){
+		stanncam_set_keep_aspect_ratio(!stanncam_get_keep_aspect_ratio());
+	})
+	
+	dbg_watch(ref_create(__obj_stanncam_manager, "keep_aspect_ratio"), "keep_aspect_ratio"); 
+	#endregion
+	
+	#region variables
+	dbg_section("variables")
+		dbg_slider_int(ref_create(self,"score_combo_t_max"),1,game_speed * 3,"Score cooldown frames");
+		
+	#endregion
+	
+	show_debug_overlay(false);
+#endregion
 
-#endregion
-#endregion

@@ -15,6 +15,7 @@ if(!other.hurting){
 	} else if(super_speed){	
 		global.camera.shake_screen(4,game_speed*0.5);
 		other.hurt();
+		freeze_frame();
 	//the enemy hurts you
 	} else if(invulnerable == 0){
 		global.camera.shake_screen(4,game_speed*0.5);

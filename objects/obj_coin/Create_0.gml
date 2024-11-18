@@ -79,7 +79,7 @@ state
 			
 			collect_t++;
 		} else {		
-			global.score++;
+			score_increase(1,1);
 			var sound = audio_play_sound(snd_point,0,0);
 			audio_sound_pitch(sound,pitch_change(random_range(2,10)));	
 			
