@@ -81,4 +81,4 @@ part_type_speed(global.part_stars,2,2,0,2);
 part_type_alpha3(global.part_stars,1,1,0);
 
 //fonts
-global.gui_font = font_add_sprite_ext(spr_gui_font,"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",false,0);
+global.gui_font = font_add_sprite_ext(spr_gui_font,"0123456789abcdefghijklmnopqrstuvwxyz:.,",false,0);
