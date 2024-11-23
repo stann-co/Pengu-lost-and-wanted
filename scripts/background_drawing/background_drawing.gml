@@ -66,7 +66,41 @@ function set_background_original(){
 			draw_background_depth(spr_bg_original,3,0.2 ,0,0,1,1,true);
 		
 			for (var i = 0; i < 16; ++i) {
-			    draw_sprite_tiled_area(spr_bg_ocean,0,(-global.camera.x+global.t)*(0.25+(i*0.05)),130,0,i*5+130,global.game_w,(i*5)+135);
+			    draw_sprite_tiled_area(spr_bg_ocean,0,(-global.camera.get_x()+global.t)*(0.25+(i*0.05)),130,0,i*5+130,global.game_w,(i*5)+135);
+			}
+		
+			surface_reset_target();
+		
+			draw_surface(bg_layer,global.camera.get_x(),global.camera.get_y())
+		
+		  blur_steps_D		= 30.0;
+		  sigma_D			= 0.25699999928474426;
+		  bloom_threshold	= 0.80299997329711914;
+		  bloom_range		= 0.24699999392032623;
+		  bloom_intensity	= 0.15600000321865082;
+		  bloom_darken		= 0.95599997043609619;
+		  bloom_saturation	= 2.0;
+		}
+	}
+}
+	
+function set_background_original_red(){
+	global.background = function(){
+		
+		with(obj_camera){
+			if(!surface_exists(bg_layer)){
+				bg_layer = surface_create(global.game_w,global.game_h);
+			}
+			surface_set_target(bg_layer);
+		
+			draw_clear(#162451);
+			draw_background_depth(spr_bg_original_red,0,0.05,0,0,1,1,true);
+			draw_background_depth(spr_bg_original_red,1,0.1 ,0,0,1,1,true);
+			draw_background_depth(spr_bg_original_red,2,0.15,0,0,1,1,true);
+			draw_background_depth(spr_bg_original_red,3,0.2 ,0,0,1,1,true);
+		
+			for (var i = 0; i < 16; ++i) {
+			    draw_sprite_tiled_area(spr_bg_ocean_red,0,(-global.camera.get_x()+global.t)*(0.25+(i*0.05)),130,0,i*5+130,global.game_w,(i*5)+135);
 			}
 		
 			surface_reset_target();

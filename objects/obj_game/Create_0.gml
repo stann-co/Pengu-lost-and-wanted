@@ -47,7 +47,7 @@ enum LANGUAGES {
 #region menu states
 
 //sets text
-draw_set_font(f_pixel);
+draw_set_font(global.gui_font);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
@@ -392,7 +392,7 @@ state.add("settings",{
 		var alpha = (global.settings.window_mode == STANNCAM_WINDOW_MODE.WINDOWED) ? 1 : 0.5;
 		
 		draw_text(0,text_height*2,lexicon_text("gui.menu.settings.resolution"));
-		var res = string(global.resLib[resolution_new].width) + " / " + string(global.resLib[resolution_new].height);
+		var res = string(languages[resolution_new].width) + " / " + string(languages[resolution_new].height);
 		draw_text(col,text_height*2,res);
 		
 		//window mode
