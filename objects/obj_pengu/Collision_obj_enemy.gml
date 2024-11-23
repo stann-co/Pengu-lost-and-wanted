@@ -4,7 +4,8 @@
 
 if(!other.hurting){	
 	//landing on the enemy
-	if(airborne && y < other.y && y_speed > 0){		
+	if(airborne && y < other.y && y_speed > 0){	
+		invulnerable++
 		global.camera.shake_screen(4,game_speed*0.5);
 		state.change("enemy_jump");
 		double_jump_count = 0;

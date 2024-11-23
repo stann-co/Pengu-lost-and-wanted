@@ -20,13 +20,17 @@ if(controlled){
 		input_h = (input_check("right") - input_check("left"));
 		input_v = (input_check("down") - input_check("up"));
 		
+		
+		
 		if(!airborne && !sliding && input_v == 1){
 			state.change("begin_slide");
 		} else
 		
 		if(input_v == -1 && !airborne && !state.state_is("end_slide") && !state.state_is("look_up")){
 			if(sliding){
-				state.change("end_slide");			
+				if(!collision_line(x-w_radius_normal-1,y-h_radius_normal-2,x+w_radius_normal+1,y-h_radius_normal-2,[global.tile_collisions,obj_collision],true,true)){
+					state.change("end_slide");
+				}
 			} else if(abs(ground_spd) < 2){
 				state.change("look_up");
 			}

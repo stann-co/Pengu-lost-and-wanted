@@ -36,9 +36,6 @@
     "name":"spr_toybot_1",
     "path":"sprites/spr_toybot_1/spr_toybot_1.yy",
   },
-  "spriteMaskId":{
-    "name":"spr_toybot_1",
-    "path":"sprites/spr_toybot_1/spr_toybot_1.yy",
-  },
+  "spriteMaskId":null,
   "visible":true,
 }
