@@ -227,7 +227,6 @@
     {"id":{"name":"path_workshop_01","path":"paths/path_workshop_01/path_workshop_01.yy",},},
     {"id":{"name":"rm_1_pico","path":"rooms/rm_1_pico/rm_1_pico.yy",},},
     {"id":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
-    {"id":{"name":"rm_level_1","path":"rooms/rm_level_1/rm_level_1.yy",},},
     {"id":{"name":"rm_level_bobby_POC_2","path":"rooms/rm_level_bobby_POC_2/rm_level_bobby_POC_2.yy",},},
     {"id":{"name":"rm_level_bobby_POC","path":"rooms/rm_level_bobby_POC/rm_level_bobby_POC.yy",},},
     {"id":{"name":"rm_level_facility","path":"rooms/rm_level_facility/rm_level_facility.yy",},},
@@ -834,7 +833,6 @@
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
     {"roomId":{"name":"rm_level_bobby_POC_2","path":"rooms/rm_level_bobby_POC_2/rm_level_bobby_POC_2.yy",},},
     {"roomId":{"name":"rm_level_bobby_POC","path":"rooms/rm_level_bobby_POC/rm_level_bobby_POC.yy",},},
-    {"roomId":{"name":"rm_level_1","path":"rooms/rm_level_1/rm_level_1.yy",},},
     {"roomId":{"name":"rm_1_pico","path":"rooms/rm_1_pico/rm_1_pico.yy",},},
     {"roomId":{"name":"rm_level_template","path":"rooms/rm_level_template/rm_level_template.yy",},},
     {"children":[
