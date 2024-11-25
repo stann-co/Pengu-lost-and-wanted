@@ -38,6 +38,4 @@ function draw_percentage_donut(completion,radius,x_,y_,col1=white,col2=green){
 	draw_surface(surf,x_-radius,y_-radius)
 	
 	surface_free(surf);
-
-
 }
