@@ -228,6 +228,7 @@
     {"id":{"name":"rm_1_pico","path":"rooms/rm_1_pico/rm_1_pico.yy",},},
     {"id":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
     {"id":{"name":"rm_level_bobby_POC","path":"rooms/rm_level_bobby_POC/rm_level_bobby_POC.yy",},},
+    {"id":{"name":"rm_level_bobby_POC_2","path":"rooms/rm_level_bobby_POC_2/rm_level_bobby_POC_2.yy",},},
     {"id":{"name":"rm_level_devzone","path":"rooms/rm_level_devzone/rm_level_devzone.yy",},},
     {"id":{"name":"rm_level_template","path":"rooms/rm_level_template/rm_level_template.yy",},},
     {"id":{"name":"rm_ruby_1","path":"rooms/rm_ruby_1/rm_ruby_1.yy",},},
