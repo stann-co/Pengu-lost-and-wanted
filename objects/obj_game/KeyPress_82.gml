@@ -4,4 +4,4 @@ if(keyboard_check(vk_shift)){ //if shift r, checkpoint is reset
 	global.level_var.checkpoint = noone;	
 }
 
-game_restart();
+room_restart();

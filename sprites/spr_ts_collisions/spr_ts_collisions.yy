@@ -4,7 +4,7 @@
   "bboxMode":0,
   "bbox_bottom":127,
   "bbox_left":0,
-  "bbox_right":127,
+  "bbox_right":143,
   "bbox_top":0,
   "collisionKind":0,
   "collisionTolerance":0,
@@ -12,14 +12,14 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"8a81ee7e-abb7-4386-896e-843cb77f4457","name":"8a81ee7e-abb7-4386-896e-843cb77f4457","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"","%Name":"332ecb7c-c7ae-47ed-900b-b8312ae4376a","name":"332ecb7c-c7ae-47ed-900b-b8312ae4376a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":128,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"9dfd3cfb-a98a-4d6c-af90-0295fe90a94d","blendMode":0,"displayName":"default","isLocked":false,"name":"9dfd3cfb-a98a-4d6c-af90-0295fe90a94d","opacity":80.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"4b1c88e4-4f97-427e-8901-fb28aa74bf45","blendMode":0,"displayName":"default","isLocked":false,"name":"4b1c88e4-4f97-427e-8901-fb28aa74bf45","opacity":65.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_ts_collisions",
   "nineSlice":{
@@ -88,8 +88,8 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"8a81ee7e-abb7-4386-896e-843cb77f4457","path":"sprites/spr_ts_collisions/spr_ts_collisions.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
-              },"Disabled":false,"id":"7d45c3a1-876a-4257-a56d-0637fe61e289","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"332ecb7c-c7ae-47ed-900b-b8312ae4376a","path":"sprites/spr_ts_collisions/spr_ts_collisions.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"68576d14-2f4b-4381-9079-376fad96c111","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
@@ -105,5 +105,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":128,
+  "width":144,
 }

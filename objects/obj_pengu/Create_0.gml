@@ -24,7 +24,7 @@ slide_top_speed = 8;
 
 slippery_multiplier = 0.2;
 
-absolute_top_speed = 30;
+absolute_top_speed = 12;
 
 normal_gravity_force = 0.21875;
 gravity_force = normal_gravity_force;
