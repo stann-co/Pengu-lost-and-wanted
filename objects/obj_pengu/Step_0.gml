@@ -208,9 +208,9 @@ else {
 			vec_l = new Vector2(-w_radius,push_height);
 			vec_l = vec_l.rotated(-snap_to_90(sensor_angle));
 			if(airborne){
-				push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,0,abs(x_speed));
+				push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,4,abs(x_speed));
 			} else {
-				push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,0,abs(ground_spd));
+				push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,4,abs(ground_spd));
 			}
 	
 			if(push_sensor != noone && push_sensor.distance < 1 && !sensor_is_oneway(push_sensor)){		
@@ -237,9 +237,9 @@ else {
 			vec_r = new Vector2(w_radius,push_height);
 			vec_r = vec_r.rotated(-snap_to_90(sensor_angle));
 			if(airborne){
-				push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,0,abs(x_speed));
+				push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,4,abs(x_speed));
 			} else {
-				push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,0,abs(ground_spd));
+				push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,4,abs(ground_spd));
 			}
 	
 			if(push_sensor != noone && push_sensor.distance < 1 && !sensor_is_oneway(push_sensor)){		
