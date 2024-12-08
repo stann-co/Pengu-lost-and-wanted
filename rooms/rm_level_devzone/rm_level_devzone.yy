@@ -396,7 +396,7 @@
           0,-437,-2147483648,-177,0,-2,1,4,1073741825,268435466,268435465,268435464,-5,0,-437,-2147483648,-177,
           0,-12,1,-436,-2147483648,-177,0,-12,1,-436,-2147483648,-177,0,-12,1,-436,-2147483648,-188,0,-437,-2147483648,
           -188,0,-437,-2147483648,-188,0,-437,-2147483648,-188,0,-99812,-2147483648,
-        ],"TileDataFormat":1,},"tilesetId":{"name":"ts_collisions","path":"tilesets/ts_collisions/ts_collisions.yy",},"userdefinedDepth":false,"visible":false,"x":0,"y":0,},
+        ],"TileDataFormat":1,},"tilesetId":{"name":"ts_collisions","path":"tilesets/ts_collisions/ts_collisions.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
     {"$GMRTileLayer":"","%Name":"collision_C","depth":300,"effectEnabled":true,"effectType":"_filter_hue","gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"collision_C","properties":[
         {"name":"g_HueShift","type":0,"value":"0.35",},
         {"name":"g_HueSaturation","type":0,"value":"1",},
