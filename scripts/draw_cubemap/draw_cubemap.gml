@@ -99,7 +99,7 @@ function draw_tilemap_cubemap(_tilemap,_texture,_n_strength = 0.5,_r_strength = 
 		var uvs_n = tileset_get_uvs(_normal)
 		shader_set_uniform_f(u_texcoord_n,uvs[0]-uvs_n[0],uvs[1]-uvs_n[1]);
 	} else {
-		shader_set_uniform_f(u_texcoord_n,-1,-1);
+		shader_set_uniform_f(u_texcoord_n,0,0);
 	}
 	
 	//gets roughness sprite coordinate offset
@@ -108,7 +108,7 @@ function draw_tilemap_cubemap(_tilemap,_texture,_n_strength = 0.5,_r_strength = 
 		var uvs_r = tileset_get_uvs(_roughness)
 		shader_set_uniform_f(u_texcoord_r,uvs[0]-uvs_r[0],uvs[1]-uvs_r[1]);
 	} else {
-		shader_set_uniform_f(u_texcoord_r,-1,-1);
+		shader_set_uniform_f(u_texcoord_r,0,0);
 	}
 	
 	gpu_set_tex_repeat_ext(s_texture,true);

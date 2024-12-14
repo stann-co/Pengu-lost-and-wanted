@@ -12,12 +12,30 @@ var y_offset = global.camera.get_y() - (bbox_top  - y_refl);
 surface_set_target(refl_surf);
 draw_clear_alpha(black,0)
 
+
+switch(distortion) {
+	case "none":
+		break;
+	case "waterfall":
+		shader_set(sh_waterfall)
+		
+		shader_set_uniform_f(u_speed,spd)
+		shader_set_uniform_f(u_frequency,frequency)
+		shader_set_uniform_f(u_size,size)
+		shader_set_uniform_f(u_time,global.t)
+		
+		break;
+}
 draw_surface(cam_surf,x_offset,y_offset)
+shader_reset();
 
 surface_reset_target()
 
+gpu_set_colourwriteenable(1,1,1,0);
 
-//gpu_set_blendmode(bm_max)
-gpu_set_blendmode_ext(bm_dest_alpha,bm_inv_src_color)
-draw_surface_ext(refl_surf,bbox_left+x_draw,bbox_top+y_draw,xscale,yscale,0,-1,1);
-gpu_set_blendmode(bm_normal)
+
+shader_set(sh_bottom_fade)
+draw_surface_ext(refl_surf,bbox_left+x_draw,bbox_top+y_draw,xscale,yscale,0,-1,0.5);
+shader_reset()
+
+gpu_set_colourwriteenable(1,1,1,1);

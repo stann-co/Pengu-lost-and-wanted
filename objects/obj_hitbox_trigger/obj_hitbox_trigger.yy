@@ -33,6 +33,7 @@
   "physicsStartAwake":true,
   "properties":[
     {"$GMObjectProperty":"v1","%Name":"depth_layer","filters":[],"listItems":[
+        "\"above A\"",
         "\"A\"",
         "\"B\"",
         "\"C\"",
