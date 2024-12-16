@@ -1,7 +1,7 @@
 /// @description sets depth
 switch (depth_layer) {
 	case "above A":
-        depth = global.depth_a;
+        depth = global.depth_a-50;
         break;
     case "A":
         depth = global.depth_a+10;
