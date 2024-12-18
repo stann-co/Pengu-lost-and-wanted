@@ -1,9 +1,9 @@
 /// @description
 //var game_res = stanncam_get_preset_resolution(STANNCAM_RES_PRESETS.PLAYSTATION_512_X_224)
-stanncam_init(424,240,1920*0.8,1080*0.8);
+stanncam_init(424 * 1.2,240 * 1.2,1920*0.8,1080*0.8);
 stanncam_set_keep_aspect_ratio(false);
 
-global.camera = new stanncam(424,240);
+global.camera = new stanncam(global.game_w, global.game_h);
 //global.camera.smooth_draw = false;
 global.camera.surface_extra_on = true;
 global.camera.room_constrain = true;
