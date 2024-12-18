@@ -29,7 +29,7 @@ absolute_top_speed = 12;
 normal_gravity_force = 0.21875;
 gravity_force = normal_gravity_force;
 
-air_acceleration_speed = 0.0937;
+air_acceleration_speed = 0.15;
 air_horizontal_top_speed = 4;
 air_vertical_top_speed = 7;
 

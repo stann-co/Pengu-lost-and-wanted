@@ -12,14 +12,22 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
+<<<<<<< HEAD
     {"$GMSpriteFrame":"","%Name":"e6090e36-c91e-4ed3-8ffc-ea110654659b","name":"e6090e36-c91e-4ed3-8ffc-ea110654659b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+=======
+    {"$GMSpriteFrame":"","%Name":"927243bb-76bb-48bb-b309-088e9abd6ff4","name":"927243bb-76bb-48bb-b309-088e9abd6ff4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+>>>>>>> bobbycoolbranch
   ],
   "gridX":0,
   "gridY":0,
   "height":128,
   "HTile":false,
   "layers":[
+<<<<<<< HEAD
     {"$GMImageLayer":"","%Name":"8d541a1f-6ecc-45a6-9cd0-d009de59c879","blendMode":0,"displayName":"default","isLocked":false,"name":"8d541a1f-6ecc-45a6-9cd0-d009de59c879","opacity":33.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+=======
+    {"$GMImageLayer":"","%Name":"1aec209c-409e-441a-a632-3a66e6fd90ca","blendMode":0,"displayName":"default","isLocked":false,"name":"1aec209c-409e-441a-a632-3a66e6fd90ca","opacity":75.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+>>>>>>> bobbycoolbranch
   ],
   "name":"spr_ts_collisions",
   "nineSlice":{
@@ -88,8 +96,13 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+<<<<<<< HEAD
                 "0":{"$SpriteFrameKeyframe":"","Id":{"name":"e6090e36-c91e-4ed3-8ffc-ea110654659b","path":"sprites/spr_ts_collisions/spr_ts_collisions.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"8331f3c7-8a93-4bc5-aefd-f8459d628130","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+=======
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"927243bb-76bb-48bb-b309-088e9abd6ff4","path":"sprites/spr_ts_collisions/spr_ts_collisions.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"a31f4d1d-93a4-4318-b409-0c98d7a1560a","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+>>>>>>> bobbycoolbranch
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
