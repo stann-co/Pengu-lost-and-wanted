@@ -11,8 +11,10 @@ if(springing){
 		obj_pengu.x = x+ball_vec.x;
 		obj_pengu.y = y+ball_vec.y;
 		
-		//when duration is halfway done pengu flys off
-		if(t >= (duration*0.25)){
+		//when duration is a quarter done pengu flys off
+		//or if meeting a collision when bouncing back, so pengu can't clip through geometry
+		//
+		if(t >= (duration*0.25) || (t >= (duration*0.21) && place_meeting(x+ball_vec.x,y+ball_vec.y,[obj_collision,global.tile_collisions]) )){
 			grabbed_on = false;
 			with(obj_pengu){
 				

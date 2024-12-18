@@ -23,15 +23,15 @@ distortion = 0.06;
 spd_y = -0.326;
 overlay_spd = 2.456;
 
-Inspectron()
-	.Section("waterfall")
-	.Slider("brightness",0,5)
-	.Slider("scale_x",0,1)
-	.Slider("scale_y",0,1)
-	.Slider("distortion",0,1)
-	.Slider("spd_y",-0.5,0.5)
-	.Slider("overlay_spd",0,5)
-	.render()
+//Inspectron()
+//	.Section("waterfall")
+//	.Slider("brightness",0,5)
+//	.Slider("scale_x",0,1)
+//	.Slider("scale_y",0,1)
+//	.Slider("distortion",0,1)
+//	.Slider("spd_y",-0.5,0.5)
+//	.Slider("overlay_spd",0,5)
+//	.render()
 
 #region particles
 if(splash_particles){
