@@ -36,9 +36,7 @@ normal_subimg = 0;
 
 
 draw_thruster = function(_x,_y){
-	
-	
-	
+
 	if(!surface_exists(srf)){
 		srf = surface_create(32,32);
 	}
@@ -54,6 +52,5 @@ draw_thruster = function(_x,_y){
 	shader_reset();
 	
 	draw_sprite(spr_thruster,thruster_subimg,_x,_y);
-		
 		
 }

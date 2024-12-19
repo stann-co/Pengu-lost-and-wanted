@@ -7,6 +7,7 @@ if(global.debug){
 		$"x speed: {x_speed}",
 		$"y speed: {y_speed}",
 		$"control lock: {control_lock}",
+		$"depth: {depth}",
 	]
 	
 	for (var i = 0; i < array_length(text); ++i) {

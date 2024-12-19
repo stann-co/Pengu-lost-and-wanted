@@ -311,4 +311,4 @@ srf_gui = -1;
   .Slider("roughness_strength",0,1)
   .Slider("reflection_scale",1,2)
   .Checkbox("debug_draw") 
- InspectronGo();
+  .render()

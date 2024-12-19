@@ -72,6 +72,7 @@ function set_background_original(){
 			surface_reset_target();
 		
 			draw_surface(bg_layer,global.camera.get_x(),global.camera.get_y())
+			//global.camera.draw_surf(bg_layer,0,0);
 		
 		  blur_steps_D		= 30.0;
 		  sigma_D			= 0.25699999928474426;

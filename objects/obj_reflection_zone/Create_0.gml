@@ -51,5 +51,29 @@ switch (image_angle) {
 		y_draw = 0;
         break;
 }
+		
+switch(distortion) {
+	case "none":
+		break;
+	case "waterfall":
+	
+		spd = 0.13;
+		frequency = 200;
+		size = 0.005;
+		
+		u_speed = shader_get_uniform(sh_waterfall,"u_speed");
+		u_frequency = shader_get_uniform(sh_waterfall,"u_frequency");
+		u_size = shader_get_uniform(sh_waterfall,"u_size");
+		u_time = shader_get_uniform(sh_waterfall,"u_time");
+
+		 //Inspectron()
+			//.Section("reflection")
+			//.Slider("spd",-0.5,0.5)
+			//.Slider("frequency",0,200)
+			//.Slider("size",0,1)
+			//.render()
+
+		break;
+}
 
 

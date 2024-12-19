@@ -46,8 +46,9 @@ if(super_speed_fadeout != 0){
 		shader_set_uniform_f(super_speed_u_intensity,1);
 		
 		var alpha = (animcurve_read(ac_super_speed_alpha,0,i/super_speed_trace_count) * fadeout)*invulnerable_alpha;
-		
+		gpu_set_colourwriteenable(1,1,1,0);
 		draw_sprite_ext(trace.sprite_index,trace.subimg,trace.x,trace.y,trace.scale_x*trace.mirror,trace.scale_y,trace.image_angle,-1,alpha);
+		gpu_set_colourwriteenable(1,1,1,1);
 	}
 	shader_reset();
 }

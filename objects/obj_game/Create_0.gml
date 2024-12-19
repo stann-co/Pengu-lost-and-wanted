@@ -454,6 +454,13 @@ state.add("settings",{
 
 #endregion
 
+#region music
+
+global.song = audio_play_sound(mus_pengus_theme,1,true);
+
+#endregion
+
+
 #region debugging
 
 show_collisions = function(){	

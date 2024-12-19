@@ -3,7 +3,6 @@
   "%Name":"obj_hitbox_trigger",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":4,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"obj_hitbox_trigger",
@@ -12,7 +11,10 @@
     "name":"tool",
     "path":"folders/Objects/tool.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"obj_depth_managed",
+    "path":"objects/obj_depth_managed/obj_depth_managed.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -31,13 +33,7 @@
     {"x":0.0,"y":32.0,},
   ],
   "physicsStartAwake":true,
-  "properties":[
-    {"$GMObjectProperty":"v1","%Name":"depth_layer","filters":[],"listItems":[
-        "\"A\"",
-        "\"B\"",
-        "\"C\"",
-      ],"multiselect":false,"name":"depth_layer","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"A\"","varType":6,},
-  ],
+  "properties":[],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,

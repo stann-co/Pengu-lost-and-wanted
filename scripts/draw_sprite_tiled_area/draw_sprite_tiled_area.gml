@@ -10,6 +10,25 @@
 //      x2,y2       bottom-right corner of tiled area, real
 //
 function draw_sprite_tiled_area(sprite,subimg,xx,yy,x1,y1,x2,y2){ 
+	draw_sprite_tiled_area_ext(sprite,subimg,xx,yy,x1,y1,x2,y2);
+}
+
+
+///@function draw_sprite_tiled_area_ext(sprite,subimg,xx,yy,x1,y1,x2,y2,xscale,yscale,col,alpha)
+//
+//  Draws a repeated sprite image, tiled to fill a given region and with
+//  a given offset. 
+//
+//      sprite      sprite to draw, real
+//      subimg      sprite subimage to draw, real
+//      x,y         origin offset, real
+//      x1,y1       top-left corner of tiled area, real
+//      x2,y2       bottom-right corner of tiled area, real
+//      xscale,yscale       scale, real
+//      col         color, real
+//      alpha		alpha, real
+//
+function draw_sprite_tiled_area_ext(sprite,subimg,xx,yy,x1,y1,x2,y2,xscale=1,yscale=1,col=-1,alpha=1){ 
     var sw,sh,i,j,jj,left,top,width,height,X,Y;
     sw = sprite_get_width(sprite);
     sh = sprite_get_height(sprite);
@@ -35,7 +54,7 @@ function draw_sprite_tiled_area(sprite,subimg,xx,yy,x1,y1,x2,y2){
             if(y2 <= j+sh) height = ((sh)-(j+sh-y2)+1)-top;
             else height = sh-top;
  
-            draw_sprite_part(sprite,subimg,left,top,width,height,X,Y);
+            draw_sprite_part_ext(sprite,subimg,left,top,width,height,X,Y,xscale,yscale,col,alpha);
         }
         j = jj;
     }
