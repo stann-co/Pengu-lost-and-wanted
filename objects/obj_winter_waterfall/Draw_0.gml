@@ -22,7 +22,7 @@ draw_surface(cam_surf,x_offset,y_offset);
 
 surface_reset_target();
 
-shader_set(sh_waterfall);
+shader_set(sh_reflection);
 shader_set_uniform_f(u_tint,242/255,113/255,178/255);
 shader_set_uniform_f(u_brightness,brightness);
 shader_set_uniform_f(u_scale,scale_x,scale_y);

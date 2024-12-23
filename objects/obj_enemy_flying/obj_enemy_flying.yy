@@ -33,8 +33,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_flying",
-    "path":"sprites/spr_flying/spr_flying.yy",
+    "name":"spr_tigerbara_idle",
+    "path":"sprites/spr_tigerbara_idle/spr_tigerbara_idle.yy",
   },
   "spriteMaskId":{
     "name":"spr_toybot_1",

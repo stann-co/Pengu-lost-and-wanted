@@ -1,79 +1,30 @@
 /// @description
-image_angle = snap_to_90(image_angle)
-
-width  = bbox_right-bbox_left;
-height = bbox_bottom-bbox_top;
 
 refl_surf = -1;
+u_tint = shader_get_uniform(sh_reflection,"u_tint");
+u_brightness = shader_get_uniform(sh_reflection,"u_brightness");
+u_scale = shader_get_uniform(sh_reflection,"u_scale");
+u_distortion = shader_get_uniform(sh_reflection,"u_distortion");
+u_size = shader_get_uniform(sh_reflection,"u_size");
 
-switch (image_angle) {
-    case 0: //UP
-        xscale = 1;
-		yscale = -1;
+u_speed = shader_get_uniform(sh_reflection,"u_speed");
+u_time = shader_get_uniform(sh_reflection,"u_time");
 		
-		x_refl = 0;
-		y_refl = height;
+//switch(distortion_type) {
+//	case "none":
+//		break;
+//	case "waterfall":
 		
-		x_draw = 0;
-		y_draw = height;
-		
-        break;
-    case 90: //Left
-        xscale = -1;
-		yscale = 1;
-		
-		x_refl = width;
-		y_refl = 0;
-		
-		x_draw = width;
-		y_draw = 0;
-		
-        break;
-	case 180: //Down
-        xscale = 1;
-		yscale = -1;
-		
-		x_refl = 0;
-		y_refl = -height;
-		
-		x_draw = 0;
-		y_draw = height;
-		
-        break;
-	case 270: //Right
-        xscale = -1;
-		yscale = 1;
-		
-		x_refl = -width;
-		y_refl = 0;
-		
-		x_draw = width;
-		y_draw = 0;
-        break;
-}
-		
-switch(distortion) {
-	case "none":
-		break;
-	case "waterfall":
-	
-		spd = 0.13;
-		frequency = 200;
-		size = 0.005;
-		
-		u_speed = shader_get_uniform(sh_waterfall,"u_speed");
-		u_frequency = shader_get_uniform(sh_waterfall,"u_frequency");
-		u_size = shader_get_uniform(sh_waterfall,"u_size");
-		u_time = shader_get_uniform(sh_waterfall,"u_time");
-
-		 //Inspectron()
-			//.Section("reflection")
-			//.Slider("spd",-0.5,0.5)
-			//.Slider("frequency",0,200)
-			//.Slider("size",0,1)
-			//.render()
-
-		break;
-}
+//		break;
+//	case "ice":
+//		break;
+//}
 
 
+
+
+		//Inspectron()
+		//	.Section("ice")
+		//	.Slider("scale",0,1)
+		//	.Slider("distortion",0,1)
+		//	.render()
