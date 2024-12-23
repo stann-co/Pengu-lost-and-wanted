@@ -8,13 +8,13 @@ height = bbox_bottom-bbox_top;
 
 water_surf = -1;
 
-u_tint = shader_get_uniform(sh_waterfall,"u_tint");
-u_brightness = shader_get_uniform(sh_waterfall,"u_brightness");
-u_scale = shader_get_uniform(sh_waterfall,"u_scale");
-u_speed = shader_get_uniform(sh_waterfall,"u_speed");
-u_time = shader_get_uniform(sh_waterfall,"u_time");
-u_distortion = shader_get_uniform(sh_waterfall,"u_distortion");
-u_size = shader_get_uniform(sh_waterfall,"u_size");
+u_tint = shader_get_uniform(sh_reflection,"u_tint");
+u_brightness = shader_get_uniform(sh_reflection,"u_brightness");
+u_scale = shader_get_uniform(sh_reflection,"u_scale");
+u_speed = shader_get_uniform(sh_reflection,"u_speed");
+u_time = shader_get_uniform(sh_reflection,"u_time");
+u_distortion = shader_get_uniform(sh_reflection,"u_distortion");
+u_size = shader_get_uniform(sh_reflection,"u_size");
 
 brightness = 1.36;
 scale_x = 1;

@@ -33,10 +33,11 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"distortion","filters":[],"listItems":[
+    {"$GMObjectProperty":"v1","%Name":"distortion_type","filters":[],"listItems":[
         "\"none\"",
         "\"waterfall\"",
-      ],"multiselect":false,"name":"distortion","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"none\"","varType":6,},
+        "\"ice\"",
+      ],"multiselect":false,"name":"distortion_type","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"ice\"","varType":6,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

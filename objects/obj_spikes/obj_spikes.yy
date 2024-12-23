@@ -12,8 +12,8 @@
     "path":"folders/Objects/obstacles.yy",
   },
   "parentObjectId":{
-    "name":"obj_collision",
-    "path":"objects/obj_collision/obj_collision.yy",
+    "name":"obj_depth_managed_solid",
+    "path":"objects/obj_depth_managed_solid/obj_depth_managed_solid.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
