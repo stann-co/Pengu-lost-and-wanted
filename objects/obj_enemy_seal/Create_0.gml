@@ -28,6 +28,9 @@ hurt = function(){
 	hurting = true;
 	sprite_index = spr_seal_hurt;
 	state.change("hurt");
+	
+	var sound = audio_play_sound(snd_seal_hurt,1,false);
+	audio_sound_pitch(sound,pitch_change(random_range(0.9,1.2)));	
 }
 
 

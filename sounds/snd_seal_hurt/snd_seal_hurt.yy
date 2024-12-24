@@ -1,6 +1,6 @@
 {
   "$GMSound":"",
-  "%Name":"snd_jump3",
+  "%Name":"snd_seal_hurt",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -9,8 +9,8 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":0.5,
-  "name":"snd_jump3",
+  "duration":0.509615,
+  "name":"snd_seal_hurt",
   "parent":{
     "name":"Sounds",
     "path":"folders/Sounds.yy",
@@ -19,7 +19,7 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"snd_jump3.ogg",
+  "soundFile":"snd_seal_hurt.ogg",
   "type":0,
-  "volume":1.0,
+  "volume":0.13,
 }

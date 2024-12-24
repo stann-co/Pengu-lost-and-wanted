@@ -405,6 +405,23 @@ if(!state.state_is("edge") && !airborne && !sliding && (bl_sensor != noone xor b
 
 }
 
+#region audio
+
+if(sliding){
+	if(!audio_is_playing(sound_slide)){
+		sound_slide = audio_play_sound(snd_slide,0,true,,,1.2);
+	}
+	
+	var gain = (abs(ground_spd) / slide_top_speed)
+	audio_sound_gain(sound_slide,gain,0);
+	
+} else if(audio_is_playing(sound_slide)){
+	audio_stop_sound(sound_slide);
+}
+
+
+#endregion
+
 #region squish scale_x & scale_y
 if(squishing){
 	if(squishing_t != squishing_duration){

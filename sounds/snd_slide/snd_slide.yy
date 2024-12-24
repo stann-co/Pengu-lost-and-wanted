@@ -1,6 +1,6 @@
 {
   "$GMSound":"",
-  "%Name":"snd_wingflap2",
+  "%Name":"snd_slide",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -9,8 +9,8 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":0.698277,
-  "name":"snd_wingflap2",
+  "duration":7.427891,
+  "name":"snd_slide",
   "parent":{
     "name":"Sounds",
     "path":"folders/Sounds.yy",
@@ -19,7 +19,7 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"snd_wingflap2.ogg",
+  "soundFile":"snd_slide.ogg",
   "type":0,
-  "volume":0.2,
+  "volume":0.05,
 }

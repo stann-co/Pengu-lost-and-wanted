@@ -127,6 +127,9 @@ controlled = true;
 invulnerable = 0; //when over 0, pengu flashes and cannot take damage
 invulnerable_duration = game_speed * 1.6;
 
+//sounds
+sound_slide = -1;
+
 #endregion
 
 ///@function set_control_lock()

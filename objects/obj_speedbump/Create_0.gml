@@ -18,7 +18,8 @@ trigger = function(){
 				set_control_lock(other.control_lock_time);
 				ground_spd = other.force * other.image_xscale;
 				input_h = sign(ground_spd);
-				state.change("sliding");				
+				state.change("sliding");		
+				audio_play_sound(snd_dashing,1,false);
 			}
 		}
 	}

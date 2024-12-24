@@ -9,7 +9,7 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":187.31708,
+  "duration":117.2966,
   "name":"mus_pengus_theme",
   "parent":{
     "name":"music",
@@ -19,7 +19,7 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"mus_pengus_theme.ogg",
+  "soundFile":"mus_pengus_theme.mp3",
   "type":0,
-  "volume":0.01,
+  "volume":0.02,
 }

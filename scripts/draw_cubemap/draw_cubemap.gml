@@ -66,7 +66,7 @@ function draw_sprite_cubemap(_sprite,_subimg,_x,_y,_texture,_n_strength = 0.5,_r
 	shader_reset();	
 }
 
-function draw_tilemap_cubemap(_tilemap,_texture,_n_strength = 0.5,_r_strength = 1 ,_scale = 1 ,_offset_scale = -0.25, _opacity = 1.0){
+function draw_tilemap_cubemap(_tilemap,_texture,_n_strength = 0.5,_r_strength = 0.6 ,_scale = 1 ,_offset_scale = -0.25, _opacity = 1.0){
 	
 	var _tileset = tilemap_get_tileset(_tilemap);
 	
