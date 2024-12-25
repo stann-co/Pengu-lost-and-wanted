@@ -707,6 +707,7 @@
     {"id":{"name":"snd_jump2","path":"sounds/snd_jump2/snd_jump2.yy",},},
     {"id":{"name":"snd_mech_stomp","path":"sounds/snd_mech_stomp/snd_mech_stomp.yy",},},
     {"id":{"name":"snd_point","path":"sounds/snd_point/snd_point.yy",},},
+    {"id":{"name":"snd_robot_hurt","path":"sounds/snd_robot_hurt/snd_robot_hurt.yy",},},
     {"id":{"name":"snd_seal_hurt","path":"sounds/snd_seal_hurt/snd_seal_hurt.yy",},},
     {"id":{"name":"snd_slide","path":"sounds/snd_slide/snd_slide.yy",},},
     {"id":{"name":"snd_wingflap1","path":"sounds/snd_wingflap1/snd_wingflap1.yy",},},
@@ -874,8 +875,8 @@
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
-    {"roomId":{"name":"rm_level_bobby_tutorial_detail","path":"rooms/rm_level_bobby_tutorial_detail/rm_level_bobby_tutorial_detail.yy",},},
     {"roomId":{"name":"rm_level_bobby_POC_3_detail","path":"rooms/rm_level_bobby_POC_3_detail/rm_level_bobby_POC_3_detail.yy",},},
+    {"roomId":{"name":"rm_level_bobby_tutorial_detail","path":"rooms/rm_level_bobby_tutorial_detail/rm_level_bobby_tutorial_detail.yy",},},
     {"roomId":{"name":"rm_level_devzone","path":"rooms/rm_level_devzone/rm_level_devzone.yy",},},
     {"roomId":{"name":"rm_level_bobby_tutorial","path":"rooms/rm_level_bobby_tutorial/rm_level_bobby_tutorial.yy",},},
     {"roomId":{"name":"rm_level_stann_POC","path":"rooms/rm_level_stann_POC/rm_level_stann_POC.yy",},},

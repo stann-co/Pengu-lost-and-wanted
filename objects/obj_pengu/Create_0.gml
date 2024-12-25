@@ -237,7 +237,10 @@ pick_move_state = function(include_idle = true){
 state = new SnowState("idle");
 
 	state.event_set_default_function("draw",function(){
-		draw_sprite_ext(sprite_index,subimg,x,y,scale_x*mirror,scale_y,image_angle,-1,1);
+		//when rotated on slopes, pengu appears a few pixels off
+		var slope_offset_y = 0;
+		if(!airborne) slope_offset_y = abs(dsin(ground_angle*2)) * sign(dcos(ground_angle))  * 4 //the pixel offset when at a 45deg angle
+		draw_sprite_ext(sprite_index,subimg,x,y+slope_offset_y,scale_x*mirror,scale_y,image_angle,-1,1);
 	})
 	
 	state.event_set_default_function("draw_gui",function(){

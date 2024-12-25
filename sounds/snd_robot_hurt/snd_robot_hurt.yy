@@ -1,6 +1,6 @@
 {
   "$GMSound":"",
-  "%Name":"snd_bouncepad",
+  "%Name":"snd_robot_hurt",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -9,8 +9,8 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":2.0,
-  "name":"snd_bouncepad",
+  "duration":0.5,
+  "name":"snd_robot_hurt",
   "parent":{
     "name":"Sounds",
     "path":"folders/Sounds.yy",
@@ -19,7 +19,7 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"snd_bouncepad.wav",
+  "soundFile":"snd_robot_hurt.wav",
   "type":0,
-  "volume":0.17,
+  "volume":0.05,
 }
