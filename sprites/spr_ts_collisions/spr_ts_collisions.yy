@@ -19,7 +19,7 @@
   "height":128,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"675b9d92-6317-4797-9506-c0b9bacad7c5","blendMode":0,"displayName":"default","isLocked":false,"name":"675b9d92-6317-4797-9506-c0b9bacad7c5","opacity":25.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"675b9d92-6317-4797-9506-c0b9bacad7c5","blendMode":0,"displayName":"default","isLocked":false,"name":"675b9d92-6317-4797-9506-c0b9bacad7c5","opacity":65.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_ts_collisions",
   "nineSlice":{
