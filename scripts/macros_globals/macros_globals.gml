@@ -4,7 +4,7 @@
 #macro camera_outer_margin 200
 #macro camera_inner_margin 100
 
-#macro can_move (obj_game.state.state_is("idle") && !global.freeze_frame)
+#macro can_move ((obj_game.state.state_is("idle") || obj_game.state.state_is("ng_start") || obj_game.state.state_is("ng_select")) && !global.freeze_frame)
 
 #macro text_height 14
 
@@ -34,6 +34,21 @@ enum COLLISION_LAYERS {
 	A,
 	B,
 	C,
+}
+
+enum LANGUAGES {
+	English,
+	//Danish,
+	//Russian,
+	TOTAL
+}
+
+enum MENU_SETTINGS {
+	resolution,
+	window_mode,
+	keep_aspect_ratio,
+	language,
+	TOTAL
 }
 
 //globals
@@ -88,3 +103,18 @@ function level_var() constructor {
 }
 
 global.level_var = new level_var()
+
+function level_details(name_,room_) constructor {
+	name = name_
+	room_id = room_
+}
+
+global.levels = [
+	new level_details("tutorial",rm_level_bobby_tutorial_detail),
+	new level_details("demo",rm_level_bobby_POC_3_detail)
+]
+
+//spawns persistent objects
+
+room_instance_add(rm_init,0,0,obj_camera)
+room_instance_add(rm_init,0,0,obj_game)

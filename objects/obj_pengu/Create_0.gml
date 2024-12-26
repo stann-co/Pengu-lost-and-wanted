@@ -98,8 +98,8 @@ super_speed_fadeout = 0;
 super_speed_fadeout_time = game_speed * 1;
 super_speed_colors = [red,red,red,red,red,red,white,white,white,white,white,white]//[white,red,white,yellow,white,green,white,blue,white,pink];
 
-super_speed_u_color = shader_get_uniform(sh_color,"color");
-super_speed_u_intensity = shader_get_uniform(sh_color,"intensity");
+super_speed_u_color = shader_get_uniform(sh_color,"u_color");
+super_speed_u_intensity = shader_get_uniform(sh_color,"u_intensity");
 
 on_land = false; //this is true on the frame you land again
 on_ceiling = false; //this is true whenever you are touching the ceiling
@@ -584,8 +584,6 @@ state = new SnowState("idle");
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_hurt;
-			
-			//var sound_file = (irandom_range(1,1000) != 1000) ? snd_pengu_hurt : snd_pengu_uwu;
 			var sound = audio_play_sound(snd_hurt,0,false);
 			audio_sound_pitch(sound,pitch_change(random_range(2,10)));			
 			

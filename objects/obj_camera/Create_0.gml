@@ -17,7 +17,7 @@ global.background = function(){ //empty background function, gets replaced in ea
 
 }
 
-zoom_level = 1;
+//zoom_level = 1;
 
 //draw_sprite_layer = function(layer_name_,parralax_){
 	
