@@ -17,8 +17,8 @@
       ],"resourceType":"GMAnimCurveChannel","resourceVersion":"2.0","visible":true,},
     {"$GMAnimCurveChannel":"","%Name":"collect","colour":4279025727,"name":"collect","points":[
         {"th0":-0.1,"th1":0.14405377,"tv0":0.0,"tv1":0.0,"x":0.0,"y":0.0,},
-        {"th0":-0.17486149,"th1":0.27184314,"tv0":-0.08912099,"tv1":0.13854927,"x":0.50715685,"y":-0.13681003,},
-        {"th0":-0.049990892,"th1":0.1,"tv0":-0.29949456,"tv1":0.0,"x":1.0,"y":1.0,},
+        {"th0":-0.17251204,"th1":0.16191947,"tv0":-0.13394833,"tv1":0.12572365,"x":0.50715685,"y":0.20948257,},
+        {"th0":-0.0884642,"th1":0.1,"tv0":-0.30590743,"tv1":0.0,"x":1.0,"y":1.0,},
       ],"resourceType":"GMAnimCurveChannel","resourceVersion":"2.0","visible":true,},
   ],
   "function":2,

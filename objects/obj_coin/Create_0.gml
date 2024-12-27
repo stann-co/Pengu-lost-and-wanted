@@ -2,9 +2,7 @@
 // Inherit the parent event
 event_inherited();
 
-
 image_index = irandom(image_number-1);
-
 
 trigger = function(){
 	if(!touched){
@@ -17,6 +15,8 @@ trigger = function(){
 	}
 }
 
+t_offset = irandom(60);
+
 y_offset_max = 2;
 rot_offset_max = 10;
 anim_duration = game_speed * 1.2;
@@ -26,6 +26,7 @@ collect_duration = game_speed * 0.4;
 collect_t = 0;
 
 touched = false;
+scoring = true; //points dropped by pengu shouldn't score
 
 xspeed = 0;
 yspeed = 0;
@@ -71,15 +72,19 @@ state
 			
 			var collect_val = animcurve_read(ac_coin,"collect",collect_t/collect_duration);
 			
-			x = lerp(xstart,obj_pengu.x,collect_val);
-			y = lerp(ystart,obj_pengu.y,collect_val);
+			x_speed = (obj_pengu.x - x) * collect_val;
+			y_speed = (obj_pengu.y - y) * collect_val;
+			
+			x += x_speed;
+			y += y_speed;
 			
 			image_xscale = lerp(1,0.2,collect_val);
 			image_yscale = lerp(1,0.2,collect_val);
 			
 			collect_t++;
-		} else {		
-			score_increase(1,1);
+		} else {
+			if scoring score_increase(1);
+			global.coins+=1;
 			var sound = audio_play_sound(snd_point,0,0);
 			audio_sound_pitch(sound,pitch_change(random_range(2,10)));	
 			

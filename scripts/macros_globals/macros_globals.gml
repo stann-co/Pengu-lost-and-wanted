@@ -4,7 +4,8 @@
 #macro camera_outer_margin 200
 #macro camera_inner_margin 100
 
-#macro can_move (obj_game.state.state_is("idle") && !global.freeze_frame)
+#macro main_menus (obj_game.state.state_is("ng_start") || obj_game.state.state_is("ng_select"))
+#macro can_move (obj_game.state.state_is("idle") || main_menus && !global.freeze_frame)
 
 #macro text_height 14
 
@@ -17,6 +18,7 @@
 #macro blue #0047ff
 #macro purple #a400ff
 #macro pink #ff14b9
+#macro light_pink #ff9ae2
 
 #macro pengu_blue #3978a8
 #macro pengu_white #dff6f5
@@ -34,6 +36,21 @@ enum COLLISION_LAYERS {
 	A,
 	B,
 	C,
+}
+
+enum LANGUAGES {
+	English,
+	//Danish,
+	//Russian,
+	TOTAL
+}
+
+enum MENU_SETTINGS {
+	resolution,
+	window_mode,
+	keep_aspect_ratio,
+	language,
+	TOTAL
 }
 
 //globals
@@ -63,7 +80,10 @@ global.debug = false;
 global.checkpoint = -1;
 
 global.score = 0;
-//global.score_multiplier = 1;
+global.score_mult = 1;
+global.score_combo_t = 0;
+#macro score_combo_t_max (game_speed * 3)
+global.coins = 0;
 
 global.freeze_frame = false;
 
@@ -81,10 +101,24 @@ part_type_speed(global.part_stars,2,2,0,2);
 part_type_alpha3(global.part_stars,1,1,0);
 
 //fonts
-global.gui_font = font_add_sprite_ext(spr_gui_font,"0123456789abcdefghijklmnopqrstuvwxyz:.,",false,0);
-
+global.gui_font = font_add_sprite_ext(spr_gui_font,"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]",false,0);
 function level_var() constructor {
 	checkpoint = noone;
 }
 
 global.level_var = new level_var()
+
+function level_details(name_,room_) constructor {
+	name = name_
+	room_id = room_
+}
+
+global.levels = [
+	new level_details("TUTORIAL",rm_level_bobby_tutorial_detail),
+	new level_details("DEMO",rm_level_bobby_POC_3_detail)
+]
+
+//spawns persistent objects
+
+room_instance_add(rm_init,0,0,obj_camera)
+room_instance_add(rm_init,0,0,obj_game)

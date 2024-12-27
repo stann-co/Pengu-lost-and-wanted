@@ -98,8 +98,8 @@ super_speed_fadeout = 0;
 super_speed_fadeout_time = game_speed * 1;
 super_speed_colors = [red,red,red,red,red,red,white,white,white,white,white,white]//[white,red,white,yellow,white,green,white,blue,white,pink];
 
-super_speed_u_color = shader_get_uniform(sh_color,"color");
-super_speed_u_intensity = shader_get_uniform(sh_color,"intensity");
+super_speed_u_color = shader_get_uniform(sh_color,"u_color");
+super_speed_u_intensity = shader_get_uniform(sh_color,"u_intensity");
 
 on_land = false; //this is true on the frame you land again
 on_ceiling = false; //this is true whenever you are touching the ceiling
@@ -584,17 +584,17 @@ state = new SnowState("idle");
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_hurt;
-			
-			//var sound_file = (irandom_range(1,1000) != 1000) ? snd_pengu_hurt : snd_pengu_uwu;
 			var sound = audio_play_sound(snd_hurt,0,false);
 			audio_sound_pitch(sound,pitch_change(random_range(2,10)));			
 			
-			if (global.score == 0){
+			if (global.coins == 0){
 				//state.change("dying");
 				room_restart();
 				
 			}else{
-				point_scatter();
+				var points = min(global.coins,16);
+				point_scatter(points,false,false);
+				global.coins = 0;
 			}
 			
 			gravity_force = hurt_gravity_force;			
@@ -602,8 +602,7 @@ state = new SnowState("idle");
 			
 			set_control_lock(game_speed*0.8);
 			
-			//var up_down = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
-			y_speed = hurt_y_force; //(-hurt_force*up_down)
+			y_speed = hurt_y_force;
 
 	    },
 		step: function() {	

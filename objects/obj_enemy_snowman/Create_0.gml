@@ -7,8 +7,12 @@ thrown = false;
 
 snowball_throw_speed = 4;
 
+h_radius = 12
+
 hurt = function(){
 	hurting = true;
+	sprite_index = spr_snowman_hurt;
+	
 	state.change("hurt");
 }
 
@@ -24,7 +28,7 @@ state
 		sprite_index = spr_snowman_idle;
 	},
 	step:function(){
-		
+		subimg+= sprite_get_speed(sprite_index);
 		var side = sign(x - obj_pengu.x);
 		if(side != 0){
 			image_xscale = side;
@@ -44,34 +48,15 @@ state
 		thrown = false;
 	},
 	step:function(){
-		
+		subimg+= sprite_get_speed(sprite_index);
 		if(subimg == 3 && !thrown){
 			thrown = true
-			var snowball = instance_create_depth(x-(image_xscale*16),y-16,depth,obj_snowball_thrown);
+			var snowball = instance_create_depth(x-(image_xscale*16),y,depth,obj_snowball_thrown);
 			snowball.h_speed = -image_xscale * snowball_throw_speed;
 		}
 		
 		if(animation_end(sprite_index,subimg)){
 			state.change("idle");
-		}
-	}
-})
-
-.add("hurt",{
-	enter:function(){
-		y_speed = -10;
-		x_speed = sign(x-obj_pengu.x) * 6;
-		sprite_index = spr_snowman_hurt;
-	},
-	step:function(){
-		y_speed += 0.5;
-		image_angle-=sign(x_speed) * 6;
-		
-		x+= x_speed;
-		y+= y_speed;
-		
-		if(global.camera.out_of_bounds(x,y,-30)){
-			instance_destroy();	
 		}
 	}
 })

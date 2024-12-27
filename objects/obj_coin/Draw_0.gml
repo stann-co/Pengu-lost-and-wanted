@@ -8,7 +8,7 @@ if(disappear){
 
 var alpha = disappearing ? 1 : 0.5;
 
-var anim_t = (global.t mod anim_duration) / anim_duration
+var anim_t = ((global.t + t_offset) mod anim_duration) / anim_duration
 
 var y_offset   = animcurve_read(ac_coin,"anim_y"  ,anim_t) * y_offset_max;
 var rot_offset = animcurve_read(ac_coin,"anim_rot",anim_t) * rot_offset_max;

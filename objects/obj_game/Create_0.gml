@@ -1,4 +1,4 @@
-/// @description starts the game and inits globals
+/// @description starts the game
 /// feather ignore all in /Extensions/*
 
 //vars
@@ -9,38 +9,31 @@ saved_pengu = {
 save_text = false;
 taken_points = [];
 active_collisions = -1;
-//background_sprites = [];
-//foreground_sprites = [];
+
+transition_in = false;
+transition_val = 0;
+transition_t = 0;
+transition_duration = 50;
+transition_callback = function(){}
+
 //loads settings or initializes the default ones
 settings_load();
-
-score = 0;
-score_combo = 0;
-score_combo_t = 0;
-score_combo_t_max = game_speed * 3;
 
 //particles
 layer_create(-100,"particles");
 global.particles = part_system_create_layer("particles", true);
 
 #region lexicon / languages
-if (file_exists("local_en.json")){
-	lexicon_index_declare_from_json("local_en.json");
-	//lexicon_index_declare_from_json("local_da.json");
-	//lexicon_index_declare_from_json("local_ru.json");
-} else show_error("no language file", true);
+//if (file_exists("local_en.json")){
+//	lexicon_index_declare_from_json("local_en.json");
+//	//lexicon_index_declare_from_json("local_da.json");
+//	//lexicon_index_declare_from_json("local_ru.json");
+//} else show_error("no language file", true);
 
-lexicon_index_fallback_language_set("English");
+//lexicon_index_fallback_language_set("English");
 
-var lang_array = lexicon_languages_get_array();
-lexicon_language_set(lang_array[global.settings.language][0]);
-
-enum LANGUAGES {
-	English,
-	//Danish,
-	//Russian,
-	TOTAL
-}
+//var lang_array = lexicon_languages_get_array();
+//lexicon_language_set(lang_array[global.settings.language][0]);
 
 #endregion
 
@@ -51,16 +44,9 @@ draw_set_font(global.gui_font);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
-enum MENU_SETTINGS {
-	resolution,
-	window_mode,
-	keep_aspect_ratio,
-	language,
-	TOTAL
-}
-
 state = new SnowState("quick_start");
-//state = new SnowState("start_menu");
+//state = new SnowState("ng_start");
+//state = new SnowState("ng_select");
 
 #region menu off
 state.add("idle", {
@@ -88,175 +74,160 @@ state.add("quick_start", {
 	}
 });
 #endregion
-#region start menu
-state.add("start_menu", {
+
+
+#region ng_start
+state.add("ng_start", {
 	enter: function(){
-		selection = 0;
+		
 	},
 	step: function(){
-		if(input_check_pressed("down") || input_check_pressed("up")){
-			//audio_play_sound(snd_ui_hover,0,0);
-			if(input_check_pressed("down")) selection++;
-			else if(input_check_pressed("up")) selection--;
-			selection = clamp(selection,0,2);
-		}
-		
-		if(input_check_pressed("accept")){
-			//audio_play_sound(snd_ui_confirm,0,0);
-			if(selection == 0){
-				//state.change("level_select");
-				state.change("idle");
-				room_goto_next();
-			}
-			if(selection == 1){
-				state.change("settings");
-			}
-			else if(selection == 2) game_end(); 
+		if (keyboard_check_pressed(vk_anykey)){
+			transition(function(){
+				state.change("ng_select");
+			})
 		}
 	},
-	draw: function(){		
-		var middle = global.game_w/2;
+	draw: function(){
+		draw_set_halign(fa_middle);
+		draw_set_valign(fa_center);
+		var text =
+		"merry christmas, and happy new year.\n"+
+		"this is a public demo and playtest\n"+
+		"for a full pengu saves christmas game.\n"+
+		"there is just 2 short levels,\n"+
+		"but we still hope you enjoy\n\n"+
+		"press any key to continue";
 		
-		var w = 80;
-		var h = text_height*5;
-		var x_ = middle-(w/2);
-		var y_ = (global.game_h/5)*3;
+		draw_text(global.game_w/2,global.game_h/2,text);
 		
-		//draw_box(x_,y_,w,h,0);
-		
-		draw_clear(black);
-		
-		draw_text(x_,y_				 ,lexicon_text("gui.menu.level_select_name"));
-		draw_text(x_,y_+text_height*1,lexicon_text("gui.menu.settings_name"));
-		draw_text(x_,y_+text_height*2,lexicon_text("gui.menu.quit"));
-		
-		draw_circle(x_-10,y_+6+(text_height*selection),4,false);
-		
-		//draw_selection(x_,y_+(text_height*selection),w);
+		draw_set_halign(fa_left);
+		draw_set_valign(fa_top);
 	}
-
-})
+});
 #endregion
-
-#region level select
-state.add("level_select", {
+#region ng_select
+state.add("ng_select", {
 	enter: function(){
-		
+		selected = 0;
 	},
 	step: function(){
 		
 		if(input_check_pressed("accept")){
-			//checks if selected slot has a save file
-			//else if(save_files[selection] != ""){
-			//	if(load_delete == 0){
-			//		audio_play_sound(snd_ui_confirm,0,0);
-			//		user_load("save"+string(selection));
-			//		global.save_slot = selection;
-			//		state.change("idle");
-			//		room_goto_next();
-			//	} else if(load_delete == 1){
-			//		audio_play_sound(snd_ui_confirm,0,0);
-			//		popup = true;
-			//		popup_selection = 0;
-			//	}
-			//} else {
-			//	audio_play_sound(snd_ui_decline,0,0);
-			//}
+			transition(function(){
+				state.change("idle");
+				var level = global.levels[selected];
+				room_goto(level.room_id);	
+			})
+			
 		}
+		
+		selected += input_check_pressed("right") - input_check_pressed("left");
+		
+		var lvl_max = array_length(global.levels)-1
+		if(selected < 0) selected = lvl_max;
+		if(selected > lvl_max) selected = 0;
 
 	},
 	draw: function(){		
-		state.inherit();
-		//draws selection
-		if(!popup){
-			var y_select = y_+(text_height*selection);
-			draw_selection(x_,y_select,w_);
+		var levels = global.levels;
+		
+		var width = 60;
+		var center_x = global.game_w/2;
+		var center_y = global.game_h/2;
+		var num = array_length(levels)
+		
+		draw_set_halign(fa_middle)
+		draw_set_valign(fa_center)
+		
+		for (var i = 0; i < num; ++i) {
 			
-			var load_delete_x = x_+(w_/3);
-			var load_delete_w = ((w_/3)*2)/4;
+			var x_ = center_x + (i*width) - (width/2)
+			var y_ = center_y;
 			
-			draw_set_halign(fa_center);
-			
-			if(load_delete == 1){
-				var load_color1   = color1;
-				var load_color2   = color2;
-				var delete_color1 = yellow;
-				var delete_color2 = yellow_light;
+			if(selected != i){
+				shader_set(sh_color)
+				var u_color = shader_get_uniform(sh_color,"u_color")
+				var u_intensity = shader_get_uniform(sh_color,"u_intensity")
+				var color = gray;
+				shader_set_uniform_f(u_color,
+				color_get_red(color)/255,
+				color_get_green(color)/255,
+				color_get_blue(color)/255,)
+				shader_set_uniform_f(u_intensity,0.5);
 			} else {
-				var load_color1   = yellow;
-				var load_color2   = yellow_light;
-				var delete_color1 = color1;
-				var delete_color2 = color2;	
+				
+				y_ += dsin(global.t*5*2);
+				x_ += dsin(global.t*5);
+				
 			}
 			
-			draw_text_style(load_delete_x+(load_delete_w*1)-8,y_select,lexicon_text("gui.menu.load_game.load"),	load_color1,load_color2);
-			draw_text_style(load_delete_x+(load_delete_w*2)-8,y_select,"/",										color1,color2);
-			draw_text_style(load_delete_x+(load_delete_w*3)-8,y_select,lexicon_text("gui.menu.load_game.delete"),delete_color1,delete_color2);
-
+			draw_text(x_,y_,i+1);
+			draw_sprite(spr_level_frame,0,x_,y_);
 			
-			draw_set_halign(fa_left);
+			if(selected != i){
+				shader_reset()
+				
+			}
 		}
-		//draw_selection(x_+(w*load_delete),y_+(text_height*selection),w);
+		
+		draw_set_valign(fa_top)
+		
+		x_ = center_x;
+		y_ = center_y +34;
+		
+		var level = global.levels[selected];
+		draw_text(x_,y_,level.name)
+		
+		y_+=20
+		draw_text(x_,y_,":")
+		draw_set_halign(fa_right)
+		draw_text(x_,y_,"score ")
+		draw_set_halign(fa_left)
+		draw_text(x_,y_," 000069")
+		
 	}
 });
 #endregion
 #region pause menu
 state.add("pause_menu",{
 	enter: function(){
-		selection = 0;
+		selected = 0;
 	},
 	step: function(){
 		if(input_check_pressed("down") || input_check_pressed("up")){
 			//audio_play_sound(snd_ui_hover,0,0);
-			if(input_check_pressed("down")) selection++;
-			else if(input_check_pressed("up")) selection--;
-			selection = clamp(selection,0,2);
+			if(input_check_pressed("down")) selected++;
+			else if(input_check_pressed("up")) selected--;
+			selected = clamp(selected,0,2);
 		}
 		
 		if(input_check_pressed("accept")){
 			//audio_play_sound(snd_ui_confirm,0,0);
-			if(selection == 0){
+			if(selected == 0){
 				state.change("idle");
-			} else if(selection == 1){
+			} else if(selected == 1){
 				state.change("settings");
-			} else if(selection == 2){
-				game_restart();
+			} else if(selected == 2){
+				transition(function(){
+					room_goto(rm_init)
+					state.change("ng_select")
+				})
 			}
 		}
 		
 		if(input_check_pressed("cancel")){
-			//audio_play_sound(snd_ui_decline,0,0);
 			state.change("idle");
-		}
-		
-		if(keyboard_check_pressed(vk_f1)){
-			state.change("idle");
-			show_debug_message("frame step through")
-			call_later(2,time_source_units_frames,function(){
-				state.change("pause_menu");		
-			})
 		}
 	},
 	draw: function(){		
-		//draw_set_color(black);
-		//draw_set_alpha(0.5);
-		//draw_rectangle(0,0,global.game_w,global.game_h,0);
-		
+	
 		var col = global.game_w/3;
 		
-		//draw_box(0,0,col,text_height*4,0);
-		//draw_box(0,global.game_h-(text_height*2),col,text_height*2,0);
-		//
-		//draw_box(col,0,col*2,global.game_h,0);
+		var h = 20;
+		var x_ = global.game_w/2
+		var y_ = (global.game_h/2) - (h * 3) / 2;
 		
-		var middle = global.game_w/2;
-		
-		var w = 80;
-		var h = text_height*5;
-		var x_ = middle-(w/2);
-		var y_ = (global.game_h/5)*3;
-		
-		//draw_box(x_,y_,w,h,0);
 		
 		draw_set_color(black);
 		draw_set_alpha(0.5);
@@ -264,11 +235,20 @@ state.add("pause_menu",{
 		draw_set_color(white);
 		draw_set_alpha(1);
 		
-		draw_text(x_,y_,lexicon_text("gui.menu.continue"));
-		draw_text(x_,y_+text_height,lexicon_text("gui.menu.settings_name"));
-		draw_text(x_,y_+text_height*2,lexicon_text("gui.menu.quit"));
+		draw_set_halign(fa_middle);
+
+		draw_text(x_,10,"GAME PAUSED");
 		
-		draw_circle(x_-10,y_+6+(text_height*selection),4,false);
+		var options = ["CONTINUE","SETTINGS","LEVEL SELECT"]
+		
+		for (var i = 0; i < array_length(options); ++i) {
+			if(selected == i) text = "*"+options[i]+"*";
+			else text = options[i];
+			
+		    draw_text(x_,y_ + h * i,text);
+		}
+		
+		draw_set_halign(fa_left);
 		
 	}
 });
@@ -277,7 +257,7 @@ state.add("pause_menu",{
 #region settings menu
 state.add("settings",{
 	enter: function(){
-		selection = 0;		
+		selected = 0;		
 		resolution_new = global.settings.resolution;
 		language_new = global.settings.language;
 		languages = lexicon_languages_get_array();
@@ -288,9 +268,9 @@ state.add("settings",{
 		if(resolution_new == global.settings.resolution && language_new == global.settings.language){
 			if(input_check_pressed("down") || input_check_pressed("up")){
 				//audio_play_sound(snd_ui_hover,0,0);
-				if(input_check_pressed("down")) selection++;
-				else if(input_check_pressed("up")) selection--;
-				selection = clamp(selection,0,MENU_SETTINGS.TOTAL-1);
+				if(input_check_pressed("down")) selected++;
+				else if(input_check_pressed("up")) selected--;
+				selected = clamp(selected,0,MENU_SETTINGS.TOTAL-1);
 			}
 		}
 		
@@ -307,7 +287,7 @@ state.add("settings",{
 			//audio_play_sound(snd_ui_confirm,0,0);
 		}
 		
-		switch (selection) {
+		switch (selected) {
 		    case MENU_SETTINGS.resolution:
 				if(global.settings.window_mode == STANNCAM_WINDOW_MODE.WINDOWED){ //can only change res in windowed mode
 				    resolution_new+= side_input;
@@ -425,14 +405,14 @@ state.add("settings",{
 		draw_text(0,text_height*5,lexicon_text("gui.menu.settings.language"));
 		draw_text(col,text_height*5,languages[language_new][0]);
 		
-		//draws selection
-		var y_ = (selection*text_height)+(text_height*2);
-		//draw_selection(0,y_, global.game_w);
+		//draws selected
+		var y_ = (selected*text_height)+(text_height*2);
+		//draw_selected(0,y_, global.game_w);
 		
 		draw_circle(0,y_,4,false);
 		
 		//draws description
-		switch (selection) {
+		switch (selected) {
 		    case MENU_SETTINGS.resolution:
 				var description = lexicon_text("gui.menu.settings.resolution.description")
 		        break;

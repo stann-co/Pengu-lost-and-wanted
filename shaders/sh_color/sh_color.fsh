@@ -4,16 +4,14 @@
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 
-uniform vec3 color;
-uniform float intensity;
+uniform vec3  u_color;
+uniform float u_intensity;
 
 void main()
 {	
 	vec4 base = v_vColour * texture2D( gm_BaseTexture, v_vTexcoord );
 	
-	vec3 base_col = base.rgb;
+	base.rgb = mix(base.rgb, u_color, u_intensity);
 	
-	vec3 new_col = mix(base_col, color, intensity);
-	
-	gl_FragColor = vec4(new_col.r,new_col.g,new_col.b,base.a);
+	gl_FragColor = base;
 }
