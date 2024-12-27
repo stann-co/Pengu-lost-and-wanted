@@ -19,11 +19,6 @@ transition_callback = function(){}
 //loads settings or initializes the default ones
 settings_load();
 
-score = 0;
-score_combo = 0;
-score_combo_t = 0;
-score_combo_t_max = game_speed * 3;
-
 //particles
 layer_create(-100,"particles");
 global.particles = part_system_create_layer("particles", true);
@@ -162,8 +157,8 @@ state.add("ng_select", {
 				shader_set_uniform_f(u_intensity,0.5);
 			} else {
 				
-				y_ += dsin(global.t*5*2) * 1;
-				x_ += dsin(global.t*5)   * 1;
+				y_ += dsin(global.t*5*2);
+				x_ += dsin(global.t*5);
 				
 			}
 			
@@ -242,12 +237,12 @@ state.add("pause_menu",{
 		
 		draw_set_halign(fa_middle);
 
-		draw_text(x_,10,"game paused");
+		draw_text(x_,10,"GAME PAUSED");
 		
-		var options = ["continue","settings","level select"]
+		var options = ["CONTINUE","SETTINGS","LEVEL SELECT"]
 		
 		for (var i = 0; i < array_length(options); ++i) {
-			if(selected == i) text = "."+options[i]+".";
+			if(selected == i) text = "*"+options[i]+"*";
 			else text = options[i];
 			
 		    draw_text(x_,y_ + h * i,text);

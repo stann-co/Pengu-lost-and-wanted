@@ -587,12 +587,14 @@ state = new SnowState("idle");
 			var sound = audio_play_sound(snd_hurt,0,false);
 			audio_sound_pitch(sound,pitch_change(random_range(2,10)));			
 			
-			if (global.score == 0){
+			if (global.coins == 0){
 				//state.change("dying");
 				room_restart();
 				
 			}else{
-				point_scatter();
+				var points = min(global.coins,16);
+				point_scatter(points,false,false);
+				global.coins = 0;
 			}
 			
 			gravity_force = hurt_gravity_force;			
@@ -600,8 +602,7 @@ state = new SnowState("idle");
 			
 			set_control_lock(game_speed*0.8);
 			
-			//var up_down = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
-			y_speed = hurt_y_force; //(-hurt_force*up_down)
+			y_speed = hurt_y_force;
 
 	    },
 		step: function() {	

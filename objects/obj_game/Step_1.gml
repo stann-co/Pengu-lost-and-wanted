@@ -47,10 +47,12 @@ if(can_move){
 		}
 		
 		//score multiplier reset
-		if(score_combo_t > 0) score_combo_t--;
-		else if(score_combo > 0){
-			score+=score_combo
-			score_combo = 0;
+		if(global.score_combo_t > 0){
+			
+			global.score_combo_t--;
+		}
+		else{
+			global.score_mult = 1;
 		}
 	}
 }

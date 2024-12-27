@@ -44,7 +44,6 @@ state
 	},
 	step: function() {
 		subimg+= sprite_get_speed(sprite_index);
-		
 		fly_offset = sin(global.t*0.1)*4
 	},
 

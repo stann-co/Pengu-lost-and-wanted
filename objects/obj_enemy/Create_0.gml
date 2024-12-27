@@ -54,10 +54,8 @@ state
 	enter:function(){
 		y_speed = -10;
 		x_speed = sign(x-obj_pengu.x) * 6;
-		//score_increase(5,5);
-		
-		point_scatter()
-		
+		point_scatter(5);
+		score_increase(0,score_combo_t_max)
 		part_particles_create(global.particles,x,y,global.part_stars,12);
 	},
 	step:function(){
