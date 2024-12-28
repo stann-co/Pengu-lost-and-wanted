@@ -3261,7 +3261,7 @@
           -2147483648,-36,0,-902,-2147483648,-36,0,-902,-2147483648,-36,0,-902,-2147483648,-36,0,-902,-2147483648,
           -36,0,-902,-2147483648,-36,0,-902,-2147483648,-36,0,-902,-2147483648,-36,0,-902,-2147483648,-36,0,-902,
           -2147483648,-36,0,-902,-2147483648,-36,0,-115064,-2147483648,
-        ],"TileDataFormat":1,},"tilesetId":{"name":"ts_winter2","path":"tilesets/ts_winter2/ts_winter2.yy",},"userdefinedDepth":false,"visible":false,"x":0,"y":0,},
+        ],"TileDataFormat":1,},"tilesetId":{"name":"ts_winter2","path":"tilesets/ts_winter2/ts_winter2.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
     {"$GMRTileLayer":"","%Name":"decor_02_A","depth":800,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"decor_02_A","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":625,"SerialiseWidth":938,"TileCompressedData":[
           -324287,-2147483648,-2,0,-936,-2147483648,-3,0,-935,-2147483648,-4,0,-934,-2147483648,-5,0,-933,-2147483648,
           -6,0,-932,-2147483648,-7,0,-932,-2147483648,-7,0,-932,-2147483648,-7,0,-932,-2147483648,-7,0,-932,-2147483648,
