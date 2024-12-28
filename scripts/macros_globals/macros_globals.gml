@@ -112,6 +112,8 @@ global.level_var = new level_var()
 function level_details(name_,room_) constructor {
 	name = name_
 	room_id = room_
+	level_score = 0
+	level_time = undefined
 }
 
 global.active_level = -1;

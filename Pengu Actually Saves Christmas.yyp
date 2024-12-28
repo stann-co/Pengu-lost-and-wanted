@@ -686,6 +686,7 @@
     {"id":{"name":"stanncam_resolution_presets","path":"scripts/stanncam_resolution_presets/stanncam_resolution_presets.yy",},},
     {"id":{"name":"stanncam_shake","path":"scripts/stanncam_shake/stanncam_shake.yy",},},
     {"id":{"name":"stanncam","path":"scripts/stanncam/stanncam.yy",},},
+    {"id":{"name":"timer_text","path":"scripts/timer_text/timer_text.yy",},},
     {"id":{"name":"transition","path":"scripts/transition/transition.yy",},},
     {"id":{"name":"vector2","path":"scripts/vector2/vector2.yy",},},
     {"id":{"name":"verlet_integration","path":"scripts/verlet_integration/verlet_integration.yy",},},

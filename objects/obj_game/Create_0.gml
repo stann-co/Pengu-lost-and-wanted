@@ -192,11 +192,20 @@ state.add("ng_select", {
 		draw_text(x_,y_,level.name)
 		
 		y_+=20
-		draw_text(x_,y_,":")
-		draw_set_halign(fa_right)
-		draw_text(x_,y_,"score ")
-		draw_set_halign(fa_left)
-		draw_text(x_,y_," 000069")
+		var w_ = 100;		
+		var text = ["LEVEL SCORE","LEVEL TIME"]
+		var values = [level.level_score,timer_text(level.level_time)];		
+		
+		for (var i = 0; i < array_length(text); ++i) {
+		    draw_set_halign(fa_left);
+			draw_set_color(yellow)
+			draw_text(x_-w_,y_+text_height*i,text[i]);
+			
+			draw_set_halign(fa_right);
+			draw_set_color(white)
+			
+			draw_text(x_+w_,y_+text_height*i,values[i]);
+		}
 		
 	}
 });
@@ -452,14 +461,18 @@ state.add("level_tally_start", {
 		tally_duration = game_speed * 1;
 		tally_t = 0;
 		tally_pause = false;
-		tally_score = 0;
+		
+		tally_score = global.score;
+		tally_score_time = 18000 - timer;
+		tally_score_snacks = global.coins * 100;
+		tally_score_total = 0;
 	},
 	step: function(){
 		if (tally_t < tally_duration) tally_t++
 		else if(!tally_pause) {
 			tally_pause = true;
-			call_later(0.5,time_source_units_seconds,function(){
-				state.change("level_tally_score");
+			call_later(1,time_source_units_seconds,function(){
+				state.change("level_tally_scores");
 			})
 		}
 		var val = animcurve_read(ac_basic,"ease",tally_t/tally_duration)
@@ -467,102 +480,97 @@ state.add("level_tally_start", {
 	},
 	draw: function(){
 		
-		var x_ = global.game_w/2+tally_x;
-		var y_ = global.game_h/2;
-		draw_set_halign(fa_middle);
-		draw_set_valign(fa_center);
-		draw_text(x_,y_-8,$"{global.active_level.name} COMPLETE!!!")
+		var tally_text   = ["SCORE","BONUS TIME","BONUS SNACKS","","LEVEL SCORE"];
+		var tally_scores = [tally_score,tally_score_time, tally_score_snacks,"",tally_score_total];
 		
 		var w_ = 100;
+		var h_ = array_length(tally_text)*text_height;
 		
-		draw_set_halign(fa_left);
-		draw_set_color(yellow)
-		draw_text(x_-w_,y_+8,"LEVEL SCORE");
-
-		draw_set_halign(fa_right);
-		draw_set_color(white)
+		var x_ = global.game_w/2+tally_x;
+		var y_ = (global.game_h/2)-(h_/2);
 		
-		draw_text(x_+w_,y_+8,tally_score);
+		draw_set_halign(fa_middle);
+		draw_set_valign(fa_center);
+		draw_text(x_,y_-text_height*1.5,$"{global.active_level.name} COMPLETE!!!")
+		
+		for (var i = 0; i < array_length(tally_text); ++i) {
+		    draw_set_halign(fa_left);
+			draw_set_color(yellow)
+			draw_text(x_-w_,y_+text_height*i,tally_text[i]);
 			
+			draw_set_halign(fa_right);
+			draw_set_color(white)
+			
+			draw_text(x_+w_,y_+text_height*i,tally_scores[i]);
+		}
+
 		draw_set_halign(fa_left);
 		draw_set_valign(fa_top);
 
 	}
 });
 
-state.add_child("level_tally_start","level_tally_score", {
+state.add_child("level_tally_start","level_tally_scores", {
 	enter: function(){
 		tallying = true;
-		tally_duration = global.score;
-		tally_t = 0;
-		tally_pause = false;
-	},
-	step: function(){
-		if (tally_score < tally_duration) tally_score++
-		else if(!tally_pause) {
-			tally_pause = true;
-			call_later(0.5,time_source_units_seconds,function(){
-				state.change("level_tally_timer");
-			})
-		}
-		var val = tally_t/tally_duration
-		global.score = lerp(tally_1,0,val);
-		tally_score = lerp(0,tally_1,val);
-	},
-
-});
-
-state.add_child("level_tally_start","level_tally_timer", {
-	enter: function(){
-		tallying = true;
-		tally_duration = game_speed * 1;
+		tally_duration = game_speed * 0.5;
 		tally_t = 0;
 		tally_pause = false;
 		
-		tally_1 = timer;
-		tally_2 = tally_score;
-		tally_3 = tally_score + 18000 - timer;
-		
+		tally_score_prev		= tally_score;
+		tally_score_time_prev	= tally_score_time;
+		tally_score_snacks_prev = tally_score_snacks;
+		tally_score_total_new = tally_score + tally_score_time + tally_score_snacks;
 	},
 	step: function(){
-		if (tally_t < tally_duration) tally_t++
+		if (tally_t < tally_duration) tally_t++;
 		else if(!tally_pause) {
 			tally_pause = true;
-			call_later(0.5,time_source_units_seconds,function(){
-				state.change("level_tally_snacks");
+			
+			//should be best time and score
+			global.active_level.level_score = tally_score_total;
+			global.active_level.level_time = timer;
+			
+			call_later(1,time_source_units_seconds,function(){
+				state.change("level_tally_anykey")
 			})
 		}
-		var val = tally_t/tally_duration
-		timer = lerp(tally_1,0,val);
-		tally_score = lerp(tally_2,tally_3,val);
+		
+		var val = tally_t / tally_duration;
+		tally_score			= floor(lerp(tally_score_prev,0,val))
+		tally_score_time	= floor(lerp(tally_score_time_prev,0,val))
+		tally_score_snacks	= floor(lerp(tally_score_snacks_prev,0,val))
+		tally_score_total	= floor(lerp(0,tally_score_total_new,val));
 	},
 });
 
-state.add_child("level_tally_start","level_tally_snacks", {
+state.add_child("level_tally_start","level_tally_anykey", {
 	enter: function(){
-		tallying = true;
-		tally_duration = game_speed * 1;
-		tally_t = 0;
-		tally_pause = false;
-		
-		tally_1 = global.coins;
-		tally_2 = tally_score;
-		tally_3 = tally_score + (global.coins * 100);
-		
 	},
 	step: function(){
-		if (tally_t < tally_duration) tally_t++
-		else if(!tally_pause) {
-			tally_pause = true;
-			call_later(0.5,time_source_units_seconds,function(){
-				
+		if(!transition_in && input_check(all)){
+			transition(function(){
+				state.change("ng_select");
+				room_goto(rm_init);
 			})
 		}
-		var val = tally_t/tally_duration
-		timer = lerp(tally_1,0,val);
-		tally_score = lerp(tally_2,tally_3,val);
 	},
+	draw: function(){
+		state.inherit()
+		
+		var x_ = global.game_w/2;
+		var y_ = global.game_h/2;
+		
+		draw_set_halign(fa_middle);
+		draw_set_valign(fa_center);
+		draw_text(x_,y_+text_height*4,"*CONTINUE*")
+		
+		draw_set_halign(fa_left);
+		draw_set_valign(fa_top);
+	}
 });
+
+
 #endregion
 
 #region music

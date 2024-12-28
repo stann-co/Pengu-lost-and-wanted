@@ -9,13 +9,8 @@ if(save_text) draw_text(50,50,"saved position");
 draw_set_font(global.gui_font);
 
 if(!main_menus){	
-	score_text = global.score
-
-	var minutes = timer div (game_speed * 60);
-	var seconds = string_format(timer div (game_speed) mod 60,2,0);
-	var frames =  string_format(timer mod game_speed,2,0);
-	
-	var time_text = string_replace_all($"{minutes}\"{seconds}'{frames}"," ","0");
+	score_text = global.score	
+	var time_text = timer_text(timer);
 	
 	var coin_text = $"{global.coins}"
 	
