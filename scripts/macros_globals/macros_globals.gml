@@ -5,7 +5,8 @@
 #macro camera_inner_margin 100
 
 #macro main_menus (obj_game.state.state_is("ng_start") || obj_game.state.state_is("ng_select"))
-#macro can_move (obj_game.state.state_is("idle") || main_menus && !global.freeze_frame)
+#macro can_move (!obj_game.state.state_is("pause") && !global.freeze_frame)
+#macro control (obj_game.state.state_is("idle"))
 
 #macro text_height 14
 
@@ -111,7 +112,11 @@ global.level_var = new level_var()
 function level_details(name_,room_) constructor {
 	name = name_
 	room_id = room_
+	level_score = 0
+	level_time = undefined
 }
+
+global.active_level = -1;
 
 global.levels = [
 	new level_details("TUTORIAL",rm_level_bobby_tutorial_detail),

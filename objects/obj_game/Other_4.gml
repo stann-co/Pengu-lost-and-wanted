@@ -1,5 +1,6 @@
 /// @description
 global.t = 0;
+timer = 0;
 
 collision_A = layer_get_id("collision_A");
 collision_B = layer_get_id("collision_B");
