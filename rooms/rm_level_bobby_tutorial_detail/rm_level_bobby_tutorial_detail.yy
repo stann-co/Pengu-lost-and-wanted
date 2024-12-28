@@ -922,7 +922,7 @@
           0,-615,-2147483648,-323,0,-615,-2147483648,-323,0,-615,-2147483648,-323,0,-615,-2147483648,-323,0,-615,
           -2147483648,-323,0,-615,-2147483648,-323,0,-615,-2147483648,-323,0,-615,-2147483648,-323,0,-615,-2147483648,
           -323,0,-615,-2147483648,-323,0,-41593,-2147483648,
-        ],"TileDataFormat":1,},"tilesetId":{"name":"ts_collisions","path":"tilesets/ts_collisions/ts_collisions.yy",},"userdefinedDepth":false,"visible":true,"x":0,"y":0,},
+        ],"TileDataFormat":1,},"tilesetId":{"name":"ts_collisions","path":"tilesets/ts_collisions/ts_collisions.yy",},"userdefinedDepth":false,"visible":false,"x":0,"y":0,},
     {"$GMRTileLayer":"","%Name":"collision_B","depth":300,"effectEnabled":true,"effectType":"_filter_hue","gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"collision_B","properties":[
         {"name":"g_HueShift","type":0,"value":"0.5",},
         {"name":"g_HueSaturation","type":0,"value":"1",},

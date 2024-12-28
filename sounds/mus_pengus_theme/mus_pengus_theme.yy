@@ -21,5 +21,5 @@
   "sampleRate":44100,
   "soundFile":"mus_pengus_theme.mp3",
   "type":0,
-  "volume":0.02,
+  "volume":0.0,
 }
