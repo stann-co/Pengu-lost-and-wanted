@@ -22,6 +22,10 @@ tallying = false;
 //loads settings or initializes the default ones
 settings_load();
 
+#region music
+audio_group_load(audiogroup_music);
+#endregion
+
 //particles
 layer_create(-100,"particles");
 global.particles = part_system_create_layer("particles", true);
@@ -47,8 +51,8 @@ draw_set_font(global.gui_font);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
-state = new SnowState("quick_start");
-//state = new SnowState("ng_start");
+//state = new SnowState("quick_start");
+state = new SnowState("ng_start");
 //state = new SnowState("ng_select");
 
 #region menu off
@@ -63,7 +67,7 @@ state.add("idle", {
 		}
 	},
 	draw: function(){
-
+		draw_sprite(spr_gui_button_pause,using_gamepad(),30,global.game_h-15);
 	}
 });
 #endregion
@@ -93,30 +97,148 @@ state.add("ng_start", {
 		
 	},
 	step: function(){
-		if (keyboard_check_pressed(vk_anykey)){
-			transition(function(){
-				state.change("ng_select");
-			})
+		if (input_check_pressed("accept")){
+			state.change("main_menu");
 		}
 	},
 	draw: function(){
 		draw_set_halign(fa_middle);
 		draw_set_valign(fa_center);
 		var text =
-		"merry christmas, and happy new year.\n"+
-		"this is a public demo and playtest\n"+
-		"for a full pengu saves christmas game.\n"+
-		"there is just 2 short levels,\n"+
-		"but we still hope you enjoy\n\n"+
-		"press any key to continue";
+		@"HAPPY NEW YEARS, THIS IS A
+		PUBLIC DEMO/PLAYTEST OF
+		PENGU SAVES CHRISTMAS
+		PLEASE TELL US WHAT YOU THINK
+		-STANN"
 		
 		draw_text(global.game_w/2,global.game_h/2,text);
 		
 		draw_set_halign(fa_left);
 		draw_set_valign(fa_top);
+		
+		draw_sprite(spr_gui_button_ok,using_gamepad(),global.game_w-30,global.game_h-15);
 	}
 });
 #endregion
+
+#region credits
+state.add("credits", {
+	enter: function(){
+		
+	},
+	step: function(){
+		if (input_check_pressed("cancel")){
+			state.change("main_menu");
+		}
+	},
+	draw: function(){
+		draw_set_halign(fa_middle);
+		draw_set_valign(fa_center);
+		var text =
+		@"GAME: STANN.CO
+		LEVEL DESIGN: BOBBYBURT
+		EXTRA ART & CONCEPTS: CHOCOHOLICMONKEY
+		MUSIC: CONNORGRAIL"
+		
+		draw_text(global.game_w/2,global.game_h/2,text);
+		
+		draw_set_halign(fa_left);
+		draw_set_valign(fa_top);
+		
+		draw_sprite(spr_gui_button_back,using_gamepad(),30,global.game_h-15);
+	}
+	
+});
+#endregion
+
+#region main_menu
+state.add("main_menu", {
+	enter: function(){
+		selected = 0;
+	},
+	step: function(){
+		if(input_check_pressed("down") || input_check_pressed("up")){
+			audio_play_sound(snd_ui_hover,0,0);
+			if(input_check_pressed("down")) selected++;
+			else if(input_check_pressed("up")) selected--;
+			selected = clamp(selected,0,2);
+		}
+		
+		if(input_check_pressed("accept")){
+			audio_play_sound(snd_ui_hover,0,0);
+			if(selected == 0){
+				state.change("ng_select")
+			} else if(selected == 1){
+				state.change("settings");
+			} else if(selected == 2){
+				state.change("credits");
+			}
+		}
+	},
+	draw: function(){		
+	
+		var col = global.game_w/3;
+		
+		var h = 20;
+		var x_ = global.game_w/2
+		var y_ = (global.game_h/2) - (h * 3) / 2;
+		
+		draw_set_halign(fa_middle);
+		
+		var options = ["LEVEL SELECT","SETTINGS","CREDITS"]
+		
+		for (var i = 0; i < array_length(options); ++i) {
+			if(selected != i) shader_set(sh_deselected)
+		    draw_text(x_,y_ + h * i,options[i]);
+			
+			if(selected != i) shader_reset()
+		}
+		draw_set_halign(fa_left);
+		draw_set_valign(fa_top);
+		
+		//draw_sprite(spr_gui_button_back,using_gamepad(),30,global.game_h-30);
+		draw_sprite(spr_gui_button_ok,using_gamepad(),global.game_w-30,global.game_h-15);
+	}
+});
+#endregion
+
+#region level_start
+
+state.add("level_start",{
+	enter: function(){
+		
+		global.coins = 0;
+		global.score = 0;
+		global.score_mult = 0;
+		global.score_combo_t = 0;
+		timer = 0;
+		
+		state.change("idle")	
+	}
+});
+
+state.add("level_checkpoint_start",{
+	enter: function(){
+		//resets to active checkpoint if there is any
+		if(global.active_level.checkpoint != undefined){
+			obj_pengu.x = global.active_level.checkpoint.x;
+			obj_pengu.y = global.active_level.checkpoint.y;
+			
+			global.coins = global.active_level.checkpoint_coins;
+			global.score = global.active_level.checkpoint_score;
+			global.score_mult = 0;
+			global.score_combo_t = 0;
+			
+			state.change("idle")
+		} else {
+			room_restart()
+			state.change("level_start")
+		}
+	}
+});
+
+#endregion
+
 #region ng_select
 state.add("ng_select", {
 	enter: function(){
@@ -126,15 +248,24 @@ state.add("ng_select", {
 		
 		if(input_check_pressed("accept")){
 			transition(function(){
-				state.change("idle");
+				state.change("level_start");
 				global.active_level = global.levels[selected];
 				var level = global.levels[selected];
+				level.checkpoint = undefined; //reset checkpoint				
 				room_goto(level.room_id);	
 			})
-			
 		}
 		
-		selected += input_check_pressed("right") - input_check_pressed("left");
+		if(input_check_pressed("cancel")){
+			audio_play_sound(snd_ui_decline,0,0);
+			state.change("main_menu");
+		}
+		
+		var left_right = input_check_pressed("right") - input_check_pressed("left");
+		if(left_right != 0){
+			selected += left_right
+			audio_play_sound(snd_ui_hover,1,false);
+		}
 		
 		var lvl_max = array_length(global.levels)-1
 		if(selected < 0) selected = lvl_max;
@@ -157,21 +288,10 @@ state.add("ng_select", {
 			var x_ = center_x + (i*width) - (width/2)
 			var y_ = center_y;
 			
-			if(selected != i){
-				shader_set(sh_color)
-				var u_color = shader_get_uniform(sh_color,"u_color")
-				var u_intensity = shader_get_uniform(sh_color,"u_intensity")
-				var color = gray;
-				shader_set_uniform_f(u_color,
-				color_get_red(color)/255,
-				color_get_green(color)/255,
-				color_get_blue(color)/255,)
-				shader_set_uniform_f(u_intensity,0.5);
-			} else {
-				
+			if(selected != i) shader_set(sh_deselected)
+			else {
 				y_ += dsin(global.t*5*2);
 				x_ += dsin(global.t*5);
-				
 			}
 			
 			draw_text(x_,y_,i+1);
@@ -179,7 +299,6 @@ state.add("ng_select", {
 			
 			if(selected != i){
 				shader_reset()
-				
 			}
 		}
 		
@@ -207,6 +326,12 @@ state.add("ng_select", {
 			draw_text(x_+w_,y_+text_height*i,values[i]);
 		}
 		
+		draw_set_halign(fa_left);
+		draw_set_valign(fa_top);
+		
+		draw_sprite(spr_gui_button_back,using_gamepad(),30,global.game_h-15);
+		draw_sprite(spr_gui_button_ok,using_gamepad(),global.game_w-30,global.game_h-15);
+		
 	}
 });
 #endregion
@@ -217,27 +342,37 @@ state.add("pause_menu",{
 	},
 	step: function(){
 		if(input_check_pressed("down") || input_check_pressed("up")){
-			//audio_play_sound(snd_ui_hover,0,0);
+			audio_play_sound(snd_ui_hover,0,0);
 			if(input_check_pressed("down")) selected++;
 			else if(input_check_pressed("up")) selected--;
-			selected = clamp(selected,0,2);
+			selected = clamp(selected,0,4);
 		}
 		
 		if(input_check_pressed("accept")){
-			//audio_play_sound(snd_ui_confirm,0,0);
+			audio_play_sound(snd_ui_hover,0,0);
 			if(selected == 0){
 				state.change("idle");
 			} else if(selected == 1){
 				state.change("settings");
-			} else if(selected == 2){
+			} else if(selected == 2 && !transition_in){ //level select
 				transition(function(){
 					room_goto(rm_init)
 					state.change("ng_select")
-				})
+				});
+			} else if(selected == 3 && !transition_in){ // restart level
+				transition(function(){
+					room_restart();
+					state.change("level_start");
+				});
+			} else if(selected == 4 && !transition_in && global.active_level.checkpoint != undefined){ //restart to checkpoint
+				transition(function(){
+					state.change("level_checkpoint_start");
+				});
 			}
 		}
 		
 		if(input_check_pressed("cancel")){
+			audio_play_sound(snd_ui_decline,0,0);
 			state.change("idle");
 		}
 	},
@@ -252,7 +387,7 @@ state.add("pause_menu",{
 		
 		draw_set_color(black);
 		draw_set_alpha(0.5);
-		draw_rectangle(0,0,global.gui_w,global.gui_h,false);
+		draw_rectangle(-10,-10,global.gui_w+10,global.gui_h+10,false);
 		draw_set_color(white);
 		draw_set_alpha(1);
 		
@@ -260,17 +395,20 @@ state.add("pause_menu",{
 
 		draw_text(x_,10,"GAME PAUSED");
 		
-		var options = ["CONTINUE","SETTINGS","LEVEL SELECT"]
+		var options = ["CONTINUE","SETTINGS","LEVEL SELECT","RESTART LEVEL","CHECKPOINT"]
 		
 		for (var i = 0; i < array_length(options); ++i) {
-			if(selected == i) text = "*"+options[i]+"*";
-			else text = options[i];
+			if(selected == 4 && global.active_level.checkpoint == undefined) shader_set(sh_greyed);
+			if(selected != i) shader_set(sh_deselected)
+		    draw_text(x_,y_ + h * i,options[i]);
 			
-		    draw_text(x_,y_ + h * i,text);
+			shader_reset()
 		}
-		
 		draw_set_halign(fa_left);
+		draw_set_valign(fa_top);
 		
+		draw_sprite(spr_gui_button_back,using_gamepad(),30,global.game_h-15);
+		draw_sprite(spr_gui_button_ok,using_gamepad(),global.game_w-30,global.game_h-15);
 	}
 });
 #endregion
@@ -278,26 +416,20 @@ state.add("pause_menu",{
 #region settings menu
 state.add("settings",{
 	enter: function(){
-		selected = 0;		
-		resolution_new = global.settings.resolution;
-		language_new = global.settings.language;
-		languages = lexicon_languages_get_array();
-
+		selected = 0;
 	},
 	step: function(){
-		//can't leave until new settings are confirmed
-		if(resolution_new == global.settings.resolution && language_new == global.settings.language){
-			if(input_check_pressed("down") || input_check_pressed("up")){
-				//audio_play_sound(snd_ui_hover,0,0);
-				if(input_check_pressed("down")) selected++;
-				else if(input_check_pressed("up")) selected--;
-				selected = clamp(selected,0,MENU_SETTINGS.TOTAL-1);
-			}
+		if(input_check_pressed("down") || input_check_pressed("up")){
+			audio_play_sound(snd_ui_hover,0,0);
+			if(input_check_pressed("down")) selected++;
+			else if(input_check_pressed("up")) selected--;
+			if(selected < 0) selected = MENU_SETTINGS.TOTAL-1;
+			if(selected = MENU_SETTINGS.TOTAL) selected = 0;
 		}
 		
 		var side_input = 0;
 		if(input_check_pressed("left") || input_check_pressed("right")){
-			//audio_play_sound(snd_ui_hover,0,0);
+			audio_play_sound(snd_ui_hover,0,0);
 			if(input_check_pressed("left")) side_input = -1;
 			if(input_check_pressed("right")) side_input = 1;
 		}
@@ -305,150 +437,103 @@ state.add("settings",{
 		var action = false;
 		if(input_check_pressed("accept")){
 			action = true
-			//audio_play_sound(snd_ui_confirm,0,0);
+			audio_play_sound(snd_ui_hover,0,0);
 		}
 		
 		switch (selected) {
-		    case MENU_SETTINGS.resolution:
-				if(global.settings.window_mode == STANNCAM_WINDOW_MODE.WINDOWED){ //can only change res in windowed mode
-				    resolution_new+= side_input;
-					if (resolution_new < 0) resolution_new = array_length(global.stanncam_res_presets);
-					if (resolution_new >= array_length(global.stanncam_res_presets)) resolution_new = 0;
-					
-					if(action){
-						var new_res = global.stanncam_res_presets[resolution_new];
-						stanncam_set_resolution(new_res.width,new_res.height);
-						global.settings.resolution = resolution_new;
-						settings_save();
+		    case MENU_SETTINGS.fullscreen:
+		        if(action){
+					var fullscreen = !window_get_fullscreen();
+					if(fullscreen){
+						stanncam_set_fullscreen();
 					}
+					else stanncam_set_windowed();
 				}
 		        break;
-		    case MENU_SETTINGS.window_mode:
-		        if(action || side_input != 0){
-					var new_mode = global.window_mode;
-					if(action) new_mode++;
-					else new_mode+= side_input;	
-					if(new_mode == 3) new_mode = 0;
-					else if (new_mode == -1) new_mode = 2;
-					
-					stanncam_set_window_mode(new_mode);
-					global.settings.window_mode = global.window_mode;
-					settings_save();
+			case MENU_SETTINGS.music_volume:
+				if(side_input != 0){
+					global.music_volume += side_input;
+					global.music_volume = clamp(global.music_volume,0,volume_max);
+					audio_group_set_gain(audiogroup_music,global.music_volume / volume_max,0);
 				}
 		        break;
-			case MENU_SETTINGS.keep_aspect_ratio:
-		        if(action || side_input != 0){
-					var keep_aspect_ratio = !stanncam_get_keep_aspect_ratio();
-					stanncam_set_keep_aspect_ratio(keep_aspect_ratio);
-					global.settings.keep_aspect_ratio = keep_aspect_ratio;
-					settings_save();
+			case MENU_SETTINGS.sound_volume:
+				if(side_input != 0){
+					global.sound_volume += side_input;
+					global.sound_volume = clamp(global.sound_volume,0,volume_max);
+					audio_group_set_gain(audiogroup_default,global.sound_volume / volume_max,0);
 				}
 		        break;
-			case MENU_SETTINGS.language:
-				language_new+= side_input;
-				if (language_new < 0) language_new = LANGUAGES.TOTAL-1;
-				if (language_new >= LANGUAGES.TOTAL) language_new = 0;
-				
-				if(action){
-					var new_lang = languages[language_new][0];
-					lexicon_language_set(new_lang);
-					global.settings.language = language_new;
-					settings_save();
+			case MENU_SETTINGS.draw_shine:
+		        if(action){
+					global.draw_shine = !global.draw_shine
+				}
+		        break;
+			case MENU_SETTINGS.draw_reflections:
+		        if(action){
+					global.draw_reflections = !global.draw_reflections
+				}
+		        break;
+			case MENU_SETTINGS.debug_draw:
+		        if(action){
+					global.debug = !global.debug
+					show_collisions()
 				}
 		        break;
 		}
 		
 		if(input_check_pressed("cancel")){
-			//audio_play_sound(snd_ui_decline,0,0);
-			if(resolution_new != global.settings.resolution || language_new != global.settings.language){
-				//if new settings aren't confirmed "back" resets them
-				resolution_new = global.settings.resolution;
-				language_new = global.settings.language
-			} else {
-				state.change(state.get_previous_state());	
-			}			
+			audio_play_sound(snd_ui_decline,0,0);
+			state.change(state.get_previous_state());	
 		}
 	},
 	draw: function(){		
 		draw_set_color(black);
 		draw_set_alpha(0.5);
-		draw_rectangle(0,0,global.gui_w,global.gui_h,false);
+		draw_rectangle(-10,-10,global.gui_w+10,global.gui_h+10,false);
 		draw_set_color(white);
 		draw_set_alpha(1);
 		
-		var col = global.game_w/2;
+		var w_ = 100;
+		var h_ = MENU_SETTINGS.TOTAL * text_height;
 		
-		//draws boxes
-		//draw_box(0,0,global.game_w,text_height*2,0);
-		//draw_box(0,text_height*2,global.game_w,global.game_h-text_height,0);
+		var x_ = global.game_w/2;
+		var y_ = global.game_h/2 - h_/2;
 		
-		//resolution
-		//var res_color1 = color1;
-		//var res_color2 = color2;
-		//if(resolution_new != global.settings.resolution){
-		//	var res_color1 = yellow;
-		//	var res_color2 = yellow_light;
-		//}
-		//resolution is greyed out when not in windowed mode
-		var alpha = (global.settings.window_mode == STANNCAM_WINDOW_MODE.WINDOWED) ? 1 : 0.5;
+		var setting_text =	["FULLSCREEN","MUSIC VOLUME", "SOUND VOLUME", "SHINY TILES", "SHADER FX", "DEBUG DRAWING"];
+		var setting_value = [
+			(window_get_fullscreen() ? "ON" : "OFF"),
+			global.music_volume,
+			global.sound_volume,
+			(global.draw_shine ? "ON" : "OFF"),
+			(global.draw_reflections ? "ON" : "OFF"),
+			(global.debug ? "ON" : "OFF"),
+		]
 		
-		draw_text(0,text_height*2,lexicon_text("gui.menu.settings.resolution"));
-		var res = string(languages[resolution_new].width) + " / " + string(languages[resolution_new].height);
-		draw_text(col,text_height*2,res);
+		draw_set_halign(fa_middle);
+		draw_set_valign(fa_center);
+		draw_text(x_,y_-text_height*1.5,"-SETTINGS-")
 		
-		//window mode
-		draw_text(0,text_height*3,lexicon_text("gui.menu.settings.window_mode"));
-		switch (global.settings.window_mode) {
-		    case STANNCAM_WINDOW_MODE.WINDOWED:
-		        var window_mode = lexicon_text("gui.menu.settings.window_mode.windowed");
-		        break;
-		    case STANNCAM_WINDOW_MODE.FULLSCREEN:
-		        var window_mode = lexicon_text("gui.menu.settings.window_mode.fullscreen");
-		        break;
-			case STANNCAM_WINDOW_MODE.BORDERLESS:
-		        var window_mode = lexicon_text("gui.menu.settings.window_mode.borderless");
-		        break;
+		for (var i = 0; i < MENU_SETTINGS.TOTAL; ++i) {
+			if(selected != i) shader_set(sh_deselected);
+		    draw_set_halign(fa_left);
+			draw_set_color(yellow)
+			draw_text(x_-w_,y_+text_height*i,setting_text[i]);
+			
+			draw_set_halign(fa_right);
+			draw_set_color(white)
+			
+			draw_text(x_+w_,y_+text_height*i,setting_value[i]);
+			shader_reset()
 		}
-		draw_text(col,text_height*3,window_mode);
 		
-		//keep_aspect_ratio
-		draw_text(0,text_height*4,lexicon_text("gui.menu.settings.keep_aspect_ratio"));
-		var keep_aspect_ratio = global.settings.keep_aspect_ratio ? lexicon_text("gui.on") : lexicon_text("gui.off");
-		draw_text(col,text_height*4,keep_aspect_ratio);
+		draw_set_halign(fa_left);
+		draw_set_valign(fa_top);
 		
-		//language
-		//var res_color1 = color1;
-		//var res_color2 = color2;
-		//if(language_new != global.settings.language){
-		//	var res_color1 = yellow;
-		//	var res_color2 = yellow_light;
-		//}
-		draw_text(0,text_height*5,lexicon_text("gui.menu.settings.language"));
-		draw_text(col,text_height*5,languages[language_new][0]);
-		
-		//draws selected
-		var y_ = (selected*text_height)+(text_height*2);
-		//draw_selected(0,y_, global.game_w);
-		
-		draw_circle(0,y_,4,false);
-		
-		//draws description
-		switch (selected) {
-		    case MENU_SETTINGS.resolution:
-				var description = lexicon_text("gui.menu.settings.resolution.description")
-		        break;
-		    case MENU_SETTINGS.window_mode:
-				var description = lexicon_text("gui.menu.settings.window_mode.description")
-		        break;
-			case MENU_SETTINGS.keep_aspect_ratio:
-				var description = lexicon_text("gui.menu.settings.keep_aspect_ratio.description")
-		        break;
-			case MENU_SETTINGS.language:
-				var description = lexicon_text("gui.menu.settings.language.description")
-		        break;
-		}	
-		draw_text(0,0,description);
-		
+		draw_set_alpha(0.5);
+		draw_sprite(spr_gui_button_back,using_gamepad(),30,global.game_h-15);
+		draw_sprite(spr_gui_button_ok,using_gamepad(),global.game_w-30,global.game_h-15);
+		draw_set_alpha(1);
 	}
 });
 #endregion
@@ -548,34 +633,20 @@ state.add_child("level_tally_start","level_tally_anykey", {
 	enter: function(){
 	},
 	step: function(){
-		if(!transition_in && input_check(all)){
+		if(!transition_in && input_check("accept")){
 			transition(function(){
 				state.change("ng_select");
 				room_goto(rm_init);
+				tallying = false;
 			})
 		}
 	},
 	draw: function(){
 		state.inherit()
-		
-		var x_ = global.game_w/2;
-		var y_ = global.game_h/2;
-		
-		draw_set_halign(fa_middle);
-		draw_set_valign(fa_center);
-		draw_text(x_,y_+text_height*4,"*CONTINUE*")
-		
-		draw_set_halign(fa_left);
-		draw_set_valign(fa_top);
+		draw_sprite(spr_gui_button_ok,using_gamepad(),global.game_w-30,global.game_h-30);
 	}
 });
 
-
-#endregion
-
-#region music
-
-global.song = audio_play_sound(mus_pengus_theme,1,true);
 
 #endregion
 
@@ -659,7 +730,6 @@ show_collisions = function(){
 	#region variables
 	dbg_section("variables")
 		dbg_slider_int(ref_create(self,"score_combo_t_max"),1,game_speed * 3,"Score cooldown frames");
-		
 	#endregion
 	
 	show_debug_overlay(false);

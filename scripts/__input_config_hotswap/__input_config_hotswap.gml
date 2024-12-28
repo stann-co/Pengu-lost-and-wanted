@@ -5,7 +5,7 @@
 #macro INPUT_HOTSWAP_ON_GAMEPAD_AXIS  true
 
 //Whether to trigger a hotswap when a mouse button is pressed
-#macro INPUT_HOTSWAP_ON_MOUSE_BUTTON  false
+#macro INPUT_HOTSWAP_ON_MOUSE_BUTTON  true
 
 //Whether to trigger a hotswap when the mouse is moved
 #macro INPUT_HOTSWAP_ON_MOUSE_MOVEMENT  false

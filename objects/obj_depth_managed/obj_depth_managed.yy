@@ -31,6 +31,7 @@
         "\"A\"",
         "\"B\"",
         "\"C\"",
+        "\"below C\"",
       ],"multiselect":false,"name":"depth_layer","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"A\"","varType":6,},
   ],
   "resourceType":"GMObject",

@@ -48,8 +48,7 @@ void main()
 		roughness = 1.0;
 	}
 	
-	vec2 offset = u_texture_offset / u_dimensions;
-	vec3 texture = texture2D( s_Texture, (v_vPosition / u_dimensions * u_texture_scale) + u_texture_offset + normal).rgb;
+	vec3 texture = texture2D( s_Texture, mod((v_vPosition / u_dimensions) * u_texture_scale + u_texture_offset + normal,1.0)).rgb;
 	vec4 basecol = texture2D( gm_BaseTexture, v_vTexcoord);
 	
 	vec3 blended = blendScreen(basecol.rgb,texture,roughness * u_roughness_strength);
@@ -57,8 +56,6 @@ void main()
 	vec4 final = vec4(1.0,1.0,1.0,1.0);
 	final.rgb = blended;
 	final.a = basecol.a * u_opacity;
-
-	//final.rgb = texture
 
 	gl_FragColor = final;
 }

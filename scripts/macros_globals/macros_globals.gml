@@ -4,11 +4,13 @@
 #macro camera_outer_margin 200
 #macro camera_inner_margin 100
 
-#macro main_menus (obj_game.state.state_is("ng_start") || obj_game.state.state_is("ng_select"))
-#macro can_move (!obj_game.state.state_is("pause") && !global.freeze_frame)
+#macro main_menus (room == rm_init)
+#macro can_move (!obj_game.state.state_is("pause_menu") && !obj_game.state.state_is("settings") && !global.freeze_frame)
 #macro control (obj_game.state.state_is("idle"))
 
 #macro text_height 14
+
+//#macro gamepad gamey_pad
 
 //colors
 #macro red #ff0000
@@ -47,12 +49,22 @@ enum LANGUAGES {
 }
 
 enum MENU_SETTINGS {
-	resolution,
-	window_mode,
-	keep_aspect_ratio,
-	language,
+	fullscreen,
+	music_volume,
+	sound_volume,
+	draw_shine,
+	draw_reflections,
+	debug_draw,
 	TOTAL
 }
+
+#macro volume_max 10
+global.music_volume = 10;
+global.sound_volume = 10;
+
+global.draw_shine = true;
+global.draw_reflections = true;
+
 
 //globals
 global.t = 0; //a global timer for different objects to refer to stay in sync even after being deactivated
@@ -103,17 +115,16 @@ part_type_alpha3(global.part_stars,1,1,0);
 
 //fonts
 global.gui_font = font_add_sprite_ext(spr_gui_font,"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]",false,0);
-function level_var() constructor {
-	checkpoint = noone;
-}
-
-global.level_var = new level_var()
 
 function level_details(name_,room_) constructor {
 	name = name_
 	room_id = room_
 	level_score = 0
 	level_time = undefined
+	checkpoint = undefined
+	checkpoint_score = 0
+	checkpoint_coins = 0
+	checkpoint_timer = 0
 }
 
 global.active_level = -1;

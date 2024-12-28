@@ -588,8 +588,11 @@ state = new SnowState("idle");
 			audio_sound_pitch(sound,pitch_change(random_range(2,10)));			
 			
 			if (global.coins == 0){
-				//state.change("dying");
-				room_restart();
+				transition(function(){
+					obj_game.state.change("level_checkpoint_start");	
+					state.change("idle");
+				})
+				
 				
 			}else{
 				var points = min(global.coins,16);

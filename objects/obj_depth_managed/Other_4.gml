@@ -12,5 +12,8 @@ switch (depth_layer) {
 	case "C":
         depth = global.depth_c+10;
         break;
+	case "below C":
+        depth = global.depth_c+5000;
+        break;
 }
 

@@ -2,8 +2,8 @@
   "$GMSound":"",
   "%Name":"mus_pengus_theme",
   "audioGroupId":{
-    "name":"audiogroup_default",
-    "path":"audiogroups/audiogroup_default",
+    "name":"audiogroup_music",
+    "path":"audiogroups/audiogroup_music",
   },
   "bitDepth":1,
   "bitRate":128,
@@ -22,3 +22,4 @@
   "soundFile":"mus_pengus_theme.wav",
   "type":0,
   "volume":0.01,
+}
