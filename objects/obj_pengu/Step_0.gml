@@ -15,12 +15,11 @@ if(godmode){
 } else {
 if(controlled){
 	#region input
-	if(control_lock == 0){
+	if(control){
+		if(control_lock == 0){
 		
 		input_h = (input_check("right") - input_check("left"));
 		input_v = (input_check("down") - input_check("up"));
-		
-		
 		
 		if(!airborne && !sliding && input_v == 1){
 			state.change("begin_slide");
@@ -48,16 +47,20 @@ if(controlled){
 		
 		
 	}
-	
-	if(input_check_pressed("jump")){
-		vec_t = new Vector2(0,-h_radius-1);
-		if(sliding && sensor(vec_t,snap_to_90(sensor_angle)+180,sensor_length_base) != noone){
-			//if sliding it checks if you're under a block
-			squish(0.8,1.2,game_speed*0.2);
-		} else {
-			if(!airborne) state.change("jump");
-			else if(double_jump_count == 0) state.change("double_jump");
+		
+		if(input_check_pressed("jump")){
+			vec_t = new Vector2(0,-h_radius-1);
+			if(sliding && sensor(vec_t,snap_to_90(sensor_angle)+180,sensor_length_base) != noone){
+				//if sliding it checks if you're under a block
+				squish(0.8,1.2,game_speed*0.2);
+			} else {
+				if(!airborne) state.change("jump");
+				else if(double_jump_count == 0) state.change("double_jump");
+			}
 		}
+	} else {
+		input_h = 0;
+		input_v = 0;
 	}
 	
 	#endregion

@@ -3,6 +3,9 @@ state.step();
 
 if(can_move){
 	global.t++;
+	
+	if(!tallying) timer++;
+	
 	if(transition_t == 0){
 		//deactivates objects out of view
 		

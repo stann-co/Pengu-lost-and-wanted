@@ -16,6 +16,9 @@ transition_t = 0;
 transition_duration = 50;
 transition_callback = function(){}
 
+timer = 0;
+tallying = false;
+
 //loads settings or initializes the default ones
 settings_load();
 
@@ -69,12 +72,20 @@ state.add("quick_start", {
 	enter: function(){
 		call_later(1,time_source_units_frames,function(){
 			state.change("idle");	
+			
+			for (var i = 0; i < array_length(global.levels); ++i) {
+			    if (room_next(room) == global.levels[i].room_id) {
+					global.active_level = global.levels[i]
+					break;	
+				}
+			}
+			
 			room_goto_next();
+			
 		});
 	}
 });
 #endregion
-
 
 #region ng_start
 state.add("ng_start", {
@@ -116,6 +127,7 @@ state.add("ng_select", {
 		if(input_check_pressed("accept")){
 			transition(function(){
 				state.change("idle");
+				global.active_level = global.levels[selected];
 				var level = global.levels[selected];
 				room_goto(level.room_id);	
 			})
@@ -432,6 +444,125 @@ state.add("settings",{
 });
 #endregion
 
+#region level_tally
+state.add("level_tally_start", {
+	enter: function(){
+		tallying = true;
+		tally_x = global.game_w;
+		tally_duration = game_speed * 1;
+		tally_t = 0;
+		tally_pause = false;
+		tally_score = 0;
+	},
+	step: function(){
+		if (tally_t < tally_duration) tally_t++
+		else if(!tally_pause) {
+			tally_pause = true;
+			call_later(0.5,time_source_units_seconds,function(){
+				state.change("level_tally_score");
+			})
+		}
+		var val = animcurve_read(ac_basic,"ease",tally_t/tally_duration)
+		tally_x = lerp(global.game_w,0,val);
+	},
+	draw: function(){
+		
+		var x_ = global.game_w/2+tally_x;
+		var y_ = global.game_h/2;
+		draw_set_halign(fa_middle);
+		draw_set_valign(fa_center);
+		draw_text(x_,y_-8,$"{global.active_level.name} COMPLETE!!!")
+		
+		var w_ = 100;
+		
+		draw_set_halign(fa_left);
+		draw_set_color(yellow)
+		draw_text(x_-w_,y_+8,"LEVEL SCORE");
+
+		draw_set_halign(fa_right);
+		draw_set_color(white)
+		
+		draw_text(x_+w_,y_+8,tally_score);
+			
+		draw_set_halign(fa_left);
+		draw_set_valign(fa_top);
+
+	}
+});
+
+state.add_child("level_tally_start","level_tally_score", {
+	enter: function(){
+		tallying = true;
+		tally_duration = global.score;
+		tally_t = 0;
+		tally_pause = false;
+	},
+	step: function(){
+		if (tally_score < tally_duration) tally_score++
+		else if(!tally_pause) {
+			tally_pause = true;
+			call_later(0.5,time_source_units_seconds,function(){
+				state.change("level_tally_timer");
+			})
+		}
+		var val = tally_t/tally_duration
+		global.score = lerp(tally_1,0,val);
+		tally_score = lerp(0,tally_1,val);
+	},
+
+});
+
+state.add_child("level_tally_start","level_tally_timer", {
+	enter: function(){
+		tallying = true;
+		tally_duration = game_speed * 1;
+		tally_t = 0;
+		tally_pause = false;
+		
+		tally_1 = timer;
+		tally_2 = tally_score;
+		tally_3 = tally_score + 18000 - timer;
+		
+	},
+	step: function(){
+		if (tally_t < tally_duration) tally_t++
+		else if(!tally_pause) {
+			tally_pause = true;
+			call_later(0.5,time_source_units_seconds,function(){
+				state.change("level_tally_snacks");
+			})
+		}
+		var val = tally_t/tally_duration
+		timer = lerp(tally_1,0,val);
+		tally_score = lerp(tally_2,tally_3,val);
+	},
+});
+
+state.add_child("level_tally_start","level_tally_snacks", {
+	enter: function(){
+		tallying = true;
+		tally_duration = game_speed * 1;
+		tally_t = 0;
+		tally_pause = false;
+		
+		tally_1 = global.coins;
+		tally_2 = tally_score;
+		tally_3 = tally_score + (global.coins * 100);
+		
+	},
+	step: function(){
+		if (tally_t < tally_duration) tally_t++
+		else if(!tally_pause) {
+			tally_pause = true;
+			call_later(0.5,time_source_units_seconds,function(){
+				
+			})
+		}
+		var val = tally_t/tally_duration
+		timer = lerp(tally_1,0,val);
+		tally_score = lerp(tally_2,tally_3,val);
+	},
+});
 #endregion
 
 #region music
@@ -439,7 +570,6 @@ state.add("settings",{
 global.song = audio_play_sound(mus_pengus_theme,1,true);
 
 #endregion
-
 
 #region debugging
 
@@ -476,7 +606,7 @@ show_collisions = function(){
 	}
 }	
 
-#region debugging
+
 	#region levels
 	//dbg_section("levels")
 	
