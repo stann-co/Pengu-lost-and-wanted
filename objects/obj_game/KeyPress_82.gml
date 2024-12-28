@@ -5,3 +5,5 @@ if(keyboard_check(vk_shift)){ //if shift r, checkpoint is reset
 }
 
 room_restart();
+
+state.change("idle");

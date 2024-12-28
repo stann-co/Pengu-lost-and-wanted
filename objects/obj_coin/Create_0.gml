@@ -43,7 +43,7 @@ pickup_t = 0;
 pickup_t_max = game_speed * 1;
 
 disappear = false;
-disappear_duration = game_speed * 6;
+disappear_duration = game_speed * 4;
 
 start_time = 0;
 
