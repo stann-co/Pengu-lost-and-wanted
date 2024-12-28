@@ -22,4 +22,3 @@
   "soundFile":"mus_pengus_theme.wav",
   "type":0,
   "volume":0.01,
-}
