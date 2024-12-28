@@ -51,7 +51,6 @@ if(can_move){
 		
 		//score multiplier reset
 		if(global.score_combo_t > 0){
-			
 			global.score_combo_t--;
 		}
 		else{

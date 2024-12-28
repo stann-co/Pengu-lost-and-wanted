@@ -6,11 +6,13 @@ const CACHE_FILES = ["runner.data",
 "runner.js",
 "runner.wasm",
 "audio-worklet.js",
+"audiogroup1.dat",
 "controllerblacklist.csv",
 "controllertypes.csv",
 "game.unx",
 "licenses.txt",
 "local_en.json",
+"newgroundsio.js",
 "options.ini",
 "sdl2.txt"
 ];

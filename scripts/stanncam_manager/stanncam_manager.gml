@@ -94,11 +94,7 @@ function stanncam_set_window_mode(_window_mode){
 	switch (_window_mode) {
 		case STANNCAM_WINDOW_MODE.WINDOWED:
 			window_set_fullscreen(false);
-			window_set_showborder(true);
-			
-			window_set_size(__obj_stanncam_manager.display_res_w, __obj_stanncam_manager.display_res_h);
-			__stanncam_center(20, 20);
-			
+			window_set_showborder(true);			
 			break;
 		case STANNCAM_WINDOW_MODE.FULLSCREEN:
 			window_set_fullscreen(true);
@@ -109,7 +105,7 @@ function stanncam_set_window_mode(_window_mode){
 			window_set_showborder(false);
 			break;
 	}
-	call_later(10, time_source_units_frames, function(){
+	call_later(30, time_source_units_frames, function(){
 		__stanncam_update_resolution();
 	});
 }
@@ -253,6 +249,9 @@ function __stanncam_update_resolution(){
 				global.res_w = __obj_stanncam_manager.display_res_w;
 				global.res_h = __obj_stanncam_manager.display_res_h;
 			}
+			window_set_size(__obj_stanncam_manager.display_res_w, __obj_stanncam_manager.display_res_h);
+			__stanncam_center();
+		
 			break;
 	}
 	
@@ -282,10 +281,9 @@ function __stanncam_update_resolution(){
 
 /// @function __stanncam_center
 /// @description moves the window to the center of whichever window it's within
-/// @param {Real} [_x=0] x offset
-/// @param {Real} [_y=0] y offset
 /// @ignore
-function __stanncam_center(_x=0, _y=0){
+function __stanncam_center(){
+	
 	var _wx = window_get_x();
 	var _wy = window_get_y();
 	var _ww = window_get_width();
@@ -298,8 +296,8 @@ function __stanncam_center(_x=0, _y=0){
 		array_delete(_display_data, i * 4, 4);
 	}
 	
-	var _middle_x = _wx + (_ww * 0.5);
-	var _middle_y = _wy + (_wh * 0.5);
+	var _middle_x = _wx + (_ww / 2);
+	var _middle_y = _wy + (_wh / 2);
 	
 	var _outside_view = true;
 	//checks which monitor the window is within
@@ -309,15 +307,18 @@ function __stanncam_center(_x=0, _y=0){
 		var _x2 = _display_data[(i * 4) + 2];
 		var _y2 = _display_data[(i * 4) + 3];
 		
+		var _center_x = lerp(_x1,_x2,0.5);
+		var _center_y = lerp(_y1,_y2,0.5);
+		
 		if(_middle_x > _x1 && _middle_x < _x2 && _middle_y > _y1 && _middle_y < _y2){
-			window_set_position(_x1 + _x, _y1 + _y);
+			window_set_position(_center_x - _ww/2, _center_y - _wh/2);
 			_outside_view = false;
 			break;
 		}
 	}
 	//in case it somehow appears outside any of the monitors views it will go back to the first monitor
 	if(_outside_view){
-		window_set_position(_x, _y);
+		window_set_position(_middle_x - window_get_width()/2, _middle_y - window_get_height()/2);
 	}
 }
 
