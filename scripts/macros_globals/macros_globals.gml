@@ -131,7 +131,8 @@ global.active_level = -1;
 
 global.levels = [
 	new level_details("TUTORIAL",rm_level_bobby_tutorial_detail),
-	new level_details("DEMO",rm_level_bobby_POC_3_detail)
+	new level_details("DEMO",rm_level_bobby_POC_3_detail),
+	new level_details("CHALLENGE",rm_level_bobby_level_2)
 ]
 
 //spawns persistent objects

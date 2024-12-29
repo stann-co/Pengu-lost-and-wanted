@@ -245,31 +245,32 @@ state.add("ng_select", {
 		selected = 0;
 	},
 	step: function(){
-		
-		if(input_check_pressed("accept")){
-			transition(function(){
-				state.change("level_start");
-				global.active_level = global.levels[selected];
-				var level = global.levels[selected];
-				level.checkpoint = undefined; //reset checkpoint				
-				room_goto(level.room_id);	
-			})
+		if(!transition_in){
+			if(input_check_pressed("accept")){
+				transition(function(){
+					state.change("level_start");
+					global.active_level = global.levels[selected];
+					var level = global.levels[selected];
+					level.checkpoint = undefined; //reset checkpoint				
+					room_goto(level.room_id);	
+				})
+			}
+			
+			if(input_check_pressed("cancel")){
+				audio_play_sound(snd_ui_decline,0,0);
+				state.change("main_menu");
+			}
+			
+			var left_right = input_check_pressed("right") - input_check_pressed("left");
+			if(left_right != 0){
+				selected += left_right
+				audio_play_sound(snd_ui_hover,1,false);
+			}
+			
+			var lvl_max = array_length(global.levels)-1
+			if(selected < 0) selected = lvl_max;
+			if(selected > lvl_max) selected = 0;
 		}
-		
-		if(input_check_pressed("cancel")){
-			audio_play_sound(snd_ui_decline,0,0);
-			state.change("main_menu");
-		}
-		
-		var left_right = input_check_pressed("right") - input_check_pressed("left");
-		if(left_right != 0){
-			selected += left_right
-			audio_play_sound(snd_ui_hover,1,false);
-		}
-		
-		var lvl_max = array_length(global.levels)-1
-		if(selected < 0) selected = lvl_max;
-		if(selected > lvl_max) selected = 0;
 
 	},
 	draw: function(){		
@@ -285,7 +286,7 @@ state.add("ng_select", {
 		
 		for (var i = 0; i < num; ++i) {
 			
-			var x_ = center_x + (i*width) - (width/2)
+			var x_ = center_x - ((num-1)*width/2) + (i*width);
 			var y_ = center_y;
 			
 			if(selected != i) shader_set(sh_deselected)

@@ -1,4 +1,4 @@
 /// @description wins level
-global.snacks = 0;
-obj_pengu.hurt();
+global.coins = 0;
+obj_pengu.state.change("hurt");
 instance_destroy()

@@ -22,6 +22,7 @@ state = new SnowState("idle");
 state
 
 .event_set_default_function("draw",function(){
+	draw_sprite_cubemap(sprite_index,0,x,y,spr_crt,,,,,image_xscale,image_yscale,image_angle,1);
 	draw_self();
 })
 
