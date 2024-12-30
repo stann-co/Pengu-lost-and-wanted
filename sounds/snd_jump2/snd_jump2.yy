@@ -21,5 +21,5 @@
   "sampleRate":44100,
   "soundFile":"snd_jump2.ogg",
   "type":0,
-  "volume":0.2,
+  "volume":0.25,
 }

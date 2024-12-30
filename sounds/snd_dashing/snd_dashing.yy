@@ -21,5 +21,5 @@
   "sampleRate":44100,
   "soundFile":"snd_dashing.ogg",
   "type":0,
-  "volume":0.05,
+  "volume":0.1,
 }

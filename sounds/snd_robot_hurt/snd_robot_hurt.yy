@@ -21,5 +21,5 @@
   "sampleRate":44100,
   "soundFile":"snd_robot_hurt.wav",
   "type":0,
-  "volume":0.05,
+  "volume":0.08,
 }
