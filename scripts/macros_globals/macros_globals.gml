@@ -137,5 +137,5 @@ global.levels = [
 
 //spawns persistent objects
 
-room_instance_add(rm_init,0,0,obj_camera)
-room_instance_add(rm_init,0,0,obj_game)
+//room_instance_add(rm_init,0,0,obj_camera)
+//room_instance_add(rm_init,0,0,obj_game)
