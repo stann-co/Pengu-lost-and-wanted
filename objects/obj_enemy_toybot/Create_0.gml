@@ -14,7 +14,7 @@ wait_duration = game_speed*0.4;
 
 hurt = function(){
 	hurting = true;
-	state.change("hurt");
+	state.change("die");
 	var sound = audio_play_sound(snd_robot_hurt,1,false);
 	audio_sound_pitch(sound,pitch_change(random_range(0.1,4.4)));	
 }

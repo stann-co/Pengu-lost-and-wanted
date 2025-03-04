@@ -138,7 +138,6 @@
     {"name":"inst_18183D83","path":"rooms/rm_workshop/rm_workshop.yy",},
     {"name":"inst_7AC482CE","path":"rooms/rm_workshop/rm_workshop.yy",},
     {"name":"inst_4CBAE979","path":"rooms/rm_workshop/rm_workshop.yy",},
-    {"name":"inst_19F662AA","path":"rooms/rm_workshop/rm_workshop.yy",},
     {"name":"inst_76852262","path":"rooms/rm_workshop/rm_workshop.yy",},
     {"name":"inst_36F5DAA7","path":"rooms/rm_workshop/rm_workshop.yy",},
     {"name":"inst_611E29","path":"rooms/rm_workshop/rm_workshop.yy",},
@@ -1834,7 +1833,6 @@
             {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_moving_platform","path":"objects/obj_moving_platform/obj_moving_platform.yy",},"propertyId":{"name":"active","path":"objects/obj_moving_platform/obj_moving_platform.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
             {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_moving_platform","path":"objects/obj_moving_platform/obj_moving_platform.yy",},"propertyId":{"name":"cycle","path":"objects/obj_moving_platform/obj_moving_platform.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"\"do once\"",},
           ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":-3.2000003,"scaleY":1.0,"x":1072.0,"y":1232.0,},
-        {"$GMRInstance":"v1","%Name":"inst_19F662AA","colour":4294967295,"frozen":false,"hasCreationCode":true,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_19F662AA","objectId":{"name":"obj_trigger","path":"objects/obj_trigger/obj_trigger.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":3.3125,"scaleY":3.5,"x":880.0,"y":1120.0,},
       ],"layers":[],"name":"Instances_B","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRTileLayer":"","%Name":"decor_01_B","depth":900,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":true,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":false,"layers":[],"name":"decor_01_B","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":125,"SerialiseWidth":500,"TileCompressedData":[
           -4090,-2147483648,-5,805306421,1,1073741878,-494,-2147483648,2,536870957,536870958,-3,1073741877,1,1073741878,

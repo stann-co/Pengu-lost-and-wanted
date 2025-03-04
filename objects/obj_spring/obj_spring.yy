@@ -14,8 +14,8 @@
     "path":"folders/Objects/level element.yy",
   },
   "parentObjectId":{
-    "name":"obj_hitbox_trigger",
-    "path":"objects/obj_hitbox_trigger/obj_hitbox_trigger.yy",
+    "name":"obj_trigger",
+    "path":"objects/obj_trigger/obj_trigger.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

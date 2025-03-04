@@ -1,0 +1,18 @@
+Nodes:
+======
+5: RootNode
+    6: Cube:
+        * Mesh 0 [V,N,UV,C,T,B,]
+
+    7: RootNode
+        8: Armature
+            0: Root [bone]
+                1: spine [bone]
+                    2: arm.R [bone]
+                    3: arm.L [bone]
+                    4: head [bone]
+
+Materials:
+==========
+0: Material
+

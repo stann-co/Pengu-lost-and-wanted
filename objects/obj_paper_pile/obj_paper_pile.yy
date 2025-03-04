@@ -16,8 +16,8 @@
     "path":"folders/Objects/decorations.yy",
   },
   "parentObjectId":{
-    "name":"obj_hitbox_trigger",
-    "path":"objects/obj_hitbox_trigger/obj_hitbox_trigger.yy",
+    "name":"obj_trigger_hitbox",
+    "path":"objects/obj_trigger_hitbox/obj_trigger_hitbox.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

@@ -1,5 +1,4 @@
 /// @description starts the game
-/// feather ignore all in /Extensions/*
 
 //vars
 saved_pengu = {
@@ -219,7 +218,7 @@ state.add("level_start",{
 state.add("level_checkpoint_start",{
 	enter: function(){
 		//resets to active checkpoint if there is any
-		if(global.active_level.checkpoint != undefined){
+		if(global.active_level != undefined && global.active_level.checkpoint != undefined){
 			obj_pengu.x = global.active_level.checkpoint.x;
 			obj_pengu.y = global.active_level.checkpoint.y;
 			
@@ -684,7 +683,6 @@ show_collisions = function(){
 		layer_set_visible("backgrounds_1",false);
 	}
 }	
-
 
 	#region levels
 	//dbg_section("levels")

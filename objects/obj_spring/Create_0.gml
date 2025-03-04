@@ -4,8 +4,8 @@ subimg = 0;
 
 cooldown = false;
 
-trigger = function(){
-	if(!cooldown){
+trigger = function(side_,object_){
+	if(!cooldown && side_ == SIDES.Top){
 		
 		audio_play_sound(snd_bouncepad,0,false)
 		
@@ -14,7 +14,8 @@ trigger = function(){
 			cooldown = false;	
 		})
 		
-		with(obj_pengu){
+		
+		if (object_.object_index == obj_pengu) with(object_){
 			var angle = other.image_angle
 			if(airborne && !other.only_grounded){
 				
@@ -24,13 +25,11 @@ trigger = function(){
 					collision_layer_switch(other.change_layer,true);
 				}
 				
-				x_speed =	 dcos(angle+90) * other.spring_force;	
+				x_speed =	 dcos(angle+90) * other.spring_force;
 				y_speed =	 dsin(angle+90) * -other.spring_force;
 				state.change("fall_up");
 				double_jump_count = 0;
 				dash_air_count = 0;
-				
-				
 				
 			} else if(!airborne){
 				
@@ -55,4 +54,5 @@ trigger = function(){
 			}		
 		}
 	}
+	return false
 }

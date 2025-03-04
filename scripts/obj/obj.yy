@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"obj",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"obj",
+  "parent":{
+    "name":"3d",
+    "path":"folders/Scripts/3d.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

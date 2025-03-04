@@ -12,6 +12,12 @@ subimg = 0;
 sensor_angle = 0;
 sensor_length_base = 8;
 hurting = false;
+airborne = false;
+
+hp = 1;
+invulnerable = 0;
+
+on_land = false; //gets true the frame enemy lands from being airborne
 
 vec_rt = new Vector2(0,0); //right
 vec_lt = new Vector2(0,0); //left
@@ -22,7 +28,12 @@ vec_b = new Vector2(0,0); //bottom
 
 hurt = function(){
 	hurting = true;
-	state.change("hurt");
+	hp--
+	if(hp <= 0){
+		state.change("die");
+	} else  {
+		state.change("hurt");
+	}
 }
 
 no_floor = function(){
@@ -50,7 +61,7 @@ state
 	}
 })
 
-.add("hurt",{
+.add("die",{
 	enter:function(){
 		y_speed = -10;
 		x_speed = sign(x-obj_pengu.x) * 6;
@@ -63,6 +74,23 @@ state
 		image_angle-=sign(x_speed) * 6;
 		if(global.camera.out_of_bounds(x,y,-30)){
 			instance_destroy();	
+		}
+	}
+})
+
+.add("hurt",{
+	enter:function(){
+		y_speed = -2;
+		x_speed = sign(x-obj_pengu.x) * 2;
+		point_scatter(1);
+		score_increase(0,score_combo_t_max)
+		part_particles_create(global.particles,x,y,global.part_stars,2);
+		airborne = true;
+	},
+	step:function(){
+		y_speed += 0.5;
+		if (on_land){
+			state.change("idle");
 		}
 	}
 })

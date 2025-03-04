@@ -3,6 +3,7 @@
 //
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
+
 uniform float percentage;
 uniform vec3 color1;
 uniform vec3 color2;

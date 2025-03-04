@@ -6,6 +6,8 @@ global.camera.move(x,y,0);
 #region variables
 godmode = false;
 
+new_attacks = false
+
 input_h = 0;
 input_v = 0;
 
@@ -101,6 +103,10 @@ super_speed_colors = [red,red,red,red,red,red,white,white,white,white,white,whit
 super_speed_u_color = shader_get_uniform(sh_color,"u_color");
 super_speed_u_intensity = shader_get_uniform(sh_color,"u_intensity");
 
+attack_jump_force = 3;
+attack_count = 0;
+attacking = false;
+
 on_land = false; //this is true on the frame you land again
 on_ceiling = false; //this is true whenever you are touching the ceiling
 
@@ -139,36 +145,40 @@ set_control_lock = function(duration = game_speed*1){
 	input_h = 0;
 }
 
-spike_hurt = function(sensor_){
-	if(
-		sensor_ != noone &&
-		sensor_.inst != noone &&
-		(object_is_ancestor(sensor_.inst.object_index,obj_spikes) or sensor_.inst.object_index == obj_spikes) &&
-		sensor_.side == "top" &&
-		invulnerable == 0
-	)
-	{	
-		var should_hurt = true;
-		if(airborne){
-			var angle_ = point_direction(0,0,x_speed,y_speed);
-			if (angle_difference(angle_,sensor_.angle+90) < 45){
-				should_hurt = false;
-			};
-		}
+//spike_hurt = function(sensor_){
+//	if(
+//		sensor_ != noone &&
+//		sensor_.inst != noone &&
+//		(object_is_ancestor(sensor_.inst.object_index,obj_spikes) or sensor_.inst.object_index == obj_spikes) &&
+//		sensor_.side == "top" &&
+//		invulnerable == 0
+//	)
+//	{	
+//		var should_hurt = true;
+//		if(airborne){
+//			var angle_ = point_direction(0,0,x_speed,y_speed);
+//			if (angle_difference(angle_,sensor_.angle+90) < 45){
+//				should_hurt = false;
+//			};
+//		}
 		
-		if(should_hurt){
-			hurt(sign(x - sensor_.inst.x));		
-			return true;
-		}
-	}
+//		if(should_hurt){
+//			hurt(sign(x - sensor_.inst.x));		
+//			return true;
+//		}
+//	}
 	
-	return false;
-}
+//	return false;
+//}
 
 ///@function hurt()
 hurt = function(x_side = 0){
-	x_speed = hurt_x_force * x_side;
-	state.change("hurt");
+	//nothing happens if invulnerable
+	if(invulnerable == 0){
+		global.camera.shake_screen(4,game_speed*0.5);
+		x_speed = hurt_x_force * x_side;
+		state.change("hurt");
+	}
 }
 
 ///@function squish()
@@ -637,6 +647,32 @@ state = new SnowState("idle");
 			if(y_speed > 0) state.change("begin_fall");
 			if(on_land) state.change("idle");
 		},
+	})
+	
+	state.add_child("airborne","attack", {
+	    enter: function() {
+			state.inherit()
+			
+			attack_count++;
+			attacking = true;
+			
+			sprite_index = spr_pengu_attack;
+			mask_index = spr_pengu_hitbox_attack;
+
+			y_speed = -attack_jump_force;	
+			x_speed *= 0.6;
+	
+			squish(0.4,1.4,game_speed*0.4);
+			
+			//audio_play_sound_random(0,0,snd_wingflap1,snd_wingflap2);
+	    },
+		step: function() {			
+			if(y_speed > 0) state.change("begin_fall");
+			if(on_land) state.change("idle");
+		},
+		leave: function(){
+			attacking = false;	
+		}
 	})
 		
 	state.add_child("airborne","dash_air_charge",{

@@ -25,7 +25,6 @@ trigger = function(){
 		grabbed_on = true;
 		springing = true;
 	}
-	
 }
 
 

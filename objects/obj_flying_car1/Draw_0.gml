@@ -6,7 +6,7 @@ if(!surface_exists(srf_normal)){
 	srf_normal = surface_create(32,32,surface_rg8unorm);	
 }
 surface_set_target(srf_normal)
-draw_sprite(spr_normal_noise,normal_subimg,0,0);
+draw_sprite(spr_noise,normal_subimg,0,0);
 surface_reset_target();
 tex_normal = surface_get_texture(srf_normal);
 

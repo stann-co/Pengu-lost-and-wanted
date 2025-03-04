@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"stanncam_sh_gizmo",
+  "name":"stanncam_sh_gizmo",
+  "parent":{
+    "name":"Shaders",
+    "path":"folders/Extensions/STANNcam/Miscellaneous/Shaders.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

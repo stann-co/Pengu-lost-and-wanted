@@ -1,3 +1,5 @@
+/// feather ignore all in /Extensions/*
+
 //Where all macros are set
 #macro game_speed game_get_speed(gamespeed_fps)
 
@@ -58,13 +60,19 @@ enum MENU_SETTINGS {
 	TOTAL
 }
 
+enum SIDES {
+	Left,
+	Right,
+	Top,
+	Bottom,
+}
+
 #macro volume_max 10
 global.music_volume = 10;
 global.sound_volume = 10;
 
 global.draw_shine = true;
 global.draw_reflections = true;
-
 
 //globals
 global.t = 0; //a global timer for different objects to refer to stay in sync even after being deactivated
@@ -83,13 +91,15 @@ global.tile_angles = [
  
 ];
 
+global.sidescroller = true;
+
 global.depth_a = 300;
 global.depth_b = 400;
 global.depth_c = 500;
 
 global.activation_list = [];
 
-global.debug = false;
+global.debug = true;
 global.checkpoint = -1;
 
 global.score = 0;
@@ -127,13 +137,16 @@ function level_details(name_,room_) constructor {
 	checkpoint_timer = 0
 }
 
-global.active_level = -1;
+global.active_level = undefined;
 
 global.levels = [
 	new level_details("TUTORIAL",rm_level_bobby_tutorial_detail),
 	new level_details("DEMO",rm_level_bobby_POC_3_detail),
 	new level_details("CHALLENGE",rm_level_bobby_level_2)
 ]
+
+//3D
+#macro BBMOD_MATERIAL_DEFAULT -1
 
 //spawns persistent objects
 

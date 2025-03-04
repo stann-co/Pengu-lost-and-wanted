@@ -25,7 +25,7 @@ touch_wall = function(){
 hurt = function(){
 	hurting = true;
 	sprite_index = spr_tigerbara_hurt;
-	state.change("hurt");
+	state.change("die");
 	var sound = audio_play_sound(snd_seal_hurt,1,false);
 	audio_sound_pitch(sound,pitch_change(random_range(1.3,1.6)));	
 }

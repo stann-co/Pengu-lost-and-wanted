@@ -1,0 +1,1 @@
+new_attacks = true

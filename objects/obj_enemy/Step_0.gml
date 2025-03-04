@@ -7,7 +7,9 @@ state.step();
 x+=x_speed;
 y+=y_speed;
 
-if(!hurting){
+if(on_land) on_land = false;
+
+if(!state.state_is("die")){
 	#region push sensors
 	var side_sensor = noone;
 		var push_height = -8;
@@ -53,10 +55,15 @@ if(!hurting){
 	var b_sensor = sensor(vec_b,snap_to_90(sensor_angle),sensor_length_base);
 	
 	if(b_sensor != noone){
+		if(airborne && y_speed > 0){
+			airborne = false;
+			on_land = true;
+		}
+		
 		x+= b_sensor.x;
 		y+= b_sensor.y;
 		ground_angle = b_sensor.angle;	
-	} else {
+	} else if(!airborne){
 		no_floor();
 	}
 }

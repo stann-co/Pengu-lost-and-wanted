@@ -13,7 +13,7 @@ hurt = function(){
 	hurting = true;
 	sprite_index = spr_snowman_hurt;
 	
-	state.change("hurt");
+	state.change("die");
 }
 
 state

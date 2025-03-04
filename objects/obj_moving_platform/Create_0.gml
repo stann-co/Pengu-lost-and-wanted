@@ -34,3 +34,12 @@ forward = true;
 last_x = x;
 last_y = y;
 last_rot = image_angle;
+
+trigger = function(side_,object_){
+	
+	
+	object_.x+= x - last_x;
+	
+	return true;
+
+}

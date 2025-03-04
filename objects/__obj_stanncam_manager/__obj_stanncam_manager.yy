@@ -11,8 +11,8 @@
   "name":"__obj_stanncam_manager",
   "overriddenProperties":[],
   "parent":{
-    "name":"Miscellaneous",
-    "path":"folders/Extensions/STANNcam/Miscellaneous.yy",
+    "name":"STANNcam",
+    "path":"folders/Extensions/STANNcam.yy",
   },
   "parentObjectId":null,
   "persistent":true,
