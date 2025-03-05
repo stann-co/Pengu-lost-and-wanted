@@ -10,7 +10,7 @@ snowball_throw_speed = 4;
 h_radius = 12
 
 hurt = function(){
-	hurting = true;
+	invulnerable = true;
 	sprite_index = spr_snowman_hurt;
 	
 	state.change("die");

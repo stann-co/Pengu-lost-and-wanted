@@ -19,15 +19,14 @@
   "height":74,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"eb264c83-8e5e-4526-b7a6-cf10dd85aeb2","blendMode":0,"displayName":"Layer 1","isLocked":false,"name":"eb264c83-8e5e-4526-b7a6-cf10dd85aeb2","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
-    {"$GMImageLayer":"","%Name":"3b07bc53-cb1c-4036-8c09-a20c0c06de8f","blendMode":0,"displayName":"default","isLocked":false,"name":"3b07bc53-cb1c-4036-8c09-a20c0c06de8f","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"dfbf025e-5b59-4046-8a2d-5f5dd7e623b4","blendMode":0,"displayName":"default","isLocked":false,"name":"dfbf025e-5b59-4046-8a2d-5f5dd7e623b4","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_tutorial_sign_4",
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"decorations",
-    "path":"folders/Sprites/decorations.yy",
+    "name":"demo tutorial sign",
+    "path":"folders/Sprites/decorations/demo tutorial sign.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

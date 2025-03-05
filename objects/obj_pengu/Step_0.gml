@@ -27,7 +27,7 @@ if(controlled){
 		
 		if(input_v == -1 && !airborne && !state.state_is("end_slide") && !state.state_is("look_up")){
 			if(sliding){
-				if(!collision_line(x-w_radius_normal-1,y-h_radius_normal-2,x+w_radius_normal+1,y-h_radius_normal-2,[global.tile_collisions,obj_collision],true,true)){
+				if(force_slide_false && !collision_line(x-w_radius_normal-1,y-h_radius_normal-2,x+w_radius_normal+1,y-h_radius_normal-2,[global.tile_collisions,obj_collision],true,true)){
 					state.change("end_slide");
 				}
 			} else if(abs(ground_spd) < 2){
@@ -45,11 +45,11 @@ if(controlled){
 			}
 		}
 		
-		if(input_check_pressed("attack") && new_attacks){
-			if(attack_count == 0  && (ground_angle <= 45 || ground_angle >= 315)) {
-				state.change("attack");
-			}
-		}
+		//if(input_check_pressed("attack") && new_attacks){
+		//	if(attack_count == 0  && (ground_angle <= 45 || ground_angle >= 315)) {
+		//		state.change("attack");
+		//	}
+		//}
 		
 		
 	}

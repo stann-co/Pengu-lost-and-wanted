@@ -23,7 +23,7 @@ touch_wall = function(){
 }
 
 hurt = function(){
-	hurting = true;
+	invulnerable = true;
 	sprite_index = spr_tigerbara_hurt;
 	state.change("die");
 	var sound = audio_play_sound(snd_seal_hurt,1,false);

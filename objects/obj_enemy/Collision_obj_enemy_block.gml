@@ -1,5 +1,5 @@
 /// @description a wall only for enemies
-if(!hurting){
+if(!invulnerable){
 	touch_wall();
 }
 

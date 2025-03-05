@@ -11,11 +11,12 @@ input_h = -1;
 subimg = 0;
 sensor_angle = 0;
 sensor_length_base = 8;
-hurting = false;
 airborne = false;
 
 hp = 1;
 invulnerable = 0;
+
+stagger = 0;
 
 on_land = false; //gets true the frame enemy lands from being airborne
 
@@ -91,6 +92,7 @@ state
 		y_speed += 0.5;
 		if (on_land){
 			state.change("idle");
+			invulnerable = false;
 		}
 	}
 })

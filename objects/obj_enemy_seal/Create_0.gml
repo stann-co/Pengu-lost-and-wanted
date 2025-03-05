@@ -25,7 +25,7 @@ touch_wall = function(){
 }
 
 hurt = function(){
-	hurting = true;
+	invulnerable = true;
 	sprite_index = spr_seal_hurt;
 	state.change("die");
 	

@@ -50,8 +50,8 @@ draw_set_font(global.gui_font);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
-state = new SnowState("quick_start");
-//state = new SnowState("ng_start");
+//state = new SnowState("quick_start");
+state = new SnowState("demo_start");
 
 #region menu off
 state.add("idle", {
@@ -89,8 +89,8 @@ state.add("quick_start", {
 });
 #endregion
 
-#region ng_start
-state.add("ng_start", {
+#region demo_start
+state.add("demo_start", {
 	enter: function(){
 		
 	},
@@ -103,10 +103,12 @@ state.add("ng_start", {
 		draw_set_halign(fa_middle);
 		draw_set_valign(fa_center);
 		var text =
-		@"HAPPY NEW YEARS, THIS IS A
-		PUBLIC DEMO/PLAYTEST OF
-		PENGU SAVES CHRISTMAS
-		PLEASE TELL US WHAT YOU THINK
+		@"THIS IS A PUBLIC DEMO OF
+		
+		PENGU: LOST & WANTED
+		
+		EVERYTHING IS SUBJECT TO CHANGE
+		I APPRECIATE YOUR SUPPORT!!!
 		-STANN"
 		
 		draw_text(global.game_w/2,global.game_h/2,text);
@@ -159,17 +161,19 @@ state.add("main_menu", {
 			audio_play_sound(snd_ui_hover,0,0);
 			if(input_check_pressed("down")) selected++;
 			else if(input_check_pressed("up")) selected--;
-			selected = clamp(selected,0,2);
+			selected = clamp(selected,0,3);
 		}
 		
 		if(input_check_pressed("accept")){
 			audio_play_sound(snd_ui_hover,0,0);
 			if(selected == 0){
-				state.change("ng_select")
+				state.change("demo_select")
 			} else if(selected == 1){
 				state.change("settings");
 			} else if(selected == 2){
 				state.change("credits");
+			} else if(selected == 3){
+				game_end();	
 			}
 		}
 	},
@@ -183,7 +187,7 @@ state.add("main_menu", {
 		
 		draw_set_halign(fa_middle);
 		
-		var options = ["LEVEL SELECT","SETTINGS","CREDITS"]
+		var options = ["LEVEL SELECT","SETTINGS","CREDITS","QUIT GAME"]
 		
 		for (var i = 0; i < array_length(options); ++i) {
 			if(selected != i) shader_set(sh_deselected)
@@ -194,7 +198,6 @@ state.add("main_menu", {
 		draw_set_halign(fa_left);
 		draw_set_valign(fa_top);
 		
-		//draw_sprite(spr_gui_button_back,using_gamepad(),30,global.game_h-30);
 		draw_sprite(spr_gui_button_ok,using_gamepad(),global.game_w-30,global.game_h-15);
 	}
 });
@@ -237,8 +240,8 @@ state.add("level_checkpoint_start",{
 
 #endregion
 
-#region ng_select
-state.add("ng_select", {
+#region demo_select
+state.add("demo_select", {
 	enter: function(){
 		selected = 0;
 	},
@@ -356,7 +359,7 @@ state.add("pause_menu",{
 			} else if(selected == 2 && !transition_in){ //level select
 				transition(function(){
 					room_goto(rm_init)
-					state.change("ng_select")
+					state.change("demo_select")
 				});
 			} else if(selected == 3 && !transition_in){ // restart level
 				transition(function(){
@@ -634,7 +637,7 @@ state.add_child("level_tally_start","level_tally_anykey", {
 	step: function(){
 		if(!transition_in && input_check("accept")){
 			transition(function(){
-				state.change("ng_select");
+				state.change("demo_select");
 				room_goto(rm_init);
 				tallying = false;
 			})

@@ -11,12 +11,10 @@ origin = instance_create_depth(x,y,depth,obj_info_target);
 
 activation_link(self.id,origin.id);
 
-trigger = function(){
+trigger = function(side_,object_){
 	if(!falling){
 		falling = true;	
 		subimg = 1;
-		
-		
 	}
+	return true;
 }
-

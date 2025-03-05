@@ -57,7 +57,14 @@ if(!main_menus){
 		draw_set_color(white);
 	}
 	
+} else {
+	//Game version
+	draw_set_font(f_debug);
+	draw_set_halign(fa_right);
+	draw_text(global.game_w-1,1,version);
 }
+
+draw_set_font(global.gui_font);
 
 draw_set_alpha(transition_val)
 draw_rectangle(0,0,global.game_w,global.game_h,0);

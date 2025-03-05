@@ -5,7 +5,7 @@ subimg = 0;
 cooldown = false;
 
 trigger = function(side_,object_){
-	if(!cooldown && side_ == SIDES.Top){
+	if(!cooldown && side_ != SIDES.Bottom){
 		
 		audio_play_sound(snd_bouncepad,0,false)
 		

@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"decorations",
-    "path":"folders/Sprites/decorations.yy",
+    "name":"demo tutorial sign",
+    "path":"folders/Sprites/decorations/demo tutorial sign.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

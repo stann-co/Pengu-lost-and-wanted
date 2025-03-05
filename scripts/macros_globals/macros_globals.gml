@@ -1,5 +1,7 @@
 /// feather ignore all in /Extensions/*
 
+#macro version "0.1.0-demo"
+
 //Where all macros are set
 #macro game_speed game_get_speed(gamespeed_fps)
 
@@ -99,7 +101,7 @@ global.depth_c = 500;
 
 global.activation_list = [];
 
-global.debug = true;
+global.debug = false;
 global.checkpoint = -1;
 
 global.score = 0;
@@ -140,9 +142,9 @@ function level_details(name_,room_) constructor {
 global.active_level = undefined;
 
 global.levels = [
-	new level_details("TUTORIAL",rm_level_bobby_tutorial_detail),
-	new level_details("DEMO",rm_level_bobby_POC_3_detail),
-	new level_details("CHALLENGE",rm_level_bobby_level_2)
+	new level_details("TUTORIAL",rm_demo_tutorial),
+	new level_details("DEMO",rm_demo_demo),
+	new level_details("CHALLENGE",rm_demo_challenge)
 ]
 
 //3D
@@ -150,5 +152,5 @@ global.levels = [
 
 //spawns persistent objects
 
-//room_instance_add(rm_init,0,0,obj_camera)
-//room_instance_add(rm_init,0,0,obj_game)
+room_instance_add(rm_init,0,0,obj_camera)
+room_instance_add(rm_init,0,0,obj_game)

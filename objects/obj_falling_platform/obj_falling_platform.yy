@@ -14,8 +14,8 @@
     "path":"folders/Objects/level element.yy",
   },
   "parentObjectId":{
-    "name":"obj_collision",
-    "path":"objects/obj_collision/obj_collision.yy",
+    "name":"obj_trigger",
+    "path":"objects/obj_trigger/obj_trigger.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
