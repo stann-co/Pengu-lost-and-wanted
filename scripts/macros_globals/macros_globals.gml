@@ -1,6 +1,6 @@
 /// feather ignore all in /Extensions/*
 
-#macro version "0.1.0-demo"
+#macro version "0.1.1-demo"
 
 //Where all macros are set
 #macro game_speed game_get_speed(gamespeed_fps)
