@@ -1,4 +1,10 @@
 /// @description
+
+//steamworks specific (when done with browser this if can be removed)
+if(!in_browser){
+	steam_update()
+}
+
 state.step();
 
 if(can_move){

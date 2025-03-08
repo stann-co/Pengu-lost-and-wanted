@@ -50,8 +50,8 @@ draw_set_font(global.gui_font);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
-//state = new SnowState("quick_start");
-state = new SnowState("demo_start");
+state = new SnowState("quick_start");
+//state = new SnowState("demo_start");
 
 #region menu off
 state.add("idle", {
@@ -161,7 +161,9 @@ state.add("main_menu", {
 			audio_play_sound(snd_ui_hover,0,0);
 			if(input_check_pressed("down")) selected++;
 			else if(input_check_pressed("up")) selected--;
-			selected = clamp(selected,0,3);
+			
+			var val = in_browser ? 3 : 4
+			selected = clamp(selected,0,val);
 		}
 		
 		if(input_check_pressed("accept")){
@@ -173,6 +175,12 @@ state.add("main_menu", {
 			} else if(selected == 2){
 				state.change("credits");
 			} else if(selected == 3){
+				if(in_browser){
+					url_open("https://store.steampowered.com/app/3373920/Pengu_Lost_and_Wanted");
+				} else {
+					steam_activate_overlay_browser("https://store.steampowered.com/app/3373920/Pengu_Lost_and_Wanted");
+				}
+			} else if(selected == 4){
 				game_end();	
 			}
 		}
@@ -187,7 +195,11 @@ state.add("main_menu", {
 		
 		draw_set_halign(fa_middle);
 		
-		var options = ["LEVEL SELECT","SETTINGS","CREDITS","QUIT GAME"]
+		var options = ["LEVEL SELECT","SETTINGS","CREDITS","WISHLIST ON STEAM"]
+		
+		if(!in_browser){
+			array_push(options,"QUIT GAME")
+		}
 		
 		for (var i = 0; i < array_length(options); ++i) {
 			if(selected != i) shader_set(sh_deselected)

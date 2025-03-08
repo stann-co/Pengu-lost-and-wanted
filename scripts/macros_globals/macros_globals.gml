@@ -2,6 +2,9 @@
 
 #macro version "0.1.1-alpha"
 
+#macro in_browser true
+//(os_type != os_windows)
+
 //Where all macros are set
 #macro game_speed game_get_speed(gamespeed_fps)
 
