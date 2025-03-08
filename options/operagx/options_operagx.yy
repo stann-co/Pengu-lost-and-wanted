@@ -22,7 +22,7 @@
   "option_operagx_scale":0,
   "option_operagx_team_id":"4da0899d-2c41-4f44-9f00-bbcd47fc3764",
   "option_operagx_team_name":"stann-co studio",
-  "option_operagx_texture_page":"4096x4096",
+  "option_operagx_texture_page":"2048x2048",
   "option_operagx_version":"0.0.0.0",
   "resourceType":"GMOperaGXOptions",
   "resourceVersion":"2.0",

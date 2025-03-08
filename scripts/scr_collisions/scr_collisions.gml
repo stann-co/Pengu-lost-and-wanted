@@ -8,12 +8,16 @@ enum COLLISION_TYPE {
 ///@function tile_collision()
 ///@desc returns tile collision
 function tile_collision(x_,y_,col_type_ = COLLISION_TYPE.All){
-	
-	var colls = []
-	if(col_type_ == COLLISION_TYPE.Tile		|| col_type_ == COLLISION_TYPE.All) array_push(colls,global.tile_collisions);
-	if(col_type_ == COLLISION_TYPE.Object   || col_type_ == COLLISION_TYPE.All) array_push(colls,obj_collision);
-	
-	return collision_point(round(x_),round(y_),colls,true,true);
+	switch (col_type_) {
+	    case COLLISION_TYPE.Tile:
+			return collision_point(round(x_),round(y_),global.tile_collisions,true,true);        
+	        
+		case COLLISION_TYPE.Object:
+	        return collision_point(round(x_),round(y_),obj_collision,true,true);        
+	        
+	    case COLLISION_TYPE.All:
+	        return collision_point(round(x_),round(y_),[obj_collision,global.tile_collisions],true,true);        
+	}
 }
 
 ///@function tile_collision_line()

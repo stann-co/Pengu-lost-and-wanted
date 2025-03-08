@@ -36,10 +36,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_paper_pile",
-    "path":"sprites/spr_paper_pile/spr_paper_pile.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }
