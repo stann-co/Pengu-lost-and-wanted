@@ -103,7 +103,7 @@ state.add("demo_start", {
 		draw_set_halign(fa_middle);
 		draw_set_valign(fa_center);
 		var text =
-		@"THIS IS A PUBLIC DEMO OF
+		@"THIS IS AN EARLY PROTOTYPE OF
 		
 		PENGU: LOST & WANTED
 		
