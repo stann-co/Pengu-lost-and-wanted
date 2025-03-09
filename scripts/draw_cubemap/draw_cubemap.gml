@@ -129,8 +129,6 @@ function draw_tilemap_cubemap(_tilemap,_texture,_n_strength = 0.5,_r_strength = 
 		//draw_tilemap(_tilemap,0,0)
 		
 		//draw tiles within camera
-		
-		
 		var tile_size = tilemap_get_tile_width(_tilemap);
 		var x_ = floor(global.camera.get_x() / tile_size) * tile_size;
 		var y_ = floor(global.camera.get_y() / tile_size) * tile_size;
