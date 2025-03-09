@@ -30,7 +30,7 @@ if(global.draw_reflections){
 draw_sprite_tiled_area_ext(spr_winter_waterfall,0,0,global.t*overlay_spd,bbox_left,bbox_top,bbox_right-1,bbox_bottom-1,,,,0.2)
 
 gpu_set_blendmode(bm_add)
-draw_sprite_tiled_area(spr_winter_waterfall,1,0,global.t*overlay_spd,bbox_left,bbox_top,bbox_right-1,bbox_bottom-1)
+draw_sprite_tiled_area_ext(spr_winter_waterfall,1,0,global.t*overlay_spd,bbox_left,bbox_top,bbox_right-1,bbox_bottom-1)
 
 //waterfall edges
 draw_sprite_tiled_area_ext(spr_winter_waterfall_sides,0,bbox_left ,global.t*overlay_spd,bbox_left ,bbox_top,bbox_left+10,bbox_bottom-1,,,,0.5)

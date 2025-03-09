@@ -56,7 +56,6 @@ function point_sensor(vec){
 ///@param extention_dist
 ///@param regression_dist
 function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist){
-	
 	var delta = 1;
 	
 	var vec_ext = new Vector2(0,extention_dist);

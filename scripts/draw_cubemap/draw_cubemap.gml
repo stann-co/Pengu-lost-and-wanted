@@ -126,7 +126,29 @@ function draw_tilemap_cubemap(_tilemap,_texture,_n_strength = 0.5,_r_strength = 
 		var tex_offset_y = (global.camera.get_y() * _offset_scale) / sprite_get_height(_texture);
 		shader_set_uniform_f(u_texture_offset,tex_offset_x,tex_offset_y);
 		
-		draw_tilemap(_tilemap,0,0)
+		//draw_tilemap(_tilemap,0,0)
+		
+		//draw tiles within camera
+		
+		
+		var tile_size = tilemap_get_tile_width(_tilemap);
+		var x_ = floor(global.camera.get_x() / tile_size) * tile_size;
+		var y_ = floor(global.camera.get_y() / tile_size) * tile_size;
+		var collumns = global.camera.width div tile_size;
+		var rows = global.camera.height div tile_size;
+		var cell_x = x_ div tile_size;
+		var cell_y = y_ div tile_size;
+		var tileset = tilemap_get_tileset(_tilemap);
+
+		for (var th = 0; th <= (global.camera.width div tile_size); ++th) {
+		    for (var tv = 0; tv <= (global.camera.height div tile_size); ++tv) {
+				var data = tilemap_get(_tilemap, cell_x+th, cell_y+tv);
+				tile_set_flip(data, true);
+				draw_tile(tileset, data, 0, x_+(th*tile_size), y_+(tv*tile_size));
+			}
+		}
+		
+		
 		gpu_set_texrepeat(false);
 		shader_reset();	
 	} else {

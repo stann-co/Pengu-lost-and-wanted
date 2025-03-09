@@ -1,19 +1,3 @@
-///@function draw_sprite_tiled_area(sprite,subimg,x,y,x1,y2,x2,y2)
-//
-//  Draws a repeated sprite image, tiled to fill a given region and with
-//  a given offset. 
-//
-//      sprite      sprite to draw, real
-//      subimg      sprite subimage to draw, real
-//      x,y         origin offset, real
-//      x1,y1       top-left corner of tiled area, real
-//      x2,y2       bottom-right corner of tiled area, real
-//
-function draw_sprite_tiled_area(sprite,subimg,xx,yy,x1,y1,x2,y2){ 
-	draw_sprite_tiled_area_ext(sprite,subimg,xx,yy,x1,y1,x2,y2);
-}
-
-
 ///@function draw_sprite_tiled_area_ext(sprite,subimg,xx,yy,x1,y1,x2,y2,xscale,yscale,col,alpha)
 //
 //  Draws a repeated sprite image, tiled to fill a given region and with
