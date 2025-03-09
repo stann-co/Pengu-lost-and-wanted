@@ -9,4 +9,6 @@ function draw_pos(x,y){
 	draw_text_outline(x,y-5,string(x));
 	draw_text_outline(x,y+5,string(y));
 	draw_set_font(prev_font);
+	
+	draw_set_valign(fa_top);
 }

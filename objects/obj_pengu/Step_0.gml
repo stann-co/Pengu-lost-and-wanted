@@ -479,7 +479,7 @@ if(!state.state_is("edge") && !airborne && !sliding && (bl_sensor != noone xor b
 
 if(sliding){
 	if(!audio_is_playing(sound_slide)){
-		sound_slide = audio_play_sound(snd_slide,0,true,,,1.2);
+		sound_slide = audio_play_sound(snd_slide,0,true,1,0,1.2);
 	}
 	
 	var gain = (abs(ground_spd) / slide_top_speed)
