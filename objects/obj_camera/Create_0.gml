@@ -10,7 +10,7 @@ global.camera.bounds_h = 4;
 global.camera.spd = 1;
 global.camera.spd_threshold = 1;
 
-global.camera_3d = new stanncam_3d(global.game_w, global.game_h);
+//global.camera_3d = new stanncam_3d(global.game_w, global.game_h);
 
 //background
 global.background = function(){ //empty background function, gets replaced in each level

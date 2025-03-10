@@ -50,8 +50,8 @@ draw_set_font(global.gui_font);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
-state = new SnowState("quick_start");
-//state = new SnowState("demo_start");
+//state = new SnowState("quick_start");
+state = new SnowState("demo_start");
 
 #region menu off
 state.add("idle", {
@@ -175,10 +175,12 @@ state.add("main_menu", {
 			} else if(selected == 2){
 				state.change("credits");
 			} else if(selected == 3){
-				if(in_browser){
-					url_open("https://store.steampowered.com/app/3373920/Pengu_Lost_and_Wanted");
-				} else {
-					steam_activate_overlay_browser("https://store.steampowered.com/app/3373920/Pengu_Lost_and_Wanted");
+				try{
+					if(in_browser){
+						url_open("https://store.steampowered.com/app/3373920/Pengu_Lost_and_Wanted");
+					} else {
+						steam_activate_overlay_browser("https://store.steampowered.com/app/3373920/Pengu_Lost_and_Wanted");
+					}
 				}
 			} else if(selected == 4){
 				game_end();	
