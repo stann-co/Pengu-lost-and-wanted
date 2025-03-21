@@ -36,7 +36,7 @@ if(global.draw_reflections){
 				shader_set_uniform_f(u_speed,0.13)
 				shader_set_uniform_f(u_time,global.t)
 				shader_set_uniform_f(u_brightness,1.4);
-				var color = pink;
+				color = pink;
 				shader_set_uniform_f(u_tint,color_get_red(color)/255,color_get_green(color)/255,color_get_blue(color)/255);
 				shader_set_uniform_f(u_scale,1,0.085);
 				shader_set_uniform_f(u_distortion,0.06)

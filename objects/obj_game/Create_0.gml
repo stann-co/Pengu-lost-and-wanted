@@ -207,7 +207,7 @@ state.add("main_menu", {
 			if(selected != i) shader_set(sh_deselected)
 		    draw_text(x_,y_ + h * i,options[i]);
 			
-			if(selected != i) shader_reset()
+			shader_reset()
 		}
 		draw_set_halign(fa_left);
 		draw_set_valign(fa_top);
@@ -313,9 +313,7 @@ state.add("demo_select", {
 			draw_text(x_,y_,i+1);
 			draw_sprite(spr_level_frame,0,x_,y_);
 			
-			if(selected != i){
-				shader_reset()
-			}
+			shader_reset()
 		}
 		
 		draw_set_valign(fa_top)
