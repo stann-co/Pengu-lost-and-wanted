@@ -50,8 +50,8 @@ draw_set_font(global.gui_font);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
-//state = new SnowState("quick_start");
-state = new SnowState("demo_start");
+state = new SnowState("quick_start");
+//state = new SnowState("demo_start");
 
 #region menu off
 state.add("idle", {

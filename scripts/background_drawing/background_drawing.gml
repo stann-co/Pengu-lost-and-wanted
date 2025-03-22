@@ -84,6 +84,33 @@ function set_background_original(){
 		}
 	}
 }
+
+function set_background_city(){
+	global.background = function(){
+		
+		with(obj_camera){
+			if(!surface_exists(bg_layer)){
+				bg_layer = surface_create(global.game_w,global.game_h);
+			}
+			surface_set_target(bg_layer);
+			
+			var offset = global.t * 0.5;
+			
+			draw_clear(white);			
+			draw_background_depth(spr_bg_future_city,0,0.05	,offset,0,1,1,true);
+			draw_background_depth(spr_bg_future_city,1,0.1	,offset,0,1,1,true);
+			draw_background_depth(spr_bg_future_city,2,0.15	,offset,0,1,1,true);
+			draw_background_depth(spr_bg_future_city,3,0.2	,offset,0,1,1,true);
+			draw_background_depth(spr_bg_future_city,4,0.25	,offset,0,1,1,true);
+			
+			
+		
+			surface_reset_target();
+		
+			draw_surface(bg_layer,global.camera.get_x(),global.camera.get_y())
+		}
+	}
+}
 	
 function set_background_original_red(){
 	global.background = function(){
@@ -136,31 +163,6 @@ function draw_background_depth(_sprite,_subimg,_depth,offset_x=0,offset_y=0,scal
 	} else {
 		draw_sprite_tiled_ext(_sprite,_subimg,offset_x,offset_y,scalex,scaley,-1,1);
 	}
-}
-
-function draw_layer_parralaxed_old(layer_name, parralax){
-	var element_array = layer_get_all_elements(layer_name);
-	var scalex = stanncam_get_res_scale_x();
-	var scaley = stanncam_get_res_scale_y();
-	var cam_ = global.camera;
-	
-	for (var i = 0; i < array_length(element_array); ++i) {
-		var element = element_array[i];
-		
-		var x_ = layer_sprite_get_x(element) ;
-		var y_ = layer_sprite_get_y(element) ;
-		
-	    var offset_x = (x_ - (cam_.get_x() + cam_.width )) * parralax;
-		var offset_y = (y_ - (cam_.get_y() + cam_.height)) * parralax;
-		
-		var sprite = layer_sprite_get_sprite(element);
-		var angle = layer_sprite_get_angle(element);
-		
-		var display_x = global.camera.room_to_display_x(x_ + offset_x);
-		var display_y = global.camera.room_to_display_y(y_ + offset_y);
-		
-		draw_sprite_ext(sprite,0,display_x,display_y,scalex,scaley,angle,-1,1);
-	}	
 }
 
 ///@function draw_layer_parralaxed()

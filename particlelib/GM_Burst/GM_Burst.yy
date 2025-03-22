@@ -35,8 +35,8 @@
   "orientationRelative":false,
   "orientationWiggle":0.0,
   "parent":{
-    "name":"Pengu Actually Saves Christmas",
-    "path":"Pengu Actually Saves Christmas.yyp",
+    "name":"Pengu-lost-and-wanted",
+    "path":"Pengu-lost-and-wanted.yyp",
   },
   "regionH":8.0,
   "regionW":8.0,
