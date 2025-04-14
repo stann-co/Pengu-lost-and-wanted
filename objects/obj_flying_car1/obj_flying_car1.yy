@@ -6,6 +6,7 @@
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":1,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"obj_flying_car1",
@@ -15,8 +16,8 @@
     "path":"folders/Objects/level element.yy",
   },
   "parentObjectId":{
-    "name":"obj_collision_activate",
-    "path":"objects/obj_collision_activate/obj_collision_activate.yy",
+    "name":"obj_trigger",
+    "path":"objects/obj_trigger/obj_trigger.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

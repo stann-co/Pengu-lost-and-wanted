@@ -94,14 +94,14 @@ function set_background_city(){
 			}
 			surface_set_target(bg_layer);
 			
-			var offset = global.t * 0.5;
+			var offset = global.t * 6;
 			
 			draw_clear(white);			
-			draw_background_depth(spr_bg_future_city,0,0.05	,offset,0,1,1,true);
-			draw_background_depth(spr_bg_future_city,1,0.1	,offset,0,1,1,true);
-			draw_background_depth(spr_bg_future_city,2,0.15	,offset,0,1,1,true);
-			draw_background_depth(spr_bg_future_city,3,0.2	,offset,0,1,1,true);
-			draw_background_depth(spr_bg_future_city,4,0.25	,offset,0,1,1,true);
+			draw_background_depth(spr_bg_future_city,0,0.1	,offset,0,1,1,true);
+			draw_background_depth(spr_bg_future_city,1,0.2	,offset,0,1,1,true);
+			draw_background_depth(spr_bg_future_city,2,0.3	,offset,0,1,1,true);
+			draw_background_depth(spr_bg_future_city,3,0.4	,offset,0,1,1,true);
+			draw_background_depth(spr_bg_future_city,4,0.5	,offset,0,1,1,true);
 			
 			
 		
@@ -152,16 +152,17 @@ function draw_background_depth(_sprite,_subimg,_depth,offset_x=0,offset_y=0,scal
 	var cam_ = global.camera;
 
 	//the offset the camera is from the middle of the room
-	offset_x += (-cam_.get_x() * scalex)*_depth;
+	offset_x += (-cam_.get_x() * scalex);
 		
 	if(!only_horizontal){
-		offset_y += (-cam_.get_y() * scaley)*_depth;
+		offset_y += (-cam_.get_y() * scaley);
 	}
 	
 	if(only_horizontal){
-		draw_sprite_tiled_ext2(_sprite,_subimg,offset_x mod (sprite_get_width(_sprite)*scalex),offset_y,3,1,scalex,scaley,-1,1);
+		var width = sprite_get_width(_sprite) *scalex;
+		draw_sprite_tiled_ext2(_sprite,_subimg,offset_x*_depth mod (width) - width,offset_y*_depth,4,1,scalex,scaley,-1,1);
 	} else {
-		draw_sprite_tiled_ext(_sprite,_subimg,offset_x,offset_y,scalex,scaley,-1,1);
+		draw_sprite_tiled_ext(_sprite,_subimg,offset_x*_depth,offset_y*_depth,scalex,scaley,-1,1);
 	}
 }
 

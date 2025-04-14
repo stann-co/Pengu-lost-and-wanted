@@ -2,31 +2,20 @@
 thruster_subimg += sprite_get_speed(spr_thruster);
 normal_subimg += 0.5;
 
-if(!surface_exists(srf_normal)){
-	srf_normal = surface_create(32,32,surface_rg8unorm);	
-}
-surface_set_target(srf_normal)
-draw_sprite(spr_noise,normal_subimg,0,0);
-surface_reset_target();
-tex_normal = surface_get_texture(srf_normal);
+thrust1 = new Vector2(-30,19);
+thrust2 = new Vector2(11,19);
+thrust3 = new Vector2(-14,20);
+thrust4 = new Vector2(28,20);
 
+thrust1 = thrust1.rotated(-image_angle);
+thrust2 = thrust2.rotated(-image_angle);
+thrust3 = thrust3.rotated(-image_angle);
+thrust4 = thrust4.rotated(-image_angle);
 
-//distortion
-if(!surface_exists(srf_distortion)){
-	srf_distortion = surface_create(32,32,surface_r8unorm);	
-}
-surface_set_target(srf_distortion)
-	draw_clear(black)
-	draw_sprite_ext(spr_thruster_mask,0,16,11,1,1,0,-1,0.1);
-surface_reset_target();
-tex_distortion = surface_get_texture(srf_distortion);
-
-
-draw_thruster(x-30,y+19);
-draw_thruster(x+11,y+19);
-
-draw_thruster(x-14,y+20);
-draw_thruster(x+28,y+20);
+draw_thruster(x+thrust1.x,y+thrust1.y);
+draw_thruster(x+thrust2.x,y+thrust2.y);
+draw_thruster(x+thrust3.x,y+thrust3.y);
+draw_thruster(x+thrust4.x,y+thrust4.y);
 
 
 draw_self();
