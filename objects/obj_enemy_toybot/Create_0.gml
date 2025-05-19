@@ -1,13 +1,6 @@
 /// @description
 event_inherited();
 
-vec_rt = new Vector2(0,0); //right
-vec_lt = new Vector2(0,0); //left
-vec_rb = new Vector2(0,0); //right
-vec_lb = new Vector2(0,0); //left
-
-vec_b = new Vector2(0,0); //bottom
-
 t=0;
 walk_duration = game_speed*0.2;
 wait_duration = game_speed*0.4;
@@ -45,8 +38,7 @@ state
 		next_state = "forward_2";
 	},
 	step:function(){
-		
-		
+
 		ground_spd = top_speed * input_h;
 		ground_spd-=slope_factor * dsin(ground_angle);	
 		
@@ -97,17 +89,3 @@ state
 })
 
 state.change("forward_1")
-
-
-
-
-
-
-
-
-
-
-
-
-
-

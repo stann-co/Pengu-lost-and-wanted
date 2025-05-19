@@ -1,1 +1,1 @@
-set_background_city()
+set_background_devzone()

@@ -147,54 +147,27 @@ function sensor(vec_start,dir,extention_dist,regression_dist = extention_dist){
 		
 		var x_ = round(x+vec_start.x+info.x);
 		var y_ = round(y+vec_start.y+info.y);
-		var contact_vec = new Vector2(x_ -inst.x,y_ -inst.y)
-		contact_vec = contact_vec.rotated(inst.image_angle);
-		
-		var contact_x = contact_vec.x + inst.x;
-		var contact_y = contact_vec.y + inst.y;
-		
-		inst.image_angle = 0;
-		
-		var mid_x = lerp(inst.bbox_left,inst.bbox_right,0.5);
-		var mid_y = lerp(inst.bbox_top,inst.bbox_bottom,0.5);
-		
-		var lt_vec = new Vector2(inst.bbox_left  - mid_x, inst.bbox_top    - mid_y);
-		var rt_vec = new Vector2(inst.bbox_right - mid_x, inst.bbox_top    - mid_y);
-		var lb_vec = new Vector2(inst.bbox_left  - mid_x, inst.bbox_bottom - mid_y);
-		var rb_vec = new Vector2(inst.bbox_right - mid_x, inst.bbox_bottom - mid_y);
-		
-		inst.image_angle = inst_angle;
-		
-		var lt_corner = new Vector2(mid_x + (lt_vec.x * 2),mid_y + (lt_vec.y * 2));
-		var rt_corner = new Vector2(mid_x + (rt_vec.x * 2),mid_y + (rt_vec.y * 2));
-		var lb_corner = new Vector2(mid_x + (lb_vec.x * 2),mid_y + (lb_vec.y * 2));
-		var rb_corner = new Vector2(mid_x + (rb_vec.x * 2),mid_y + (rb_vec.y * 2));
-		
-		var ver = 0;
-		var hor = 0;
-		
-		info.side = noone;
-		if(point_in_triangle(contact_x,contact_y,mid_x,mid_y,lt_corner.x,lt_corner.y,rt_corner.x,rt_corner.y)){
-			info.angle = 0;
-			info.side = SIDES.Top
-		}else
-		if(point_in_triangle(contact_x,contact_y,mid_x,mid_y,lb_corner.x,lb_corner.y,rb_corner.x,rb_corner.y)){
-			info.angle = 180;
-			info.side = SIDES.Bottom
-		}else
-		if(point_in_triangle(contact_x,contact_y,mid_x,mid_y,lt_corner.x,lt_corner.y,lb_corner.x,lb_corner.y)){
-			info.angle = 90;
-			info.side = SIDES.Left
-		}else
-		if(point_in_triangle(contact_x,contact_y,mid_x,mid_y,rt_corner.x,rt_corner.y,rb_corner.x,rb_corner.y)){
-			info.angle = 270;
-			info.side = SIDES.Right
-		}
-		
-		inst.image_angle = inst_angle;
+        
+        switch (find_side(x_,y_,info.inst)) {
+        	case SIDES.Bottom:
+                info.angle = 180;
+                info.side = SIDES.Bottom
+                break
+            case SIDES.Left:
+                info.angle = 90;
+                info.side = SIDES.Left
+                break
+            case SIDES.Right:
+                info.angle = 270;
+                info.side = SIDES.Right
+                break
+            case SIDES.Top:
+                info.angle = 0;
+                info.side = SIDES.Top
+                break
+        }
 		
 		info.angle+=inst.image_angle;
-					
 		if(info.angle < 0) info.angle+=360;
 		else if(info.angle >= 360) info.angle-=360;
 		

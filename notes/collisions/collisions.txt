@@ -1,3 +1,4 @@
+# Collision sensors
 collisions are based upon sensors all around the player.
 
 the sensors detect solid objects or tiles, and then  returns how much to move back or forward to be just on the surface

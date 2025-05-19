@@ -12,7 +12,6 @@
 
 #macro main_menus (room == rm_init)
 #macro can_move (!obj_game.state.state_is("pause_menu") && !obj_game.state.state_is("settings") && !global.freeze_frame)
-#macro control (obj_game.state.state_is("idle"))
 
 #macro text_height 14
 

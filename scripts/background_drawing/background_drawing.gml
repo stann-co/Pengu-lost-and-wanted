@@ -111,6 +111,31 @@ function set_background_city(){
 		}
 	}
 }
+
+function set_background_devzone(){
+    
+    global.background = function(){
+        with(obj_camera){
+			if(!surface_exists(bg_layer)){
+				bg_layer = surface_create(global.game_w,global.game_h);
+			}
+			surface_set_target(bg_layer);
+            draw_clear(light_gray)
+            
+            //var subimg = ((global.t*0.5) mod 8)
+            //
+            //draw_sprite_ext(spr_bg_grid_cyllinder,subimg,global.game_w/2,global.game_h/2,1,1,0,-1,1);
+            //draw_sprite_ext(spr_bg_grid_cyllinder,subimg,global.game_w/2,global.game_h/2,1,-1,0,-1,1);
+            //
+            //draw_sprite_ext(spr_bg_grid_cyllinder,7-subimg,global.game_w/2,global.game_h/2,-1,1,0,-1,1);
+            //draw_sprite_ext(spr_bg_grid_cyllinder,7-subimg,global.game_w/2,global.game_h/2,-1,-1,0,-1,1);
+            
+            surface_reset_target();
+		
+			draw_surface(bg_layer,global.camera.get_x(),global.camera.get_y())
+        }
+    }
+}
 	
 function set_background_original_red(){
 	global.background = function(){

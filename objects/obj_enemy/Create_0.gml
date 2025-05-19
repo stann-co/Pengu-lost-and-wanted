@@ -1,4 +1,6 @@
 /// @description
+
+//variables
 x_speed = 0;
 y_speed = 0;
 ground_angle = 0;
@@ -6,12 +8,13 @@ ground_spd = 0;
 slope_factor = 0.123;
 w_radius = 6;
 h_radius = 9;
-top_speed = 0.5;
+top_speed = 3;
 input_h = -1;
 subimg = 0;
-sensor_angle = 0;
-sensor_length_base = 8;
 airborne = false;
+
+//enable disable collision checking code, for dying state, or maybe flying
+colliding = true;
 
 hp = 1;
 invulnerable = 0;
@@ -19,38 +22,36 @@ invulnerable = 0;
 stagger = 0;
 
 on_land = false; //gets true the frame enemy lands from being airborne
+on_ceiling = false;
+on_wall = false; //gets true the frame enemy hits wall
+on_no_floor = false; //true the frame there is no floor underneath
 
-vec_rt = new Vector2(0,0); //right
-vec_lt = new Vector2(0,0); //left
-vec_rb = new Vector2(0,0); //right
-vec_lb = new Vector2(0,0); //left
+#region sensors
+
+vec_r = new Vector2(0,0); //right
+vec_l = new Vector2(0,0); //left
 
 vec_b = new Vector2(0,0); //bottom
+vec_t = new Vector2(0,0); //top
+
+sensor_angle = 0;
+sensor_length_base = 8;
+
+#endregion
 
 hurt = function(){
-	hurting = true;
-	hp--
-	if(hp <= 0){
-		state.change("die");
-	} else  {
-		state.change("hurt");
-	}
+
 }
 
-no_floor = function(){
-	
-}
-
-touch_wall = function(){
-	ground_spd = 0;
-	x_speed = 0;
+default_draw = function(){
+	draw_sprite_ext(sprite_index,subimg,x,y,image_xscale,image_yscale,image_angle,-1,1);
 }
 
 state = new SnowState("idle");
 
 state
 .event_set_default_function("draw",function(){
-	draw_sprite_ext(sprite_index,subimg,x,y,image_xscale,image_yscale,image_angle,-1,1);
+    default_draw()
 })
 
 .add("idle",{
@@ -74,25 +75,52 @@ state
 		y_speed += 0.5;
 		image_angle-=sign(x_speed) * 6;
 		if(global.camera.out_of_bounds(x,y,-30)){
-			instance_destroy();	
+			instance_destroy();
 		}
 	}
 })
 
-.add("hurt",{
-	enter:function(){
-		y_speed = -2;
-		x_speed = sign(x-obj_pengu.x) * 2;
-		point_scatter(1);
-		score_increase(0,score_combo_t_max)
-		part_particles_create(global.particles,x,y,global.part_stars,2);
-		airborne = true;
-	},
-	step:function(){
-		y_speed += 0.5;
-		if (on_land){
-			state.change("idle");
-			invulnerable = false;
-		}
-	}
+.add("stunned",{
+    enter:function(){
+        airborne = true
+    },
+    step:function (){
+        
+    }
 })
+
+.add("launched",{
+    enter:function(){
+        airborne = true
+        
+    },
+    step:function (){
+        if(on_land){
+            y_speed = 0;
+            invulnerable = false;
+            state.change("idle");
+        }
+        
+        if(airborne){
+            y_speed += gravity_force;
+        }
+    }    
+})
+
+//.add("hurt",{
+//	enter:function(){
+//		y_speed = -2;
+//		x_speed = sign(x-obj_pengu.x) * 2;
+//		point_scatter(1);
+//		score_increase(0,score_combo_t_max)
+//		part_particles_create(global.particles,x,y,global.part_stars,2);
+//		airborne = true;
+//	},
+//	step:function(){
+//		y_speed += 0.5;
+//		if (on_land){
+//			state.change("idle");
+//			invulnerable = false;
+//		}
+//	}
+//})

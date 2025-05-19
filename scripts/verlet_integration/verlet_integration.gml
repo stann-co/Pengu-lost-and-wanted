@@ -9,9 +9,12 @@ function verlet(_x,_y, _mass = 1, _fixed = false) constructor {
 	y_prev = y;
 	fixed = _fixed;
 	mass = _mass;
+    
+    __still_count = 10;
 	
 	///@description should be ran in step before any other forces
 	///@param drag 0 - 1 dampens movement over time
+	///@function updaate(_drag)
 	static update = function(_drag = 0.01){
 		
 		var x_vel = (x - x_prev);
@@ -55,8 +58,25 @@ function verlet(_x,_y, _mass = 1, _fixed = false) constructor {
 		x_prev = x;
 		y_prev = y;
 	}
+    
+	///@description check if point is mostly still
+	static is_still = function(){
+		var x_vel = (x - x_prev);
+		var y_vel = (y - y_prev);
+		var threshold_ = 0.02;
+		var still_ = (abs(x_vel) <= threshold_) && (abs(y_vel) <= threshold_)
+		
+		//must remain still for a few frames, to account for velocity being 0 when swinging
+		if(still_){
+			if(__still_count > 0) __still_count--;
+			else return true;
+		} else __still_count = 10;
+		
+		return false;
+			
+	}
 	
-	///@desription a spring implementation aiming for a target, with a stiffness
+	///@description a spring implementation aiming for a target, with a stiffness
 	///@param target_x
 	///@param target_y
 	///@param stiffness 0 - 1
@@ -72,10 +92,12 @@ function verlet(_x,_y, _mass = 1, _fixed = false) constructor {
 		}
 	}
 	
+    ///@description draw points
 	static draw = function(_radius = 1,_x = 0,_y = 0){
 		draw_circle(_x+x,_y+y,_radius,0);
 	}
 	
+    ///@description draw velocity vectors
 	static draw_velocity = function(_multiply = 1){
 		
 		var dist_ = point_distance(x,y,x_prev,y_prev);
@@ -93,7 +115,8 @@ function verlet(_x,_y, _mass = 1, _fixed = false) constructor {
 		draw_set_color(color_prev_);
 	}
 }
-	
+
+///@description binds a line between two verlet points
 ///@param 1st point
 ///@param 2nd point
 ///@param dist by default dist between points
@@ -161,21 +184,26 @@ function verlet_line(_p1,_p2,_dist = point_distance(_p1.x,_p1.y,_p2.x,_p2.y), _d
 	}
 }
 
-
-
 function verlet_rope(_start_x,_start_y,_end_x,_end_y,_segment_num = 2, _substeps = 10) constructor {
-	segment_num = _segment_num;
-	substeps = _substeps;
-	points = array_create(segment_num+1);
-	segments = array_create(segment_num);
+	var _points = array_create(_segment_num+1);
 
 	//creates verlet points
-	for (var i = 0; i <= segment_num; ++i) {
-		var val_ = i / segment_num;
+	for (var i = 0; i <= _segment_num; ++i) {
+		var val_ = i / _segment_num;
 		var x_ = lerp(_start_x,_end_x,val_);
 		var y_ = lerp(_start_y,_end_y,val_);
-	    points[i] = new verlet(x_,y_);
+	    _points[i] = new verlet(x_,y_);
 	}
+	
+	return new verlet_rope_points(_points,_substeps)
+}
+
+//define rope points manually
+function verlet_rope_points(_points, _substeps = 10) constructor {
+	substeps = _substeps;
+	points = _points;
+	segment_num = array_length(points)-1;
+	segments = array_create(segment_num);
 	
 	//creates rope segments
 	for (var i = 0; i < segment_num; ++i) {
@@ -193,6 +221,18 @@ function verlet_rope(_start_x,_start_y,_end_x,_end_y,_segment_num = 2, _substeps
 		for (var i = 0; i < segment_num; ++i) {
 			segments[i].constrain_length(substeps);
 		}
+	}
+    
+	static is_still = function(){
+		var still = true;
+		for (var i = 0; i < array_length(points); ++i) {
+		    var p = points[i];
+			if(p.is_still() == false){
+				still = false
+				break;
+			}
+		}
+		return still;
 	}
 	
 	//imagine a rope dangling inside a train, even though the train is moving really fast, the rope wouldn't be stuck to the ceiling
@@ -262,10 +302,22 @@ function verlet_rope(_start_x,_start_y,_end_x,_end_y,_segment_num = 2, _substeps
 	}
 }
 
-function verlet_rod(_start_x,_start_y,_end_x,_end_y,_segment_num = 2, _substeps = 10) : verlet_rope(_start_x,_start_y,_end_x,_end_y,_segment_num, _substeps) constructor {
-	segment_num = _segment_num;
-	substeps = _substeps;
-	dir = point_direction(_start_x,_start_y,_end_x,_end_y);
+function verlet_rod(_start_x,_start_y,_end_x,_end_y,_segment_num = 2, _substeps = 10) constructor {
+	var _points = array_create(_segment_num+1);
+
+	//creates verlet points
+	for (var i = 0; i <= _segment_num; ++i) {
+		var val_ = i / _segment_num;
+		var x_ = lerp(_start_x,_end_x,val_);
+		var y_ = lerp(_start_y,_end_y,val_);
+	    _points[i] = new verlet(x_,y_);
+	}
+	
+	return new verlet_rod_points(_points,_substeps)
+}
+
+function verlet_rod_points(_points, _substeps = 10) : verlet_rope_points(_points, _substeps) constructor {
+	dir = point_direction(points[0].x,points[0].y,points[1].x,points[1].y);
 	
 	//methods	
 	static update = function(_drag = 0.01, _stiffness = 0.9){
@@ -308,6 +360,18 @@ function verlet_rod(_start_x,_start_y,_end_x,_end_y,_segment_num = 2, _substeps 
 				}
 			}
 		}
+	}
+    
+    static is_still = function(){
+		var still = true;
+		for (var i = 0; i < array_length(points); ++i) {
+		    var p = points[i];
+			if(p.is_still() == false){
+				still = false
+				break;
+			}
+		}
+		return still;
 	}
 }
 

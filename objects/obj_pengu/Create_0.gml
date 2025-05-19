@@ -6,8 +6,6 @@ global.camera.move(x,y,0);
 #region variables
 godmode = false;
 
-new_attacks = false
-
 input_h = 0;
 input_v = 0;
 
@@ -107,6 +105,18 @@ attack_jump_force = 3;
 attack_count = 0;
 attacking = false;
 
+//after attacking there's a slim window where you can extend the combo
+attack_combo_max = 26; 
+attack_combo_min = 3;
+attack_combo_launch = 8; //at this time the entity will be launched away
+attack_combo_t = 0;
+//offset from origin where attack radius occurs
+attack_x = 16;
+attack_y = -8;
+attack_radius = 16;
+//enemies/entities currently being attacked
+attack_list = ds_list_create()
+
 on_land = false; //this is true on the frame you land again
 on_ceiling = false; //this is true whenever you are touching the ceiling
 
@@ -145,32 +155,6 @@ set_control_lock = function(duration = game_speed*1){
 	input_h = 0;
 }
 
-//spike_hurt = function(sensor_){
-//	if(
-//		sensor_ != noone &&
-//		sensor_.inst != noone &&
-//		(object_is_ancestor(sensor_.inst.object_index,obj_spikes) or sensor_.inst.object_index == obj_spikes) &&
-//		sensor_.side == "top" &&
-//		invulnerable == 0
-//	)
-//	{	
-//		var should_hurt = true;
-//		if(airborne){
-//			var angle_ = point_direction(0,0,x_speed,y_speed);
-//			if (angle_difference(angle_,sensor_.angle+90) < 45){
-//				should_hurt = false;
-//			};
-//		}
-		
-//		if(should_hurt){
-//			hurt(sign(x - sensor_.inst.x));		
-//			return true;
-//		}
-//	}
-	
-//	return false;
-//}
-
 ///@function hurt()
 hurt = function(x_side = 0){
 	//nothing happens if invulnerable
@@ -193,24 +177,6 @@ squish = function(scale_x_,scale_y_,duration = game_speed*0.4){
 	squishing = true;
 	squishing_t = 0;
 	squishing_duration = duration;
-}
-
-set_ground_spd_from_air_spd = function(){
-	if(ground_angle <= 23 || ground_angle >= 339){ //landing on mostly flat surface
-		ground_spd = x_speed;
-	} else if(ground_angle <= 45 || ground_angle >= 316){ //landing on mostly sloped surface
-		if( abs(x_speed) >= abs(y_speed) ){ //moving mostly left/right
-			ground_spd = x_speed;	
-		} else {
-			ground_spd = y_speed * -sign(dsin(ground_angle)) * 0.5;
-		}				
-	} else { //landing on mostly steep surface
-		if( abs(x_speed) >= abs(y_speed) ){ //moving mostly left/right
-			ground_spd = x_speed;	
-		} else {
-			ground_spd = y_speed * -sign(dsin(ground_angle));
-		}				
-	}
 }
 
 #region sensors
@@ -359,7 +325,6 @@ state = new SnowState("idle");
 	})
 
 	//child states
-
 	state.add_child("tall","idle", {
 		enter: function() {
 			state.inherit();
@@ -649,31 +614,131 @@ state = new SnowState("idle");
 		},
 	})
 	
-	state.add_child("airborne","attack", {
+	state.add_child("airborne","attack_1", {
 	    enter: function() {
 			state.inherit()
+            
+            if(attack_count == 0 && input_h != 0){
+                mirror = input_h;
+            }
 			
 			attack_count++;
+            
+            attack_combo_t = 0
 			attacking = true;
 			
-			sprite_index = spr_pengu_attack;
-			mask_index = spr_pengu_hitbox_attack;
+			sprite_index = spr_pengu_attack_1;
 
 			y_speed = -attack_jump_force;	
 			x_speed *= 0.6;
 	
 			squish(0.4,1.4,game_speed*0.4);
-			
-			//audio_play_sound_random(0,0,snd_wingflap1,snd_wingflap2);
+            
+            attack_launch_x = 2;
+            attack_launch_y = -2;
+            
+            attack_hit = false;
+            
+            attack_next = function(){
+                state.change("attack_2");
+            }
 	    },
-		step: function() {			
-			if(y_speed > 0) state.change("begin_fall");
-			if(on_land) state.change("idle");
+		step: function() {
+            
+            if(attack_combo_t < attack_combo_max){
+                if(attack_combo_t < attack_combo_launch){
+                    //hits enemies/entities
+                    var attack_list_check_ = ds_list_create();
+                    
+                    var attack_x_ = x+(attack_x*mirror)
+                    var attack_y_ = y+attack_y;
+                    
+                    var num_ = collision_circle_list(attack_x_,attack_y_,attack_radius,obj_enemy,true,true,attack_list_check_,true);
+                    
+                    for (var i = 0; i < num_; i++) {
+                        //does not add entities that are already being hit to the attack list
+                        var entity = attack_list_check_[|i];
+                        if (ds_list_find_index(attack_list,entity) == -1){
+                            ds_list_add(attack_list,entity)
+                            entity.state.change("stunned")
+                            entity.x_speed = x_speed + attack_launch_x*mirror;
+                            entity.y_speed = y_speed + attack_launch_y;
+                            
+                            entity.hurt();
+                            
+                            global.camera.shake_screen(4,game_speed*0.5);
+                            part_particles_create(global.particles,entity.x,entity.y,global.part_stars,4);
+                            freeze_frame();
+                            attack_hit = true;
+                        }
+                    }
+                    ds_list_destroy(attack_list_check_)
+                    
+                    for (var i = 0; i < ds_list_size(attack_list); i++) {
+                    	var entity = attack_list[|i];
+                        with (entity) {
+                            
+                            var toward_x_ = sign(attack_x_ - x);
+                            var toward_y_ = sign(attack_y_ - y);
+                            
+                            x = attack_x_;
+                            y = attack_y_;
+                            
+                            //snaps entity to not be inside walls
+                            while (place_meeting(x,y,global.tile_collisions)) {
+                            	x -= toward_x_;
+                                y -= toward_y_;
+                            }
+                        }
+                    }
+                }
+                //combo can only be continued if your attack hit something
+                if(attack_combo_t > attack_combo_min && input_check_pressed("attack") && attack_hit){
+                    attack_next()
+                }
+                
+            } else {
+                attacking = false
+                
+                if(y_speed > 0) state.change("begin_fall");
+                if(!airborne) state.change("idle");
+            }
+            
+            attack_combo_t++
+            
+            if(input_check_pressed("dash")){
+               state.change("dash_air");
+            }
 		},
 		leave: function(){
-			attacking = false;	
+			attacking = false;
+            ds_list_clear(attack_list)
 		}
 	})
+
+    state.add_child("attack_1","attack_2",{
+        enter: function(){
+            state.inherit()
+            sprite_index = spr_pengu_attack_2;
+            attack_next = function(){
+                state.change("attack_3");
+            }
+            attack_launch_x = 3;
+            attack_launch_y = -3;
+        }
+    })
+
+    state.add_child("attack_1","attack_3",{
+        enter: function(){
+            state.inherit()
+            sprite_index = spr_pengu_attack_3;
+            attack_next = function(){
+                //no more attacks
+            }
+            attack_launch_x = 4;
+            attack_launch_y = -5;
+        }
+    })
 		
 	state.add_child("airborne","dash_air_charge",{
 		enter: function(){
@@ -727,6 +792,20 @@ state = new SnowState("idle");
 			super_speed = true;
 			super_speed_fadeout = super_speed_fadeout_time;
 			super_speed_trace_arr = [];
+            
+            var attack_list_check = ds_list_create();
+            var num = instance_place_list(x,y,obj_enemy,attack_list_check,false);
+            for (var i = 0; i < num; i++) {
+            	var inst = attack_list_check[|i];
+                if(!inst.invulnerable){
+                    inst.invulnerable = true;
+                    inst.x_speed = 4*-mirror;
+                    inst.y_speed = -3;
+                    inst.state.change("launched");
+                }
+                
+            }
+            ds_list_destroy(attack_list_check)
 			
 			audio_play_sound(snd_dashing,0,false)
 	    },

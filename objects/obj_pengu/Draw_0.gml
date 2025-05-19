@@ -54,5 +54,3 @@ if(super_speed_fadeout != 0){
 }
 
 state.draw();
-
-

@@ -57,21 +57,6 @@ for (var i = 0; i < ds_list_size(block_list); ++i) {
 		x_ = (offset_x > 0) ? right : left;
 	}
 	
-	//rounded corner
-	//if( (abs(offset_x) > w - radius) && (abs(offset_y) > h - radius)){
-	//	var corner_x = mid_x + (w - radius) * sign(offset_x);
-	//	var corner_y = mid_y + (h - radius) * sign(offset_y);
-	//	var dir = point_direction(corner_x,corner_y,mx,my);
-	//	var dist = point_distance(corner_x,corner_y,mx,my);
-	//	if(dist < radius){
-	//		x_ = corner_x + lengthdir_x(radius,dir);
-	//		y_ = corner_y + lengthdir_y(radius,dir);
-	//	} else {
-	//		x_ = mx;
-	//		y_ = my;
-	//	}
-	//}
-	
 	block_x += x_ - mx;
 	block_y += y_ - my;
 }
