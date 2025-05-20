@@ -184,7 +184,7 @@ function verlet_line(_p1,_p2,_dist = point_distance(_p1.x,_p1.y,_p2.x,_p2.y), _d
 	}
 }
 
-function verlet_rope(_start_x,_start_y,_end_x,_end_y,_segment_num = 2, _substeps = 10) constructor {
+function verlet_rope(_start_x,_start_y,_end_x,_end_y,_segment_num = 2, _substeps = 10) {
 	var _points = array_create(_segment_num+1);
 
 	//creates verlet points
@@ -199,7 +199,7 @@ function verlet_rope(_start_x,_start_y,_end_x,_end_y,_segment_num = 2, _substeps
 }
 
 //define rope points manually
-function verlet_rope_points(_points, _substeps = 10) constructor {
+function verlet_rope_points(_points, _substeps = 10) constructor { //figure out better way to do these typa functions with inheritance
 	substeps = _substeps;
 	points = _points;
 	segment_num = array_length(points)-1;

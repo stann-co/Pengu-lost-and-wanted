@@ -1,9 +1,5 @@
 /// @description
-
-global.camera.follow = self;
-global.camera.move(x,y,0);
-
-controlled = true;
+controlled = false;
 debug_draw = false;
 
 airborne = false;
@@ -62,9 +58,9 @@ reflection_scale = 2;
 
 //dice
 vec_dice = new Vector2(0,-44);
-die1 = new verlet_rope(dome.x+vec_dice.x,dome.y+vec_dice.y,dome.x+vec_dice.x-8,dome.y+vec_dice.y+6,4,4);
+die1 = verlet_rope(dome.x+vec_dice.x,dome.y+vec_dice.y,dome.x+vec_dice.x-8,dome.y+vec_dice.y+6,4,4);
 die1.get_first_point().fixed = true;
-die2 = new verlet_rope(dome.x+vec_dice.x,dome.y+vec_dice.y,dome.x+vec_dice.x+8,dome.y+vec_dice.y+6,4,4);
+die2 = verlet_rope(dome.x+vec_dice.x,dome.y+vec_dice.y,dome.x+vec_dice.x+8,dome.y+vec_dice.y+6,4,4);
 die2.get_first_point().fixed = true;
 
 vec_b = new Vector2(0,h_radius); //bottom
@@ -78,9 +74,9 @@ airborne_body_snap_rate = 1 / (game_speed*2);
 
 //legs
 legs_height_standing = 65;
-legs_height_crouching = 40;
+legs_height_crouching = 45;
 legs_height_raised = 85;
-legs_height = legs_height_standing;
+legs_height = legs_height_crouching;
 legs_height_change_spd = 0.08;
 
 legs_length = 42;
@@ -210,6 +206,26 @@ function foot(foot_, anchor_) : verlet(0,0,1,false) constructor{
 				var sound = audio_play_sound(snd_mech_stomp,0,false);
 				audio_sound_pitch(sound,random_range(0.9,1.1));
 			}
+            
+            //hitting enemies
+            var attack_list_check = ds_list_create();
+            var num = collision_circle_list(x,y,6,obj_enemy,false,true,attack_list_check,false)
+            for (var i = 0; i < num; i++) {
+            	var inst = attack_list_check[|i];
+                if(!inst.invulnerable){
+                    inst.invulnerable = true;
+                    inst.x_speed = 8*mech.mirror_component + random_range(-1,1);
+                    inst.y_speed = -6 + random_range(-1,1);
+                    inst.state.change("launched");
+                    inst.hurt();
+                    
+                    global.camera.shake_screen(8,game_speed*1);
+                    part_particles_create(global.particles,inst.x,inst.y,global.part_stars,4);
+                    freeze_frame();
+                }
+                
+            }
+            ds_list_destroy(attack_list_check)
 		}
 	}
 }
@@ -220,24 +236,48 @@ foot_r = new foot(vec_foot_r,vec_leg_r);
  #region States
  
 state = new SnowState("idle")
+    .add("idle",{
+        enter: function(){
+            legs_height = legs_height_crouching;
+            controlled = false;
+        },
+        step: function(){ 
+            if (collision_rectangle(x-w_radius,y-h_radius,x+w_radius,y+h_radius,obj_pengu,false,true) && input_check_pressed("interact")){
+                instance_destroy(obj_pengu);
+                state.change("walking");
+            }
+        },
+        draw_gui: function(){
+            if (collision_rectangle(x-w_radius,y-h_radius,x+w_radius,y+h_radius,obj_pengu,false,true)){
+                var x_ = global.camera.room_to_gui_x(x)
+                var y_ = global.camera.room_to_gui_y(y) - 60
+                draw_sprite(spr_gui_button_interact,using_gamepad(),x_,y_);
+            }
+        }
+    })
 
 	//parent states
-	.add("idle",{
+	.add("walking",{
 		enter: function(){
 			airborne = false;
+            legs_height = legs_height_standing;
+            controlled = true;
+            global.camera.follow = self;
+            global.camera.move(x,y,30);
 		},
 		step: function(){
-			
-			
-			if(input_check("up")){
-				legs_height = lerp(legs_height,legs_height_raised,legs_height_change_spd);
+            if(input_check("up")){
+			   	legs_height = lerp(legs_height,legs_height_raised,legs_height_change_spd);
+			} else if(input_check("down")){ 
+                legs_height = lerp(legs_height,legs_height_crouching,legs_height_change_spd);
+            } else {
+		        legs_height = lerp(legs_height,legs_height_standing,legs_height_change_spd);
 			}
-			else if(input_check("down")){
-				legs_height = lerp(legs_height,legs_height_crouching,legs_height_change_spd);
-			} else {
-				legs_height = lerp(legs_height,legs_height_standing,legs_height_change_spd);
-			}
-			
+             
+            if (input_check_pressed("interact")){
+                instance_create_layer(x,y,"Instances",obj_pengu)
+                state.change("idle");
+            }
 		}
 	})
 	
@@ -264,7 +304,7 @@ state = new SnowState("idle")
 				
 				global.camera.shake_screen(10,game_speed*0.2);
 				
-				state.change("idle");
+				state.change("walking");
 				
 				ground_spd = x_speed;
 				
@@ -303,12 +343,12 @@ state = new SnowState("idle")
  
 srf_gui = -1;
  
- Inspectron()
-  .Section("player")
-  .Slider("body_stiffness",0,1)
-  .Slider("legs_length",0,90)
-  .Slider("normal_strength",0,1)
-  .Slider("roughness_strength",0,1)
-  .Slider("reflection_scale",1,2)
-  .Checkbox("debug_draw") 
-  .render()
+ //Inspectron()
+  //.Section("player")
+  //.Slider("body_stiffness",0,1)
+  //.Slider("legs_length",0,90)
+  //.Slider("normal_strength",0,1)
+  //.Slider("roughness_strength",0,1)
+  //.Slider("reflection_scale",1,2)
+  //.Checkbox("debug_draw") 
+  //.render()

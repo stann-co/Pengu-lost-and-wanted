@@ -13,9 +13,9 @@ if(global.sidescroller){
 		show_error($"Missing collision layers in {room}",true);
 	}
 	
-	if(room != rm_init && !instance_exists(obj_depth_set)){
-		show_error($"Missing obj_depth_set in {room}",true);
-	}
+	//if(room != rm_init && !instance_exists(obj_depth_set)){
+	//	show_error($"Missing obj_depth_set in {room}",true);
+	//}
 	
 	//the active collision layer can be switched between
 	global.tile_collisions = layer_tilemap_get_id(collision_A);

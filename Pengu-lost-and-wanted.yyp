@@ -1163,6 +1163,7 @@
     {"id":{"name":"spr_gizmo","path":"sprites/spr_gizmo/spr_gizmo.yy",},},
     {"id":{"name":"spr_glowing_hitpoint","path":"sprites/spr_glowing_hitpoint/spr_glowing_hitpoint.yy",},},
     {"id":{"name":"spr_gui_button_back","path":"sprites/spr_gui_button_back/spr_gui_button_back.yy",},},
+    {"id":{"name":"spr_gui_button_interact","path":"sprites/spr_gui_button_interact/spr_gui_button_interact.yy",},},
     {"id":{"name":"spr_gui_button_ok","path":"sprites/spr_gui_button_ok/spr_gui_button_ok.yy",},},
     {"id":{"name":"spr_gui_button_pause","path":"sprites/spr_gui_button_pause/spr_gui_button_pause.yy",},},
     {"id":{"name":"spr_gui_font","path":"sprites/spr_gui_font/spr_gui_font.yy",},},

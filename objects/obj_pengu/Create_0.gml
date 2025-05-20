@@ -661,8 +661,8 @@ state = new SnowState("idle");
                         if (ds_list_find_index(attack_list,entity) == -1){
                             ds_list_add(attack_list,entity)
                             entity.state.change("stunned")
-                            entity.x_speed = x_speed + attack_launch_x*mirror;
-                            entity.y_speed = y_speed + attack_launch_y;
+                            entity.x_speed = x_speed + attack_launch_x*mirror + random_range(-2,2);
+                            entity.y_speed = y_speed + attack_launch_y + random_range(-2,2);
                             
                             entity.hurt();
                             

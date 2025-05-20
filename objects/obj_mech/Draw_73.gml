@@ -1,5 +1,5 @@
 /// @description debug drawing
-if(debug_draw){
+if(global.debug){
 	draw_cross(x,y,20,gray);
 	draw_rectangle(x-w_radius,y-h_radius,x+w_radius,y+h_radius,true);
 	
@@ -41,7 +41,4 @@ if(debug_draw){
 	draw_cross(body.x,body.y,5);
 	
 	draw_cross(dome.x,dome.y,5);
-
-	
-	
 }

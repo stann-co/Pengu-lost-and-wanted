@@ -22,6 +22,7 @@ return {
 		jump: [input_binding_key(vk_space),input_binding_key("Z")],
 		attack: [input_binding_key(vk_control),input_binding_key("X")],
 		dash: [input_binding_key(vk_shift),input_binding_key("C")],
+        interact: [input_binding_key(vk_shift),input_binding_key("V")],
 		
 		accept: [input_binding_key(vk_enter),input_binding_key("Z")],
 		cancel: [input_binding_key("X")],
@@ -38,7 +39,8 @@ return {
         
         jump:  [input_binding_gamepad_button(gp_face1)],
 		attack:  [input_binding_gamepad_button(gp_face3)],
-        dash:  [input_binding_gamepad_button(gp_face2),input_binding_gamepad_button(gp_face4)],
+        dash:  [input_binding_gamepad_button(gp_face2)],
+        interact: [input_binding_gamepad_button(gp_face4)],
 		
 		accept: [input_binding_gamepad_button(gp_face1),input_binding_gamepad_button(gp_face4)],
 		cancel: [input_binding_gamepad_button(gp_face2),input_binding_gamepad_button(gp_face3)],

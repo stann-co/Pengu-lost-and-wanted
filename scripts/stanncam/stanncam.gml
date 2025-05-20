@@ -582,7 +582,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @description returns the room x position as the position on the display relative to camera
 	/// @param {Real} _x
 	/// @returns {Real}
-	function room_to_display_x(_x){
+	static room_to_display_x = function(_x){
 		return ((_x - get_x() - x_frac) / get_zoom_x()) * stanncam_get_res_scale_x();
 	}
 	
@@ -590,7 +590,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @description returns the room y position as the position on the display relative to camera
 	/// @param {Real} _y
 	/// @returns {Real}
-	function room_to_display_y(_y){
+	static room_to_display_y = function(_y){
 		return ((_y - get_y() - y_frac) / get_zoom_y()) * stanncam_get_res_scale_y();
 	}
 	
