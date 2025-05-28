@@ -706,9 +706,6 @@ state = new SnowState("idle");
             
             attack_combo_t++
             
-            if(input_check_pressed("dash")){
-               state.change("dash_air");
-            }
 		},
 		leave: function(){
 			attacking = false;
@@ -765,6 +762,26 @@ state = new SnowState("idle");
 			if(t == dash_air_windup){
 				state.change("dash_air");	
 			}
+            
+            var attack_list_check = ds_list_create();
+            var num = instance_place_list(x,y,obj_enemy,attack_list_check,false);
+            for (var i = 0; i < num; i++) {
+            	var inst = attack_list_check[|i];
+                if(!inst.invulnerable){
+                    inst.invulnerable = true;
+                    inst.x_speed = 4*mirror;
+                    inst.y_speed = -3;
+                    inst.state.change("launched");
+                    
+                    inst.hurt();
+                    
+                    global.camera.shake_screen(4,game_speed*0.5);
+                    part_particles_create(global.particles,inst.x,inst.y,global.part_stars,4);
+                    freeze_frame();
+                }
+                
+            }
+            ds_list_destroy(attack_list_check)
 		},	
 	})
 	

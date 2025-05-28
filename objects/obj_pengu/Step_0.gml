@@ -34,15 +34,13 @@ if(can_move){
                     }
                 }
                 
-                if(input_check_pressed("dash")){
-                    if(attack_count == 0){
-                        if(airborne){
-                            if(dash_air_count == 0){
-                                state.change("dash_air_charge");
-                            }
-                        } else if(ground_angle <= 45 || ground_angle >= 315) {
-                            state.change("dash_charge");
+                if(input_check_pressed("dash")){ 
+                    if(airborne){ 
+                        if(dash_air_count == 0){ 
+                            state.change("dash_air_charge"); 
                         }
+                    } else if(ground_angle <= 45 || ground_angle >= 315) {
+                           state.change("dash_charge");
                     }
                 }
                 

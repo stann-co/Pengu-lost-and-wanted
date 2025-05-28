@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"sh_3d_matcap",
+  "name":"sh_3d_matcap",
+  "parent":{
+    "name":"Shaders",
+    "path":"folders/Shaders.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}
