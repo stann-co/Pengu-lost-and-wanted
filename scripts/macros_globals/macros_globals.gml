@@ -120,10 +120,10 @@ global.tile_draw_layers = ds_map_create()
 global.part_stars = part_type_create();
 part_type_shape(global.part_stars,pt_shape_star);
 part_type_colour_hsv(global.part_stars, 0, 0, 0, 0, 255, 255);
-part_type_size(global.part_stars,0.4,0.4,-0.03,0);
+part_type_size(global.part_stars,0.4,0.4,-0.02,0);
 part_type_direction(global.part_stars,0,360,0,10);
-part_type_life(global.part_stars,20,30);
-part_type_speed(global.part_stars,2,2,0,2);
+part_type_life(global.part_stars,30,50);
+part_type_speed(global.part_stars,2,2,0,1);
 part_type_alpha3(global.part_stars,1,1,0);
 
 //fonts

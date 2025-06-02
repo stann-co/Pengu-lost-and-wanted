@@ -666,9 +666,9 @@ state = new SnowState("idle");
                             
                             entity.hurt();
                             
-                            global.camera.shake_screen(4,game_speed*0.5);
-                            part_particles_create(global.particles,entity.x,entity.y,global.part_stars,4);
-                            freeze_frame();
+                            //global.camera.shake_screen(4,game_speed*0.5);
+                            //part_particles_create(global.particles,entity.x,entity.y,global.part_stars,4);
+                            //freeze_frame();
                             attack_hit = true;
                         }
                     }
@@ -775,9 +775,9 @@ state = new SnowState("idle");
                     
                     inst.hurt();
                     
-                    global.camera.shake_screen(4,game_speed*0.5);
-                    part_particles_create(global.particles,inst.x,inst.y,global.part_stars,4);
-                    freeze_frame();
+                    //global.camera.shake_screen(4,game_speed*0.5);
+                    //part_particles_create(global.particles,inst.x,inst.y,global.part_stars,4);
+                    //freeze_frame();
                 }
                 
             }

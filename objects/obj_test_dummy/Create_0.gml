@@ -12,7 +12,6 @@ top_speed = 20;
 gravity_force = 0.2251;
 floor_friction = 0.91;
 
-
 mass = 20;
 drag = 0.01;
 
@@ -96,8 +95,11 @@ state.add("idle",{
         }
         if (stun_t > 0) stun_t--;
         else state.change("launched")
-
         
+        if(sin(stun_t*0.5) > 0){
+            shader_set(sh_stunned);
+        }
+         
         draw_sprite(spr_test_dummy,0,x+stun_x,y+h_radius+2+stun_y);
         
     	var seg = spine.segments[0];
@@ -118,5 +120,6 @@ state.add("idle",{
     	dir_ = seg.get_direction()-90;
     	draw_sprite_ext(spr_test_dummy,3,x_,y_,1,1,dir_,-1,1);
         
+        shader_reset()
     }
 })

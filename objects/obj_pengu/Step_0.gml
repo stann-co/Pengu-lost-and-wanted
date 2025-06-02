@@ -61,11 +61,6 @@ if(can_move){
                     else if(double_jump_count == 0) state.change("double_jump");
                 }
             }
-            
-        	//} else {
-        	//	input_h = 0;
-        	//	input_v = 0;
-        	//}
         	
         	#endregion
         	
@@ -405,7 +400,7 @@ if(can_move){
                     var side = find_side(x,y,entity_);
                     if(airborne && side == SIDES.Top && y_speed > 0){
                         invulnerable++
-                        global.camera.shake_screen(4,game_speed*0.5);
+                        
                         state.change("enemy_jump");
                         double_jump_count = 0;
                         dash_air_count = 0;
@@ -414,21 +409,25 @@ if(can_move){
                         entity_.y_speed = -1;
                         entity_.state.change("stunned")
                         entity_.hurt();
-                        freeze_frame(0.05);
                         
-                        part_particles_create(global.particles,entity_.x,entity_.y,global.part_stars,1);
+                        //global.camera.shake_screen(4,game_speed*0.5);
+                        //freeze_frame(0.05);
+                        //part_particles_create(global.particles,entity_.x,entity_.y,global.part_stars,1);
+                        
                     } else if(super_speed){	
                         //Dashing into enemy
                         ds_list_add(attack_list,entity_)
                         
-                        global.camera.shake_screen(4,game_speed*0.5);
+                        
                         
                         entity_.x_speed = sign(-x_speed) * 1;
                         entity_.y_speed = -3;
                         entity_.state.change("stunned")
                         entity_.hurt();
-                        freeze_frame(0.12);
-                        part_particles_create(global.particles,entity_.x,entity_.y,global.part_stars,3);
+                        
+                        //global.camera.shake_screen(4,game_speed*0.5);
+                        //freeze_frame(0.12);
+                        //part_particles_create(global.particles,entity_.x,entity_.y,global.part_stars,3);
                     }
                 }
             } 

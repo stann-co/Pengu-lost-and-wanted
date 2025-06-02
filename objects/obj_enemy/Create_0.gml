@@ -40,7 +40,10 @@ sensor_length_base = 8;
 #endregion
 
 hurt = function(){
-
+    global.camera.shake_screen(4,game_speed*0.5);
+    part_particles_create(global.particles,x,y,global.part_stars,4);
+    freeze_frame();
+    sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
 }
 
 default_draw = function(){
@@ -105,6 +108,16 @@ state
             y_speed += gravity_force;
         }
     }    
+})
+
+.add("meteor",{
+    enter: function(){
+        airborne = true
+        invulnerable = true
+    },
+    step: function (){
+        
+    }
 })
 
 //.add("hurt",{
