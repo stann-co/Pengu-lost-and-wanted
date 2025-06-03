@@ -1,6 +1,6 @@
 {
   "$GMTileSet":"v1",
-  "%Name":"ts_complex_d",
+  "%Name":"ts_complex_maps",
   "autoTileSets":[],
   "macroPageTiles":{
     "SerialiseHeight":29,
@@ -21,7 +21,7 @@
     ],
     "TileDataFormat":1,
   },
-  "name":"ts_complex_d",
+  "name":"ts_complex_maps",
   "out_columns":11,
   "out_tilehborder":2,
   "out_tilevborder":2,
@@ -32,8 +32,8 @@
   "resourceType":"GMTileSet",
   "resourceVersion":"2.0",
   "spriteId":{
-    "name":"spr_ts_complex_d",
-    "path":"sprites/spr_ts_complex_d/spr_ts_complex_d.yy",
+    "name":"spr_ts_complex_maps",
+    "path":"sprites/spr_ts_complex_maps/spr_ts_complex_maps.yy",
   },
   "spriteNoExport":true,
   "textureGroupId":{

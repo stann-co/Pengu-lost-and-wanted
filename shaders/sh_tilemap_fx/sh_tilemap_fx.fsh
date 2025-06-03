@@ -8,10 +8,18 @@ uniform float u_depth;
 uniform float u_offset;
 uniform float u_offset2;
 
+uniform float u_roughness;
+uniform float u_normal;
+
+uniform float u_texture_scale;
+uniform float u_texture_offset_scale;
+
 uniform sampler2D s_tilemap_fx;
-uniform sampler2D s_Texture;
+uniform sampler2D s_texture;
 
 uniform vec2 u_cam_offset;
+
+const vec2 res = vec2(480+32,270+32);
 
 
 
@@ -35,7 +43,6 @@ vec3 blendScreen(vec3 base, vec3 blend, float opacity) {
 void main()
 {
     ////Depth
-    vec2 res = vec2(480+32,270+32);
     
     float numLayers = 32.;
      
@@ -49,7 +56,7 @@ void main()
     vec2 UVs = ScaleCenter(v_vTexcoord, mix(1.,currentDepth,u_depth));
     UVs -= pixel_offset;
     
-    float depthMap = (texture2D(s_tilemap_fx, UVs).w) * 2.;
+    float depthMap = (texture2D(s_tilemap_fx, UVs).z) * 2.;
      
     //every pixel starts with a minimum depth, and continously goes forward, until it "hits" the depthmap
     for(float i = 0.; i <= numLayers; i+=1.){
@@ -63,7 +70,7 @@ void main()
         pixel_offset = (mod(u_cam_offset,depthScaled)/res);
         UVs -= pixel_offset;
         
-        depthMap = (texture2D(s_tilemap_fx, UVs).w) * 2.;
+        depthMap = (texture2D(s_tilemap_fx, UVs).z) * 2.;
         
     }
     
@@ -71,28 +78,22 @@ void main()
 		discard;
     
     
-    ///Shine
-    vec2 normal = texture2D( gm_BaseTexture, UVs ).xy;
-    vec2 roughness = texture2D( gm_BaseTexture, UVs ).z; 
+    vec4 diffuse = texture2D( gm_BaseTexture, UVs);
     
-        vec3 texture = texture2D( s_Texture, mod((v_vPosition / u_dimensions) * u_texture_scale + u_texture_offset + normal,1.0)).rgb;
+    vec2 normal = texture2D( s_tilemap_fx, UVs ).xy * u_normal;
     
+    float roughness = texture2D( s_tilemap_fx, UVs ).w * u_roughness;
     
+    vec2 tex_uvs = mod((v_vPosition / res) * u_texture_scale + (u_cam_offset * u_texture_offset_scale)/res + normal,1.0);
     
-    vec4 final = texture2D( gm_BaseTexture, UVs );
+    vec3 texture = texture2D( s_texture,tex_uvs + (UVs - v_vTexcoord)).rgb;
+
+    vec3 blended = blendScreen(diffuse.rgb,texture,roughness);
+    
+    vec4 final = vec4(1.);
+    final.rgb = blended;
+    final.a = diffuse.a;
+    
     gl_FragColor = final;
-    
-    
-    
-    
-    
-    
-    ////debugging uvs
-    //vec4 test = vec4(0.);
-    //test.a = 1.;
-    //
-    //test.xyz = vec3(depthMap);
-    //
-    ////gl_FragColor = test;
     
 }
