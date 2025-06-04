@@ -101,6 +101,14 @@ if(global.debug){
         draw_set_alpha(1)
     }
     
+    if(state.state_is("dash_air_charge")){
+        draw_set_color(red);
+        draw_set_alpha(0.5)
+        draw_circle(x,y,meteor_radius,false)
+        draw_set_color(white);
+        draw_set_alpha(1)
+    }
+    
     #endregion
 	
 }

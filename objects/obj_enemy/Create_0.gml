@@ -115,8 +115,18 @@ state
         airborne = true
         invulnerable = true
     },
-    step: function (){
+    step:function (){
+        if(on_land){
+            y_speed = 0;
+            state.change("idle");
+        }
         
+        if(airborne){
+            y_speed += gravity_force;
+        }
+    },
+    leave: function(){
+        invulnerable = false;
     }
 })
 

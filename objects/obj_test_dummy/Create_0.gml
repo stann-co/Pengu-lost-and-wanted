@@ -69,9 +69,7 @@ state.add("idle",{
             x_speed = clamp(mx-x,-top_speed,top_speed);
             y_speed = clamp(my-y,-top_speed,top_speed);
         }
-        
     }
-
 })
 
 .add("stunned",{
