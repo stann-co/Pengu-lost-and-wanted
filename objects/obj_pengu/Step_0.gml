@@ -394,7 +394,7 @@ if(can_move){
             num_ = instance_place_list(x,y,obj_enemy,list_,false);
             for (var i = 0; i < num_; ++i;){
                 var entity_ = list_[| i];
-                if (ds_list_find_index(attack_list,entity_) == -1){ 
+                if (ds_list_find_index(attack_list,entity_) == -1 && entity_.invulnerable == 0){ 
                     
                     //Landing on enemy
                     var side = find_side(x,y,entity_);

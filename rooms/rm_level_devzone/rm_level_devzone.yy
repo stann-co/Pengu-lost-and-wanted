@@ -10,6 +10,7 @@
     {"name":"inst_37A01F25","path":"rooms/rm_level_devzone/rm_level_devzone.yy",},
     {"name":"inst_49BF73FB","path":"rooms/rm_level_devzone/rm_level_devzone.yy",},
     {"name":"inst_5BEA35C1","path":"rooms/rm_level_devzone/rm_level_devzone.yy",},
+    {"name":"inst_4EED2132","path":"rooms/rm_level_devzone/rm_level_devzone.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -20,6 +21,7 @@
         {"$GMRInstance":"v2","%Name":"inst_33391F95","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_33391F95","objectId":{"name":"obj_pengu","path":"objects/obj_pengu/obj_pengu.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":528.0,"y":1088.0,},
         {"$GMRInstance":"v2","%Name":"inst_49BF73FB","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_49BF73FB","objectId":{"name":"obj_test_dummy","path":"objects/obj_test_dummy/obj_test_dummy.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":602.0,"y":1075.0,},
         {"$GMRInstance":"v2","%Name":"inst_5BEA35C1","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_5BEA35C1","objectId":{"name":"obj_test_dummy","path":"objects/obj_test_dummy/obj_test_dummy.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":570.0,"y":1075.0,},
+        {"$GMRInstance":"v2","%Name":"inst_4EED2132","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_4EED2132","objectId":{"name":"obj_mech","path":"objects/obj_mech/obj_mech.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":345.0,"y":1033.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRTileLayer":"","%Name":"collision_A","depth":200,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"layers":[],"name":"collision_A","properties":[],"resourceType":"GMRTileLayer","resourceVersion":"2.0","tiles":{"SerialiseHeight":157,"SerialiseWidth":313,"TileCompressedData":[
           -1878,0,-13,1,-300,0,-13,1,-300,0,-13,1,-13759,0,-78,1,-235,0,-78,1,-235,0,-78,1,-235,0,-78,1,-235,0,

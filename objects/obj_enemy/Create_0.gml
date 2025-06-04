@@ -12,6 +12,7 @@ top_speed = 3;
 input_h = -1;
 subimg = 0;
 airborne = false;
+meteor = false;
 
 //enable disable collision checking code, for dying state, or maybe flying
 colliding = true;
@@ -112,21 +113,23 @@ state
 
 .add("meteor",{
     enter: function(){
-        airborne = true
-        invulnerable = true
+        airborne = true;
+        invulnerable = game_speed * 1;
+        meteor = true;
     },
     step:function (){
-        if(on_land){
+        if(invulnerable == 0){
             y_speed = 0;
-            state.change("idle");
-        }
+            //state.change("idle");
+        } else meteor--;
         
         if(airborne){
-            y_speed += gravity_force;
+            y_speed += gravity_force*0.5;
         }
     },
     leave: function(){
         invulnerable = false;
+        meteor = false;
     }
 })
 
