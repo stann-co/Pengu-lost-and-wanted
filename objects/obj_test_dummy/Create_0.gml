@@ -41,8 +41,6 @@ default_draw = function(){
 	dir_ = seg.get_direction()-90;
 	draw_sprite_ext(spr_test_dummy,2,x_,y_,1,1,dir_,-1,1);
 	
-    
-    
 	seg = spine.segments[2];
     x_ = seg.p1.x;
 	y_ = seg.p1.y;
@@ -50,6 +48,7 @@ default_draw = function(){
     var subimg = state.state_is("meteor") ? 4 : 3;
 	draw_sprite_ext(spr_test_dummy,subimg,x_,y_,1,1,dir_,-1,1);
 	
+    draw_set_color(white)
 }
 
 state.add("idle",{
@@ -121,7 +120,7 @@ state.add("idle",{
     	y_ = seg.p1.y + stun_y;
     	dir_ = seg.get_direction()-90;
     	draw_sprite_ext(spr_test_dummy,3,x_,y_,1,1,dir_,-1,1);
-        
+
         shader_reset()
     }
 })

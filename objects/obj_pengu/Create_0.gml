@@ -659,7 +659,7 @@ state = new SnowState("idle");
                     for (var i = 0; i < num_; i++) {
                         //does not add entities that are already being hit to the attack list
                         var entity = attack_list_check_[|i];
-                        if (ds_list_find_index(attack_list,entity) == -1){
+                        if (ds_list_find_index(attack_list,entity) == -1 && !entity.invulnerable){
                             ds_list_add(attack_list,entity)
                             entity.state.change("stunned")
                             entity.x_speed = x_speed + attack_launch_x*mirror + random_range(-2,2);
@@ -811,8 +811,7 @@ state = new SnowState("idle");
             var num = instance_place_list(x,y,obj_enemy,attack_list_check,false);
             for (var i = 0; i < num; i++) {
             	var inst = attack_list_check[|i];
-                if(!inst.invulnerable){
-                    inst.invulnerable = true;
+                if(inst.invulnerable == 0){
                     inst.x_speed = 4*-mirror;
                     inst.y_speed = -3;
                     inst.state.change("launched");

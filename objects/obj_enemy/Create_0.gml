@@ -12,6 +12,7 @@ top_speed = 3;
 input_h = -1;
 subimg = 0;
 airborne = false;
+meteor = false;
 
 gravity_force = 0.2251;
 
@@ -135,7 +136,7 @@ state
         }
         
         if(airborne){
-            y_speed += gravity_force;
+            y_speed += gravity_force*0.5;
         }
         
         if(on_wall){
@@ -165,6 +166,7 @@ state
     },
     leave: function(){
         invulnerable = false;
+        meteor = false;
     }
 })
 
