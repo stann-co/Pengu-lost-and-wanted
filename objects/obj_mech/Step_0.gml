@@ -3,7 +3,7 @@
 if(can_move){
     state.step();
 	#region input
-    if(controlled){
+    if(controlled && global.control){
 		
 		input_h = (input_check("right") - input_check("left"));
 		input_v = (input_check("down") - input_check("up"));

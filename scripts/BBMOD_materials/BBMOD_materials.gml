@@ -27,3 +27,13 @@ function material_animated(_texture = sprite_get_texture(spr_white,0)) construct
 		return true;
 	}
 }
+
+
+///unique materials
+function material_policesiren() constructor {
+	BaseOpacity = 1.;
+	static apply = function(_vertexFormat){
+		shader_set(sh_3d_policesiren);
+		return true;
+	}
+}

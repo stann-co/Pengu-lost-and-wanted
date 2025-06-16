@@ -13,10 +13,14 @@ input_h = -1;
 subimg = 0;
 airborne = false;
 
+gravity_force = 0.2251;
+
 //enable disable collision checking code, for dying state, or maybe flying
 colliding = true;
 
-hp = 1;
+hp_max = 10;
+hp = hp_max;
+
 invulnerable = 0;
 
 stagger = 0;
@@ -44,6 +48,10 @@ hurt = function(){
     part_particles_create(global.particles,x,y,global.part_stars,4);
     freeze_frame();
     sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
+    hp--;
+    if(hp <= 0){
+        state.change("die");
+    }
 }
 
 default_draw = function(){
@@ -70,12 +78,16 @@ state
 	enter:function(){
 		y_speed = -10;
 		x_speed = sign(x-obj_pengu.x) * 6;
-		point_scatter(5);
-		score_increase(0,score_combo_t_max)
-		part_particles_create(global.particles,x,y,global.part_stars,12);
+        
+		//point_scatter(5);
+		//score_increase(0,score_combo_t_max)
+		//part_particles_create(global.particles,x,y,global.part_stars,12);
+        
+        colliding = false;
+        invulnerable = true;
 	},
 	step:function(){
-		y_speed += 0.5;
+		y_speed += gravity_force;
 		image_angle-=sign(x_speed) * 6;
 		if(global.camera.out_of_bounds(x,y,-30)){
 			instance_destroy();
@@ -112,18 +124,44 @@ state
 
 .add("meteor",{
     enter: function(){
-        airborne = true
-        invulnerable = true
+        airborne = true;
+        invulnerable = true;
+
     },
     step:function (){
-        if(on_land){
-            y_speed = 0;
-            state.change("idle");
+        if(on_land || on_ceiling){
+            y_speed = -y_speed;
+            //state.change("idle");
         }
         
         if(airborne){
             y_speed += gravity_force;
         }
+        
+        if(on_wall){
+            //hitting wall after meteoriting
+            x_speed = -x_speed;
+            y_speed = -3;
+            state.change("launched");
+            hurt();
+        }
+        
+        var attack_list_check_ = ds_list_create();
+        
+        var num_ = instance_place_list(x,y,obj_enemy,attack_list_check_,true);
+        for (var i = 0; i < num_; i++) {
+            var inst = attack_list_check_[|i];
+            if(!inst.invulnerable){
+                inst.invulnerable = true;
+                inst.x_speed = 8*sign(x_speed);
+                inst.y_speed = -3;
+                inst.state.change("launched");
+                
+                inst.hurt();
+            }
+        }
+        ds_list_destroy(attack_list_check_)
+        
     },
     leave: function(){
         invulnerable = false;

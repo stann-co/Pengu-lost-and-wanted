@@ -38,18 +38,11 @@ u_normal      = shader_get_uniform(sh_tilemap_fx,"u_normal");
 u_texture_scale   = shader_get_uniform(sh_tilemap_fx,"u_texture_scale");
 u_texture_offset_scale  = shader_get_uniform(sh_tilemap_fx,"u_texture_offset_scale");
 
+//
 //Inspectron()
-//	.Slider("roughness_strength",0,1)
-//	.Slider("normal_strength",0,1)
-//	.Slider("scale",0,10)
-//	.Slider("offset_scale",-1,1)
-//	.Slider("opacity",0,1)
-//	.render()
-
-//Inspectron()
-//	.Slider("depth_",0,0.1)
-//    .Slider("roughness",0,1)
-//    .Slider("normal",0,1)
-//    .Slider("texture_offset_scale",-0.5,0)
-//    .Slider("texture_scale",0,2)
-//	.render()
+	//.Slider("depth_",0,0.1)
+    //.Slider("roughness",0,1)
+    //.Slider("normal",0,1)
+    //.Slider("texture_offset_scale",-0.5,0)
+    //.Slider("texture_scale",0,2)
+	//.render()

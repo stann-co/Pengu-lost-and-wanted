@@ -24,6 +24,9 @@ array_push(points_,new verlet(0,-44,mass,0));
 spine = new verlet_rod_points(points_)
 
 default_draw = function(){
+    
+    
+    
 	draw_sprite(spr_test_dummy,0,x,y+h_radius+2);
 	
 	var seg = spine.segments[0];
@@ -44,7 +47,8 @@ default_draw = function(){
     x_ = seg.p1.x;
 	y_ = seg.p1.y;
 	dir_ = seg.get_direction()-90;
-	draw_sprite_ext(spr_test_dummy,3,x_,y_,1,1,dir_,-1,1);
+    var subimg = state.state_is("meteor") ? 4 : 3;
+	draw_sprite_ext(spr_test_dummy,subimg,x_,y_,1,1,dir_,-1,1);
 	
 }
 

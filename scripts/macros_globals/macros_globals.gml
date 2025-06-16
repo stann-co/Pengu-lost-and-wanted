@@ -1,6 +1,6 @@
 /// feather ignore all in /Extensions/*
 
-#macro version "0.1.2-alpha"
+#macro version "0.1.3-alpha"
 
 #macro in_browser (os_type != os_windows)
 
@@ -94,6 +94,18 @@ global.tile_angles = [
  
 ];
 
+global.persistent_objects = [
+    obj_camera,
+    input_controller_object,
+    __obj_stanncam_manager,
+    __obj_scene,
+    obj_game,
+    obj_pengu, 
+    obj_depth_set,
+    obj_layer_draw,
+    obj_splash
+]
+
 global.sidescroller = true;
 
 global.depth_a = 300;
@@ -102,7 +114,7 @@ global.depth_c = 500;
 
 global.activation_list = [];
 
-global.debug = false;
+global.debug = true;
 global.checkpoint = -1;
 
 global.score = 0;
@@ -110,6 +122,8 @@ global.score_mult = 1;
 global.score_combo_t = 0;
 #macro score_combo_t_max (game_speed * 3)
 global.coins = 0;
+
+global.control = true;
 
 global.freeze_frame = false;
 

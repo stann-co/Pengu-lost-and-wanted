@@ -25,16 +25,11 @@ if(can_move){
 		
 		instance_deactivate_region(left, top, width, height, false,true);
 		instance_activate_region(left, top, width, height, true);
-		
-		//these should always be active
-		instance_activate_object(obj_camera);
-		instance_activate_object(input_controller_object)
-		instance_activate_object(__obj_stanncam_manager);
-		instance_activate_object(obj_game);
-		instance_activate_object(obj_pengu);
-		instance_activate_object(obj_depth_set);
-		instance_activate_object(obj_layer_draw);	
-		
+        
+        for(var i = 0; i < array_length(global.persistent_objects);i++){
+            instance_activate_object(global.persistent_objects[i]);    
+        }
+
 		//connected instances will all be active if just one of them is active
 		for (var i1 = 0; i1 < array_length(global.activation_list); ++i1) {
 			var linked_array = global.activation_list[i1];

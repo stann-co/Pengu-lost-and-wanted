@@ -665,12 +665,12 @@ state = new SnowState("idle");
                             entity.x_speed = x_speed + attack_launch_x*mirror + random_range(-2,2);
                             entity.y_speed = y_speed + attack_launch_y + random_range(-2,2);
                             
-                            entity.hurt();
-                            
                             //global.camera.shake_screen(4,game_speed*0.5);
                             //part_particles_create(global.particles,entity.x,entity.y,global.part_stars,4);
                             //freeze_frame();
                             attack_hit = true;
+                            
+                            entity.hurt(); //called last so it can override state
                         }
                     }
                     ds_list_destroy(attack_list_check_)
@@ -770,8 +770,8 @@ state = new SnowState("idle");
             	var inst = attack_list_check_[|i];
                 if(!inst.invulnerable){
                     inst.invulnerable = true;
-                    inst.x_speed = 8*mirror;
-                    inst.y_speed = -3;
+                    inst.x_speed = 6*mirror;
+                    inst.y_speed = -4;
                     inst.state.change("meteor");
                     
                     inst.hurt();

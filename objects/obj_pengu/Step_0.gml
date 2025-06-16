@@ -13,7 +13,7 @@ if(can_move){
     	y+=input_v * 4;
     	
     } else {
-        if(controlled){
+        if(controlled && global.control){
         	#region input
         	//if(control){
             if(control_lock == 0){

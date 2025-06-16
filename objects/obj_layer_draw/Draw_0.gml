@@ -72,7 +72,6 @@ shader_set_uniform_f(u_texture_offset_scale,texture_offset_scale);
 shader_set_uniform_f(u_texture_scale,texture_scale);
 
 draw_surface(srf_diffuse,camx-margin,camy-margin);
-show_debug_message(camx)
 
 shader_reset();
 

@@ -3,8 +3,8 @@
   "%Name":"sh_3d_deprecated",
   "name":"sh_3d_deprecated",
   "parent":{
-    "name":"Shaders",
-    "path":"folders/Shaders.yy",
+    "name":"shader 3d",
+    "path":"folders/Shaders/shader 3d.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

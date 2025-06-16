@@ -226,6 +226,7 @@ state.add("level_start",{
 		global.score = 0;
 		global.score_mult = 0;
 		global.score_combo_t = 0;
+        global.control = true;
 		timer = 0;
 		
 		state.change("idle")	
@@ -664,6 +665,8 @@ state.add_child("level_tally_start","level_tally_anykey", {
 
 #endregion
 
+#endregion
+
 #region debugging
 
 show_collisions = function(){	
@@ -747,4 +750,3 @@ show_collisions = function(){
 	
 	show_debug_overlay(false);
 #endregion
-

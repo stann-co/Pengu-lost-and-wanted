@@ -119,7 +119,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	
 	/// @function __step
 	/// @description gets called every step
-	/// @ignore
+	
 	static __step = function(){
 
 		//camera doesn't update if paused
@@ -337,7 +337,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @function clone
 	/// @description returns a clone of the stanncam
 	/// @returns {Struct.stanncam}
-	/// @ignore
+	
 	static clone = function(){
 		var _clone = new stanncam(x, y, width, height);
 		_clone.surface_extra_on = surface_extra_on;
@@ -364,7 +364,6 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @param {Real} _x
 	/// @param {Real} _y
 	/// @param {Real} [_duration=0]
-	/// @ignore
 	static move = function(_x, _y, _duration=0){
 		if(_duration == 0 && !instance_exists(follow)){
 			//view position is updated immediately
@@ -388,7 +387,6 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @param {Real} _width
 	/// @param {Real} _height
 	/// @param {Real} [_duration=0]
-	/// @ignore
 	static set_size = function(_width, _height, _duration=0){
 		if(_duration == 0){ //if duration is 0 the view is updated immediately
 			width = _width;
@@ -411,7 +409,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @param {Real} _offset_x
 	/// @param {Real} _offset_y
 	/// @param {Real} [_duration=0]
-	/// @ignore
+	
 	static offset = function(_offset_x, _offset_y, _duration=0){
 		if(_duration == 0){ //if duration is 0 the view is updated immediately
 			offset_x = _offset_x;
@@ -433,7 +431,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @description zooms the camera over a duration
 	/// @param {Real} _zoom
 	/// @param {Real} [_duration=0]
-	/// @ignore
+	
 	static zoom = function(_zoom, _duration=0){
 		if(_duration == 0){ //if duration is 0 the view is updated immediately
 			zoom_amount = _zoom;
@@ -458,7 +456,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	
 	/// @function get_zoom_x
 	/// @description there's a difference in how zoom works with smooth_draw on/off if you need to use the zoom_amount while smooth_draw is off, you need to use this function
-	/// @ignore
+	
 	static get_zoom_x = function(){
 		if(smooth_draw) return zoom_amount;
 		return surface_get_width(surface) / width;
@@ -466,7 +464,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	
 	/// @function get_zoom_y
 	/// @description there's a difference in how zoom works with smooth_draw on/off if you need to use the zoom_amount while smooth_draw is off, you need to use this function
-	/// @ignore
+	
 	static get_zoom_y = function(){
 		if(smooth_draw) return zoom_amount;
 		return surface_get_height(surface) / height;
@@ -476,7 +474,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @description makes the camera shake
 	/// @param {Real} _magnitude
 	/// @param {Real} _duration - duration in frames
-	/// @ignore
+	
 	static shake_screen = function(_magnitude, _duration){
 		__shake_magnitude = _magnitude;
 		__shake_length = _duration;
@@ -487,7 +485,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @description changes the speed of the camera
 	/// @param {Real} _spd - how fast the camera can move
 	/// @param {Real} _threshold - minimum distance for the speed to have full effect
-	/// @ignore
+	
 	static set_speed = function(_spd, _threshold){
 		spd = _spd;
 		spd_threshold = _threshold;
@@ -516,7 +514,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @function get_x
 	/// @description get camera corner x position. if need the middle of the camera use x
 	/// @returns {Real}
-	/// @ignore
+	
 	static get_x = function(){
 		return camera_get_view_x(__camera);
 	}
@@ -524,7 +522,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @function get_y
 	/// @description get camera corner y position. if need the middle of the camera use y
 	/// @returns {Real}
-	/// @ignore
+	
 	static get_y = function(){
 		return camera_get_view_y(__camera);
 	}
@@ -532,7 +530,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @function get_mouse_x
 	/// @description gets the mouse x position within room relative to the camera
 	/// @returns {Real}
-	/// @ignore
+	
 	static get_mouse_x = function(){
 		var _mouse_x = (((window_mouse_get_x() - stanncam_ratio_compensate_x()) / (__obj_stanncam_manager.__display_scale_x * width)) * width * get_zoom_x()) + get_x();
 		if(smooth_draw) return _mouse_x;
@@ -542,7 +540,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @function get_mouse_y
 	/// @description gets the mouse y position within room relative to the camera
 	/// @returns {Real}
-	/// @ignore
+	
 	static get_mouse_y = function(){
 		var _mouse_y = (((window_mouse_get_y() - stanncam_ratio_compensate_y()) / (__obj_stanncam_manager.__display_scale_y * height)) * height * get_zoom_y()) + get_y();
 		if(smooth_draw) return _mouse_y;
@@ -553,7 +551,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @description returns the room x position as the position on the gui relative to camera
 	/// @param {Real} _x
 	/// @returns {Real}
-	/// @ignore
+	
 	static room_to_gui_x = function(_x){
 		return ((_x - get_x() - x_frac) / get_zoom_x()) * stanncam_get_gui_scale_x();
 	}
@@ -562,7 +560,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @description returns the room y position as the position on the gui relative to camera
 	/// @param {Real} _y
 	/// @returns {Real}
-	/// @ignore
+	
 	static room_to_gui_y = function(_y){
 		return ((_y - get_y() - y_frac) / get_zoom_y()) * stanncam_get_gui_scale_y();
 	}
@@ -570,7 +568,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @function get_active_zone
 	/// @description returns the active zone the followed instance is within, noone if outside, or no instance is followed
 	/// @returns {Id.Instance|Noone}
-	/// @ignore
+	
 	static get_active_zone = function(){
 		if(__zone_active){
 			return __zone;
@@ -600,7 +598,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @param {Real} _y
 	/// @param {Real} [_margin=0]
 	/// @returns {Bool}
-	/// @ignore
+	
 	static out_of_bounds = function(_x, _y, _margin=0){
 		var _cam_x = get_x();
 		var _cam_y = get_y();
@@ -616,7 +614,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	
 	/// @function destroy
 	/// @description marks the stanncam as destroyed
-	/// @ignore
+	
 	static destroy = function(){
 		camera_destroy(__camera);
 		global.stanncams[cam_id] = -1;
@@ -632,7 +630,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	
 	/// @function is_destroyed
 	/// @returns {Bool}
-	/// @ignore
+	
 	static is_destroyed = function(){
 		return __destroyed;
 	}
@@ -643,7 +641,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @function __update_view_size
 	/// @description updates the view size
 	/// @param {Bool} [_force=false]
-	/// @ignore
+	
 	static __update_view_size = function(_force=false){
 		//if smooth_draw is off maintains pixel perfection even when zooming in and out
 		//if on it is handled by the draw events
@@ -671,7 +669,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 
 	/// @function __update_view_pos
 	/// @description updates the view position
-	/// @ignore
+	
 	static __update_view_pos = function(_instant = false){
 		//update camera view
 		var _new_x = x + offset_x - (width * 0.5) + __shake_x;
@@ -819,7 +817,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 
 	/// @function __debug_draw
 	/// @description draws debug information
-	/// @ignore
+	
 	static __debug_draw = function(_x = 0, _y = 0, _scale_x = 1, _scale_y = 1){
 		if(debug_draw){
 			//draws camera bounding box
@@ -878,7 +876,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @param {Real} [_surf_height=height]
 	/// @param {Real} [_scale_x=1]
 	/// @param {Real} [_scale_y=1]
-	/// @ignore
+	
 	static draw_special = function(_draw_func, _x, _y, _surf_width=width, _surf_height=height, _scale_x=1, _scale_y=1){
 		var _surf_width_scaled = floor(_surf_width * zoom_amount);
 		var _surf_height_scaled = floor(_surf_height * zoom_amount);
@@ -911,7 +909,7 @@ function stanncam(_x=0, _y=0, _width, _height, _surface_extra_on, _smooth_draw=t
 	/// @param {Real} [_width=width]
 	/// @param {Real} [_height=height]
 	/// @param {Bool} [_ratio_compensate=true]
-	/// @ignore
+	
 	static draw_surf = function(_surface, _x, _y, _scale_x=1, _scale_y=1, _left=0, _top=0, _width=width, _height=height, _ratio_compensate=true){
 		if(!surface_exists(_surface)){
 			return;
