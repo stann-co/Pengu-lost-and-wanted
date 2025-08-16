@@ -615,7 +615,7 @@ state = new SnowState("idle");
 		},
 	})
 	
-	state.add_child("airborne","attack_1", {
+	state.add_child("tall","attack_1", {
 	    enter: function() {
 			state.inherit()
             
@@ -630,8 +630,8 @@ state = new SnowState("idle");
 			
 			sprite_index = spr_pengu_attack_1;
 
-			y_speed = -attack_jump_force;	
-			x_speed *= 0.6;
+			//y_speed = -attack_jump_force;	
+			ground_spd = mirror * 4;
 	
 			squish(0.4,1.4,game_speed*0.4);
             
@@ -661,13 +661,12 @@ state = new SnowState("idle");
                         var entity = attack_list_check_[|i];
                         if (ds_list_find_index(attack_list,entity) == -1 && !entity.invulnerable){
                             ds_list_add(attack_list,entity)
+                            
+                            //runs on hit
                             entity.state.change("stunned")
                             entity.x_speed = x_speed + attack_launch_x*mirror + random_range(-2,2);
                             entity.y_speed = y_speed + attack_launch_y + random_range(-2,2);
                             
-                            //global.camera.shake_screen(4,game_speed*0.5);
-                            //part_particles_create(global.particles,entity.x,entity.y,global.part_stars,4);
-                            //freeze_frame();
                             attack_hit = true;
                             
                             entity.hurt(); //called last so it can override state
@@ -678,6 +677,7 @@ state = new SnowState("idle");
                     for (var i = 0; i < ds_list_size(attack_list); i++) {
                     	var entity = attack_list[|i];
                         with (entity) {
+                            //runs every frame while attacked entities are stun locked
                             
                             var toward_x_ = sign(attack_x_ - x);
                             var toward_y_ = sign(attack_y_ - y);
@@ -699,10 +699,9 @@ state = new SnowState("idle");
                 }
                 
             } else {
-                attacking = false
-                
-                if(y_speed > 0) state.change("begin_fall");
-                if(!airborne) state.change("idle");
+                attacking = false;
+                attack_count = 0;
+                pick_move_state();
             }
             
             attack_combo_t++
@@ -736,6 +735,91 @@ state = new SnowState("idle");
             attack_launch_x = 4;
             attack_launch_y = -5;
         }
+    })
+
+	state.add_child("airborne","attack_kick", {
+	    enter: function() {
+			state.inherit()
+			
+			attack_count++;
+            
+            attack_combo_t = 0
+			attacking = true;
+			
+			sprite_index = spr_pengu_attack_kick;
+            
+			y_speed = -0.2;	
+			x_speed *= 0.6;
+            
+			squish(0.4,1.4,game_speed*0.4);
+            
+            attack_launch_x = 2;
+            attack_launch_y = 0;
+            
+            attack_hit = false;
+            
+            
+	    },
+        step: function() {
+            if(attack_combo_t < attack_combo_max){
+                if(attack_combo_t < attack_combo_launch){
+                    //hits enemies/entities
+                    var attack_list_check_ = ds_list_create();
+                    
+                    var attack_x_ = x+(attack_x*mirror)
+                    var attack_y_ = y+attack_y;
+                    
+                    var num_ = collision_circle_list(attack_x_,attack_y_,attack_radius,obj_enemy,true,true,attack_list_check_,true);
+                    
+                    for (var i = 0; i < num_; i++) {
+                        //does not add entities that are already being hit to the attack list
+                        var entity = attack_list_check_[|i];
+                        if (ds_list_find_index(attack_list,entity) == -1 && !entity.invulnerable){
+                            ds_list_add(attack_list,entity)
+                            entity.state.change("stunned")
+                            entity.x_speed = x_speed + attack_launch_x*mirror + random_range(-2,2);
+                            entity.y_speed = y_speed + attack_launch_y + random_range(-2,2);
+                            
+                            attack_hit = true;
+                            
+                            entity.hurt(); //called last so it can override state
+                        }
+                    }
+                    ds_list_destroy(attack_list_check_)
+                    
+                    for (var i = 0; i < ds_list_size(attack_list); i++) {
+                    	var entity = attack_list[|i];
+                        with (entity) {
+                            
+                            var toward_x_ = sign(attack_x_ - x);
+                            var toward_y_ = sign(attack_y_ - y);
+                            
+                            x = attack_x_;
+                            y = attack_y_;
+                            
+                            //snaps entity to not be inside walls
+                            while (place_meeting(x,y,global.tile_collisions)) {
+                            	x -= toward_x_;
+                                y -= toward_y_;
+                            }
+                        }
+                    }
+                }
+                
+            } else {
+                attacking = false
+                
+                if(y_speed > 0) state.change("begin_fall");
+                if(!airborne) state.change("idle");
+            }
+            
+            attack_combo_t++
+            
+		},
+		leave: function(){
+			attacking = false;
+            ds_list_clear(attack_list)
+		}
     })
 		
 	state.add_child("airborne","dash_air_charge",{

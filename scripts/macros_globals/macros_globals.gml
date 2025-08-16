@@ -11,10 +11,10 @@
 #macro camera_inner_margin 100
 
 #macro main_menus (room == rm_init)
-#macro can_move (!obj_game.state.state_is("pause_menu") && !obj_game.state.state_is("settings") && !global.freeze_frame)
+#macro pausing     (obj_game.state.state_is("pause_menu") || obj_game.state.state_is("settings"))
+#macro can_move   (!pausing && !global.freeze_frame)
 
 #macro text_height 14
-
 //#macro gamepad gamey_pad
 
 //colors

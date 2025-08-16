@@ -9,8 +9,10 @@ debug_text_t = 0;
 text_source = ""; //text including switches and special characters
 text_display = "";
 text_t = 0;
-text_margin = 16;
+text_margin = 20;
 text_font = f_pixel;
+
+portrait_space = 120;
 
 text_speed_default = 0.5;
 text_speed = text_speed_default;
@@ -48,13 +50,15 @@ state.add("textbox",{
     },
     
     draw: function(){
+        draw_set_alpha(0.8);
         draw_sprite_stretched(spr_textbox,0,0,global.game_h-textbox_height,global.game_w,textbox_height);
+        draw_set_alpha(1);
         
         draw_set_valign(fa_top);
         draw_set_halign(fa_left);
         draw_set_font(text_font);
         
-        var x_start_ = text_margin;
+        var x_start_ = text_margin + portrait_space;
         var y_start_ = global.game_h-textbox_height+text_margin;
         
         var x_ = x_start_;
@@ -183,6 +187,8 @@ state.add("textbox",{
             draw_set_color(white);
             x_+=cw_;
         }
+        
+        draw_sprite(spr_portrait_pengu_test,0,0,global.gui_h);
         
         if(text_skip){
             text_t+=10;

@@ -19,7 +19,7 @@
   "height":16,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"76d49faf-df58-47ca-9f03-02785f5fcb2f","blendMode":0,"displayName":"Layer 1","isLocked":false,"name":"76d49faf-df58-47ca-9f03-02785f5fcb2f","opacity":20.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"76d49faf-df58-47ca-9f03-02785f5fcb2f","blendMode":0,"displayName":"Layer 1","isLocked":false,"name":"76d49faf-df58-47ca-9f03-02785f5fcb2f","opacity":35.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
     {"$GMImageLayer":"","%Name":"f6884eec-9d9a-4a19-b539-64ffb7c6c359","blendMode":0,"displayName":"default","isLocked":false,"name":"f6884eec-9d9a-4a19-b539-64ffb7c6c359","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_stanncam_zone_corner",
@@ -46,7 +46,7 @@
   "origin":0,
   "parent":{
     "name":"Sprites",
-    "path":"folders/Extensions/STANNcam/Miscellaneous/Sprites.yy",
+    "path":"folders/STANNcam/Miscellaneous/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

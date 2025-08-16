@@ -45,7 +45,7 @@ sensor_length_base = 8;
 #endregion
 
 hurt = function(){
-    global.camera.shake_screen(4,game_speed*0.5);
+    global.camera.shake_screen(2,game_speed*0.2);
     part_particles_create(global.particles,x,y,global.part_stars,4);
     freeze_frame();
     sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
