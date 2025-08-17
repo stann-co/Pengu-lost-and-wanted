@@ -96,7 +96,7 @@ global.tile_angles = [
 
 global.persistent_objects = [
     obj_camera,
-    input_controller_object,
+    __InputUpdateController,
     __obj_stanncam_manager,
     __obj_scene,
     obj_game,

@@ -491,7 +491,7 @@ state = new SnowState("idle");
 			audio_play_sound_random(0,0,snd_jump1,snd_jump2)
 	    },
 		step: function() {
-			if((input_check_released("jump") || on_ceiling) && y_speed < -jump_release_force){
+			if((InputReleased(INPUT_VERB.JUMP) || on_ceiling) && y_speed < -jump_release_force){
 				y_speed = -jump_release_force;	
 			}
 	
@@ -694,7 +694,7 @@ state = new SnowState("idle");
                     }
                 }
                 //combo can only be continued if your attack hit something
-                if(attack_combo_t > attack_combo_min && input_check_pressed("attack") && attack_hit){
+                if(attack_combo_t > attack_combo_min && InputBufferPressed(INPUT_VERB.ATTACK,20) && attack_hit){
                     attack_next()
                 }
                 
@@ -936,7 +936,7 @@ state = new SnowState("idle");
 			input_h = 0;
 			
 			if(t < dash_ground_windup) t++;
-			if(input_check_released("dash")){
+			if(InputReleased(INPUT_VERB.DASH)){
 				state.change("dash");
 			}
 			

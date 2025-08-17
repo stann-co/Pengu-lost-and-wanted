@@ -5,10 +5,10 @@ if(can_move){
 	#region input
     if(controlled && global.control){
 		
-		input_h = (input_check("right") - input_check("left"));
-		input_v = (input_check("down") - input_check("up"));
+		input_h = (InputCheck(INPUT_VERB.RIGHT) - InputCheck(INPUT_VERB.LEFT));
+		input_v = (InputCheck(INPUT_VERB.DOWN) - InputCheck(INPUT_VERB.UP));
 		
-		if(input_check_pressed("jump")){
+		if(InputPressed(INPUT_VERB.JUMP)){
 			if(!airborne) state.change("jump_charge");
 		}
     }

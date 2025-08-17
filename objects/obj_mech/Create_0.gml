@@ -242,7 +242,7 @@ state = new SnowState("idle")
             controlled = false;
         },
         step: function(){ 
-            if (collision_rectangle(x-w_radius,y-h_radius,x+w_radius,y+h_radius,obj_pengu,false,true) && input_check_pressed("interact")){
+            if (collision_rectangle(x-w_radius,y-h_radius,x+w_radius,y+h_radius,obj_pengu,false,true) && InputPressed(INPUT_VERB.INTERACT)){
                 instance_destroy(obj_pengu);
                 state.change("walking");
             }
@@ -266,15 +266,15 @@ state = new SnowState("idle")
             global.camera.move(x,y,30);
 		},
 		step: function(){
-            if(input_check("up")){
+            if(InputCheck(INPUT_VERB.UP)){
 			   	legs_height = lerp(legs_height,legs_height_raised,legs_height_change_spd);
-			} else if(input_check("down")){ 
+			} else if(InputCheck(INPUT_VERB.DOWN)){ 
                 legs_height = lerp(legs_height,legs_height_crouching,legs_height_change_spd);
             } else {
 		        legs_height = lerp(legs_height,legs_height_standing,legs_height_change_spd);
 			}
              
-            if (input_check_pressed("interact")){
+            if (InputPressed(INPUT_VERB.INTERACT)){
                 instance_create_layer(x,y,"Instances",obj_pengu)
                 state.change("idle");
             }
@@ -284,7 +284,7 @@ state = new SnowState("idle")
 	.add("jump_charge",{
 		step: function(){			
 			legs_height = lerp(legs_height,legs_height_crouching,legs_height_change_spd);
-			if(input_check_released("jump")) state.change("jump")
+			if(InputReleased(INPUT_VERB.JUMP)) state.change("jump")
 		}
 	})
 	

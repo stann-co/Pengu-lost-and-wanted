@@ -39,7 +39,8 @@ state.add("textbox",{
     },
     
     step: function(){
-        if(input_check_pressed("accept")){
+        
+        if(InputPressed(INPUT_VERB.ACCEPT)){
             if(text_t < string_length(text_display)){
                 text_skip = true;
             } else {

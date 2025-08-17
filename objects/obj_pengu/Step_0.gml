@@ -1,72 +1,67 @@
 /// @description step
 if(!pausing){
     
-    #region input
-    //input checking is not affected by freeze frames
-    if(!godmode && controlled && global.control){
-        if(control_lock == 0){
-            input_h = (input_check("right") - input_check("left"));
-            input_v = (input_check("down") - input_check("up"));
-            
-            if(!airborne && !sliding && input_v == 1){
-                state.change("begin_slide");
-            } else
-            
-            if(input_v == -1 && !airborne && !state.state_is("end_slide") && !state.state_is("look_up")){
-                if(sliding){
-                    if(force_slide_false && !collision_line(x-w_radius_normal-1,y-h_radius_normal-2,x+w_radius_normal+1,y-h_radius_normal-2,[global.tile_collisions,obj_collision],true,true)){
-                        state.change("end_slide");
-                    }
-                } else if(abs(ground_spd) < 2){
-                    state.change("look_up");
-                }
-            }
-            
-            if(input_check_pressed("dash")){ 
-                if(airborne){ 
-                    if(dash_air_count == 0){ 
-                        state.change("dash_air_charge"); 
-                    }
-                } else if(ground_angle <= 45 || ground_angle >= 315) {
-                    state.change("dash_charge");
-                }
-            }
-            
-            if(input_check_pressed("attack")){
-                if(attack_count == 0 && (ground_angle <= 45 || ground_angle >= 315)) {
-                    state.change("attack_1");
-                }
-            }
-        }
-        if(input_check_pressed("jump")){
-            vec_t = new Vector2(0,-h_radius-1);
-            if(sliding && sensor(vec_t,snap_to_90(sensor_angle)+180,sensor_length_base) != noone){
-                //if sliding it checks if you're under a block
-                squish(0.8,1.2,game_speed*0.2);
-            } else {
-                if(!airborne) state.change("jump");
-                else if(double_jump_count == 0) state.change("double_jump");
-            }
-        }
-    }
-    
-    #endregion
-    
     if(!global.freeze_frame){
         subimg+= (sprite_get_speed(sprite_index)*anim_speed);
         
         state.step();
         
         if(godmode){
-        	input_h = (input_check("right") - input_check("left"));
-        	input_v = (input_check("down") - input_check("up"));
+        	input_h = (InputCheck(INPUT_VERB.RIGHT) - InputCheck(INPUT_VERB.LEFT));
+        	input_v = (InputCheck(INPUT_VERB.DOWN) - InputCheck(INPUT_VERB.UP));
         	
         	x+=input_h * 4;
         	y+=input_v * 4;
         	
         } else {
             if(controlled && global.control){
-            	
+                #region input
+                if(control_lock == 0){
+                    input_h = (InputCheck(INPUT_VERB.RIGHT) - InputCheck(INPUT_VERB.LEFT));
+                    input_v = (InputCheck(INPUT_VERB.DOWN) - InputCheck(INPUT_VERB.UP));
+                    
+                    if(!airborne && !sliding && input_v == 1){
+                        state.change("begin_slide");
+                    } else
+                    
+                    if(input_v == -1 && !airborne && !state.state_is("end_slide") && !state.state_is("look_up")){
+                        if(sliding){
+                            if(force_slide_false && !collision_line(x-w_radius_normal-1,y-h_radius_normal-2,x+w_radius_normal+1,y-h_radius_normal-2,[global.tile_collisions,obj_collision],true,true)){
+                                state.change("end_slide");
+                            }
+                        } else if(abs(ground_spd) < 2){
+                            state.change("look_up");
+                        }
+                    }
+                    
+                    if(InputPressed(INPUT_VERB.DASH)){ 
+                        if(airborne){ 
+                            if(dash_air_count == 0){ 
+                                state.change("dash_air_charge"); 
+                            }
+                        } else if(ground_angle <= 45 || ground_angle >= 315) {
+                            state.change("dash_charge");
+                        }
+                    }
+                    
+                    if(InputPressed(INPUT_VERB.ATTACK)){
+                        if(attack_count == 0 && (ground_angle <= 45 || ground_angle >= 315)) {
+                            state.change("attack_1");
+                        }
+                    }
+                }
+                if(InputPressed(INPUT_VERB.JUMP)){
+                    vec_t = new Vector2(0,-h_radius-1);
+                    if(sliding && sensor(vec_t,snap_to_90(sensor_angle)+180,sensor_length_base) != noone){
+                        //if sliding it checks if you're under a block
+                        squish(0.8,1.2,game_speed*0.2);
+                    } else {
+                        if(!airborne) state.change("jump");
+                        else if(double_jump_count == 0) state.change("double_jump");
+                    }
+                }
+                #endregion
+                
             	#region movement on ground
             	if(!airborne){
             		
