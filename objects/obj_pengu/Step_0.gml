@@ -22,9 +22,7 @@ if(!pausing){
                     
                     if(!airborne && !sliding && input_v == 1){
                         state.change("begin_slide");
-                    } else
-                    
-                    if(input_v == -1 && !airborne && !state.state_is("end_slide") && !state.state_is("look_up")){
+                    } else if(input_v == -1 && !airborne && !state.state_is("end_slide") && !state.state_is("look_up")){
                         if(sliding){
                             if(force_slide_false && !collision_line(x-w_radius_normal-1,y-h_radius_normal-2,x+w_radius_normal+1,y-h_radius_normal-2,[global.tile_collisions,obj_collision],true,true)){
                                 state.change("end_slide");
@@ -34,7 +32,7 @@ if(!pausing){
                         }
                     }
                     
-                    if(InputPressed(INPUT_VERB.DASH)){ 
+                    if(InputBufferPressed(INPUT_VERB.DASH,10)){ 
                         if(airborne){ 
                             if(dash_air_count == 0){ 
                                 state.change("dash_air_charge"); 
@@ -43,9 +41,8 @@ if(!pausing){
                             state.change("dash_charge");
                         }
                     }
-                    
-                    if(InputPressed(INPUT_VERB.ATTACK)){
-                        if(attack_count == 0 && (ground_angle <= 45 || ground_angle >= 315)) {
+                    if(InputBufferPressed(INPUT_VERB.ATTACK,10)){
+                        if(attack_count == 0 && attack_cooldown == 0 && (ground_angle <= 45 || ground_angle >= 315)) {
                             state.change("attack_1");
                         }
                     }
@@ -284,7 +281,8 @@ if(!pausing){
                                 
                                 ground_angle = updown_sensor.angle;	
                                 
-                                if(airborne){ //just as you land from being airborne
+                                //on land
+                                if(airborne){
                                     image_to_ground_angle = true;
                                     airborne = false;
                                     on_land = true;
@@ -401,6 +399,7 @@ if(!pausing){
                                 state.change("enemy_jump");
                                 double_jump_count = 0;
                                 dash_air_count = 0;
+                                attack_count = 0;
                                 
                                 entity_.x_speed = random_range(-1,1);
                                 entity_.y_speed = -1;
@@ -470,8 +469,10 @@ if(!pausing){
             }
             
             if(invulnerable > 0) invulnerable--;
+            if(control_lock > 0) control_lock--;
+            if(attack_cooldown > 0) attack_cooldown--;
             
-            if(control_lock != 0) control_lock--;
+            
         }
     }
 }

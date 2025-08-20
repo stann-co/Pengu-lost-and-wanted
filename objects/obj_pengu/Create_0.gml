@@ -101,15 +101,19 @@ super_speed_colors = [red,red,red,red,red,red,white,white,white,white,white,whit
 super_speed_u_color = shader_get_uniform(sh_color,"u_color");
 super_speed_u_intensity = shader_get_uniform(sh_color,"u_intensity");
 
-attack_jump_force = 3;
+attack_jump_force = 2;
 attack_count = 0;
 attacking = false;
+attack_x_force = 0;
+attack_y_force = -3;
 
-//after attacking there's a slim window where you can extend the combo
-attack_combo_max = 26; 
-attack_combo_min = 3;
+//after attacking there's a window where you can extend the combo
+attack_combo_max = 12; 
 attack_combo_launch = 8; //at this time the entity will be launched away
 attack_combo_t = 0;
+attack_cooldown = 0;
+attack_cooldown_max = 16;
+
 //offset from origin where attack radius occurs
 attack_x = 16;
 attack_y = -8;
@@ -200,14 +204,15 @@ sensor_length_base = 8;
 #endregion
 
 pick_move_state = function(include_idle = true){
-	if (input_h != 0){
+    if(airborne){
+        state.change("fall");
+    } else if (input_h != 0){
 		if( input_h != mirror ) state.change("turning");
 		else if( !state.state_is("running") )state.change("running");
 	} else if(include_idle && !state.state_is("idle")){
 		state.change("idle");
 	}
 }
-
 
 #region states
 // feather disable gm1065
@@ -615,7 +620,7 @@ state = new SnowState("idle");
 		},
 	})
 	
-	state.add_child("tall","attack_1", {
+	state.add_child("airborne","attack_base", {
 	    enter: function() {
 			state.inherit()
             
@@ -627,52 +632,46 @@ state = new SnowState("idle");
             
             attack_combo_t = 0
 			attacking = true;
-			
-			sprite_index = spr_pengu_attack_1;
-
-			//y_speed = -attack_jump_force;	
-			ground_spd = mirror * 4;
-	
-			squish(0.4,1.4,game_speed*0.4);
             
-            attack_launch_x = 2;
-            attack_launch_y = -2;
+			y_speed = attack_y_force;
+            x_speed = max(attack_x_force,abs(x_speed))*mirror;
+            
+			squish(0.4,1.4,game_speed*0.4);
             
             attack_hit = false;
             
-            attack_next = function(){
-                state.change("attack_2");
+            //hits enemies/entities
+            var attack_list_check_ = ds_list_create();
+            var attack_x_ = x+(attack_x*mirror)
+            var attack_y_ = y+attack_y;
+            
+            var num_ = collision_circle_list(attack_x_,attack_y_,attack_radius,obj_enemy,true,true,attack_list_check_,true);
+            
+            for (var i = 0; i < num_; i++) {
+                //does not add entities that are already being hit to the attack list
+                entity = attack_list_check_[|i];
+                if (ds_list_find_index(attack_list,entity) == -1 && !entity.invulnerable){
+                    ds_list_add(attack_list,entity)
+                    //runs on hit
+                    entity.state.change("stunned")
+                    entity.x_speed = attack_launch_x*mirror;
+                    entity.y_speed = attack_launch_y;
+                        
+                    attack_hit = true;
+                    entity.hurt(); //called last so it can override state
+                }
             }
+            ds_list_destroy(attack_list_check_)
+            
 	    },
 		step: function() {
             
             if(attack_combo_t < attack_combo_max){
+                
                 if(attack_combo_t < attack_combo_launch){
-                    //hits enemies/entities
-                    var attack_list_check_ = ds_list_create();
                     
                     var attack_x_ = x+(attack_x*mirror)
                     var attack_y_ = y+attack_y;
-                    
-                    var num_ = collision_circle_list(attack_x_,attack_y_,attack_radius,obj_enemy,true,true,attack_list_check_,true);
-                    
-                    for (var i = 0; i < num_; i++) {
-                        //does not add entities that are already being hit to the attack list
-                        var entity = attack_list_check_[|i];
-                        if (ds_list_find_index(attack_list,entity) == -1 && !entity.invulnerable){
-                            ds_list_add(attack_list,entity)
-                            
-                            //runs on hit
-                            entity.state.change("stunned")
-                            entity.x_speed = x_speed + attack_launch_x*mirror + random_range(-2,2);
-                            entity.y_speed = y_speed + attack_launch_y + random_range(-2,2);
-                            
-                            attack_hit = true;
-                            
-                            entity.hurt(); //called last so it can override state
-                        }
-                    }
-                    ds_list_destroy(attack_list_check_)
                     
                     for (var i = 0; i < ds_list_size(attack_list); i++) {
                     	var entity = attack_list[|i];
@@ -694,13 +693,12 @@ state = new SnowState("idle");
                     }
                 }
                 //combo can only be continued if your attack hit something
-                if(attack_combo_t > attack_combo_min && InputBufferPressed(INPUT_VERB.ATTACK,20) && attack_hit){
+                if(InputBufferPressed(INPUT_VERB.ATTACK,10) && attack_hit){
                     attack_next()
                 }
                 
             } else {
                 attacking = false;
-                attack_count = 0;
                 pick_move_state();
             }
             
@@ -709,93 +707,80 @@ state = new SnowState("idle");
 		},
 		leave: function(){
 			attacking = false;
+            attack_cooldown = attack_cooldown_max;
             ds_list_clear(attack_list)
 		}
 	})
 
-    state.add_child("attack_1","attack_2",{
+    state.add_child("attack_base","attack_1",{
         enter: function(){
+            attack_launch_x = abs(x_speed) + random_range(0,2);
+            attack_launch_y = y_speed + random_range(-2,-4);
+            
+            sprite_index = spr_pengu_attack_1;
+            attack_next = function(){
+                state.change("attack_2");
+            }
+            
             state.inherit()
+        }
+    })
+
+    state.add_child("attack_base","attack_2",{
+        enter: function(){ 
             sprite_index = spr_pengu_attack_2;
             attack_next = function(){
                 state.change("attack_3");
             }
-            attack_launch_x = 3;
-            attack_launch_y = -3;
+            attack_launch_x = abs(x_speed) + random_range(3,4);
+            attack_launch_y = y_speed + random_range(-2,-4);
+            
+            state.inherit()
         }
     })
 
-    state.add_child("attack_1","attack_3",{
+    state.add_child("attack_base","attack_3",{
         enter: function(){
-            state.inherit()
             sprite_index = spr_pengu_attack_3;
             attack_next = function(){
-                //no more attacks
+                state.change("attack_kick");
             }
-            attack_launch_x = 4;
-            attack_launch_y = -5;
+            attack_launch_x = abs(x_speed) + random_range(4,5);
+            attack_launch_y = y_speed + random_range(-4,-5);
+            
+            state.inherit()
         }
     })
 
-	state.add_child("airborne","attack_kick", {
+	state.add_child("attack_base","attack_kick", {
 	    enter: function() {
-			state.inherit()
-			
-			attack_count++;
+            sprite_index = spr_pengu_attack_kick;
+            attack_next = function(){ 
+                //no more attacks
+            }
+            attack_launch_x = 8;
+            attack_launch_y = -2;
+            state.inherit()
             
-            attack_combo_t = 0
-			attacking = true;
-			
-			sprite_index = spr_pengu_attack_kick;
-            
-			y_speed = -0.2;	
-			x_speed *= 0.6;
-            
-			squish(0.4,1.4,game_speed*0.4);
-            
-            attack_launch_x = 2;
-            attack_launch_y = 0;
-            
-            attack_hit = false;
-            
-            
-	    },
+	    }, 
         step: function() {
             if(attack_combo_t < attack_combo_max){
                 if(attack_combo_t < attack_combo_launch){
-                    //hits enemies/entities
-                    var attack_list_check_ = ds_list_create();
-                    
                     var attack_x_ = x+(attack_x*mirror)
                     var attack_y_ = y+attack_y;
-                    
-                    var num_ = collision_circle_list(attack_x_,attack_y_,attack_radius,obj_enemy,true,true,attack_list_check_,true);
-                    
-                    for (var i = 0; i < num_; i++) {
-                        //does not add entities that are already being hit to the attack list
-                        var entity = attack_list_check_[|i];
-                        if (ds_list_find_index(attack_list,entity) == -1 && !entity.invulnerable){
-                            ds_list_add(attack_list,entity)
-                            entity.state.change("stunned")
-                            entity.x_speed = x_speed + attack_launch_x*mirror + random_range(-2,2);
-                            entity.y_speed = y_speed + attack_launch_y + random_range(-2,2);
-                            
-                            attack_hit = true;
-                            
-                            entity.hurt(); //called last so it can override state
-                        }
-                    }
-                    ds_list_destroy(attack_list_check_)
                     
                     for (var i = 0; i < ds_list_size(attack_list); i++) {
                     	var entity = attack_list[|i];
                         with (entity) {
+                            //runs every frame while attacked entities are stun locked
                             
                             var toward_x_ = sign(attack_x_ - x);
                             var toward_y_ = sign(attack_y_ - y);
                             
                             x = attack_x_;
                             y = attack_y_;
+                            
+                            meteor = true;
                             
                             //snaps entity to not be inside walls
                             while (place_meeting(x,y,global.tile_collisions)) {
@@ -805,21 +790,14 @@ state = new SnowState("idle");
                         }
                     }
                 }
-                
             } else {
-                attacking = false
-                
-                if(y_speed > 0) state.change("begin_fall");
-                if(!airborne) state.change("idle");
+                attacking = false;
+                pick_move_state();
             }
             
             attack_combo_t++
             
 		},
-		leave: function(){
-			attacking = false;
-            ds_list_clear(attack_list)
-		}
     })
 		
 	state.add_child("airborne","dash_air_charge",{
@@ -845,24 +823,26 @@ state = new SnowState("idle");
 			image_angle = animcurve_read(ac_dash_ball_rotate,0,posx)*360 * -mirror;
 			t++
 			if(t == dash_air_windup){
-				state.change("dash_air");	
+                if(InputCheck(INPUT_VERB.DOWN)) state.change("dash_air_down");
+                else if(InputCheck(INPUT_VERB.UP)) state.change("dash_air_up");
+				else state.change("dash_air");	
 			}
             
-            var attack_list_check_ = ds_list_create();
-            var num_ = collision_circle_list(x,y,meteor_radius,obj_enemy,true,true,attack_list_check_,true);
-            for (var i = 0; i < num_; i++) {
-            	var inst = attack_list_check_[|i];
-                if(!inst.invulnerable){
-                    inst.invulnerable = true;
-                    inst.x_speed = 6*mirror;
-                    inst.y_speed = -4;
-                    inst.state.change("meteor");
-                    
-                    inst.hurt();
-                }
-                
-            }
-            ds_list_destroy(attack_list_check_)
+            //var attack_list_check_ = ds_list_create();
+            //var num_ = collision_circle_list(x,y,meteor_radius,obj_enemy,true,true,attack_list_check_,true);
+            //for (var i = 0; i < num_; i++) {
+            	//var inst = attack_list_check_[|i];
+                //if(!inst.invulnerable){
+                    //inst.invulnerable = true;
+                    //inst.x_speed = 6*mirror;
+                    //inst.y_speed = -4;
+                    //inst.state.change("meteor");
+                    //
+                    //inst.hurt();
+                //}
+                //
+            //}
+            //ds_list_destroy(attack_list_check_)
 		},	
 	})
 	
@@ -911,6 +891,31 @@ state = new SnowState("idle");
 				state.change("sliding");
 			}
 		}
+	})
+
+	state.add_child("dash_air","dash_air_down", {
+	    enter: function() { 
+			
+			state.inherit();
+            
+            image_angle = (mirror) ? 270 : 90;
+            
+            x_speed *= 0.5;
+			y_speed = 3;
+        }
+	})
+
+	state.add_child("dash_air","dash_air_up", {
+	    enter: function() { 
+			
+			state.inherit();
+            
+            image_angle = (mirror) ? 45 : 315;
+            
+            x_speed *= 0.5;
+			y_speed = -6;
+        }
+
 	})
 	
 	state.add_child("prone","dash_charge", {

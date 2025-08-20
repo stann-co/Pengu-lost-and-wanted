@@ -12,7 +12,6 @@ top_speed = 3;
 input_h = -1;
 subimg = 0;
 airborne = false;
-meteor = false;
 
 gravity_force = 0.2251;
 
@@ -24,7 +23,9 @@ hp = hp_max;
 
 invulnerable = 0;
 
-stagger = 0;
+stun_duration = 20;
+stun_radius = 8;
+meteor = false;
 
 on_land = false; //gets true the frame enemy lands from being airborne
 on_ceiling = false;
@@ -49,7 +50,7 @@ hurt = function(){
     part_particles_create(global.particles,x,y,global.part_stars,4);
     freeze_frame();
     sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
-    hp--;
+    //hp--;
     if(hp <= 0){
         state.change("die");
     }

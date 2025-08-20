@@ -1051,6 +1051,7 @@
     {"id":{"name":"spr_gui_button_pause","path":"sprites/spr_gui_button_pause/spr_gui_button_pause.yy",},},
     {"id":{"name":"spr_gui_font","path":"sprites/spr_gui_font/spr_gui_font.yy",},},
     {"id":{"name":"spr_hidden_area","path":"sprites/spr_hidden_area/spr_hidden_area.yy",},},
+    {"id":{"name":"spr_hit_stars","path":"sprites/spr_hit_stars/spr_hit_stars.yy",},},
     {"id":{"name":"spr_iceblock_example","path":"sprites/spr_iceblock_example/spr_iceblock_example.yy",},},
     {"id":{"name":"spr_iceblock","path":"sprites/spr_iceblock/spr_iceblock.yy",},},
     {"id":{"name":"spr_info_target","path":"sprites/spr_info_target/spr_info_target.yy",},},

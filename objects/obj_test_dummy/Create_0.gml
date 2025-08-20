@@ -78,10 +78,9 @@ state.add("idle",{
 .add("stunned",{
     enter:function(){
         airborne = true
-        stun_radius = 8;
+        
         stun_x = irandom_range(-stun_radius,stun_radius);
         stun_y = irandom_range(-stun_radius,stun_radius);
-        stun_duration = 20;
         stun_t = stun_duration;
     },
     step:function (){
@@ -95,7 +94,10 @@ state.add("idle",{
             stun_y = irandom_range(-val,val);
         }
         if (stun_t > 0) stun_t--;
-        else state.change("launched")
+        else {
+            if(meteor) state.change("meteor");
+            else state.change("launched");
+        }
         
         if(sin(stun_t*0.5) > 0){
             shader_set(sh_stunned);

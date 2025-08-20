@@ -132,8 +132,9 @@ global.tile_draw_layers = ds_map_create()
 
 //particles
 global.part_stars = part_type_create();
-part_type_shape(global.part_stars,pt_shape_star);
-part_type_colour_hsv(global.part_stars, 0, 0, 0, 0, 255, 255);
+part_type_sprite(global.part_stars,spr_hit_stars,false,false,true);
+//part_type_shape(global.part_stars,pt_shape_star);
+//part_type_colour_hsv(global.part_stars, 0, 255, 150, 150, 255, 255);
 part_type_size(global.part_stars,0.4,0.4,-0.02,0);
 part_type_direction(global.part_stars,0,360,0,10);
 part_type_life(global.part_stars,30,50);
