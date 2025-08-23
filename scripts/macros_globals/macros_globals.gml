@@ -12,7 +12,8 @@
 
 #macro main_menus (room == rm_init)
 #macro pausing     (obj_game.state.state_is("pause_menu") || obj_game.state.state_is("settings"))
-#macro can_move   (!pausing && !global.freeze_frame)
+#macro freeze_frame (global.freeze_duration != 0)
+#macro can_move   (!pausing && !freeze_frame)
 
 #macro text_height 14
 //#macro gamepad gamey_pad
@@ -70,6 +71,14 @@ enum SIDES {
 	Bottom,
 }
 
+enum ATTACK_TYPES {
+    ATTACK,
+    KICK,
+    JUMP,
+    DASH,
+    SPEICAL
+}
+
 #macro volume_max 10
 global.music_volume = 10;
 global.sound_volume = 10;
@@ -125,7 +134,8 @@ global.coins = 0;
 
 global.control = true;
 
-global.freeze_frame = false;
+//freeze frame is active when greater than 0, ticks down 1 each frame
+global.freeze_duration = 0;
 
 //when a layer get's set to a obj_layer_draw, it's added to this with the layer name as the key
 global.tile_draw_layers = ds_map_create()
@@ -135,11 +145,13 @@ global.part_stars = part_type_create();
 part_type_sprite(global.part_stars,spr_hit_stars,false,false,true);
 //part_type_shape(global.part_stars,pt_shape_star);
 //part_type_colour_hsv(global.part_stars, 0, 255, 150, 150, 255, 255);
-part_type_size(global.part_stars,0.4,0.4,-0.02,0);
+part_type_size(global.part_stars,0.4,0.45,-0.012,0);
 part_type_direction(global.part_stars,0,360,0,10);
-part_type_life(global.part_stars,30,50);
-part_type_speed(global.part_stars,2,2,0,1);
+part_type_life(global.part_stars,60,60);
+part_type_speed(global.part_stars,3,4,-0.18,0);
 part_type_alpha3(global.part_stars,1,1,0);
+//part_type_gravity(global.part_stars,0.05,270);
+part_type_orientation(global.part_stars,0,360,2,1,false);
 
 //fonts
 global.gui_font = font_add_sprite_ext(spr_gui_font,"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]",false,0);

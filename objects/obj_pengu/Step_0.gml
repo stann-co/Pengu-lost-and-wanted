@@ -1,7 +1,7 @@
 /// @description step
 if(!pausing){
     
-    if(!global.freeze_frame){
+    if(!freeze_frame){
         subimg+= (sprite_get_speed(sprite_index)*anim_speed);
         
         state.step();

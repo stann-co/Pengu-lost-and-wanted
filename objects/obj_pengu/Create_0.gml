@@ -106,6 +106,7 @@ attack_count = 0;
 attacking = false;
 attack_x_force = 0;
 attack_y_force = -3;
+attack_type = ATTACK_TYPES.ATTACK;
 
 //after attacking there's a window where you can extend the combo
 attack_combo_max = 12; 
@@ -636,7 +637,7 @@ state = new SnowState("idle");
 			y_speed = attack_y_force;
             x_speed = max(attack_x_force,abs(x_speed))*mirror;
             
-			squish(0.4,1.4,game_speed*0.4);
+			//squish(0.9,1.1,game_speed*0.4);
             
             attack_hit = false;
             
@@ -654,11 +655,11 @@ state = new SnowState("idle");
                     ds_list_add(attack_list,entity)
                     //runs on hit
                     entity.state.change("stunned")
-                    entity.x_speed = attack_launch_x*mirror;
-                    entity.y_speed = attack_launch_y;
+                    entity.x_speed = (attack_launch_x + random_range(0,1))*mirror;
+                    entity.y_speed = (attack_launch_y + random_range(0,1))
                         
                     attack_hit = true;
-                    entity.hurt(); //called last so it can override state
+                    entity.hurt(attack_type); //called last so it can override state
                 }
             }
             ds_list_destroy(attack_list_check_)
@@ -714,8 +715,9 @@ state = new SnowState("idle");
 
     state.add_child("attack_base","attack_1",{
         enter: function(){
-            attack_launch_x = abs(x_speed) + random_range(0,2);
-            attack_launch_y = y_speed + random_range(-2,-4);
+            attack_launch_x = abs(x_speed) + 1;
+            attack_launch_y = y_speed -3;
+            attack_type = ATTACK_TYPES.ATTACK;
             
             sprite_index = spr_pengu_attack_1;
             attack_next = function(){
@@ -732,8 +734,9 @@ state = new SnowState("idle");
             attack_next = function(){
                 state.change("attack_3");
             }
-            attack_launch_x = abs(x_speed) + random_range(3,4);
-            attack_launch_y = y_speed + random_range(-2,-4);
+            attack_launch_x = abs(x_speed) + 3;
+            attack_launch_y = y_speed -3;
+            attack_type = ATTACK_TYPES.ATTACK;
             
             state.inherit()
         }
@@ -745,8 +748,9 @@ state = new SnowState("idle");
             attack_next = function(){
                 state.change("attack_kick");
             }
-            attack_launch_x = abs(x_speed) + random_range(4,5);
-            attack_launch_y = y_speed + random_range(-4,-5);
+            attack_launch_x = abs(x_speed) + 4;
+            attack_launch_y = y_speed -4;
+            attack_type = ATTACK_TYPES.ATTACK;
             
             state.inherit()
         }
@@ -760,6 +764,8 @@ state = new SnowState("idle");
             }
             attack_launch_x = 8;
             attack_launch_y = -2;
+            attack_type = ATTACK_TYPES.KICK;
+            
             state.inherit()
             
 	    }, 

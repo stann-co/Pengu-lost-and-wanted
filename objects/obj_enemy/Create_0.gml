@@ -45,11 +45,24 @@ sensor_length_base = 8;
 
 #endregion
 
-hurt = function(){
-    global.camera.shake_screen(2,game_speed*0.2);
-    part_particles_create(global.particles,x,y,global.part_stars,4);
-    freeze_frame();
-    sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
+hurt = function(_hurt_type = ATTACK_TYPES.ATTACK){
+    switch (_hurt_type) {
+    	case ATTACK_TYPES.ATTACK:
+        
+            global.camera.shake_screen(2,game_speed*0.2);
+            part_particles_create(global.particles,x,y,global.part_stars,4);
+            set_freeze_frame(0.3);
+            sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
+            break;
+        case ATTACK_TYPES.KICK:
+        
+            global.camera.shake_screen(2,game_speed*0.2);
+            part_particles_create(global.particles,x,y,global.part_stars,6);
+            set_freeze_frame(0.6);
+            sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
+            break;
+    }
+
     //hp--;
     if(hp <= 0){
         state.change("die");

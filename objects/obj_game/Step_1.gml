@@ -7,6 +7,8 @@ if(!in_browser){
 
 state.step();
 
+if(global.freeze_duration > 0) global.freeze_duration--;
+
 if(can_move){
 	global.t++;
 	
@@ -72,4 +74,14 @@ if(transition_t != 0 || transition_in){
 	transition_val = (transition_t / transition_duration);
 	if(transition_in) transition_val = 1 - transition_val;
 }
+#endregion
+
+#region particle test
+
+if mouse_check_button_pressed(mb_left){
+    var mx = global.camera.get_mouse_x();
+    var my = global.camera.get_mouse_y();
+    part_particles_create(global.particles,mx,my,global.part_stars,4);
+}
+
 #endregion

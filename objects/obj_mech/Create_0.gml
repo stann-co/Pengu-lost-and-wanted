@@ -221,7 +221,7 @@ function foot(foot_, anchor_) : verlet(0,0,1,false) constructor{
                     
                     global.camera.shake_screen(8,game_speed*1);
                     part_particles_create(global.particles,inst.x,inst.y,global.part_stars,4);
-                    freeze_frame();
+                    set_freeze_frame();
                 }
                 
             }

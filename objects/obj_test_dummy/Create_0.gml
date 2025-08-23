@@ -64,14 +64,14 @@ state.add("idle",{
 		    x_speed *= floor_friction;
         }
 
-        if(mouse_check_button(mb_left)){
-            airborne = true;
-        	var mx = global.camera.get_mouse_x();
-        	var my = global.camera.get_mouse_y();
-            
-            x_speed = clamp(mx-x,-top_speed,top_speed);
-            y_speed = clamp(my-y,-top_speed,top_speed);
-        }
+        //if(mouse_check_button(mb_left)){
+            //airborne = true;
+        	//var mx = global.camera.get_mouse_x();
+        	//var my = global.camera.get_mouse_y();
+            //
+            //x_speed = clamp(mx-x,-top_speed,top_speed);
+            //y_speed = clamp(my-y,-top_speed,top_speed);
+        //}
     }
 })
 
@@ -81,25 +81,21 @@ state.add("idle",{
         
         stun_x = irandom_range(-stun_radius,stun_radius);
         stun_y = irandom_range(-stun_radius,stun_radius);
-        stun_t = stun_duration;
     },
     step:function (){
-
+        if(meteor) state.change("meteor");
+        else state.change("launched");
+        
     },
     draw:function (){
         //every x frames a new stun pos is set
-        if(stun_t mod 2 == 0){
-            var val = stun_radius * ((stun_t) / stun_duration)
+        if(global.freeze_duration mod 2 == 0){
+            var val = stun_radius * ((global.freeze_duration) / 30)
             stun_x = irandom_range(-val,val);
             stun_y = irandom_range(-val,val);
         }
-        if (stun_t > 0) stun_t--;
-        else {
-            if(meteor) state.change("meteor");
-            else state.change("launched");
-        }
         
-        if(sin(stun_t*0.5) > 0){
+        if(sin(global.freeze_duration*0.5) > 0){
             shader_set(sh_stunned);
         }
          

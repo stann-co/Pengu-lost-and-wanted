@@ -16,7 +16,7 @@
 	//} else if(attacking || super_speed){	
 		//global.camera.shake_screen(4,game_speed*0.5);
 		//other.hurt();
-		//freeze_frame();
+		//set_freeze_frame();
 	////the enemy hurts you
 	//} else {
 		//hurt(sign(x-other.x));
