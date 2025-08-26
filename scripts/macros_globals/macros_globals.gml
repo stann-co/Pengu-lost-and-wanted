@@ -76,6 +76,7 @@ enum ATTACK_TYPES {
     KICK,
     JUMP,
     DASH,
+    COLLIDE,
     SPEICAL
 }
 

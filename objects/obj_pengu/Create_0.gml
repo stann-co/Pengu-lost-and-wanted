@@ -105,7 +105,7 @@ attack_jump_force = 2;
 attack_count = 0;
 attacking = false;
 attack_x_force = 0;
-attack_y_force = -3;
+attack_y_force = -2;
 attack_type = ATTACK_TYPES.ATTACK;
 
 //after attacking there's a window where you can extend the combo
@@ -762,8 +762,8 @@ state = new SnowState("idle");
             attack_next = function(){ 
                 //no more attacks
             }
-            attack_launch_x = 8;
-            attack_launch_y = -2;
+            attack_launch_x = 6;
+            attack_launch_y = 0;
             attack_type = ATTACK_TYPES.KICK;
             
             state.inherit()

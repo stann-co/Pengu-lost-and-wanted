@@ -6,7 +6,7 @@
   "name":"stanncam_3d_functions",
   "parent":{
     "name":"STANNcam",
-    "path":"folders/STANNcam.yy",
+    "path":"folders/Extensions/STANNcam.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

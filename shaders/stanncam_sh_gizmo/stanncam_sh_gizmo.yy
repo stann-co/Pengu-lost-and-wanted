@@ -4,7 +4,7 @@
   "name":"stanncam_sh_gizmo",
   "parent":{
     "name":"Shaders",
-    "path":"folders/STANNcam/Miscellaneous/Shaders.yy",
+    "path":"folders/Extensions/STANNcam/Miscellaneous/Shaders.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

@@ -36,8 +36,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_test_dummy_example",
-    "path":"sprites/spr_test_dummy_example/spr_test_dummy_example.yy",
+    "name":"spr_test_dummy_full",
+    "path":"sprites/spr_test_dummy_full/spr_test_dummy_full.yy",
   },
   "spriteMaskId":null,
   "visible":true,

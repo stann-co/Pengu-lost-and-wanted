@@ -41,7 +41,4 @@ if(global.debug){
 		draw_circle(x+vec_t.x,y+vec_t.y,1,0);
 	}
     #endregion
-	
-	draw_set_color(white);
-	
 }

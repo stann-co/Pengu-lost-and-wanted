@@ -15,6 +15,10 @@ floor_friction = 0.91;
 mass = 20;
 drag = 0.01;
 
+meteor_trace_array = [];
+meteor_trace_offset = 1;
+meteor_trace_count = 6;
+
 var points_ = []
 array_push(points_,new verlet(0,-4,mass,1));
 array_push(points_,new verlet(0,-15,mass,0));
@@ -24,10 +28,7 @@ array_push(points_,new verlet(0,-44,mass,0));
 spine = new verlet_rod_points(points_)
 
 default_draw = function(){
-    
-    
-    
-	draw_sprite(spr_test_dummy,0,x,y+h_radius+2);
+    draw_sprite(spr_test_dummy,0,x,y+h_radius+2);
 	
 	var seg = spine.segments[0];
 	var x_ = seg.p1.x;
@@ -47,15 +48,12 @@ default_draw = function(){
 	dir_ = seg.get_direction()-90;
     var subimg = state.state_is("meteor") ? 4 : 3;
 	draw_sprite_ext(spr_test_dummy,subimg,x_,y_,1,1,dir_,-1,1);
-	
-    draw_set_color(white)
 }
 
 state.add("idle",{
 
     enter:function(){
 
-        
     },
     step:function(){
         if(airborne){
@@ -63,44 +61,14 @@ state.add("idle",{
         } else {
 		    x_speed *= floor_friction;
         }
-
-        //if(mouse_check_button(mb_left)){
-            //airborne = true;
-        	//var mx = global.camera.get_mouse_x();
-        	//var my = global.camera.get_mouse_y();
-            //
-            //x_speed = clamp(mx-x,-top_speed,top_speed);
-            //y_speed = clamp(my-y,-top_speed,top_speed);
-        //}
     }
 })
-
-.add("stunned",{
-    enter:function(){
-        airborne = true
-        
-        stun_x = irandom_range(-stun_radius,stun_radius);
-        stun_y = irandom_range(-stun_radius,stun_radius);
-    },
-    step:function (){
-        if(meteor) state.change("meteor");
-        else state.change("launched");
-        
-    },
+state.add_child("stunned_base","stunned",{
     draw:function (){
-        //every x frames a new stun pos is set
-        if(global.freeze_duration mod 2 == 0){
-            var val = stun_radius * ((global.freeze_duration) / 30)
-            stun_x = irandom_range(-val,val);
-            stun_y = irandom_range(-val,val);
-        }
+        state.inherit()
         
-        if(sin(global.freeze_duration*0.5) > 0){
-            shader_set(sh_stunned);
-        }
-         
-        draw_sprite(spr_test_dummy,0,x+stun_x,y+h_radius+2+stun_y);
-        
+        draw_sprite(spr_test_dummy,0,x,y+h_radius+2);
+    	
     	var seg = spine.segments[0];
     	var x_ = seg.p1.x + stun_x;
     	var y_ = seg.p1.y + stun_y;
@@ -108,17 +76,76 @@ state.add("idle",{
     	draw_sprite_ext(spr_test_dummy,1,x_,y_,1,1,dir_,-1,1);
     	
     	seg = spine.segments[1];
-    	x_ = seg.p1.x + stun_x;
+        x_ = seg.p1.x + stun_x;
     	y_ = seg.p1.y + stun_y;
     	dir_ = seg.get_direction()-90;
     	draw_sprite_ext(spr_test_dummy,2,x_,y_,1,1,dir_,-1,1);
     	
     	seg = spine.segments[2];
-    	x_ = seg.p1.x + stun_x;
+        x_ = seg.p1.x + stun_x;
     	y_ = seg.p1.y + stun_y;
     	dir_ = seg.get_direction()-90;
-    	draw_sprite_ext(spr_test_dummy,3,x_,y_,1,1,dir_,-1,1);
-
+    	draw_sprite_ext(spr_test_dummy,4,x_,y_,1,1,dir_,-1,1);
+        
+        //reseting after shader was set in parent draw event
         shader_reset()
     }
+})
+
+state.add_child("meteor_base","meteor",{
+    draw: function(){
+        
+        
+        //var trace_colors = [red];
+        
+        //meteor trace
+        if(global.t mod meteor_trace_offset == 0){
+            var trace = {
+                sprite_index: sprite_index,
+                subimg: subimg,
+                x: x,
+                y: y,
+                //scale_x: scale_x,
+                //scale_y, scale_y,
+                //mirror: mirror,
+                image_angle: image_angle
+                //color: super_speed_colors[(global.t / meteor_trace_offset) mod array_length(super_speed_colors)]
+            }
+            array_insert(meteor_trace_array,0,trace);
+            
+            if(array_length(meteor_trace_array) > meteor_trace_count) array_resize(meteor_trace_array,meteor_trace_count);
+        }
+        
+        //var fadeout = (super_speed_fadeout / super_speed_fadeout_time);
+        
+        //shader_set(sh_color);
+        
+        for (var i = array_length(meteor_trace_array)-1; i >= 0; --i) {
+            var trace = meteor_trace_array[i];
+            
+            //shader_set_uniform_f(super_speed_u_color,
+                //color_get_red(	 trace.color)/255,
+                //color_get_green( trace.color)/255,
+                //color_get_blue(	 trace.color)/255
+            //)
+            //
+            //shader_set_uniform_f(super_speed_u_intensity,1);
+            
+            //var alpha = (animcurve_read(ac_super_speed_alpha,0,i/super_speed_trace_count) * fadeout)*invulnerable_alpha;
+            gpu_set_colourwriteenable(1,1,1,0);
+            draw_sprite_ext(trace.sprite_index,trace.subimg,trace.x,trace.y,1,1,trace.image_angle,-1,1);
+            gpu_set_colourwriteenable(1,1,1,1);
+        }
+        //shader_reset();
+                
+        
+        
+        
+        
+        
+        
+        
+        
+        draw_sprite_ext(spr_test_dummy_full,1,x,y,1,1,image_angle,-1,1);
+    }    
 })

@@ -8,7 +8,7 @@ if(invulnerable != 0){
 var invulnerable_alpha = (invulnerable_flash == 0) ? 1 : 0.5;
 
 //super speed trace
-if(super_speed_fadeout != 0){
+if(super_speed_fadeout > 0){
 	if(global.t mod super_speed_trace_offset == 0){
 		var trace = {
 			sprite_index: sprite_index,
@@ -22,14 +22,10 @@ if(super_speed_fadeout != 0){
 			color: super_speed_colors[(global.t / super_speed_trace_offset) mod array_length(super_speed_colors)]
 		}
 		array_insert(super_speed_trace_arr,0,trace);
-
+        
 		if(array_length(super_speed_trace_arr) > super_speed_trace_count) array_resize(super_speed_trace_arr,super_speed_trace_count);
 	}
 	
-	
-}
-
-if(super_speed_fadeout != 0){
 	var fadeout = (super_speed_fadeout / super_speed_fadeout_time);
 	
 	shader_set(sh_color);

@@ -25,6 +25,8 @@ invulnerable = 0;
 
 stun_duration = 20;
 stun_radius = 8;
+stun_x = 0;
+stun_y = 0;
 meteor = false;
 
 on_land = false; //gets true the frame enemy lands from being airborne
@@ -48,17 +50,20 @@ sensor_length_base = 8;
 hurt = function(_hurt_type = ATTACK_TYPES.ATTACK){
     switch (_hurt_type) {
     	case ATTACK_TYPES.ATTACK:
-        
             global.camera.shake_screen(2,game_speed*0.2);
             part_particles_create(global.particles,x,y,global.part_stars,4);
-            set_freeze_frame(0.3);
+            set_freeze_frame(0.25);
             sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
             break;
         case ATTACK_TYPES.KICK:
-        
             global.camera.shake_screen(2,game_speed*0.2);
             part_particles_create(global.particles,x,y,global.part_stars,6);
-            set_freeze_frame(0.6);
+            set_freeze_frame(0.5);
+            sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
+            break;
+        case ATTACK_TYPES.COLLIDE:
+            global.camera.shake_screen(2,game_speed*0.2);
+            part_particles_create(global.particles,x,y,global.part_stars,6);
             sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
             break;
     }
@@ -69,34 +74,25 @@ hurt = function(_hurt_type = ATTACK_TYPES.ATTACK){
     }
 }
 
-default_draw = function(){
-	draw_sprite_ext(sprite_index,subimg,x,y,image_xscale,image_yscale,image_angle,-1,1);
-}
+
 
 state = new SnowState("idle");
 
-state
-.event_set_default_function("draw",function(){
+
+default_draw = function(){
+    draw_sprite_ext(sprite_index,subimg,x,y,image_xscale,image_yscale,image_angle,-1,1);
+}
+
+state.event_set_default_function("draw",function(){
     default_draw()
 })
 
-.add("idle",{
-	enter:function(){	
-
-	},
-	step:function(){
-
-	}
-})
+.add("idle",{})
 
 .add("die",{
 	enter:function(){
 		y_speed = -10;
 		x_speed = sign(x-obj_pengu.x) * 6;
-        
-		//point_scatter(5);
-		//score_increase(0,score_combo_t_max)
-		//part_particles_create(global.particles,x,y,global.part_stars,12);
         
         colliding = false;
         invulnerable = true;
@@ -110,16 +106,40 @@ state
 	}
 })
 
-.add("stunned",{
+state.add("stunned_base",{
     enter:function(){
         airborne = true
+        
+        stun_x = irandom_range(-stun_radius,stun_radius);
+        stun_y = irandom_range(-stun_radius,stun_radius);
     },
     step:function (){
+        if(meteor) state.change("meteor");
+        else state.change("launched");
         
+    },
+    draw:function (){
+        //every x frames a new stun pos is set
+        if(global.freeze_duration mod 2 == 0){
+            var val = stun_radius * ((global.freeze_duration) / 30)
+            stun_x = irandom_range(-val,val);
+            stun_y = irandom_range(-val,val);
+        }
+        
+        if(sin(global.freeze_duration*0.5) > 0){
+            shader_set(sh_stunned);
+        }
+    }
+})
+state.add_child("stunned_base","stunned",{
+    draw:function (){
+        state.inherit()
+        //remember to call shader_reset() when overiding this
+        shader_reset();
     }
 })
 
-.add("launched",{
+.add("launched_base",{
     enter:function(){
         airborne = true
         
@@ -136,29 +156,27 @@ state
         }
     }    
 })
+.add_child("launched_base","launched")
 
-.add("meteor",{
+.add("meteor_base",{
     enter: function(){
         airborne = true;
         invulnerable = true;
 
     },
-    step:function (){
-        if(on_land || on_ceiling){
-            y_speed = -y_speed;
-            //state.change("idle");
-        }
-        
+    step:function (){ 
         if(airborne){
             y_speed += gravity_force*0.5;
         }
         
-        if(on_wall){
-            //hitting wall after meteoriting
+        image_angle -= sign(x_speed) * 10;
+        
+        if(on_wall || x_speed == 0){
+            //hitting wall after meteoring
             x_speed = -x_speed;
             y_speed = -3;
             state.change("launched");
-            hurt();
+            hurt(ATTACK_TYPES.COLLIDE);
         }
         
         var attack_list_check_ = ds_list_create();
@@ -172,7 +190,7 @@ state
                 inst.y_speed = -3;
                 inst.state.change("launched");
                 
-                inst.hurt();
+                inst.hurt(ATTACK_TYPES.COLLIDE);
             }
         }
         ds_list_destroy(attack_list_check_)
@@ -181,23 +199,7 @@ state
     leave: function(){
         invulnerable = false;
         meteor = false;
+        image_angle = 0;
     }
 })
-
-//.add("hurt",{
-//	enter:function(){
-//		y_speed = -2;
-//		x_speed = sign(x-obj_pengu.x) * 2;
-//		point_scatter(1);
-//		score_increase(0,score_combo_t_max)
-//		part_particles_create(global.particles,x,y,global.part_stars,2);
-//		airborne = true;
-//	},
-//	step:function(){
-//		y_speed += 0.5;
-//		if (on_land){
-//			state.change("idle");
-//			invulnerable = false;
-//		}
-//	}
-//})
+.add_child("meteor_base","meteor")

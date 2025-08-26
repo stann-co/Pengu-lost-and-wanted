@@ -6,7 +6,7 @@
   "name":"stanncam_shake",
   "parent":{
     "name":"Miscellaneous",
-    "path":"folders/STANNcam/Miscellaneous.yy",
+    "path":"folders/Extensions/STANNcam/Miscellaneous.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
