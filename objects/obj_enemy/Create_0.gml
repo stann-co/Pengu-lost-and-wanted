@@ -166,7 +166,7 @@ state.add_child("stunned_base","stunned",{
     },
     step:function (){ 
         if(airborne){
-            y_speed += gravity_force*0.5;
+            //y_speed += gravity_force*0.5;
         }
         
         image_angle -= sign(x_speed) * 10;

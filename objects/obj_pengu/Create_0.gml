@@ -946,8 +946,8 @@ state = new SnowState("idle");
 			control_lock = 10;
 			input_h = 0;
 			
-			if(t < dash_ground_windup) t++;
-			if(InputReleased(INPUT_VERB.DASH)){
+			if(t < dash_ground_windup) t++; 
+			if(!InputCheck(INPUT_VERB.DASH)){
 				state.change("dash");
 			}
 			
@@ -1040,7 +1040,7 @@ state = new SnowState("idle");
 			mirror = 1;
 	    },
 		step: function() {
-			sliding_subimg+=ground_spd/20;
+			sliding_subimg+=ground_spd/8;
 			sliding_subimg = clamp(sliding_subimg,0,12);
 			subimg = sliding_subimg;
 		},
