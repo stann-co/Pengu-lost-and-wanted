@@ -1,73 +1,104 @@
 /// @description
 
 if(can_move){
-
-state.step();
-
-x+=x_speed;
-y+=y_speed;
-
-if(on_land) on_land = false;
-
-if(!state.state_is("die")){
-	#region push sensors
-	var side_sensor = noone;
-		var push_height = -8;
-	if(ground_spd < 0) { //left
-		vec_lt = new Vector2(-w_radius,push_height);
-		vec_lt = vec_lt.rotated(-snap_to_90(sensor_angle));
-		
-		vec_lb = new Vector2(-w_radius,0);
-		vec_lb = vec_lb.rotated(-snap_to_90(sensor_angle));
-		
-		side_sensor = sensor(vec_lt,snap_to_90(sensor_angle)-90,sensor_length_base,abs(ground_spd));
-		if(side_sensor == noone){
-			side_sensor = sensor(vec_lb,snap_to_90(sensor_angle)-90,sensor_length_base,abs(ground_spd));
-		}
-		
-	} else if(ground_spd > 0){ //right
-		vec_rt = new Vector2(w_radius,push_height);
-		vec_rt = vec_rt.rotated(-snap_to_90(sensor_angle));
-		
-		vec_rb = new Vector2(w_radius,0);
-		vec_rb = vec_rb.rotated(-snap_to_90(sensor_angle));
-		
-		side_sensor = sensor(vec_rt,snap_to_90(sensor_angle)+90,sensor_length_base,abs(ground_spd));
-		if(side_sensor == noone){
-			side_sensor = sensor(vec_rb,snap_to_90(sensor_angle)+90,sensor_length_base,abs(ground_spd));
-		}
-	}
-	
-	if(side_sensor != noone && side_sensor.distance < 1){
-		if(abs(angle_difference(side_sensor.angle,ground_angle)) >= 50){
-			x+= side_sensor.x;
-			y+= side_sensor.y;
-			touch_wall();
-		}
-	}
-	#endregion
-	
-	#region ground sensors
-	//bottom
-	vec_b = new Vector2(0,h_radius+1);
-	vec_b = vec_b.rotated(-snap_to_90(sensor_angle));	
-	
-	var b_sensor = sensor(vec_b,snap_to_90(sensor_angle),sensor_length_base);
-	
-	if(b_sensor != noone){
-		if(airborne && y_speed > 0){
-			airborne = false;
-			on_land = true;
-		}
-		
-		x+= b_sensor.x;
-		y+= b_sensor.y;
-		ground_angle = b_sensor.angle;	
-	} else if(!airborne){
-		no_floor();
-	}
-}
-
-#endregion
-
+    state.step();
+     
+    if(on_land) on_land = false;
+    if(on_ceiling) on_ceiling = false;
+    if(on_wall) on_wall = false;
+    if(on_no_floor) on_no_floor = false;
+    
+    var substeps = 1
+    if(!airborne) substeps += abs(ground_spd) div 10;
+    //additional substeps if you are going fast
+    
+    repeat(substeps){
+        
+        x+=x_speed;
+        y+=y_speed;
+        
+        if(colliding){
+            
+        	#region push sensors
+        	var push_sensor = noone;
+            //var push_height = -8;
+            
+        	if(x_speed < 0) { //left
+        		vec_l = new Vector2(-w_radius,0);
+        		vec_l = vec_l.rotated(-snap_to_90(sensor_angle));
+        		
+                if(airborne){
+                    push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,sensor_length_base/2,abs(x_speed));
+                } else {
+                    push_sensor = sensor(vec_l,snap_to_90(sensor_angle)-90,sensor_length_base/2,abs(ground_spd));
+                }
+                
+        		if(push_sensor != noone && push_sensor.distance < 1){ 
+                    x+= push_sensor.x; 
+                    y+= push_sensor.y;
+                    on_wall = true;
+        	    }
+        	}
+            
+            if(x_speed > 0){ //right
+                vec_r = new Vector2(w_radius,0);
+                vec_r = vec_r.rotated(-snap_to_90(sensor_angle));
+                if(airborne){
+                    push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,sensor_length_base/2,abs(x_speed));
+                } else {
+                    push_sensor = sensor(vec_r,snap_to_90(sensor_angle)+90,sensor_length_base/2,abs(ground_spd));
+                }
+                if(push_sensor != noone && push_sensor.distance < 1){		
+                    
+                    x+= push_sensor.x;
+                    y+= push_sensor.y;
+                    on_wall = true;
+                } 
+            }
+        	#endregion
+        	
+        	#region ground sensors
+        	//bottom
+        	vec_b = new Vector2(0,h_radius+1);
+        	vec_b = vec_b.rotated(-snap_to_90(sensor_angle));	
+        	
+        	var b_sensor = sensor(vec_b,snap_to_90(sensor_angle),sensor_length_base);
+        	
+        	if(b_sensor != noone && ( !airborne || (airborne && b_sensor.y < 0) )){
+                x+= b_sensor.x;
+        		y+= b_sensor.y;
+                
+                ground_angle = b_sensor.angle;
+                
+        		if(airborne){
+        			airborne = false;
+        			on_land = true;
+                    set_ground_spd_from_air_spd();
+        		}
+        	} else if(!airborne){
+                airborne = true;
+        		on_no_floor = true;
+        	}
+            #endregion
+            
+            #region ceiling sensors
+            if(airborne){
+                //top
+                vec_t = new Vector2(0,-h_radius-1);
+                vec_t = vec_t.rotated(-snap_to_90(sensor_angle)); 
+                
+                var t_sensor = sensor(vec_t,snap_to_90(sensor_angle)+180,sensor_length_base);
+    
+                if(airborne && y_speed < 0){ 
+                    if (t_sensor != noone && t_sensor.distance < 0){
+                        x+= t_sensor.x;
+                        y+= t_sensor.y;
+                        
+                        on_ceiling = true
+                    }
+                }
+            } 
+            #endregion
+        }
+    }
 }

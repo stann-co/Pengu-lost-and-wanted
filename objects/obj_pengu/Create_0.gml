@@ -1,18 +1,15 @@
 /// @description
 
+event_inherited();
+
 global.camera.follow = self;
 global.camera.move(x,y,0);
 
 #region variables
 godmode = false;
 
-new_attacks = false
-
 input_h = 0;
 input_v = 0;
-
-x_speed = 0;
-y_speed = 0;
 
 normal_acceleration_speed = 0.1;
 normal_deceleration_speed = 0.2;
@@ -65,9 +62,6 @@ deceleration_speed = normal_deceleration_speed;
 friction_speed = normal_friction_speed;
 top_speed = normal_top_speed;
 
-ground_spd = 0; //how fast it's moving on the ground
-ground_angle = 0; //the grounds angle
-
 force_slide_angle = 45; //if you walk on an incline above this angle you're forced into sliding
 #macro force_slide_false (ground_angle < force_slide_angle || ground_angle > 360-force_slide_angle)
 
@@ -87,7 +81,7 @@ h_radius_slide	= 6;
 w_radius		= w_radius_normal; //width radius
 h_radius		= h_radius_normal; //height radius`?=)
 
-airborne = false;
+
 sliding = false;
 
 super_speed = false;
@@ -103,9 +97,27 @@ super_speed_colors = [red,red,red,red,red,red,white,white,white,white,white,whit
 super_speed_u_color = shader_get_uniform(sh_color,"u_color");
 super_speed_u_intensity = shader_get_uniform(sh_color,"u_intensity");
 
-attack_jump_force = 3;
+attack_jump_force = 2;
 attack_count = 0;
 attacking = false;
+attack_x_force = 0;
+attack_y_force = -2;
+attack_type = ATTACK_TYPES.ATTACK;
+
+//after attacking there's a window where you can extend the combo
+attack_combo_max = 12; 
+attack_combo_launch = 8; //at this time the entity will be launched away
+attack_combo_t = 0;
+attack_cooldown = 0;
+attack_cooldown_max = 16;
+
+//offset from origin where attack radius occurs
+attack_x = 16;
+attack_y = -8;
+attack_radius = 16;
+meteor_radius = 18;
+//enemies/entities currently being attacked
+attack_list = ds_list_create()
 
 on_land = false; //this is true on the frame you land again
 on_ceiling = false; //this is true whenever you are touching the ceiling
@@ -121,7 +133,6 @@ squishing = false;
 squishing_t = 0;
 squishing_duration = 0;
 
-subimg = 0;
 anim_speed = 1; //set to -1 to reverse
 
 t = 0; //used for some states as a timer
@@ -144,32 +155,6 @@ set_control_lock = function(duration = game_speed*1){
 	control_lock = duration;
 	input_h = 0;
 }
-
-//spike_hurt = function(sensor_){
-//	if(
-//		sensor_ != noone &&
-//		sensor_.inst != noone &&
-//		(object_is_ancestor(sensor_.inst.object_index,obj_spikes) or sensor_.inst.object_index == obj_spikes) &&
-//		sensor_.side == "top" &&
-//		invulnerable == 0
-//	)
-//	{	
-//		var should_hurt = true;
-//		if(airborne){
-//			var angle_ = point_direction(0,0,x_speed,y_speed);
-//			if (angle_difference(angle_,sensor_.angle+90) < 45){
-//				should_hurt = false;
-//			};
-//		}
-		
-//		if(should_hurt){
-//			hurt(sign(x - sensor_.inst.x));		
-//			return true;
-//		}
-//	}
-	
-//	return false;
-//}
 
 ///@function hurt()
 hurt = function(x_side = 0){
@@ -195,24 +180,6 @@ squish = function(scale_x_,scale_y_,duration = game_speed*0.4){
 	squishing_duration = duration;
 }
 
-set_ground_spd_from_air_spd = function(){
-	if(ground_angle <= 23 || ground_angle >= 339){ //landing on mostly flat surface
-		ground_spd = x_speed;
-	} else if(ground_angle <= 45 || ground_angle >= 316){ //landing on mostly sloped surface
-		if( abs(x_speed) >= abs(y_speed) ){ //moving mostly left/right
-			ground_spd = x_speed;	
-		} else {
-			ground_spd = y_speed * -sign(dsin(ground_angle)) * 0.5;
-		}				
-	} else { //landing on mostly steep surface
-		if( abs(x_speed) >= abs(y_speed) ){ //moving mostly left/right
-			ground_spd = x_speed;	
-		} else {
-			ground_spd = y_speed * -sign(dsin(ground_angle));
-		}				
-	}
-}
-
 #region sensors
 
 vec_r = new Vector2(0,0); //right
@@ -233,14 +200,15 @@ sensor_length_base = 8;
 #endregion
 
 pick_move_state = function(include_idle = true){
-	if (input_h != 0){
+    if(airborne){
+        state.change("fall");
+    } else if (input_h != 0){
 		if( input_h != mirror ) state.change("turning");
 		else if( !state.state_is("running") )state.change("running");
 	} else if(include_idle && !state.state_is("idle")){
 		state.change("idle");
 	}
 }
-
 
 #region states
 // feather disable gm1065
@@ -359,7 +327,6 @@ state = new SnowState("idle");
 	})
 
 	//child states
-
 	state.add_child("tall","idle", {
 		enter: function() {
 			state.inherit();
@@ -525,7 +492,7 @@ state = new SnowState("idle");
 			audio_play_sound_random(0,0,snd_jump1,snd_jump2)
 	    },
 		step: function() {
-			if((input_check_released("jump") || on_ceiling) && y_speed < -jump_release_force){
+			if((InputReleased(INPUT_VERB.JUMP) || on_ceiling) && y_speed < -jump_release_force){
 				y_speed = -jump_release_force;	
 			}
 	
@@ -649,31 +616,190 @@ state = new SnowState("idle");
 		},
 	})
 	
-	state.add_child("airborne","attack", {
+	state.add_child("airborne","attack_base", {
 	    enter: function() {
 			state.inherit()
+            
+            if(attack_count == 0 && input_h != 0){
+                mirror = input_h;
+            }
 			
 			attack_count++;
+            
+            attack_combo_t = 0
 			attacking = true;
-			
-			sprite_index = spr_pengu_attack;
-			mask_index = spr_pengu_hitbox_attack;
-
-			y_speed = -attack_jump_force;	
-			x_speed *= 0.6;
-	
-			squish(0.4,1.4,game_speed*0.4);
-			
-			//audio_play_sound_random(0,0,snd_wingflap1,snd_wingflap2);
+            
+			y_speed = attack_y_force;
+            x_speed = max(attack_x_force,abs(x_speed))*mirror;
+            
+			//squish(0.9,1.1,game_speed*0.4);
+            
+            attack_hit = false;
+            
+            //hits enemies/entities
+            var attack_list_check_ = ds_list_create();
+            var attack_x_ = x+(attack_x*mirror)
+            var attack_y_ = y+attack_y;
+            
+            var num_ = collision_circle_list(attack_x_,attack_y_,attack_radius,obj_enemy,true,true,attack_list_check_,true);
+            
+            for (var i = 0; i < num_; i++) {
+                //does not add entities that are already being hit to the attack list
+                entity = attack_list_check_[|i];
+                if (ds_list_find_index(attack_list,entity) == -1 && !entity.invulnerable){
+                    ds_list_add(attack_list,entity)
+                    //runs on hit
+                    entity.state.change("stunned")
+                    entity.x_speed = (attack_launch_x + random_range(0,1))*mirror;
+                    entity.y_speed = (attack_launch_y + random_range(0,1))
+                        
+                    attack_hit = true;
+                    entity.hurt(attack_type); //called last so it can override state
+                }
+            }
+            ds_list_destroy(attack_list_check_)
+            
 	    },
-		step: function() {			
-			if(y_speed > 0) state.change("begin_fall");
-			if(on_land) state.change("idle");
+		step: function() {
+            
+            if(attack_combo_t < attack_combo_max){
+                
+                if(attack_combo_t < attack_combo_launch){
+                    
+                    var attack_x_ = x+(attack_x*mirror)
+                    var attack_y_ = y+attack_y;
+                    
+                    for (var i = 0; i < ds_list_size(attack_list); i++) {
+                    	var entity = attack_list[|i];
+                        with (entity) {
+                            //runs every frame while attacked entities are stun locked
+                            
+                            var toward_x_ = sign(attack_x_ - x);
+                            var toward_y_ = sign(attack_y_ - y);
+                            
+                            x = attack_x_;
+                            y = attack_y_;
+                            
+                            //snaps entity to not be inside walls
+                            while (place_meeting(x,y,entity_collision_layer)) {
+                            	x -= toward_x_;
+                                y -= toward_y_;
+                            }
+                        }
+                    }
+                }
+                //combo can only be continued if your attack hit something
+                if(InputBufferPressed(INPUT_VERB.ATTACK,10) && attack_hit){
+                    attack_next()
+                }
+                
+            } else {
+                attacking = false;
+                pick_move_state();
+            }
+            
+            attack_combo_t++
+            
 		},
 		leave: function(){
-			attacking = false;	
+			attacking = false;
+            attack_cooldown = attack_cooldown_max;
+            ds_list_clear(attack_list)
 		}
 	})
+
+    state.add_child("attack_base","attack_1",{
+        enter: function(){
+            attack_launch_x = abs(x_speed) + 1;
+            attack_launch_y = y_speed -3;
+            attack_type = ATTACK_TYPES.ATTACK;
+            
+            sprite_index = spr_pengu_attack_1;
+            attack_next = function(){
+                state.change("attack_2");
+            }
+            
+            state.inherit()
+        }
+    })
+
+    state.add_child("attack_base","attack_2",{
+        enter: function(){ 
+            sprite_index = spr_pengu_attack_2;
+            attack_next = function(){
+                state.change("attack_3");
+            }
+            attack_launch_x = abs(x_speed) + 3;
+            attack_launch_y = y_speed -3;
+            attack_type = ATTACK_TYPES.ATTACK;
+            
+            state.inherit()
+        }
+    })
+
+    state.add_child("attack_base","attack_3",{
+        enter: function(){
+            sprite_index = spr_pengu_attack_3;
+            attack_next = function(){
+                state.change("attack_kick");
+            }
+            attack_launch_x = abs(x_speed) + 4;
+            attack_launch_y = y_speed -4;
+            attack_type = ATTACK_TYPES.ATTACK;
+            
+            state.inherit()
+        }
+    })
+
+	state.add_child("attack_base","attack_kick", {
+	    enter: function() {
+            sprite_index = spr_pengu_attack_kick;
+            attack_next = function(){ 
+                //no more attacks
+            }
+            attack_launch_x = 6;
+            attack_launch_y = 0;
+            attack_type = ATTACK_TYPES.KICK;
+            
+            state.inherit()
+            
+	    }, 
+        step: function() {
+            if(attack_combo_t < attack_combo_max){
+                if(attack_combo_t < attack_combo_launch){
+                    var attack_x_ = x+(attack_x*mirror)
+                    var attack_y_ = y+attack_y;
+                    
+                    for (var i = 0; i < ds_list_size(attack_list); i++) {
+                    	var entity = attack_list[|i];
+                        with (entity) {
+                            //runs every frame while attacked entities are stun locked
+                            
+                            var toward_x_ = sign(attack_x_ - x);
+                            var toward_y_ = sign(attack_y_ - y);
+                            
+                            x = attack_x_;
+                            y = attack_y_;
+                            
+                            meteor = true;
+                            
+                            //snaps entity to not be inside walls
+                            while (place_meeting(x,y,entity_collision_layer)) {
+                            	x -= toward_x_;
+                                y -= toward_y_;
+                            }
+                        }
+                    }
+                }
+            } else {
+                attacking = false;
+                pick_move_state();
+            }
+            
+            attack_combo_t++
+            
+		},
+    })
 		
 	state.add_child("airborne","dash_air_charge",{
 		enter: function(){
@@ -698,7 +824,9 @@ state = new SnowState("idle");
 			image_angle = animcurve_read(ac_dash_ball_rotate,0,posx)*360 * -mirror;
 			t++
 			if(t == dash_air_windup){
-				state.change("dash_air");	
+                if(InputCheck(INPUT_VERB.DOWN)) state.change("dash_air_down");
+                else if(InputCheck(INPUT_VERB.UP)) state.change("dash_air_up");
+				else state.change("dash_air");	
 			}
 		},	
 	})
@@ -727,6 +855,19 @@ state = new SnowState("idle");
 			super_speed = true;
 			super_speed_fadeout = super_speed_fadeout_time;
 			super_speed_trace_arr = [];
+            
+            var attack_list_check = ds_list_create();
+            var num = instance_place_list(x,y,obj_enemy,attack_list_check,false);
+            for (var i = 0; i < num; i++) {
+            	var inst = attack_list_check[|i];
+                if(inst.invulnerable == 0){
+                    inst.x_speed = 4*-mirror;
+                    inst.y_speed = -3;
+                    inst.state.change("launched");
+                }
+                
+            }
+            ds_list_destroy(attack_list_check)
 			
 			audio_play_sound(snd_dashing,0,false)
 	    },
@@ -735,6 +876,31 @@ state = new SnowState("idle");
 				state.change("sliding");
 			}
 		}
+	})
+
+	state.add_child("dash_air","dash_air_down", {
+	    enter: function() { 
+			
+			state.inherit();
+            
+            image_angle = (mirror) ? 270 : 90;
+            
+            x_speed *= 0.5;
+			y_speed = 3;
+        }
+	})
+
+	state.add_child("dash_air","dash_air_up", {
+	    enter: function() { 
+			
+			state.inherit();
+            
+            image_angle = (mirror) ? 45 : 315;
+            
+            x_speed *= 0.5;
+			y_speed = -6;
+        }
+
 	})
 	
 	state.add_child("prone","dash_charge", {
@@ -747,8 +913,6 @@ state = new SnowState("idle");
 			
 			dash_ground_force = dash_ground_force_min;
 			t = 0;
-			//t2 = 0;
-			//flash = false;
 			control_lock = 10;
 			input_h = 0;
 			
@@ -759,10 +923,18 @@ state = new SnowState("idle");
 			control_lock = 10;
 			input_h = 0;
 			
-			if(t < dash_ground_windup) t++;
-			if(input_check_released("dash")){
+			if(t < dash_ground_windup) t++; 
+			if(!InputCheck(INPUT_VERB.DASH)){
 				state.change("dash");
 			}
+            
+            if(InputPressed(INPUT_VERB.LEFT)){
+                mirror = -1;
+            }
+            
+            if(InputPressed(INPUT_VERB.RIGHT)){
+                mirror = 1;
+            }
 			
 			var amount = t/dash_ground_windup;
 			dash_ground_force = lerp(dash_ground_force_min,dash_ground_force_max,amount);
@@ -853,7 +1025,7 @@ state = new SnowState("idle");
 			mirror = 1;
 	    },
 		step: function() {
-			sliding_subimg+=ground_spd/20;
+			sliding_subimg+=ground_spd/8;
 			sliding_subimg = clamp(sliding_subimg,0,12);
 			subimg = sliding_subimg;
 		},

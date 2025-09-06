@@ -8,3 +8,5 @@ surface_reset_target();
 
 
 draw_surface(srf_gui,0,0);
+
+state.draw_gui()

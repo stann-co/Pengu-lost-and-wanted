@@ -1,5 +1,6 @@
 /// @description
-depth = global.depth_a;
+
+event_inherited()
 
 //foot_l = foot_pos(vec_bl);
 //foot_r = foot_pos(vec_br);

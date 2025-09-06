@@ -7,7 +7,19 @@ function audio_play_sound_random(pitch = 1,priority = 0){
 	var sound = argument[irandom(sound_count) + 2];
 	
 	audio_play_sound(sound,priority,false)
+}
 
+///@function sound_play_random
+///@param {real,array} sound
+///@param {real} pitch_bend
+function sound_play_random(_sound,_pitch_bend){
+    if(is_array(_sound)){
+        var index = irandom_range(0,array_length(_sound)-1);
+        _sound = _sound[index];
+    }
+    
+    var pitch = random_range(1-_pitch_bend,1+_pitch_bend);
+    return audio_play_sound(_sound,1,false,1,0,pitch)
 }
 
 ///@description resets all conductor beat variables

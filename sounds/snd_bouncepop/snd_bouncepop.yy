@@ -9,7 +9,7 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":0.104898,
+  "duration":0.10489796,
   "name":"snd_bouncepop",
   "parent":{
     "name":"Sounds",

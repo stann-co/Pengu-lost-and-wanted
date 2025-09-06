@@ -49,17 +49,17 @@ function stanncam_vec3(_x,_y,_z) constructor {
 	/// @description Normalize 3D vector (make its length equal to 1)
 	/// @return The normalized vector [x, y, z]
 	/// @ignore
-	static normalize = function() {		
+	static normalize = function() {
 		// Calculate the length (magnitude) of the vector
-		var len = length();
+		var length = sqrt(x * x + y * y + z * z);
 
 		// Avoid division by zero
-		if (len == 0) {
+		if (length == 0) {
 		    return new stanncam_vec3(0,0,0);
 		}
 		
 		// Divide each component by the length
-		return new stanncam_vec3( x / len, y / len, z / len);
+		return new stanncam_vec3( x / length, y / length, z / length);
 	}
 	
 	/// @function cross
@@ -68,14 +68,6 @@ function stanncam_vec3(_x,_y,_z) constructor {
 	/// @ignore
 	static cross = function(_v){
 		return new stanncam_vec3(y * _v.z - z * _v.y,z * _v.x - x * _v.z,x * _v.y - y * _v.x);
-	}
-	
-	/// @function dot
-	/// @description dot product between 2 vectors
-	/// @return dot product float
-	/// @ignore
-	static dot = function(_v){
-		return dot_product_3d(x,y,z,_v.x,_v.y,_v.z);
 	}
 	
 	/// @function length
@@ -99,18 +91,18 @@ function stanncam_vec3(_x,_y,_z) constructor {
 	/// @description rotates vector around axis by angle
 	/// @return rotated vector
 	/// @ignore
-	static rotate_by_axis = function(_axis, _angle) {
-		_axis = _axis.normalize();
+	static rotate_by_axis = function(axis, angle) {
+		axis = axis.normalize();
 
 	    // Precompute terms to save redundant calculations
-	    var cos_theta = dcos(_angle);
-	    var sin_theta = dsin(_angle);
+	    var cos_theta = dcos(angle);
+	    var sin_theta = dsin(angle);
 	    var one_minus_cos = 1 - cos_theta;
 
 	    // Axis components
-	    var x_ = _axis.x;
-	    var y_ = _axis.y;
-	    var z_ = _axis.z;
+	    var x_ = axis.x;
+	    var y_ = axis.y;
+	    var z_ = axis.z;
 
 	    // Compute terms for the matrix
 	    var m_xx = x_ * x_;
@@ -142,67 +134,6 @@ function stanncam_vec3(_x,_y,_z) constructor {
 	    // Apply the rotation matrix to the vector using transform
 	    return transform(rotation_matrix);
 	}
-	
-	/// @function pitch
-	/// @return pitch in degrees
-	/// @ignore
-	static pitch = function(){
-		var vn = normalize()
-	    return radtodeg( arcsin(-vn.z) );
-	}
-	
-	/// @function yaw
-	/// @return yaw in degrees
-	/// @ignore
-	static yaw = function(){
-		var vn = normalize()
-		return radtodeg( arctan2(vn.y, vn.x) );
-	}
-	
-	/// @function rotate_to
-	/// @return vector rotated to other vector
-	/// @param _vector to rotate to
-	/// @param _val lerp value
-	/// @ignore
-	static rotate_to = function(_vec,_val){
-		var pitch1 = pitch();
-		var yaw1 = yaw();
-		
-		var pitch2 = _vec.pitch();
-		var yaw2 = _vec.yaw();
-		
-		var new_pitch = degtorad( pitch1 + (angle_difference(pitch2,pitch1) * _val) );
-		var new_yaw	  = degtorad( yaw1 + (angle_difference(yaw2,yaw1) * _val) );
-		
-		var x_ = cos(new_pitch) * cos(new_yaw)
-		var y_ = cos(new_pitch) * sin(new_yaw)
-		var z_ = -sin(new_pitch)
-		
-		return new stanncam_vec3(x_,y_,z_);
-	}
-}
-
-/// @function stanncam_3d_rotation_matrix
-/// @param _v
-/// @return rotation_matrix
-/// @ignore
-function stanncam_3d_rotation_matrix(_v) {
-	var target = new stanncam_vec3(
-	    _v.x, // Right (X)
-	    _v.y, // Forward (Y)
-	    _v.z  // Up (Z)
-	);
-
-	// Normalize the direction vector
-	var forward = target.normalize();
-
-	// Calculate yaw (rotation around Z-axis)
-	var yaw = arctan2(forward.x, forward.y);
-
-	// Calculate pitch (rotation around X-axis)
-	var yz_magnitude = sqrt(forward.y * forward.y + forward.z * forward.z);
-	var pitch = arctan2(forward.z, yz_magnitude);
-	return matrix_build(0,0,0,radtodeg(pitch),0,radtodeg(yaw),1,1,1);
 }
 
 /// @function stanncam_3d_draw
@@ -211,10 +142,6 @@ function stanncam_3d_rotation_matrix(_v) {
 function stanncam_3d_draw(_on){
 	gpu_set_ztestenable( _on);
 	gpu_set_zwriteenable(_on);
-}
-
-function stanncam_decimal(_val){
-	return round(_val * 1000) / 1000;
 }
 
 //// Function to create a rotation matrix from pitch, yaw, and roll

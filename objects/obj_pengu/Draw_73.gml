@@ -27,31 +27,30 @@ if(global.debug){
 	#endregion
 	
 	#region bottom
-	if(true){
-		//bottom left
-		if(sensor(vec_bl,snap_to_90(sensor_angle),sensor_length_base,sensor_length_base)){
-			draw_set_color(orange);
-		} else draw_set_color(white);
-		draw_sensor(x,y,vec_bl,snap_to_90(sensor_angle), sensor_length_base);
-		draw_sensor(x,y,vec_bl,snap_to_90(sensor_angle),-sensor_length_base);
-		
-		//bottom right
-		if(sensor(vec_br,snap_to_90(sensor_angle),sensor_length_base,sensor_length_base)){
-			draw_set_color(blue);
-		} else draw_set_color(white);
-		draw_sensor(x,y,vec_br,snap_to_90(sensor_angle), sensor_length_base);
-		draw_sensor(x,y,vec_br,snap_to_90(sensor_angle),-sensor_length_base);
-		
-		draw_set_color(white);
-		draw_circle(x+vec_br.x,y+vec_br.y,1,0);
-		draw_circle(x+vec_bl.x,y+vec_bl.y,1,0);
-		
-		//bottom sensor
-		if(point_sensor(vec_b)){
-			draw_set_color(pink);
-		} else draw_set_color(white);
-		draw_circle(x+vec_b.x,y+vec_b.y,1,0);
-	}
+    
+    //bottom left
+    if(sensor(vec_bl,snap_to_90(sensor_angle),sensor_length_base,sensor_length_base)){
+        draw_set_color(orange);
+    } else draw_set_color(white);
+    draw_sensor(x,y,vec_bl,snap_to_90(sensor_angle), sensor_length_base);
+    draw_sensor(x,y,vec_bl,snap_to_90(sensor_angle),-sensor_length_base);
+    
+    //bottom right
+    if(sensor(vec_br,snap_to_90(sensor_angle),sensor_length_base,sensor_length_base)){
+        draw_set_color(blue);
+    } else draw_set_color(white);
+    draw_sensor(x,y,vec_br,snap_to_90(sensor_angle), sensor_length_base);
+    draw_sensor(x,y,vec_br,snap_to_90(sensor_angle),-sensor_length_base);
+    
+    draw_set_color(white);
+    draw_circle(x+vec_br.x,y+vec_br.y,1,0);
+    draw_circle(x+vec_bl.x,y+vec_bl.y,1,0);
+    
+    //bottom sensor
+    if(point_sensor(vec_b)){
+        draw_set_color(pink);
+    } else draw_set_color(white);
+    draw_circle(x+vec_b.x,y+vec_b.y,1,0);
 	#endregion
 	
 	#region top
@@ -71,6 +70,7 @@ if(global.debug){
 		draw_circle(x+vec_tr.x,y+vec_tr.y,1,0);
 		draw_circle(x+vec_tl.x,y+vec_tl.y,1,0);
 		
+        //top
 		if(point_sensor(vec_t)) draw_set_color(pink);
 		else draw_set_color(white);
 		draw_circle(x+vec_t.x,y+vec_t.y,1,0);
@@ -85,6 +85,30 @@ if(global.debug){
 	
 	draw_sprite_ext(mask_index,0,x,y,image_xscale,image_yscale,image_angle,-1,0.1);
 	
-	
+	#region attack radius
+    
+    if(attacking){
+        draw_set_color(red);
+        draw_set_alpha(0.5)
+        //if attack pos collides with wall, move it back
+        var attack_x_ = x+(attack_x*mirror);
+        var attack_y_ = y+attack_y;
+        if( collision_point(attack_x_,attack_y_,entity_collision_layer,true,true) != noone ){
+                       attack_x_ = (attack_x_ > x) ? bbox_right : bbox_left;
+        }
+        draw_circle(attack_x_,attack_y_,attack_radius,false)
+        draw_set_color(white);
+        draw_set_alpha(1)
+    }
+    
+    if(state.state_is("dash_air_charge")){
+        draw_set_color(red);
+        draw_set_alpha(0.5)
+        draw_circle(x,y,meteor_radius,false)
+        draw_set_color(white);
+        draw_set_alpha(1)
+    }
+    
+    #endregion
 	
 }

@@ -1,5 +1,4 @@
-/// @description Debug menu
+/// @description Toggle debug mode
 
 global.debug = !global.debug
-show_collisions()
 

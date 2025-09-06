@@ -8,8 +8,8 @@
   "name":"obj_info_target",
   "overriddenProperties":[],
   "parent":{
-    "name":"level element",
-    "path":"folders/Objects/level element.yy",
+    "name":"Objects",
+    "path":"folders/Objects.yy",
   },
   "parentObjectId":null,
   "persistent":false,

@@ -1,6 +1,6 @@
 /// feather ignore all in /Extensions/*
 
-#macro version "0.1.2-alpha"
+#macro version "0.1.3-alpha"
 
 #macro in_browser (os_type != os_windows)
 
@@ -11,11 +11,14 @@
 #macro camera_inner_margin 100
 
 #macro main_menus (room == rm_init)
-#macro can_move (!obj_game.state.state_is("pause_menu") && !obj_game.state.state_is("settings") && !global.freeze_frame)
-#macro control (obj_game.state.state_is("idle"))
+#macro pausing     (obj_game.state.state_is("pause_menu") || obj_game.state.state_is("settings"))
+#macro freeze_frame (global.freeze_duration != 0)
+#macro can_move   (!pausing && !freeze_frame)
+
+
+#macro entity_collision_layer [obj_collision,global.collision_layers[? collision_layer]]
 
 #macro text_height 14
-
 //#macro gamepad gamey_pad
 
 //colors
@@ -71,6 +74,15 @@ enum SIDES {
 	Bottom,
 }
 
+enum ATTACK_TYPES {
+    ATTACK,
+    KICK,
+    JUMP,
+    DASH,
+    COLLIDE,
+    SPEICAL
+}
+
 #macro volume_max 10
 global.music_volume = 10;
 global.sound_volume = 10;
@@ -95,15 +107,33 @@ global.tile_angles = [
  
 ];
 
+global.persistent_objects = [
+    obj_camera,
+    __InputUpdateController,
+    __obj_stanncam_manager,
+    __obj_scene,
+    obj_game,
+    obj_pengu, 
+    obj_depth_set,
+    obj_layer_draw,
+    obj_splash
+]
+
 global.sidescroller = true;
 
 global.depth_a = 300;
 global.depth_b = 400;
 global.depth_c = 500;
 
+global.collision_layers = ds_map_create()
+global.collision_layers[? COLLISION_LAYERS.A] = undefined
+global.collision_layers[? COLLISION_LAYERS.B] = undefined
+global.collision_layers[? COLLISION_LAYERS.C] = undefined
+
 global.activation_list = [];
 
-global.debug = false;
+global.debug = true;
+global.show_collisions = true;
 global.checkpoint = -1;
 
 global.score = 0;
@@ -112,20 +142,26 @@ global.score_combo_t = 0;
 #macro score_combo_t_max (game_speed * 3)
 global.coins = 0;
 
-global.freeze_frame = false;
+global.control = true;
+
+//freeze frame is active when greater than 0, ticks down 1 each frame
+global.freeze_duration = 0;
 
 //when a layer get's set to a obj_layer_draw, it's added to this with the layer name as the key
 global.tile_draw_layers = ds_map_create()
 
 //particles
 global.part_stars = part_type_create();
-part_type_shape(global.part_stars,pt_shape_star);
-part_type_colour_hsv(global.part_stars, 0, 0, 0, 0, 255, 255);
-part_type_size(global.part_stars,0.4,0.4,-0.03,0);
+part_type_sprite(global.part_stars,spr_hit_stars,false,false,true);
+//part_type_shape(global.part_stars,pt_shape_star);
+//part_type_colour_hsv(global.part_stars, 0, 255, 150, 150, 255, 255);
+part_type_size(global.part_stars,0.4,0.45,-0.012,0);
 part_type_direction(global.part_stars,0,360,0,10);
-part_type_life(global.part_stars,20,30);
-part_type_speed(global.part_stars,2,2,0,2);
+part_type_life(global.part_stars,60,60);
+part_type_speed(global.part_stars,3,4,-0.18,0);
 part_type_alpha3(global.part_stars,1,1,0);
+//part_type_gravity(global.part_stars,0.05,270);
+part_type_orientation(global.part_stars,0,360,2,1,false);
 
 //fonts
 global.gui_font = font_add_sprite_ext(spr_gui_font,"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]",false,0);

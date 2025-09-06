@@ -19,3 +19,7 @@ if(global.debug){
 }
 
 state.draw_gui();
+
+for (var i = 0; i < ds_list_size(attack_list); i++) {
+	draw_text(0,10*i,attack_list[|i])
+}

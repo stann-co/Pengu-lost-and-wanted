@@ -43,7 +43,11 @@ var pengu_offset = -5
 var dash_offset  = 14
 var sprite_xscale = mirror_component > 0 ? 1 : -1;
 draw_sprite_ext(spr_mech_body,1,dome.x + chair_offset * mirror_component,dome.y,sprite_xscale,1,-body_angle_component,white,1); //chair
-draw_sprite_ext(spr_mech_body,2,dome.x + pengu_offset * mirror_component,dome.y,sprite_xscale,1,-body_angle_component,white,1); //pengu
+
+if(controlled){
+    draw_sprite_ext(spr_mech_body,2,dome.x + pengu_offset * mirror_component,dome.y,sprite_xscale,1,-body_angle_component,white,1); //pengu
+}
+
 draw_sprite_ext(spr_mech_body,3,dome.x + dash_offset  * mirror_component,dome.y,sprite_xscale,1,-body_angle_component,white,1); //dashboard
 
 

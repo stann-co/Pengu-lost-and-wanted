@@ -132,9 +132,8 @@ function __stanncam_base(_width=global.game_w,_height=global.game_h, _surface_ex
 	/// @ignore
 	static draw = function(_x, _y, _scale_x=1, _scale_y=1){
 		__check_surface();
-		__debug_draw(_x, _y, _scale_x, _scale_y);
 		draw_surf(surface, _x, _y, _scale_x, _scale_y, 0, 0, width, height);
-		
+		__debug_draw(_x, _y, _scale_x, _scale_y);
 	}
 	
 	/// @function draw_no_compensate

@@ -59,7 +59,7 @@ state.add("idle", {
 		
 	},
 	step: function(){
-		if (can_move && input_check_pressed("pause")){
+		if (can_move && InputPressed(INPUT_VERB.PAUSE)){
 			//audio_play_sound(snd_ui_confirm,0,0);
 			state.change("pause_menu");	
 		}
@@ -95,7 +95,7 @@ state.add("demo_start", {
 		
 	},
 	step: function(){
-		if (input_check_pressed("accept")){
+		if (InputPressed(INPUT_VERB.ACCEPT)){
 			state.change("main_menu");
 		}
 	},
@@ -127,7 +127,7 @@ state.add("credits", {
 		
 	},
 	step: function(){
-		if (input_check_pressed("cancel")){
+		if (InputPressed(INPUT_VERB.CANCEL)){
 			state.change("main_menu");
 		}
 	},
@@ -157,16 +157,16 @@ state.add("main_menu", {
 		selected = 0;
 	},
 	step: function(){
-		if(input_check_pressed("down") || input_check_pressed("up")){
+		if(InputPressed(INPUT_VERB.DOWN) || InputPressed(INPUT_VERB.UP)){
 			audio_play_sound(snd_ui_hover,0,0);
-			if(input_check_pressed("down")) selected++;
-			else if(input_check_pressed("up")) selected--;
+			if(InputPressed(INPUT_VERB.DOWN)) selected++;
+			else if(InputPressed(INPUT_VERB.UP)) selected--;
 			
 			var val = in_browser ? 3 : 4
 			selected = clamp(selected,0,val);
 		}
 		
-		if(input_check_pressed("accept")){
+		if(InputPressed(INPUT_VERB.ACCEPT)){
 			audio_play_sound(snd_ui_hover,0,0);
 			if(selected == 0){
 				state.change("demo_select")
@@ -226,31 +226,32 @@ state.add("level_start",{
 		global.score = 0;
 		global.score_mult = 0;
 		global.score_combo_t = 0;
+        global.control = true;
 		timer = 0;
 		
 		state.change("idle")	
 	}
 });
 
-state.add("level_checkpoint_start",{
-	enter: function(){
-		//resets to active checkpoint if there is any
-		if(global.active_level != undefined && global.active_level.checkpoint != undefined){
-			obj_pengu.x = global.active_level.checkpoint.x;
-			obj_pengu.y = global.active_level.checkpoint.y;
-			
-			global.coins = global.active_level.checkpoint_coins;
-			global.score = global.active_level.checkpoint_score;
-			global.score_mult = 0;
-			global.score_combo_t = 0;
-			
-			state.change("idle")
-		} else {
-			room_restart()
-			state.change("level_start")
-		}
-	}
-});
+//state.add("level_checkpoint_start",{
+	//enter: function(){
+		////resets to active checkpoint if there is any
+		//if(global.active_level != undefined && global.active_level.checkpoint != undefined){
+			//obj_pengu.x = global.active_level.checkpoint.x;
+			//obj_pengu.y = global.active_level.checkpoint.y;
+			//
+			//global.coins = global.active_level.checkpoint_coins;
+			//global.score = global.active_level.checkpoint_score;
+			//global.score_mult = 0;
+			//global.score_combo_t = 0;
+			//
+			//state.change("idle")
+		//} else {
+			//room_restart()
+			//state.change("level_start")
+		//}
+	//}
+//});
 
 #endregion
 
@@ -261,7 +262,7 @@ state.add("demo_select", {
 	},
 	step: function(){
 		if(!transition_in){
-			if(input_check_pressed("accept")){
+			if(InputPressed(INPUT_VERB.ACCEPT)){
 				transition(function(){
 					state.change("level_start");
 					global.active_level = global.levels[selected];
@@ -271,12 +272,12 @@ state.add("demo_select", {
 				})
 			}
 			
-			if(input_check_pressed("cancel")){
+			if(InputPressed(INPUT_VERB.CANCEL)){
 				audio_play_sound(snd_ui_decline,0,0);
 				state.change("main_menu");
 			}
 			
-			var left_right = input_check_pressed("right") - input_check_pressed("left");
+			var left_right = InputPressed(INPUT_VERB.RIGHT) - InputPressed(INPUT_VERB.LEFT);
 			if(left_right != 0){
 				selected += left_right
 				audio_play_sound(snd_ui_hover,1,false);
@@ -355,14 +356,14 @@ state.add("pause_menu",{
 		selected = 0;
 	},
 	step: function(){
-		if(input_check_pressed("down") || input_check_pressed("up")){
+		if(InputPressed(INPUT_VERB.DOWN) || InputPressed(INPUT_VERB.UP)){
 			audio_play_sound(snd_ui_hover,0,0);
-			if(input_check_pressed("down")) selected++;
-			else if(input_check_pressed("up")) selected--;
-			selected = clamp(selected,0,4);
+			if(InputPressed(INPUT_VERB.DOWN)) selected++;
+			else if(InputPressed(INPUT_VERB.UP)) selected--;
+			selected = clamp(selected,0,3);
 		}
 		
-		if(input_check_pressed("accept")){
+		if(InputPressed(INPUT_VERB.ACCEPT)){
 			audio_play_sound(snd_ui_hover,0,0);
 			if(selected == 0){
 				state.change("idle");
@@ -378,14 +379,16 @@ state.add("pause_menu",{
 					room_restart();
 					state.change("level_start");
 				});
-			} else if(selected == 4 && !transition_in && global.active_level.checkpoint != undefined){ //restart to checkpoint
-				transition(function(){
-					state.change("level_checkpoint_start");
-				});
 			}
+                
+            //else if(selected == 4 && !transition_in && global.active_level.checkpoint != undefined){ //restart to checkpoint
+				//transition(function(){
+					//state.change("level_checkpoint_start");
+				//});
+			//}
 		}
 		
-		if(input_check_pressed("cancel")){
+		if(InputPressed(INPUT_VERB.CANCEL)){
 			audio_play_sound(snd_ui_decline,0,0);
 			state.change("idle");
 		}
@@ -409,10 +412,11 @@ state.add("pause_menu",{
 
 		draw_text(x_,10,"GAME PAUSED");
 		
-		var options = ["CONTINUE","SETTINGS","LEVEL SELECT","RESTART LEVEL","CHECKPOINT"]
+        //var options = ["CONTINUE","SETTINGS","LEVEL SELECT","RESTART LEVEL","CHECKPOINT"]
+		var options = ["CONTINUE","SETTINGS","LEVEL SELECT","RESTART LEVEL"];
 		
 		for (var i = 0; i < array_length(options); ++i) {
-			if(selected == 4 && global.active_level.checkpoint == undefined) shader_set(sh_greyed);
+			//if(selected == 4 && global.active_level.checkpoint == undefined) shader_set(sh_greyed);
 			if(selected != i) shader_set(sh_deselected)
 		    draw_text(x_,y_ + h * i,options[i]);
 			
@@ -433,23 +437,23 @@ state.add("settings",{
 		selected = 0;
 	},
 	step: function(){
-		if(input_check_pressed("down") || input_check_pressed("up")){
+		if(InputPressed(INPUT_VERB.DOWN) || InputPressed(INPUT_VERB.UP)){
 			audio_play_sound(snd_ui_hover,0,0);
-			if(input_check_pressed("down")) selected++;
-			else if(input_check_pressed("up")) selected--;
+			if(InputPressed(INPUT_VERB.DOWN)) selected++;
+			else if(InputPressed(INPUT_VERB.UP)) selected--;
 			if(selected < 0) selected = MENU_SETTINGS.TOTAL-1;
 			if(selected = MENU_SETTINGS.TOTAL) selected = 0;
 		}
 		
 		var side_input = 0;
-		if(input_check_pressed("left") || input_check_pressed("right")){
+		if(InputPressed(INPUT_VERB.LEFT) || InputPressed(INPUT_VERB.RIGHT)){
 			audio_play_sound(snd_ui_hover,0,0);
-			if(input_check_pressed("left")) side_input = -1;
-			if(input_check_pressed("right")) side_input = 1;
+			if(InputPressed(INPUT_VERB.LEFT)) side_input = -1;
+			if(InputPressed(INPUT_VERB.RIGHT)) side_input = 1;
 		}
 		
 		var action = false;
-		if(input_check_pressed("accept")){
+		if(InputPressed(INPUT_VERB.ACCEPT)){
 			action = true
 			audio_play_sound(snd_ui_hover,0,0);
 		}
@@ -491,12 +495,13 @@ state.add("settings",{
 			case MENU_SETTINGS.debug_draw:
 		        if(action){
 					global.debug = !global.debug
-					show_collisions()
+                    global.show_collisions = !global.show_collisions
+					show_collisions(global.show_collisions)
 				}
 		        break;
 		}
 		
-		if(input_check_pressed("cancel")){
+		if(InputPressed(INPUT_VERB.CANCEL)){
 			audio_play_sound(snd_ui_decline,0,0);
 			state.change(state.get_previous_state());	
 		}
@@ -647,7 +652,7 @@ state.add_child("level_tally_start","level_tally_anykey", {
 	enter: function(){
 	},
 	step: function(){
-		if(!transition_in && input_check("accept")){
+		if(!transition_in && InputCheck(INPUT_VERB.ACCEPT)){
 			transition(function(){
 				state.change("demo_select");
 				room_goto(rm_init);
@@ -664,40 +669,9 @@ state.add_child("level_tally_start","level_tally_anykey", {
 
 #endregion
 
-#region debugging
+#endregion
 
-show_collisions = function(){	
-	if(global.debug){
-		layer_set_visible(collision_A,true);
-		layer_set_visible(collision_B,true);
-		layer_set_visible(collision_C,true);
-		layer_set_visible("backgrounds_1",true);
-		
-		switch (active_collisions) {
-		    case collision_A:
-		        layer_shader(collision_A,sh_default)
-				layer_shader(collision_B,sh_half_alpha)
-				layer_shader(collision_C,sh_half_alpha)
-		        break;
-			case collision_B:
-		        layer_shader(collision_A,sh_half_alpha)
-				layer_shader(collision_B,sh_default)
-				layer_shader(collision_C,sh_half_alpha)
-		        break;
-			case collision_C:
-		        layer_shader(collision_A,sh_half_alpha)
-				layer_shader(collision_B,sh_half_alpha)
-				layer_shader(collision_C,sh_default)
-		        break;
-		}
-		
-	} else {
-		layer_set_visible(collision_A,false);
-		layer_set_visible(collision_B,false);
-		layer_set_visible(collision_C,false);
-		layer_set_visible("backgrounds_1",false);
-	}
-}	
+#region debugging
 
 	#region levels
 	//dbg_section("levels")
@@ -715,7 +689,8 @@ show_collisions = function(){
 	dbg_section("debug",false)	
 	dbg_button("toggle debug drawing",function(){
 		global.debug = !global.debug;
-		show_collisions();
+        global.show_collisions = !global.show_collisions
+		show_collisions(global.show_collisions);
 	})
 	#endregion
 	
@@ -747,4 +722,3 @@ show_collisions = function(){
 	
 	show_debug_overlay(false);
 #endregion
-

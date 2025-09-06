@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"splash_sequence",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"splash_sequence",
+  "parent":{
+    "name":"draw",
+    "path":"folders/Scripts/draw.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

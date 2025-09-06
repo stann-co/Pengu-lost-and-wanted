@@ -1,7 +1,7 @@
 /// @description
 
-var forward = input_check("down") - input_check("up")
-var right	= input_check("right") - input_check("left") 
+var forward = InputCheck(INPUT_VERB.DOWN) - InputCheck(INPUT_VERB.UP)
+var right	= InputCheck(INPUT_VERB.RIGHT) - InputCheck(INPUT_VERB.LEFT) 
 var up		= keyboard_check(vk_shift) - keyboard_check(vk_control);
 
 if(forward != 0 || right != 0){

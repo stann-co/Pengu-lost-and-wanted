@@ -2,28 +2,18 @@
 global.t = 0;
 
 if(global.sidescroller){
-	collision_A = layer_get_id("collision_A");
-	collision_B = layer_get_id("collision_B");
-	collision_C = layer_get_id("collision_C");
-	
-	active_collisions = collision_A
-	
+    
+    global.collision_layers[? COLLISION_LAYERS.A] = layer_tilemap_get_id("collision_A");
+    global.collision_layers[? COLLISION_LAYERS.B] = layer_tilemap_get_id("collision_B");
+    global.collision_layers[? COLLISION_LAYERS.C] = layer_tilemap_get_id("collision_C");
+    set_active_collisions(COLLISION_LAYERS.A);
+    
 	//error reminders
-	if(room != rm_init && (collision_A == -1)){
+	if(room != rm_init && (global.collision_layers[? COLLISION_LAYERS.A] == -1)){
 		show_error($"Missing collision layers in {room}",true);
 	}
 	
-	if(room != rm_init && !instance_exists(obj_depth_set)){
-		show_error($"Missing obj_depth_set in {room}",true);
-	}
-	
-	//the active collision layer can be switched between
-	global.tile_collisions = layer_tilemap_get_id(collision_A);
-	
-	show_collisions();
-	
 	// tiles
-	
 	ds_map_clear(global.tile_draw_layers)
 	//makes special drawing objects for tile layers
 	var layers =  layer_get_all();
