@@ -272,6 +272,7 @@
     {"id":{"name":"obj_enemy_snowman","path":"objects/obj_enemy_snowman/obj_enemy_snowman.yy",},},
     {"id":{"name":"obj_enemy_toybot","path":"objects/obj_enemy_toybot/obj_enemy_toybot.yy",},},
     {"id":{"name":"obj_enemy","path":"objects/obj_enemy/obj_enemy.yy",},},
+    {"id":{"name":"obj_entity","path":"objects/obj_entity/obj_entity.yy",},},
     {"id":{"name":"obj_fall_off","path":"objects/obj_fall_off/obj_fall_off.yy",},},
     {"id":{"name":"obj_falling_platform","path":"objects/obj_falling_platform/obj_falling_platform.yy",},},
     {"id":{"name":"obj_find_side_test","path":"objects/obj_find_side_test/obj_find_side_test.yy",},},

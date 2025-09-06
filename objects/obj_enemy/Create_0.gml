@@ -1,17 +1,13 @@
 /// @description
 
+event_inherited();
+
 //variables
-x_speed = 0;
-y_speed = 0;
-ground_angle = 0;
-ground_spd = 0;
 slope_factor = 0.123;
 w_radius = 6;
 h_radius = 9;
 top_speed = 3;
 input_h = -1;
-subimg = 0;
-airborne = false;
 
 gravity_force = 0.2251;
 
@@ -27,7 +23,11 @@ stun_duration = 20;
 stun_radius = 8;
 stun_x = 0;
 stun_y = 0;
+
 meteor = false;
+meteor_trace_array = [];
+meteor_trace_offset = 1;
+meteor_trace_count = 6;
 
 on_land = false; //gets true the frame enemy lands from being airborne
 on_ceiling = false;
@@ -200,6 +200,7 @@ state.add_child("stunned_base","stunned",{
         invulnerable = false;
         meteor = false;
         image_angle = 0;
+        meteor_trace_array = [];
     }
 })
 .add_child("meteor_base","meteor")

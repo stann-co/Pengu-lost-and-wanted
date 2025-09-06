@@ -24,7 +24,7 @@ if(!pausing){
                         state.change("begin_slide");
                     } else if(input_v == -1 && !airborne && !state.state_is("end_slide") && !state.state_is("look_up")){
                         if(sliding){
-                            if(force_slide_false && !collision_line(x-w_radius_normal-1,y-h_radius_normal-2,x+w_radius_normal+1,y-h_radius_normal-2,[global.tile_collisions,obj_collision],true,true)){
+                            if(force_slide_false && !collision_line(x-w_radius_normal-1,y-h_radius_normal-2,x+w_radius_normal+1,y-h_radius_normal-2,entity_collision_layer,true,true)){
                                 state.change("end_slide");
                             }
                         } else if(abs(ground_spd) < 2){

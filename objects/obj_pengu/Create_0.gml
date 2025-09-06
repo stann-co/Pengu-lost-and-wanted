@@ -1,5 +1,7 @@
 /// @description
 
+event_inherited();
+
 global.camera.follow = self;
 global.camera.move(x,y,0);
 
@@ -8,9 +10,6 @@ godmode = false;
 
 input_h = 0;
 input_v = 0;
-
-x_speed = 0;
-y_speed = 0;
 
 normal_acceleration_speed = 0.1;
 normal_deceleration_speed = 0.2;
@@ -63,9 +62,6 @@ deceleration_speed = normal_deceleration_speed;
 friction_speed = normal_friction_speed;
 top_speed = normal_top_speed;
 
-ground_spd = 0; //how fast it's moving on the ground
-ground_angle = 0; //the grounds angle
-
 force_slide_angle = 45; //if you walk on an incline above this angle you're forced into sliding
 #macro force_slide_false (ground_angle < force_slide_angle || ground_angle > 360-force_slide_angle)
 
@@ -85,7 +81,7 @@ h_radius_slide	= 6;
 w_radius		= w_radius_normal; //width radius
 h_radius		= h_radius_normal; //height radius`?=)
 
-airborne = false;
+
 sliding = false;
 
 super_speed = false;
@@ -137,7 +133,6 @@ squishing = false;
 squishing_t = 0;
 squishing_duration = 0;
 
-subimg = 0;
 anim_speed = 1; //set to -1 to reverse
 
 t = 0; //used for some states as a timer
@@ -686,7 +681,7 @@ state = new SnowState("idle");
                             y = attack_y_;
                             
                             //snaps entity to not be inside walls
-                            while (place_meeting(x,y,global.tile_collisions)) {
+                            while (place_meeting(x,y,entity_collision_layer)) {
                             	x -= toward_x_;
                                 y -= toward_y_;
                             }
@@ -789,7 +784,7 @@ state = new SnowState("idle");
                             meteor = true;
                             
                             //snaps entity to not be inside walls
-                            while (place_meeting(x,y,global.tile_collisions)) {
+                            while (place_meeting(x,y,entity_collision_layer)) {
                             	x -= toward_x_;
                                 y -= toward_y_;
                             }
@@ -833,22 +828,6 @@ state = new SnowState("idle");
                 else if(InputCheck(INPUT_VERB.UP)) state.change("dash_air_up");
 				else state.change("dash_air");	
 			}
-            
-            //var attack_list_check_ = ds_list_create();
-            //var num_ = collision_circle_list(x,y,meteor_radius,obj_enemy,true,true,attack_list_check_,true);
-            //for (var i = 0; i < num_; i++) {
-            	//var inst = attack_list_check_[|i];
-                //if(!inst.invulnerable){
-                    //inst.invulnerable = true;
-                    //inst.x_speed = 6*mirror;
-                    //inst.y_speed = -4;
-                    //inst.state.change("meteor");
-                    //
-                    //inst.hurt();
-                //}
-                //
-            //}
-            //ds_list_destroy(attack_list_check_)
 		},	
 	})
 	
@@ -934,8 +913,6 @@ state = new SnowState("idle");
 			
 			dash_ground_force = dash_ground_force_min;
 			t = 0;
-			//t2 = 0;
-			//flash = false;
 			control_lock = 10;
 			input_h = 0;
 			
@@ -950,6 +927,14 @@ state = new SnowState("idle");
 			if(!InputCheck(INPUT_VERB.DASH)){
 				state.change("dash");
 			}
+            
+            if(InputPressed(INPUT_VERB.LEFT)){
+                mirror = -1;
+            }
+            
+            if(InputPressed(INPUT_VERB.RIGHT)){
+                mirror = 1;
+            }
 			
 			var amount = t/dash_ground_windup;
 			dash_ground_force = lerp(dash_ground_force_min,dash_ground_force_max,amount);

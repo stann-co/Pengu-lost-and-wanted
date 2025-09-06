@@ -93,7 +93,7 @@ if(global.debug){
         //if attack pos collides with wall, move it back
         var attack_x_ = x+(attack_x*mirror);
         var attack_y_ = y+attack_y;
-        if( collision_point(attack_x_,attack_y_,global.tile_collisions,true,true) != noone ){
+        if( collision_point(attack_x_,attack_y_,entity_collision_layer,true,true) != noone ){
                        attack_x_ = (attack_x_ > x) ? bbox_right : bbox_left;
         }
         draw_circle(attack_x_,attack_y_,attack_radius,false)

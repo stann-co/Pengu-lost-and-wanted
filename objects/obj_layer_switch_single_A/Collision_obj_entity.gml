@@ -1,6 +1,7 @@
 /// @description
+
 if(only_grounded){
-	var ground_check = !obj_pengu.airborne;
+	var ground_check = !other.airborne;
 } else var ground_check = true;
 
 if(ground_check){

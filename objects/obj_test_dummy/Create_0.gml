@@ -15,10 +15,6 @@ floor_friction = 0.91;
 mass = 20;
 drag = 0.01;
 
-meteor_trace_array = [];
-meteor_trace_offset = 1;
-meteor_trace_count = 6;
-
 var points_ = []
 array_push(points_,new verlet(0,-4,mass,1));
 array_push(points_,new verlet(0,-15,mass,0));
@@ -105,11 +101,7 @@ state.add_child("meteor_base","meteor",{
                 subimg: subimg,
                 x: x,
                 y: y,
-                //scale_x: scale_x,
-                //scale_y, scale_y,
-                //mirror: mirror,
                 image_angle: image_angle
-                //color: super_speed_colors[(global.t / meteor_trace_offset) mod array_length(super_speed_colors)]
             }
             array_insert(meteor_trace_array,0,trace);
             
@@ -136,15 +128,6 @@ state.add_child("meteor_base","meteor",{
             draw_sprite_ext(trace.sprite_index,trace.subimg,trace.x,trace.y,1,1,trace.image_angle,-1,1);
             gpu_set_colourwriteenable(1,1,1,1);
         }
-        //shader_reset();
-                
-        
-        
-        
-        
-        
-        
-        
         
         draw_sprite_ext(spr_test_dummy_full,1,x,y,1,1,image_angle,-1,1);
     }    

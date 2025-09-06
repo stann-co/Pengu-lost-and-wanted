@@ -1,24 +1,66 @@
 ///@function collision_layer_switch()
 ///@desc changes active collision layer
 ///@param COLLISION_LAYERS
-function collision_layer_switch(collision_layer,change_depth){
+function collision_layer_switch(_collision_layer,_change_depth){
 	
-	switch (collision_layer) {
-	    case COLLISION_LAYERS.A:
-	        global.tile_collisions = layer_tilemap_get_id(obj_game.collision_A);
-			obj_game.active_collisions = obj_game.collision_A;
-			if(change_depth) obj_pengu.depth = global.depth_a;	
-	        break;
-		case COLLISION_LAYERS.B:
-	        global.tile_collisions = layer_tilemap_get_id(obj_game.collision_B);
-			obj_game.active_collisions = obj_game.collision_B;
-			if(change_depth) obj_pengu.depth = global.depth_b;	
-	        break;
-		case COLLISION_LAYERS.C:
-	        global.tile_collisions = layer_tilemap_get_id(obj_game.collision_C);
-			obj_game.active_collisions = obj_game.collision_C;
-			if(change_depth) obj_pengu.depth = global.depth_c;	
-	        break;
-	}
-	obj_game.show_collisions();
+    if(_change_depth){
+	    switch (_collision_layer) {
+	        case COLLISION_LAYERS.A:
+	    		other.depth = global.depth_a;	
+	            break;
+	    	case COLLISION_LAYERS.B:
+	    		other.depth = global.depth_b;	
+	            break;
+	    	case COLLISION_LAYERS.C:
+	    		other.depth = global.depth_c;	
+	            break;
+	    }
+    }
+	
+    
+    if(other.object_index == obj_pengu){
+        set_active_collisions(_collision_layer);
+    }
+    
+    other.collision_layer = _collision_layer;
+}
+
+///@function show_collisions()
+///@desc show collision layers
+///@param show
+function show_collisions(_show){
+    if(_show){
+        layer_set_visible("collision_A",true);
+        layer_set_visible("collision_B",true);
+        layer_set_visible("collision_C",true);
+        layer_set_visible("backgrounds_1",true);
+    } else {
+        layer_set_visible("collision_A",false);
+        layer_set_visible("collision_B",false);
+        layer_set_visible("collision_C",false);
+        layer_set_visible("backgrounds_1",false);
+    }
+}
+
+///@function set_active_collisions()
+///@desc set collision layer to emphasized
+///@param active_layer
+function set_active_collisions(_active_layer){
+    switch (_active_layer) {
+        case COLLISION_LAYERS.A:
+            layer_shader("collision_A",sh_default)
+            layer_shader("collision_B",sh_half_alpha)
+            layer_shader("collision_C",sh_half_alpha)
+            break;
+        case COLLISION_LAYERS.B:
+            layer_shader("collision_A",sh_half_alpha)
+            layer_shader("collision_B",sh_default)
+            layer_shader("collision_C",sh_half_alpha)
+            break;
+        case COLLISION_LAYERS.C:
+            layer_shader("collision_A" ,sh_half_alpha)
+            layer_shader("collision_B",sh_half_alpha)
+            layer_shader("collision_C",sh_default)
+            break;
+    }
 }

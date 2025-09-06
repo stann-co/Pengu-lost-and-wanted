@@ -8,15 +8,14 @@ enum COLLISION_TYPE {
 ///@function tile_collision()
 ///@desc returns tile collision
 function tile_collision(x_,y_,col_type_ = COLLISION_TYPE.All){
+    var tile_layer_ = global.collision_layers[? collision_layer];
 	switch (col_type_) {
 	    case COLLISION_TYPE.Tile:
-			return collision_point(round(x_),round(y_),global.tile_collisions,true,true);        
-	        
+			return collision_point(round(x_),round(y_),tile_layer_,true,true);
 		case COLLISION_TYPE.Object:
-	        return collision_point(round(x_),round(y_),obj_collision,true,true);        
-	        
+	        return collision_point(round(x_),round(y_),obj_collision,true,true);
 	    case COLLISION_TYPE.All:
-	        return collision_point(round(x_),round(y_),[obj_collision,global.tile_collisions],true,true);        
+	        return collision_point(round(x_),round(y_),[obj_collision,tile_layer_],true,true);
 	}
 }
 

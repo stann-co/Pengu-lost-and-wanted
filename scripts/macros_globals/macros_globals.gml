@@ -15,6 +15,9 @@
 #macro freeze_frame (global.freeze_duration != 0)
 #macro can_move   (!pausing && !freeze_frame)
 
+
+#macro entity_collision_layer [obj_collision,global.collision_layers[? collision_layer]]
+
 #macro text_height 14
 //#macro gamepad gamey_pad
 
@@ -122,9 +125,15 @@ global.depth_a = 300;
 global.depth_b = 400;
 global.depth_c = 500;
 
+global.collision_layers = ds_map_create()
+global.collision_layers[? COLLISION_LAYERS.A] = undefined
+global.collision_layers[? COLLISION_LAYERS.B] = undefined
+global.collision_layers[? COLLISION_LAYERS.C] = undefined
+
 global.activation_list = [];
 
 global.debug = true;
+global.show_collisions = true;
 global.checkpoint = -1;
 
 global.score = 0;

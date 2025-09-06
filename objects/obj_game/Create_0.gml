@@ -233,25 +233,25 @@ state.add("level_start",{
 	}
 });
 
-state.add("level_checkpoint_start",{
-	enter: function(){
-		//resets to active checkpoint if there is any
-		if(global.active_level != undefined && global.active_level.checkpoint != undefined){
-			obj_pengu.x = global.active_level.checkpoint.x;
-			obj_pengu.y = global.active_level.checkpoint.y;
-			
-			global.coins = global.active_level.checkpoint_coins;
-			global.score = global.active_level.checkpoint_score;
-			global.score_mult = 0;
-			global.score_combo_t = 0;
-			
-			state.change("idle")
-		} else {
-			room_restart()
-			state.change("level_start")
-		}
-	}
-});
+//state.add("level_checkpoint_start",{
+	//enter: function(){
+		////resets to active checkpoint if there is any
+		//if(global.active_level != undefined && global.active_level.checkpoint != undefined){
+			//obj_pengu.x = global.active_level.checkpoint.x;
+			//obj_pengu.y = global.active_level.checkpoint.y;
+			//
+			//global.coins = global.active_level.checkpoint_coins;
+			//global.score = global.active_level.checkpoint_score;
+			//global.score_mult = 0;
+			//global.score_combo_t = 0;
+			//
+			//state.change("idle")
+		//} else {
+			//room_restart()
+			//state.change("level_start")
+		//}
+	//}
+//});
 
 #endregion
 
@@ -360,7 +360,7 @@ state.add("pause_menu",{
 			audio_play_sound(snd_ui_hover,0,0);
 			if(InputPressed(INPUT_VERB.DOWN)) selected++;
 			else if(InputPressed(INPUT_VERB.UP)) selected--;
-			selected = clamp(selected,0,4);
+			selected = clamp(selected,0,3);
 		}
 		
 		if(InputPressed(INPUT_VERB.ACCEPT)){
@@ -379,11 +379,13 @@ state.add("pause_menu",{
 					room_restart();
 					state.change("level_start");
 				});
-			} else if(selected == 4 && !transition_in && global.active_level.checkpoint != undefined){ //restart to checkpoint
-				transition(function(){
-					state.change("level_checkpoint_start");
-				});
 			}
+                
+            //else if(selected == 4 && !transition_in && global.active_level.checkpoint != undefined){ //restart to checkpoint
+				//transition(function(){
+					//state.change("level_checkpoint_start");
+				//});
+			//}
 		}
 		
 		if(InputPressed(INPUT_VERB.CANCEL)){
@@ -410,10 +412,11 @@ state.add("pause_menu",{
 
 		draw_text(x_,10,"GAME PAUSED");
 		
-		var options = ["CONTINUE","SETTINGS","LEVEL SELECT","RESTART LEVEL","CHECKPOINT"]
+        //var options = ["CONTINUE","SETTINGS","LEVEL SELECT","RESTART LEVEL","CHECKPOINT"]
+		var options = ["CONTINUE","SETTINGS","LEVEL SELECT","RESTART LEVEL"];
 		
 		for (var i = 0; i < array_length(options); ++i) {
-			if(selected == 4 && global.active_level.checkpoint == undefined) shader_set(sh_greyed);
+			//if(selected == 4 && global.active_level.checkpoint == undefined) shader_set(sh_greyed);
 			if(selected != i) shader_set(sh_deselected)
 		    draw_text(x_,y_ + h * i,options[i]);
 			
@@ -492,7 +495,8 @@ state.add("settings",{
 			case MENU_SETTINGS.debug_draw:
 		        if(action){
 					global.debug = !global.debug
-					show_collisions()
+                    global.show_collisions = !global.show_collisions
+					show_collisions(global.show_collisions)
 				}
 		        break;
 		}
@@ -669,39 +673,6 @@ state.add_child("level_tally_start","level_tally_anykey", {
 
 #region debugging
 
-show_collisions = function(){	
-	if(global.debug){
-		layer_set_visible(collision_A,true);
-		layer_set_visible(collision_B,true);
-		layer_set_visible(collision_C,true);
-		layer_set_visible("backgrounds_1",true);
-		
-		switch (active_collisions) {
-		    case collision_A:
-		        layer_shader(collision_A,sh_default)
-				layer_shader(collision_B,sh_half_alpha)
-				layer_shader(collision_C,sh_half_alpha)
-		        break;
-			case collision_B:
-		        layer_shader(collision_A,sh_half_alpha)
-				layer_shader(collision_B,sh_default)
-				layer_shader(collision_C,sh_half_alpha)
-		        break;
-			case collision_C:
-		        layer_shader(collision_A,sh_half_alpha)
-				layer_shader(collision_B,sh_half_alpha)
-				layer_shader(collision_C,sh_default)
-		        break;
-		}
-		
-	} else {
-		layer_set_visible(collision_A,false);
-		layer_set_visible(collision_B,false);
-		layer_set_visible(collision_C,false);
-		layer_set_visible("backgrounds_1",false);
-	}
-}	
-
 	#region levels
 	//dbg_section("levels")
 	
@@ -718,7 +689,8 @@ show_collisions = function(){
 	dbg_section("debug",false)	
 	dbg_button("toggle debug drawing",function(){
 		global.debug = !global.debug;
-		show_collisions();
+        global.show_collisions = !global.show_collisions
+		show_collisions(global.show_collisions);
 	})
 	#endregion
 	

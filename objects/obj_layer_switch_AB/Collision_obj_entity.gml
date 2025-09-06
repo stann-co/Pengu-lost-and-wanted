@@ -1,12 +1,12 @@
 /// @description
 var mid_x = lerp(bbox_right ,bbox_left,0.5);
 var mid_y = lerp(bbox_bottom ,bbox_top,0.5);
-var dir = point_direction(mid_x,mid_y,obj_pengu.x,obj_pengu.y)+90-image_angle;
+var dir = point_direction(mid_x,mid_y,other.x,other.y)+90-image_angle;
 if(dir >= 360) dir-=360;
 else if(dir < 0) dir+=360;
 
 if(only_grounded){
-	var ground_check = !obj_pengu.airborne;
+	var ground_check = !other.airborne;
 } else var ground_check = true;
 
 if(ground_check){
