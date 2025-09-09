@@ -76,7 +76,7 @@ state.add("textbox",{
         //effects
         var shake_ = false;
         var wave_ = false;
-        var color_ = white;
+        var color_ = WHITE;
         
         //text switches
         // & new line
@@ -92,9 +92,9 @@ state.add("textbox",{
         
         var char_ = ""
         
-        for (var c = 1; c <= text_t; c++) {
+        for (var c_ = 1; c_ <= text_t; c_++) {
             
-            char_ = string_char_at(text_display,c);
+            char_ = string_char_at(text_display,c_);
             var cw_ = string_width(char_);
             var ch_ = string_height(char_);
             
@@ -105,31 +105,31 @@ state.add("textbox",{
             if(!escape_char_){
                 switch (char_) {
                     case "^": //pause
-                        text_wait = real(string_char_at(text_display,c+1))*10;
-                        text_display = string_delete(text_display,c,2);
+                        text_wait = real(string_char_at(text_display,c_+1))*10;
+                        text_display = string_delete(text_display,c_,2);
                         continue;
                     case "&": //manual line break
                         x_ = x_start_;
                         y_ += ch_;
-                        if(c == floor(text_t)) text_t++;
+                        if(c_ == floor(text_t)) text_t++;
                         continue;
                     
                     case "/": //escape character
                         escape_char_ = true;
-                        if(c == floor(text_t)) text_t++;
+                        if(c_ == floor(text_t)) text_t++;
                         continue;
                     
                     case "[": //effect switch
                         #region effect switch
-                        var switch_start_ = c;
+                        var switch_start_ = c_;
                         var switch_end_ = 1;
-                        for (var e = 2; e < 10; e++) { //looks ahead for ]
-                        	if (string_char_at(text_display,c+e) == "]"){
+                        for (var e_ = 2; e < 10; e++) { //looks ahead for ]
+                        	if (string_char_at(text_display,c_+e_) == "]"){
                                 switch_end_ = e+1;
                                 break;
                             }
                         }
-                        var effect_ = string_copy(text_display,c+1,switch_end_-2);
+                        var effect_ = string_copy(text_display,c_+1,switch_end_-2);
                         
                         switch (effect_) {
                             case "s":
@@ -147,24 +147,24 @@ state.add("textbox",{
                             
                             //colors
                             case "cw":
-                                color_ = white;
+                                color_ = WHITE;
                                 break;
                             case "cr":
-                                color_ = red;
+                                color_ = RED;
                                 break;
                             case "cg":
-                                color_ = green;
+                                color_ = GREEN;
                                 break;
                             case "cb":
-                                color_ = blue;
+                                color_ = BLUE;
                                 break;
                             case "cy":
-                                color_ = yellow;
+                                color_ = YELLOW;
                                 break;
                         }
                     
-                        if(c == floor(text_t)) text_t += switch_end_;
-                        c += switch_end_-1;
+                        if(c_ == floor(text_t)) text_t += switch_end_;
+                        c_ += switch_end_-1;
                         continue; //goes to next character, when switch char is found
                     
                         #endregion
@@ -180,12 +180,12 @@ state.add("textbox",{
             }
             
             if(wave_){
-                offset_y_ = sin(global.t*0.1+c*0.1)*2;    
+                offset_y_ = sin(global.t*0.1+c_*0.1)*2;    
             }
             
             draw_set_color(color_);
             draw_text(x_+offset_x_,y_+offset_y_,char_);
-            draw_set_color(white);
+            draw_set_color(WHITE);
             x_+=cw_;
         }
         

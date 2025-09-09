@@ -1,47 +1,47 @@
-/// feather ignore all in /Extensions/*
 
-#macro version "0.1.3-alpha"
 
-#macro in_browser (os_type != os_windows)
+#macro VERSION "0.1.3-alpha"
+
+#macro IN_BROWSER (os_type != os_windows)
 
 //Where all macros are set
-#macro game_speed game_get_speed(gamespeed_fps)
+#macro GAME_SPEED game_get_speed(gamespeed_fps)
 
-#macro camera_outer_margin 200
-#macro camera_inner_margin 100
+#macro CAMERA_OUTER_MARGIN 200
+#macro CAMERA_INNER_MARGIN 100
 
-#macro main_menus (room == rm_init)
-#macro pausing     (obj_game.state.state_is("pause_menu") || obj_game.state.state_is("settings"))
-#macro freeze_frame (global.freeze_duration != 0)
-#macro can_move   (!pausing && !freeze_frame)
+#macro MAIN_MENUS (room == rm_init)
+#macro PAUSING     (obj_game.state.state_is("pause_menu") || obj_game.state.state_is("settings"))
+#macro FREEZE_FRAME (global.freeze_duration != 0)
+#macro CAN_MOVE   (!PAUSING && !FREEZE_FRAME)
 
 
-#macro entity_collision_layer [obj_collision,global.collision_layers[? collision_layer]]
+#macro ENTITY_COLLISION_LAYER [obj_collision,global.collision_layers[? collision_layer]]
 
-#macro text_height 14
+#macro TEXT_HEIGHT 14
 //#macro gamepad gamey_pad
 
 //colors
-#macro red #ff0000
-#macro orange #ff9c00
-#macro yellow #ffdd00
-#macro green #00ff04
-#macro cyan #22e7ff
-#macro blue #0047ff
-#macro purple #a400ff
-#macro pink #ff14b9
-#macro light_pink #ff9ae2
+#macro RED #ff0000
+#macro ORANGE #ff9c00
+#macro YELLOW #ffdd00
+#macro GREEN #00ff04
+#macro CYAN #22e7ff
+#macro BLUE #0047ff
+#macro PURPLE #a400ff
+#macro PINK #ff14b9
+#macro LIGHT_PINK #ff9ae2
 
-#macro pengu_blue #3978a8
-#macro pengu_white #dff6f5
+#macro PENGU_BLUE #3978a8
+#macro PENGU_WHITE #dff6f5
 
-#macro white c_white
-#macro light_gray #BCBCBC
-#macro gray c_gray
-#macro dark_gray #373737
-#macro black c_black
+#macro WHITE c_white
+#macro LIGHT_GRAY #BCBCBC
+#macro GRAY c_gray
+#macro DARK_GRAY #373737
+#macro BLACK c_black
 
-#macro normal_blank #8080F9
+#macro NORMAL_BLANK #8080F9
 
 //enums
 enum COLLISION_LAYERS {
@@ -51,27 +51,27 @@ enum COLLISION_LAYERS {
 }
 
 enum LANGUAGES {
-	English,
-	//Danish,
-	//Russian,
+	ENGLISH,
+	//DANISH,
+	//RUSSIAN,
 	TOTAL
 }
 
 enum MENU_SETTINGS {
-	fullscreen,
-	music_volume,
-	sound_volume,
-	draw_shine,
-	draw_reflections,
-	debug_draw,
+	FULLSCREEN,
+	MUSIC_VOLUME,
+	SOUND_VOLUME,
+	DRAW_SHINE,
+	DRAW_REFLECTIONS,
+	DEBUG_DRAW,
 	TOTAL
 }
 
 enum SIDES {
-	Left,
-	Right,
-	Top,
-	Bottom,
+	LEFT,
+	RIGHT,
+	TOP,
+	BOTTOM,
 }
 
 enum ATTACK_TYPES {
@@ -83,7 +83,7 @@ enum ATTACK_TYPES {
     SPEICAL
 }
 
-#macro volume_max 10
+#macro VOLUME_MAX 10
 global.music_volume = 10;
 global.sound_volume = 10;
 
@@ -107,17 +107,19 @@ global.tile_angles = [
  
 ];
 
+//Feather disable GM2017
 global.persistent_objects = [
     obj_camera,
     __InputUpdateController,
     __obj_stanncam_manager,
-    __obj_scene,
+    obj_scene,
     obj_game,
     obj_pengu, 
     obj_depth_set,
     obj_layer_draw,
     obj_splash
 ]
+//Feather enable GM2017
 
 global.sidescroller = true;
 
@@ -139,7 +141,7 @@ global.checkpoint = -1;
 global.score = 0;
 global.score_mult = 1;
 global.score_combo_t = 0;
-#macro score_combo_t_max (game_speed * 3)
+#macro SCORE_COMBO_T_MAX (GAME_SPEED * 3)
 global.coins = 0;
 
 global.control = true;
@@ -166,9 +168,9 @@ part_type_orientation(global.part_stars,0,360,2,1,false);
 //fonts
 global.gui_font = font_add_sprite_ext(spr_gui_font,"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]",false,0);
 
-function level_details(name_,room_) constructor {
-	name = name_
-	room_id = room_
+function LevelDetails(_name,_room) constructor {
+	name = _name
+	room_id = _room
 	level_score = 0
 	level_time = undefined
 	checkpoint = undefined
@@ -180,9 +182,9 @@ function level_details(name_,room_) constructor {
 global.active_level = undefined;
 
 global.levels = [
-	new level_details("TUTORIAL",rm_demo_tutorial),
-	new level_details("DEMO",rm_demo_demo),
-	new level_details("CHALLENGE",rm_demo_challenge)
+	new LevelDetails("TUTORIAL",rm_demo_tutorial),
+	new LevelDetails("DEMO",rm_demo_demo),
+	new LevelDetails("CHALLENGE",rm_demo_challenge)
 ]
 
 //3D

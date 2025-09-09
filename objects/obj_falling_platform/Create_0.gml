@@ -2,7 +2,7 @@ falling = false;
 shake_x = 0;
 shake_y = 0;
 t = 0;
-duration = game_speed*0.5;
+duration = GAME_SPEED*0.5;
 
 subimg = 0;
 max_speed = 4;

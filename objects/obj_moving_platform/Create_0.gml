@@ -1,9 +1,9 @@
 /// @description
 event_inherited();
 
-pause_duration = pause_duration_seconds * game_speed
-duration = duration_seconds * game_speed;
-offset_duration = offset_duration_seconds * game_speed;
+pause_duration = pause_duration_seconds * GAME_SPEED
+duration = duration_seconds * GAME_SPEED;
+offset_duration = offset_duration_seconds * GAME_SPEED;
 
 t = 0;
 
@@ -23,10 +23,10 @@ if(info_target != -1){
 	
 	//a target gets places at start, so even if the platform is out of view
 	//it's active as long as start or end pos is in view
-	var start_target = instance_create_depth(x,y,depth,obj_info_target);
+	var start_target_ = instance_create_depth(x,y,depth,obj_info_target);
 	
 	//if either self or target is in view, the platform will move
-	activation_link(self,info_target,start_target);
+	activation_link(self,info_target,start_target_);
 }
 
 forward = true;
@@ -35,11 +35,7 @@ last_x = x;
 last_y = y;
 last_rot = image_angle;
 
-trigger = function(side_,object_){
-	
-	
-	object_.x+= x - last_x;
-	
+trigger = function(_side,_object){
+	_object.x+= x - last_x;
 	return true;
-
 }

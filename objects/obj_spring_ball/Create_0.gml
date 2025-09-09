@@ -3,7 +3,7 @@ dir = 0;
 
 t = 0
 launch_speed = 0;
-duration = game_speed*2;
+duration = GAME_SPEED*2;
 
 grabbed_on = false;
 
@@ -26,9 +26,3 @@ trigger = function(){
 		springing = true;
 	}
 }
-
-
-
-
-
-

@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"lexicon_get_os_language",
+  "%Name":"lexicon_get_json_data",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"lexicon_get_os_language",
+  "name":"lexicon_get_json_data",
   "parent":{
     "name":"General",
     "path":"folders/Extensions/Lexicon/General.yy",

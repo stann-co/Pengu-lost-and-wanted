@@ -41,8 +41,8 @@ if(splash_particles){
 	part_system_position(ps,x+(sprite_width/2),bbox_bottom);
 	part_system_automatic_draw(ps, false);
 	
-	var part = particle_get_type(ps_winter_waterfall);
-	part_emitter_stream(ps,emitter,part,2);
+	var part_ = particle_get_type(ps_winter_waterfall);
+	part_emitter_stream(ps,emitter,part_,2);
 }
 #endregion
 

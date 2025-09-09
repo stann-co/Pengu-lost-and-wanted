@@ -1,52 +1,52 @@
-/// @desc return cloest side from instance
+/// @desc return cloest side_ from instance
 /// @param {real*} _x
 /// @param {real*} _y
-/// @param {object*} _inst instance to get side from
+/// @param {object*} _inst instance to get side_ from
 function find_side(_x,_y,_inst){
 
 
-    var angle = _inst.image_angle;
+    var angle_ = _inst.image_angle;
     
-    var vec = new Vector2(_x - _inst.x,_y - _inst.y)
-    vec = vec.rotated(angle);
+    var vec_ = new Vector2(_x - _inst.x,_y - _inst.y)
+    vec_ = vec_.rotated(angle_);
     
-    _x = vec.x + _inst.x;
-    _y = vec.y + _inst.y;
+    _x = vec_.x + _inst.x;
+    _y = vec_.y + _inst.y;
 
     with(_inst){
         
-        var w = sprite_width  / 2; //half width
-        var h = sprite_height / 2; //half height
+        var w_ = sprite_width  / 2; //half width
+        var h_ = sprite_height / 2; //half height
         
         image_angle = 0
-        var mid_x = (bbox_left + bbox_right ) / 2;
-        var mid_y = (bbox_top  + bbox_bottom) / 2;
-        image_angle = angle
+        var mid_x_ = (bbox_left + bbox_right ) / 2;
+        var mid_y_ = (bbox_top  + bbox_bottom) / 2;
+        image_angle = angle_
      
-        var left	    = mid_x - w;
-        var right	= mid_x + w;
-        var top		= mid_y - h;
-        var bottom  = mid_y + h;
+        var left_	    = mid_x_ - w_;
+        var right_	= mid_x_ + w_;
+        var top_		= mid_y_ - h_;
+        var bottom_  = mid_y_ + h_;
      
-        var offset_x = _x - mid_x;
-        var offset_y = _y - mid_y;
+        var offset_x_ = _x - mid_x_;
+        var offset_y_ = _y - mid_y_;
         
-        var is_vertical = false;
+        var is_vertical_ = false;
         
         if(sprite_height < sprite_width){
-            var offset_clamped = _x - clamp(_x,left+h,right-h);
-            is_vertical = abs(offset_y) > abs(offset_clamped );
+            var offset_clamped_ = _x - clamp(_x,left_+h_,right_-h_);
+            is_vertical_ = abs(offset_y_) > abs(offset_clamped_ );
         } else {
-            var offset_clamped = _y - clamp(_y,top+w,bottom-w);
-            is_vertical = abs(offset_clamped) > abs(offset_x );
+            var offset_clamped_ = _y - clamp(_y,top_+w_,bottom_-w_);
+            is_vertical_ = abs(offset_clamped_) > abs(offset_x_ );
         }
   
-        var side = noone
-        if( is_vertical){
-            side = (offset_y > 0) ? SIDES.Bottom: SIDES.Top;
+        var side_ = noone
+        if( is_vertical_){
+            side_ = (offset_y_ > 0) ? SIDES.BOTTOM: SIDES.TOP;
         } else {
-            side = (offset_x > 0) ? SIDES.Right: SIDES.Left;
+            side_ = (offset_x_ > 0) ? SIDES.RIGHT: SIDES.LEFT;
         }
-        return side
+        return side_
     }
 }

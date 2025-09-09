@@ -30,7 +30,7 @@ trigger = function(_side,_object){
 	return true;
 }
 
-phys = new verlet(x,y,4);
+phys = new Verlet(x,y,4);
 
 
 //thruster
@@ -62,7 +62,7 @@ draw_thruster = function(_x,_y){
 	}
 	
 	surface_set_target(srf_mask)
-		draw_clear(black)
+		draw_clear(BLACK)
 		draw_sprite_ext(spr_thruster_mask,0,16,11,1,1,0,-1,0.1);
 	surface_reset_target();
 	tex_mask = surface_get_texture(srf_mask);

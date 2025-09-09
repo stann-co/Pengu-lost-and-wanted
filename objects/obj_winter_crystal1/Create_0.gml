@@ -1,8 +1,8 @@
 /// @description
 refract_surf = -1;
 
-s_texture = shader_get_sampler_index(sh_refraction,"s_texture");
-u_uvs = shader_get_uniform(sh_refraction,"u_uvs");
+s_texture_ = shader_get_sampler_index(sh_refraction,"s_texture_");
+u_uvs_ = shader_get_uniform(sh_refraction,"u_uvs_");
 u_refract = shader_get_uniform(sh_refraction,"u_refract");
 u_amount = shader_get_uniform(sh_refraction,"u_amount");
 

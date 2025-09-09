@@ -4,7 +4,7 @@ function set_background_workshop1(){
 	global.background = function(){
 		//the background is scaled up so it appears smooth when being parralaxed
 		
-		draw_clear(black);
+		draw_clear(BLACK);
 		gpu_set_colorwriteenable(1,1,1,0);
 		draw_background_depth(spr_bg_workshop_sky,0, 0		,,,,,false);
 		draw_background_depth(spr_bg_workshop,1, 0.1	,,,,,true);
@@ -15,8 +15,8 @@ function set_background_workshop1(){
 	}
 	
 	with(obj_camera){
-		blur_steps_D	= 30.0;		// blur steps for discrete samples
-		sigma_D			= 0.2;		// sigma for discrete samples
+		blur_steps_d	= 30.0;		// blur steps for discrete samples
+		sigma_d			= 0.2;		// sigma for discrete samples
 		bloom_threshold = 0.293;
 		bloom_range		= 0.467;
 		bloom_intensity	= 0.23;
@@ -40,8 +40,8 @@ function set_background_up_mountain(){
 	}
 	
 	with(obj_camera){
-	  blur_steps_D		= 30.0;
-	  sigma_D			= 0.25699999928474426;
+	  blur_steps_d		= 30.0;
+	  sigma_d			= 0.25699999928474426;
 	  bloom_threshold	= 0.80299997329711914;
 	  bloom_range		= 0.24699999392032623;
 	  bloom_intensity	= 0.15600000321865082;
@@ -65,8 +65,8 @@ function set_background_original(){
 			draw_background_depth(spr_bg_original,2,0.15,0,0,1,1,true);
 			draw_background_depth(spr_bg_original,3,0.2 ,0,0,1,1,true);
 		
-			for (var i = 0; i < 16; ++i) {
-			    draw_sprite_tiled_area_ext(spr_bg_ocean,0,(-global.camera.get_x()+global.t)*(0.25+(i*0.05)),130,0,i*5+130,global.game_w,(i*5)+135);
+			for (var i_ = 0; i_ < 16; ++i_) {
+			    draw_sprite_tiled_area_ext(spr_bg_ocean,0,(-global.camera.get_x()+global.t)*(0.25+(i_*0.05)),130,0,i_*5+130,global.game_w,(i_*5)+135);
 			}
 		
 			surface_reset_target();
@@ -74,8 +74,8 @@ function set_background_original(){
 			draw_surface(bg_layer,global.camera.get_x(),global.camera.get_y())
 			//global.camera.draw_surf(bg_layer,0,0);
 		
-		  blur_steps_D		= 30.0;
-		  sigma_D			= 0.25699999928474426;
+		  blur_steps_d		= 30.0;
+		  sigma_d			= 0.25699999928474426;
 		  bloom_threshold	= 0.80299997329711914;
 		  bloom_range		= 0.24699999392032623;
 		  bloom_intensity	= 0.15600000321865082;
@@ -94,14 +94,14 @@ function set_background_city(){
 			}
 			surface_set_target(bg_layer);
 			
-			var offset = global.t * 6;
+			var offset_ = global.t * 6;
 			
-			draw_clear(white);			
-			draw_background_depth(spr_bg_future_city,0,0.1	,offset,0,1,1,true);
-			draw_background_depth(spr_bg_future_city,1,0.2	,offset,0,1,1,true);
-			draw_background_depth(spr_bg_future_city,2,0.3	,offset,0,1,1,true);
-			draw_background_depth(spr_bg_future_city,3,0.4	,offset,0,1,1,true);
-			draw_background_depth(spr_bg_future_city,4,0.5	,offset,0,1,1,true);
+			draw_clear(WHITE);			
+			draw_background_depth(spr_bg_future_city,0,0.1	,offset_,0,1,1,true);
+			draw_background_depth(spr_bg_future_city,1,0.2	,offset_,0,1,1,true);
+			draw_background_depth(spr_bg_future_city,2,0.3	,offset_,0,1,1,true);
+			draw_background_depth(spr_bg_future_city,3,0.4	,offset_,0,1,1,true);
+			draw_background_depth(spr_bg_future_city,4,0.5	,offset_,0,1,1,true);
 			
 			
 		
@@ -120,7 +120,7 @@ function set_background_devzone(){
 				bg_layer = surface_create(global.game_w,global.game_h);
 			}
 			surface_set_target(bg_layer);
-            draw_clear(light_gray)
+            draw_clear(LIGHT_GRAY)
             
             //var subimg = ((global.t*0.5) mod 8)
             //
@@ -152,16 +152,16 @@ function set_background_original_red(){
 			draw_background_depth(spr_bg_original_red,2,0.15,0,0,1,1,true);
 			draw_background_depth(spr_bg_original_red,3,0.2 ,0,0,1,1,true);
 		
-			for (var i = 0; i < 16; ++i) {
-			    draw_sprite_tiled_area_ext(spr_bg_ocean_red,0,(-global.camera.get_x()+global.t)*(0.25+(i*0.05)),130,0,i*5+130,global.game_w,(i*5)+135);
+			for (var i_ = 0; i_ < 16; ++i_) {
+			    draw_sprite_tiled_area_ext(spr_bg_ocean_red,0,(-global.camera.get_x()+global.t)*(0.25+(i_*0.05)),130,0,i_*5+130,global.game_w,(i_*5)+135);
 			}
 		
 			surface_reset_target();
 		
 			draw_surface(bg_layer,global.camera.get_x(),global.camera.get_y())
 		
-		  blur_steps_D		= 30.0;
-		  sigma_D			= 0.25699999928474426;
+		  blur_steps_d		= 30.0;
+		  sigma_d			= 0.25699999928474426;
 		  bloom_threshold	= 0.80299997329711914;
 		  bloom_range		= 0.24699999392032623;
 		  bloom_intensity	= 0.15600000321865082;
@@ -173,44 +173,44 @@ function set_background_original_red(){
 
 #endregion
 
-function draw_background_depth(_sprite,_subimg,_depth,offset_x=0,offset_y=0,scalex=1,scaley=1,only_horizontal = false){
+function draw_background_depth(_sprite,_subimg,_depth,_offset_x=0,_offset_y=0,_scalex=1,_scaley=1,_only_horizontal = false){
 	var cam_ = global.camera;
 
-	//the offset the camera is from the middle of the room
-	offset_x += (-cam_.get_x() * scalex);
+	//the offset_ the camera is from the middle of the room
+	_offset_x += (-cam_.get_x() * _scalex);
 		
-	if(!only_horizontal){
-		offset_y += (-cam_.get_y() * scaley);
+	if(!_only_horizontal){
+		_offset_y += (-cam_.get_y() * _scaley);
 	}
 	
-	if(only_horizontal){
-		var width = sprite_get_width(_sprite) *scalex;
-		draw_sprite_tiled_ext2(_sprite,_subimg,offset_x*_depth mod (width) - width,offset_y*_depth,4,1,scalex,scaley,-1,1);
+	if(_only_horizontal){
+		var width_ = sprite_get_width(_sprite) *_scalex;
+		draw_sprite_tiled_ext2(_sprite,_subimg,_offset_x*_depth mod (width_) - width_,_offset_y*_depth,4,1,_scalex,_scaley,-1,1);
 	} else {
-		draw_sprite_tiled_ext(_sprite,_subimg,offset_x*_depth,offset_y*_depth,scalex,scaley,-1,1);
+		draw_sprite_tiled_ext(_sprite,_subimg,_offset_x*_depth,_offset_y*_depth,_scalex,_scaley,-1,1);
 	}
 }
 
 ///@function draw_layer_parralaxed()
-function draw_layer_parralaxed(layer_name, parralax){
-	var element_array = layer_get_all_elements(layer_name);
+function draw_layer_parralaxed(_layer_name, _parralax){
+	var element_array_ = layer_get_all_elements(_layer_name);
 	var cam_ = global.camera;
 	
-	for (var i = 0; i < array_length(element_array); ++i) {
-		var element = element_array[i];
+	for (var i_ = 0; i_ < array_length(element_array_); ++i_) {
+		var element_ = element_array_[i_];
 		
-		var x_ = layer_sprite_get_x(element) ;
-		var y_ = layer_sprite_get_y(element) ;
+		var x_ = layer_sprite_get_x(element_) ;
+		var y_ = layer_sprite_get_y(element_) ;
 		
-	    var offset_x = (x_ - (cam_.get_x() + cam_.width )) * parralax;
-		var offset_y = (y_ - (cam_.get_y() + cam_.height)) * parralax;
+	    var offset_x_ = (x_ - (cam_.get_x() + cam_.width )) * _parralax;
+		var offset_y_ = (y_ - (cam_.get_y() + cam_.height)) * _parralax;
 		
-		var sprite = layer_sprite_get_sprite(element);
-		var angle = layer_sprite_get_angle(element);
+		var sprite_ = layer_sprite_get_sprite(element_);
+		var angle_ = layer_sprite_get_angle(element_);
 		
-		var display_x = global.camera.room_to_display_x(x_ + offset_x);
-		var display_y = global.camera.room_to_display_y(y_ + offset_y);
+		var display_x_ = global.camera.room_to_display_x(x_ + offset_x_);
+		var display_y_ = global.camera.room_to_display_y(y_ + offset_y_);
 		
-		draw_sprite_ext(sprite,0,display_x,display_y,scalex,scaley,angle,-1,1);
+		draw_sprite_ext(sprite_,0,display_x_,display_y_,scalex,scaley,angle_,-1,1);
 	}	
 }

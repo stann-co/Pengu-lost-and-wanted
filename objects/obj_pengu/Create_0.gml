@@ -43,13 +43,13 @@ hurt_y_force = -5.4;
 hurt_gravity_force = 0.1875;
 
 dash_air_force = 5.4;
-dash_air_windup = game_speed*0.2;
+dash_air_windup = GAME_SPEED*0.2;
 dash_air_count = 0;
 
 dash_ground_force_min = 4;
 dash_ground_force_max = 12;
 dash_ground_force = undefined;
-dash_ground_windup = game_speed*1; //you can hold it down longer, but after this it's hit max potential
+dash_ground_windup = GAME_SPEED*1; //you can hold it down longer, but after this it's hit max potential
 
 rotation_speed = 0.0215 * 2; //when going airborne how fast you rotate to be back upright
 
@@ -63,7 +63,7 @@ friction_speed = normal_friction_speed;
 top_speed = normal_top_speed;
 
 force_slide_angle = 45; //if you walk on an incline above this angle you're forced into sliding
-#macro force_slide_false (ground_angle < force_slide_angle || ground_angle > 360-force_slide_angle)
+#macro FORCE_SLIDE_FALSE (ground_angle < force_slide_angle || ground_angle > 360-force_slide_angle)
 
 force_detatch_angle = 120;
 
@@ -72,14 +72,14 @@ ground_slip_min_spd_ceiling = 5
 
 force_slide_angle_ceiling = 170; //above this angle ground_slip_min_spd_ceiling is used
 
-slip_control_lock_time = game_speed * 0.2;
+slip_control_lock_time = GAME_SPEED * 0.2;
 
 w_radius_normal = 6;
 h_radius_normal = 9;
 w_radius_slide	= 8; 
 h_radius_slide	= 6; 
 w_radius		= w_radius_normal; //width radius
-h_radius		= h_radius_normal; //height radius`?=)
+h_radius		= h_radius_normal; //height radius
 
 
 sliding = false;
@@ -91,8 +91,8 @@ super_speed_trace_arr = [];
 super_speed_trace_count = 6;
 super_speed_trace_offset = 1;
 super_speed_fadeout = 0;
-super_speed_fadeout_time = game_speed * 1;
-super_speed_colors = [red,red,red,red,red,red,white,white,white,white,white,white]//[white,red,white,yellow,white,green,white,blue,white,pink];
+super_speed_fadeout_time = GAME_SPEED * 1;
+super_speed_colors = [RED,RED,RED,RED,RED,RED,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE]//[WHITE,RED,WHITE,YELLOW,WHITE,GREEN,WHITE,blue,WHITE,PINK];
 
 super_speed_u_color = shader_get_uniform(sh_color,"u_color");
 super_speed_u_intensity = shader_get_uniform(sh_color,"u_intensity");
@@ -142,7 +142,7 @@ image_to_ground_angle = true;
 control_lock = 0; //When control lock is non-zero input is disabled, for when slipping down super steep slopes, or springs/speed ramps
 controlled = true;
 invulnerable = 0; //when over 0, pengu flashes and cannot take damage
-invulnerable_duration = game_speed * 1.6;
+invulnerable_duration = GAME_SPEED * 1.6;
 
 //sounds
 sound_slide = -1;
@@ -151,33 +151,33 @@ sound_slide = -1;
 
 ///@function set_control_lock()
 ///@param duration
-set_control_lock = function(duration = game_speed*1){
-	control_lock = duration;
+set_control_lock = function(_duration = GAME_SPEED*1){
+	control_lock = _duration;
 	input_h = 0;
 }
 
 ///@function hurt()
-hurt = function(x_side = 0){
+hurt = function(_x_side = 0){
 	//nothing happens if invulnerable
 	if(invulnerable == 0){
-		global.camera.shake_screen(4,game_speed*0.5);
-		x_speed = hurt_x_force * x_side;
+		global.camera.shake_screen(4,GAME_SPEED*0.5);
+		x_speed = hurt_x_force * _x_side;
 		state.change("hurt");
 	}
 }
 
 ///@function squish()
-///@param scale_x_
-///@param scale_y_
-///@param duration
-squish = function(scale_x_,scale_y_,duration = game_speed*0.4){
-	scale_x = scale_x_;
-	scale_y = scale_y_;
-	scale_x_squish = scale_x_;
-	scale_y_squish = scale_y_;
+///@param _scale_x
+///@param _scale_y
+///@param _duration
+squish = function(_scale_x,_scale_y,_duration = GAME_SPEED*0.4){
+	//scale_x = _scale_x;
+	//scale_y = _scale_y;
+	scale_x_squish = _scale_x;
+	scale_y_squish = _scale_y;
 	squishing = true;
 	squishing_t = 0;
-	squishing_duration = duration;
+	squishing_duration = _duration;
 }
 
 #region sensors
@@ -199,13 +199,13 @@ sensor_length_base = 8;
 
 #endregion
 
-pick_move_state = function(include_idle = true){
+pick_move_state = function(_include_idle = true){
     if(airborne){
         state.change("fall");
     } else if (input_h != 0){
 		if( input_h != mirror ) state.change("turning");
 		else if( !state.state_is("running") )state.change("running");
-	} else if(include_idle && !state.state_is("idle")){
+	} else if(_include_idle && !state.state_is("idle")){
 		state.change("idle");
 	}
 }
@@ -216,9 +216,9 @@ state = new SnowState("idle");
 
 	state.event_set_default_function("draw",function(){
 		//when rotated on slopes, pengu appears a few pixels off
-		var slope_offset_y = 0;
-		if(!airborne) slope_offset_y = abs(dsin(ground_angle*2)) * sign(dcos(ground_angle))  * 4 //the pixel offset when at a 45deg angle
-		draw_sprite_ext(sprite_index,subimg,x,y+slope_offset_y,scale_x*mirror,scale_y,image_angle,-1,1);
+		var slope_offset_y_ = 0;
+		if(!airborne) slope_offset_y_ = abs(dsin(ground_angle*2)) * sign(dcos(ground_angle))  * 4 //the pixel offset when at a 45deg angle
+		draw_sprite_ext(sprite_index,subimg,x,y+slope_offset_y_,scale_x*mirror,scale_y,image_angle,-1,1);
 	})
 	
 	state.event_set_default_function("draw_gui",function(){
@@ -307,7 +307,7 @@ state = new SnowState("idle");
 			state.inherit();
 			sprite_index = spr_pengu_spinning;
 			controlled = false;
-			active_layer = obj_game.active_collisions_A;
+			active_layer = layers
 			
 		},
 		step: function(){
@@ -397,9 +397,9 @@ state = new SnowState("idle");
 	
 	state.add_child("tall","look_up_end", {
 	    enter: function() {
-			var _subimg = subimg;
+			var subimg_current_ = subimg;
 			state.inherit()
-			subimg = _subimg;
+			subimg = subimg_current_;
 			sprite_index = spr_pengu_look_up;
 			anim_speed = -1;
 	    },
@@ -434,8 +434,8 @@ state = new SnowState("idle");
 			}
 			if(y_speed > 0) state.change("begin_fall");
 			if(on_land) {
-				squish(1.4,0.8,game_speed);
-				if(force_slide_false) state.change("idle");
+				squish(1.4,0.8,GAME_SPEED);
+				if(FORCE_SLIDE_FALSE) state.change("idle");
 				else state.change("sliding");	
 			}
 		}
@@ -461,8 +461,8 @@ state = new SnowState("idle");
 	    },
 		step: function(){
 			if(on_land){
-				squish(1.4,0.8,game_speed);
-				if(force_slide_false) state.change("idle");
+				squish(1.4,0.8,GAME_SPEED);
+				if(FORCE_SLIDE_FALSE) state.change("idle");
 				else state.change("sliding");	
 			}
 		}
@@ -473,16 +473,16 @@ state = new SnowState("idle");
 			state.inherit()
 			sprite_index = spr_pengu_jump;
 
-			var up_down = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
+			var up_down_ = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
 			
-			y_speed = (-jump_force*up_down) - gravity_force //subtracting gravity force cancels out gravity for one frame
+			y_speed = (-jump_force*up_down_) - gravity_force //subtracting gravity force cancels out gravity for one frame
 			x_speed -= jump_force *dsin(ground_angle) * 0.5;
 			
 			if(x_speed != 0) mirror = sign(x_speed);
 			
 			image_angle -= 90 * dsin(ground_angle);
 			
-			squish(0.4,1.4,game_speed*0.4);
+			squish(0.4,1.4,GAME_SPEED*0.4);
 			
 			//when jumping from a slide you start rotated
 			if(state.get_previous_state() == "sliding"){
@@ -512,8 +512,8 @@ state = new SnowState("idle");
 			
 	    },
 		step: function() {
-			var spin_spd = point_distance(0,0,x_speed,y_speed);
-			subimg+=spin_spd/10;
+			var spin_spd_ = point_distance(0,0,x_speed,y_speed);
+			subimg+=spin_spd_/10;
 			
 			if (y_speed > 0) state.change("launch_end")
 			if(!airborne){
@@ -550,8 +550,8 @@ state = new SnowState("idle");
 			state.inherit()
 			audio_play_sound_random(0,0,snd_jump1,snd_jump2)
 			
-			var up_down = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
-			y_speed = (-enemy_jump_force*up_down) - gravity_force //subtracting gravity force cancels out gravity for one frame
+			var up_down_ = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
+			y_speed = (-enemy_jump_force*up_down_) - gravity_force //subtracting gravity force cancels out gravity for one frame
 			x_speed -= enemy_jump_force *dsin(ground_angle) * 0.5;
 
 	    },
@@ -561,8 +561,8 @@ state = new SnowState("idle");
 	    enter: function() {
 			state.inherit()
 			sprite_index = spr_pengu_hurt;
-			var sound = audio_play_sound(snd_hurt,0,false);
-			audio_sound_pitch(sound,pitch_change(random_range(2,10)));			
+			var sound_ = audio_play_sound(snd_hurt,0,false);
+			audio_sound_pitch(sound_,pitch_change(random_range(2,10)));			
 			
 			if (global.coins == 0){
 				transition(function(){
@@ -580,7 +580,7 @@ state = new SnowState("idle");
 			gravity_force = hurt_gravity_force;			
 			invulnerable = invulnerable_duration;
 			
-			set_control_lock(game_speed*0.8);
+			set_control_lock(GAME_SPEED*0.8);
 			
 			y_speed = hurt_y_force;
 
@@ -606,7 +606,7 @@ state = new SnowState("idle");
 			y_speed = -double_jump_force;	
 			x_speed *= 0.6;
 	
-			squish(0.4,1.4,game_speed*0.4);
+			squish(0.4,1.4,GAME_SPEED*0.4);
 			
 			audio_play_sound_random(0,0,snd_wingflap1,snd_wingflap2);
 	    },
@@ -632,7 +632,7 @@ state = new SnowState("idle");
 			y_speed = attack_y_force;
             x_speed = max(attack_x_force,abs(x_speed))*mirror;
             
-			//squish(0.9,1.1,game_speed*0.4);
+			//squish(0.9,1.1,GAME_SPEED*0.4);
             
             attack_hit = false;
             
@@ -643,9 +643,9 @@ state = new SnowState("idle");
             
             var num_ = collision_circle_list(attack_x_,attack_y_,attack_radius,obj_enemy,true,true,attack_list_check_,true);
             
-            for (var i = 0; i < num_; i++) {
+            for (var i_ = 0; i_ < num_; i_++) {
                 //does not add entities that are already being hit to the attack list
-                entity = attack_list_check_[|i];
+                entity = attack_list_check_[|i_];
                 if (ds_list_find_index(attack_list,entity) == -1 && !entity.invulnerable){
                     ds_list_add(attack_list,entity)
                     //runs on hit
@@ -669,9 +669,9 @@ state = new SnowState("idle");
                     var attack_x_ = x+(attack_x*mirror)
                     var attack_y_ = y+attack_y;
                     
-                    for (var i = 0; i < ds_list_size(attack_list); i++) {
-                    	var entity = attack_list[|i];
-                        with (entity) {
+                    for (var i_ = 0; i_ < ds_list_size(attack_list); i_++) {
+                    	var entity_ = attack_list[|i_];
+                        with (entity_) {
                             //runs every frame while attacked entities are stun locked
                             
                             var toward_x_ = sign(attack_x_ - x);
@@ -681,7 +681,7 @@ state = new SnowState("idle");
                             y = attack_y_;
                             
                             //snaps entity to not be inside walls
-                            while (place_meeting(x,y,entity_collision_layer)) {
+                            while (place_meeting(x,y,ENTITY_COLLISION_LAYER)) {
                             	x -= toward_x_;
                                 y -= toward_y_;
                             }
@@ -770,8 +770,8 @@ state = new SnowState("idle");
                     var attack_x_ = x+(attack_x*mirror)
                     var attack_y_ = y+attack_y;
                     
-                    for (var i = 0; i < ds_list_size(attack_list); i++) {
-                    	var entity = attack_list[|i];
+                    for (var i_ = 0; i_ < ds_list_size(attack_list); i_++) {
+                    	var entity = attack_list[|i_];
                         with (entity) {
                             //runs every frame while attacked entities are stun locked
                             
@@ -784,7 +784,7 @@ state = new SnowState("idle");
                             meteor = true;
                             
                             //snaps entity to not be inside walls
-                            while (place_meeting(x,y,entity_collision_layer)) {
+                            while (place_meeting(x,y,ENTITY_COLLISION_LAYER)) {
                             	x -= toward_x_;
                                 y -= toward_y_;
                             }
@@ -834,7 +834,7 @@ state = new SnowState("idle");
 	state.add_child("prone","dash_air", {
 	    enter: function() { 
 			
-			global.camera.shake_screen(2,game_speed*0.2);
+			global.camera.shake_screen(2,GAME_SPEED*0.2);
 			
 			state.inherit();
 			airborne = true;
@@ -850,7 +850,7 @@ state = new SnowState("idle");
 			
 			mirror = sign(x_speed);
 			
-			squish(1.2,1.2,game_speed*0.2);
+			squish(1.2,1.2,GAME_SPEED*0.2);
 			
 			super_speed = true;
 			super_speed_fadeout = super_speed_fadeout_time;
@@ -858,8 +858,8 @@ state = new SnowState("idle");
             
             var attack_list_check = ds_list_create();
             var num = instance_place_list(x,y,obj_enemy,attack_list_check,false);
-            for (var i = 0; i < num; i++) {
-            	var inst = attack_list_check[|i];
+            for (var i_ = 0; i_ < num; i_++) {
+            	var inst = attack_list_check[|i_];
                 if(inst.invulnerable == 0){
                     inst.x_speed = 4*-mirror;
                     inst.y_speed = -3;
@@ -916,7 +916,7 @@ state = new SnowState("idle");
 			control_lock = 10;
 			input_h = 0;
 			
-			squish(0.8,1.2,game_speed*0.5);
+			squish(0.8,1.2,GAME_SPEED*0.5);
 		},
 		step: function(){
 			
@@ -943,26 +943,26 @@ state = new SnowState("idle");
 			
 		},
 		draw_gui: function(){
-			var offset = 18;
-			var radius = 6;
+			var offset_ = 18;
+			var radius_ = 6;
 			
-			var x_ = global.camera.room_to_gui_x(x-(offset*mirror));
-			var y_ = global.camera.room_to_gui_y(y-offset);
+			var x_ = global.camera.room_to_gui_x(x-(offset_*mirror));
+			var y_ = global.camera.room_to_gui_y(y-offset_);
 			
-			draw_percentage_donut((t/dash_ground_windup),radius,x_,y_,pengu_blue,pengu_white);
+			draw_percentage_donut((t/dash_ground_windup),radius_,x_,y_,PENGU_BLUE,PENGU_WHITE);
 		}
 	})
 	
 	state.add_child("prone","dash", {
 	    enter: function() {
 			
-			global.camera.shake_screen(2,game_speed*0.2);
+			global.camera.shake_screen(2,GAME_SPEED*0.2);
 			
 			state.inherit()
 			sprite_index = spr_pengu_dash;
 			ground_spd = dash_ground_force * mirror
 			
-			squish(1.2,1.2,game_speed*0.8);
+			squish(1.2,1.2,GAME_SPEED*0.8);
 			
 			t = 0;
 			
@@ -975,7 +975,7 @@ state = new SnowState("idle");
 		step: function() {
 			
 			t++;
-			if(t >= game_speed*1){
+			if(t >= GAME_SPEED*1){
 				state.change("sliding");
 			}
 	

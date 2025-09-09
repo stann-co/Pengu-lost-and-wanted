@@ -20,7 +20,9 @@ hurt = function(){
 }
 
 //3D
+
 ball = new BBMOD_Model("3D/kat_smart.bbmod").freeze();
+/// Feather ignore once GM2017
 ball.Materials[@ 0] = new material()
 
 depth = global.depth_a;
@@ -29,12 +31,12 @@ default_draw = function(){
     gpu_set_ztestenable(true);
     gpu_set_zwriteenable(true);
     
-    var scale = 64;
+    var scale_ = 64;
     
     new BBMOD_Matrix()
         .RotateX(-90)
         .RotateY(rotation)
-    	.Scale(scale,scale,scale)
+    	.scale_(scale_,scale_,scale_)
     	.Translate(x, y, depth)
     	.ApplyWorld();
     ball.submit();
@@ -62,11 +64,11 @@ state.add("idle",{
 
         if(mouse_check_button(mb_left)){
             airborne = true;
-        	var mx = global.camera.get_mouse_x();
-        	var my = global.camera.get_mouse_y();
+        	var mx_ = global.camera.get_mouse_x();
+        	var my_ = global.camera.get_mouse_y();
             
-            x_speed = clamp(mx-x,-top_speed,top_speed);
-            y_speed = clamp(my-y,-top_speed,top_speed);
+            x_speed = clamp(mx_-x,-top_speed,top_speed);
+            y_speed = clamp(my_-y,-top_speed,top_speed);
         }
         
     }

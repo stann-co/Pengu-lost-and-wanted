@@ -12,11 +12,3 @@ trigger = function(){
 		
 	}
 }
-
-
-
-
-
-
-
-

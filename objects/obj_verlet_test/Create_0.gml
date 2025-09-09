@@ -4,8 +4,8 @@ x = 0;
 y =  0;
 
 
-ball1 = new verlet(x-50,y);
-ball2 = new verlet(x+50,y);
+ball1 = new Verlet(x-50,y);
+ball2 = new Verlet(x+50,y);
 
 grav = 9.8 / 100;
 

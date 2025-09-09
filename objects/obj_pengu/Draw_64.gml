@@ -1,7 +1,7 @@
 /// @description
 if(global.debug){
 	draw_set_halign(fa_right)
-	var text = [
+	var text_ = [
 		$"{airborne} : AIRBORNE",
 		$"{ground_spd} : GROUND SPEED",
 		$"{ground_angle} : GROUND ANGLE",
@@ -11,8 +11,8 @@ if(global.debug){
 		$"{depth} : DEPTH",
 	]
 	
-	for (var i = 0; i < array_length(text); ++i) {
-	    draw_text(global.game_w-5,5+(14*i),text[i]);
+	for (var i_ = 0; i_ < array_length(text_); ++i_) {
+	    draw_text(global.game_w-5,5+(14*i_),text_[i_]);
 	}
 	
 	draw_set_halign(fa_left)
@@ -20,6 +20,6 @@ if(global.debug){
 
 state.draw_gui();
 
-for (var i = 0; i < ds_list_size(attack_list); i++) {
-	draw_text(0,10*i,attack_list[|i])
+for (var i_ = 0; i_ < ds_list_size(attack_list); i_++) {
+	draw_text(0,10*i_,attack_list[|i_])
 }

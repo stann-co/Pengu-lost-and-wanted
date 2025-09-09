@@ -1,3 +1,3 @@
-function particle_get_type(particle_asset, emitter_index=0) {
-    return particle_get_info(particle_asset).emitters[emitter_index].parttype.ind;
+function particle_get_type(_particle_asset, _emitter_index=0) {
+    return particle_get_info(_particle_asset).emitters[_emitter_index].parttype.ind;
 }

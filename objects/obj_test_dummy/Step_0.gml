@@ -4,9 +4,9 @@ event_inherited();
 
 spine.update(drag)
 
-var base = spine.get_first_point();
+var base_ = spine.get_first_point();
 
-base.set_pos_fixed(x,y+h_radius-2);
+base_.set_pos_fixed(x,y+h_radius-2);
 
 if(on_land || on_ceiling){
 

@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"obj",
+  "%Name":"scr_macros_globals",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"obj",
+  "name":"scr_macros_globals",
   "parent":{
-    "name":"3d",
-    "path":"folders/Scripts/3d.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

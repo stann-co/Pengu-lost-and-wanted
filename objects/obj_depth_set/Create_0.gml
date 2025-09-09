@@ -1,2 +1,2 @@
 /// @description
-set_layer_depths(depth_A,depth_B,depth_C);
+set_layer_depths(_depth_a,_depth_b,_depth_c);

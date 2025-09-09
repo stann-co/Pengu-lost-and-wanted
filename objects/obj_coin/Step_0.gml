@@ -1,5 +1,5 @@
 /// @description 
-if(can_move){
+if(CAN_MOVE){
 	state.step();
 	
 	//dissapears after a while

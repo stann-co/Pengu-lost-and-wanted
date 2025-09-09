@@ -40,7 +40,7 @@ min_flip_speed = 2; //x_speed has to be over this for the mech to change which s
 
 //body
 vec_body = new Vector2(0,0);
-body = new verlet(x,y,2);
+body = new Verlet(x,y,2);
 body_stiffness = 0.2;
 body_drag = 0.001;
 
@@ -48,7 +48,7 @@ body_angle = 0;
 body_angle_base = 0;
 body_angle_component = 0;
 
-dome = new verlet(x,y,1.2);
+dome = new Verlet(x,y,1.2);
 dome_radius = 24;
 vec_dome = new Vector2(0,0);
 
@@ -64,13 +64,13 @@ die2 = verlet_rope(dome.x+vec_dice.x,dome.y+vec_dice.y,dome.x+vec_dice.x+8,dome.
 die2.get_first_point().fixed = true;
 
 vec_b = new Vector2(0,h_radius); //bottom
-vec_bl = new Vector2(-w_foot_radius,h_radius); //bottom left
-vec_br = new Vector2(w_foot_radius,h_radius); //bottom right
-vec_l = new Vector2(-w_radius,20);  //left
-vec_r = new Vector2(w_radius ,20);  //right
+vec_bl = new Vector2(-w_foot_radius,h_radius); //bottom left_
+vec_br = new Vector2(w_foot_radius,h_radius); //bottom right_
+vec_l = new Vector2(-w_radius,20);  //left_
+vec_r = new Vector2(w_radius ,20);  //right_
 
 airborne_body_snap = 0;
-airborne_body_snap_rate = 1 / (game_speed*2);
+airborne_body_snap_rate = 1 / (GAME_SPEED*2);
 
 //legs
 legs_height_standing = 65;
@@ -85,7 +85,7 @@ legs_length = 42;
 foot_max_h_dist = 18;
 foot_max_v_dist = 40;
 
-foot_step_time = game_speed * 0.2;
+foot_step_time = GAME_SPEED * 0.2;
 foot_dist = 26; // distance between feet
 foot_step_height = 20;
 
@@ -100,9 +100,9 @@ vec_foot_l = new Vector2(-foot_dist,h_radius);
 vec_foot_r = new Vector2(foot_dist,h_radius);
 foot_mass = 2;
 
-function foot(foot_, anchor_) : verlet(0,0,1,false) constructor{
-	anchor = anchor_;
-	foot_dest = foot_;
+function foot(_foot, _anchor) : Verlet(0,0,1,false) constructor{
+	anchor = _anchor;
+	foot_dest = _foot;
 	mech = other;
 	mass = mech.foot_mass;
 	
@@ -123,31 +123,31 @@ function foot(foot_, anchor_) : verlet(0,0,1,false) constructor{
 	
 	stepping = false;
 	
-	static update_anchors = function(foot_, anchor_){
-		anchor = anchor_;
-		foot_dest = foot_;
+	static update_anchors = function(_foot, _anchor){
+		anchor = _anchor;
+		foot_dest = _foot;
 	}
 	
 	static set_knee_pos = function(){
 		with(mech){
-			var len = point_distance( other.x,other.y-foot_height,body.x+other.anchor.x,body.y+other.anchor.y);
-			var dir = point_direction(other.x,other.y-foot_height,body.x+other.anchor.x,body.y+other.anchor.y);
+			var len_ = point_distance( other.x,other.y-foot_height,body.x+other.anchor.x,body.y+other.anchor.y);
+			var dir_ = point_direction(other.x,other.y-foot_height,body.x+other.anchor.x,body.y+other.anchor.y);
 			
-			var knee_offset = sqrt(  max(0,sqr(legs_length/2) - sqr(len/2)) );
+			var knee_offset_ = sqrt(  max(0,sqr(legs_length/2) - sqr(len_/2)) );
 			
-			other.x_knee = lerp(other.x,			  body.x + other.anchor.x ,0.5) + (knee_offset * dsin(dir) * mirror_component);
-			other.y_knee = lerp(other.y -foot_height, body.y + other.anchor.y ,0.5) + (knee_offset * dcos(dir) * mirror_component);
+			other.x_knee = lerp(other.x,			  body.x + other.anchor.x ,0.5) + (knee_offset_ * dsin(dir_) * mirror_component);
+			other.y_knee = lerp(other.y -foot_height, body.y + other.anchor.y ,0.5) + (knee_offset_ * dcos(dir_) * mirror_component);
 		}
 		
 	}
 	
 	static set_pos = function(){
 		with(mech){
-			var trace = sensor(other.foot_dest,0,100);
+			var trace_ = sensor(other.foot_dest,0,100);
 		
-			if(trace != noone){
-				other.x = x + other.foot_dest.x + trace.x;
-				other.y = y + other.foot_dest.y + trace.y;
+			if(trace_ != noone){
+				other.x = x + other.foot_dest.x + trace_.x;
+				other.y = y + other.foot_dest.y + trace_.y;
 			}
 		}
 		
@@ -170,10 +170,10 @@ function foot(foot_, anchor_) : verlet(0,0,1,false) constructor{
 	
 	static set_target_to_ground = function(){
 		with(mech){
-			var trace = sensor(other.foot_dest,0,sensor_length_base);
-			if(trace != noone){
-				var x_target_ = x + other.foot_dest.x + trace.x;
-				var y_target_ = y + other.foot_dest.y + trace.y;
+			var trace_ = sensor(other.foot_dest,0,sensor_length_base);
+			if(trace_ != noone){
+				var x_target_ = x + other.foot_dest.x + trace_.x;
+				var y_target_ = y + other.foot_dest.y + trace_.y;
 				
 				other.set_target(x_target_,y_target_);
 			}
@@ -202,7 +202,7 @@ function foot(foot_, anchor_) : verlet(0,0,1,false) constructor{
 				stepping = false;
 				mech.foot_left_right = !mech.foot_left_right;
 				
-				global.camera.shake_screen(4,game_speed*0.1);
+				global.camera.shake_screen(4,GAME_SPEED*0.1);
 				var sound = audio_play_sound(snd_mech_stomp,0,false);
 				audio_sound_pitch(sound,random_range(0.9,1.1));
 			}
@@ -210,8 +210,8 @@ function foot(foot_, anchor_) : verlet(0,0,1,false) constructor{
             //hitting enemies
             var attack_list_check = ds_list_create();
             var num = collision_circle_list(x,y,6,obj_enemy,false,true,attack_list_check,false)
-            for (var i = 0; i < num; i++) {
-            	var inst = attack_list_check[|i];
+            for (var i_ = 0; i_ < num; i_++) {
+            	var inst = attack_list_check[|i_];
                 if(!inst.invulnerable){
                     inst.invulnerable = true;
                     inst.x_speed = 8*mech.mirror_component + random_range(-1,1);
@@ -219,7 +219,7 @@ function foot(foot_, anchor_) : verlet(0,0,1,false) constructor{
                     inst.state.change("launched");
                     inst.hurt();
                     
-                    global.camera.shake_screen(8,game_speed*1);
+                    global.camera.shake_screen(8,GAME_SPEED*1);
                     part_particles_create(global.particles,inst.x,inst.y,global.part_stars,4);
                     set_freeze_frame();
                 }
@@ -302,7 +302,7 @@ state = new SnowState("idle")
 				foot_l.set_pos();
 				foot_r.set_pos();
 				
-				global.camera.shake_screen(10,game_speed*0.2);
+				global.camera.shake_screen(10,GAME_SPEED*0.2);
 				
 				state.change("walking");
 				

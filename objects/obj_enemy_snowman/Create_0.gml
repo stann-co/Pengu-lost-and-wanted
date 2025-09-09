@@ -2,7 +2,7 @@
 event_inherited();
 
 t=0;
-wait_duration = game_speed*2;
+wait_duration = GAME_SPEED*2;
 thrown = false;
 
 snowball_throw_speed = 4;

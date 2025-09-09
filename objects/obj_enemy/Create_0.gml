@@ -17,6 +17,8 @@ colliding = true;
 hp_max = 10;
 hp = hp_max;
 
+jump_attackable = true; //if player can jump on it to attack
+
 invulnerable = 0;
 
 stun_duration = 20;
@@ -50,19 +52,19 @@ sensor_length_base = 8;
 hurt = function(_hurt_type = ATTACK_TYPES.ATTACK){
     switch (_hurt_type) {
     	case ATTACK_TYPES.ATTACK:
-            global.camera.shake_screen(2,game_speed*0.2);
+            global.camera.shake_screen(2,GAME_SPEED*0.2);
             part_particles_create(global.particles,x,y,global.part_stars,4);
             set_freeze_frame(0.25);
             sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
             break;
         case ATTACK_TYPES.KICK:
-            global.camera.shake_screen(2,game_speed*0.2);
+            global.camera.shake_screen(2,GAME_SPEED*0.2);
             part_particles_create(global.particles,x,y,global.part_stars,6);
             set_freeze_frame(0.5);
             sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
             break;
         case ATTACK_TYPES.COLLIDE:
-            global.camera.shake_screen(2,game_speed*0.2);
+            global.camera.shake_screen(2,GAME_SPEED*0.2);
             part_particles_create(global.particles,x,y,global.part_stars,6);
             sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
             break;
@@ -74,10 +76,7 @@ hurt = function(_hurt_type = ATTACK_TYPES.ATTACK){
     }
 }
 
-
-
 state = new SnowState("idle");
-
 
 default_draw = function(){
     draw_sprite_ext(sprite_index,subimg,x,y,image_xscale,image_yscale,image_angle,-1,1);
@@ -121,12 +120,13 @@ state.add("stunned_base",{
     draw:function (){
         //every x frames a new stun pos is set
         if(global.freeze_duration mod 2 == 0){
-            var val = stun_radius * ((global.freeze_duration) / 30)
-            stun_x = irandom_range(-val,val);
-            stun_y = irandom_range(-val,val);
+            var val_ = stun_radius * ((global.freeze_duration) / 30)
+            stun_x = irandom_range(-val_,val_);
+            stun_y = irandom_range(-val_,val_);
         }
         
         if(sin(global.freeze_duration*0.5) > 0){
+            //feather ignore once GM2003
             shader_set(sh_stunned);
         }
     }
@@ -134,6 +134,7 @@ state.add("stunned_base",{
 state.add_child("stunned_base","stunned",{
     draw:function (){
         state.inherit()
+        
         //remember to call shader_reset() when overiding this
         shader_reset();
     }
@@ -182,15 +183,15 @@ state.add_child("stunned_base","stunned",{
         var attack_list_check_ = ds_list_create();
         
         var num_ = instance_place_list(x,y,obj_enemy,attack_list_check_,true);
-        for (var i = 0; i < num_; i++) {
-            var inst = attack_list_check_[|i];
-            if(!inst.invulnerable){
-                inst.invulnerable = true;
-                inst.x_speed = 8*sign(x_speed);
-                inst.y_speed = -3;
-                inst.state.change("launched");
+        for (var i_ = 0; i_ < num_; i_++) {
+            var inst_ = attack_list_check_[|i_];
+            if(!inst_.invulnerable){
+                inst_.invulnerable = true;
+                inst_.x_speed = 8*sign(x_speed);
+                inst_.y_speed = -3;
+                inst_.state.change("launched");
                 
-                inst.hurt(ATTACK_TYPES.COLLIDE);
+                inst_.hurt(ATTACK_TYPES.COLLIDE);
             }
         }
         ds_list_destroy(attack_list_check_)

@@ -1,4 +1,4 @@
 /// @description - dont use game_restart
-if(!in_browser){
+if(!IN_BROWSER){
 	steam_shutdown();
 }
