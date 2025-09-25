@@ -24,26 +24,26 @@ array_push(points_,new Verlet(0,-44,mass,0));
 spine = new VerletRodPoints(points_)
 
 default_draw = function(){
-    draw_sprite(spr_test_dummy,0,x,y+h_radius+2);
+    draw_sprite_entity(spr_test_dummy,0,x,y+h_radius+2,1,1,0,-1,1);
 	
 	var seg_ = spine.segments[0];
 	var x_ = seg_.p1.x;
 	var y_ = seg_.p1.y;
 	var dir_ = seg_.get_direction()-90;
-	draw_sprite_ext(spr_test_dummy,1,x_,y_,1,1,dir_,-1,1);
+	draw_sprite_entity(spr_test_dummy,1,x_,y_,1,1,dir_,-1,1);
 	
 	seg_ = spine.segments[1];
     x_ = seg_.p1.x;
 	y_ = seg_.p1.y;
 	dir_ = seg_.get_direction()-90;
-	draw_sprite_ext(spr_test_dummy,2,x_,y_,1,1,dir_,-1,1);
+	draw_sprite_entity(spr_test_dummy,2,x_,y_,1,1,dir_,-1,1);
 	
 	seg_ = spine.segments[2];
     x_ = seg_.p1.x;
 	y_ = seg_.p1.y;
 	dir_ = seg_.get_direction()-90;
     var subimg_ = state.state_is("meteor") ? 4 : 3;
-	draw_sprite_ext(spr_test_dummy,subimg_,x_,y_,1,1,dir_,-1,1);
+	draw_sprite_entity(spr_test_dummy,subimg_,x_,y_,1,1,dir_,-1,1);
 }
 
 state.add("idle",{
@@ -59,32 +59,30 @@ state.add("idle",{
         }
     }
 })
+
 state.add_child("stunned_base","stunned",{
     draw:function (){
         state.inherit()
         
-        draw_sprite(spr_test_dummy,0,x,y+h_radius+2);
+        draw_sprite_entity(spr_test_dummy,0,x,y+h_radius+2,1,1,0,-1,1);
     	
     	var seg_ = spine.segments[0];
     	var x_ = seg_.p1.x + stun_x;
     	var y_ = seg_.p1.y + stun_y;
     	var dir_ = seg_.get_direction()-90;
-    	draw_sprite_ext(spr_test_dummy,1,x_,y_,1,1,dir_,-1,1);
+    	draw_sprite_entity(spr_test_dummy,1,x_,y_,1,1,dir_,-1,1);
     	
     	seg_ = spine.segments[1];
         x_ = seg_.p1.x + stun_x;
     	y_ = seg_.p1.y + stun_y;
     	dir_ = seg_.get_direction()-90;
-    	draw_sprite_ext(spr_test_dummy,2,x_,y_,1,1,dir_,-1,1);
+    	draw_sprite_entity(spr_test_dummy,2,x_,y_,1,1,dir_,-1,1);
     	
     	seg_ = spine.segments[2];
         x_ = seg_.p1.x + stun_x;
     	y_ = seg_.p1.y + stun_y;
     	dir_ = seg_.get_direction()-90;
-    	draw_sprite_ext(spr_test_dummy,4,x_,y_,1,1,dir_,-1,1);
-        
-        //reseting after shader was set in parent draw event
-        shader_reset()
+    	draw_sprite_entity(spr_test_dummy,4,x_,y_,1,1,dir_,-1,1);
     }
 })
 
@@ -125,10 +123,10 @@ state.add_child("meteor_base","meteor",{
             
             //var alpha = (animcurve_read(ac_super_speed_alpha,0,i_/super_speed_trace_count) * fadeout)*invulnerable_alpha;
             gpu_set_colourwriteenable(1,1,1,0);
-            draw_sprite_ext(trace_.sprite_index,trace_.subimg,trace_.x,trace_.y,1,1,trace_.image_angle,-1,1);
+            draw_sprite_entity(trace_.sprite_index,trace_.subimg,trace_.x,trace_.y,1,1,trace_.image_angle,-1,1);
             gpu_set_colourwriteenable(1,1,1,1);
         }
         
-        draw_sprite_ext(spr_test_dummy_full,1,x,y,1,1,image_angle,-1,1);
+        draw_sprite_entity(spr_test_dummy_full,1,x,y,1,1,image_angle,-1,1);
     }    
 })

@@ -8,7 +8,7 @@ trigger = function(){
 		moving = true;
 		seated = true;
 		obj_pengu.state.change("skilift");
-		obj_pengu.mirror = image_xscale;
+		obj_pengu.facing = image_xscale;
 		
 	}
 }

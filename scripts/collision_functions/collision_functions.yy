@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_collision_layer_switch",
+  "%Name":"collision_functions",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_collision_layer_switch",
+  "name":"collision_functions",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

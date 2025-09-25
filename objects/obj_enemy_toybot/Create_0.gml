@@ -8,8 +8,8 @@ wait_duration = GAME_SPEED*0.4;
 hurt = function(){
 	invulnerable = true;
 	state.change("die");
-	var sound = audio_play_sound(snd_robot_hurt,1,false);
-	audio_sound_pitch(sound,pitch_change(random_range(0.1,4.4)));	
+	var sound_ = audio_play_sound(snd_robot_hurt,1,false);
+	audio_sound_pitch(sound_,pitch_change(random_range(0.1,4.4)));	
 }
 
 no_floor = function(){

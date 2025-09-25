@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_collisions",
+  "%Name":"set_draw",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_collisions",
+  "name":"set_draw",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"draw",
+    "path":"folders/Scripts/draw.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

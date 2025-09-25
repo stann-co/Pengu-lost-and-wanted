@@ -1,5 +1,3 @@
-
-
 #macro VERSION "0.1.3-alpha"
 
 #macro IN_BROWSER (os_type != os_windows)
@@ -79,7 +77,7 @@ enum ATTACK_TYPES {
     KICK,
     JUMP,
     DASH,
-    COLLIDE,
+    COLLIDE, //Like hitting walls ect
     SPEICAL
 }
 
@@ -92,6 +90,7 @@ global.draw_reflections = true;
 
 //globals
 global.t = 0; //a global timer for different objects to refer to stay in sync even after being deactivated
+global.t_always = 0; //global timer that keeps going even when there's a freeze frame
 
 //The angles from each collision tile
 //360 is for filled blocks, which top angle could be any direction

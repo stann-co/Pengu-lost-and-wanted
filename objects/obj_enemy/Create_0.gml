@@ -7,15 +7,19 @@ slope_factor = 0.123;
 w_radius = 6;
 h_radius = 9;
 top_speed = 3;
-input_h = -1;
 
 gravity_force = 0.2251;
 
 //enable disable collision checking code, for dying state, or maybe flying
 colliding = true;
 
-hp_max = 10;
+hp_max = 20;
 hp = hp_max;
+
+stamina_max = 6;
+stamina = stamina_max;
+stamina_regain_max = GAME_SPEED * 5;
+stamina_regain_t = 0;
 
 jump_attackable = true; //if player can jump on it to attack
 
@@ -31,9 +35,9 @@ meteor_trace_array = [];
 meteor_trace_offset = 1;
 meteor_trace_count = 6;
 
-on_land = false; //gets true the frame enemy lands from being airborne
+on_land = false;     //gets true the frame enemy lands from being airborne
 on_ceiling = false;
-on_wall = false; //gets true the frame enemy hits wall
+on_wall = false;     //gets true the frame enemy hits wall
 on_no_floor = false; //true the frame there is no floor underneath
 
 #region sensors
@@ -49,28 +53,49 @@ sensor_length_base = 8;
 
 #endregion
 
-hurt = function(_hurt_type = ATTACK_TYPES.ATTACK){
+///@function hurt()
+hurt = function(_hurt_type = ATTACK_TYPES.ATTACK, _callback = function(){}){
     switch (_hurt_type) {
     	case ATTACK_TYPES.ATTACK:
             global.camera.shake_screen(2,GAME_SPEED*0.2);
             part_particles_create(global.particles,x,y,global.part_stars,4);
-            set_freeze_frame(0.25);
+            set_freeze_frame(0.2);
             sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
+        
+            hurt_shake_start(4);
+            
+            hp--;
+            stamina--;
             break;
         case ATTACK_TYPES.KICK:
             global.camera.shake_screen(2,GAME_SPEED*0.2);
             part_particles_create(global.particles,x,y,global.part_stars,6);
-            set_freeze_frame(0.5);
+            set_freeze_frame(0.45);
             sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
+            meteor = true;
+        
+            hurt_shake_start(8);
+            
+            hp--;
+            stamina--;
             break;
         case ATTACK_TYPES.COLLIDE:
             global.camera.shake_screen(2,GAME_SPEED*0.2);
             part_particles_create(global.particles,x,y,global.part_stars,6);
             sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
+        
+            hurt_shake_start(2);
+            hp-=0.5;
+            stamina-=0.5;
             break;
     }
-
-    //hp--;
+    
+    //if stamina is down, executes the callback
+    if(stamina <= 0){
+        stamina_regain_t = stamina_regain_max; //if it keeps being attacked it stays stamina broken
+        _callback();
+    }
+    
     if(hp <= 0){
         state.change("die");
     }
@@ -78,12 +103,8 @@ hurt = function(_hurt_type = ATTACK_TYPES.ATTACK){
 
 state = new SnowState("idle");
 
-default_draw = function(){
-    draw_sprite_ext(sprite_index,subimg,x,y,image_xscale,image_yscale,image_angle,-1,1);
-}
-
 state.event_set_default_function("draw",function(){
-    default_draw()
+    default_draw();
 })
 
 .add("idle",{})
@@ -108,36 +129,21 @@ state.event_set_default_function("draw",function(){
 state.add("stunned_base",{
     enter:function(){
         airborne = true
-        
-        stun_x = irandom_range(-stun_radius,stun_radius);
-        stun_y = irandom_range(-stun_radius,stun_radius);
+        anim_speed = 0;
     },
     step:function (){
-        if(meteor) state.change("meteor");
+        if(meteor) {
+            state.change("meteor");
+        }
         else state.change("launched");
         
     },
-    draw:function (){
-        //every x frames a new stun pos is set
-        if(global.freeze_duration mod 2 == 0){
-            var val_ = stun_radius * ((global.freeze_duration) / 30)
-            stun_x = irandom_range(-val_,val_);
-            stun_y = irandom_range(-val_,val_);
-        }
-        
-        if(sin(global.freeze_duration*0.5) > 0){
-            //feather ignore once GM2003
-            shader_set(sh_stunned);
-        }
+    leave:function (){
+        anim_speed = 1;
     }
 })
 state.add_child("stunned_base","stunned",{
-    draw:function (){
-        state.inherit()
-        
-        //remember to call shader_reset() when overiding this
-        shader_reset();
-    }
+
 })
 
 .add("launched_base",{
@@ -150,12 +156,18 @@ state.add_child("stunned_base","stunned",{
             y_speed = 0;
             invulnerable = false;
             state.change("idle");
+            squish(2,0.5,GAME_SPEED*1)
         }
+        
+        image_angle += angle_difference(ground_angle,image_angle)*0.1;
         
         if(airborne){
             y_speed += gravity_force;
         }
-    }    
+    },
+    leave:function(){
+        image_angle = ground_angle;
+    }
 })
 .add_child("launched_base","launched")
 
@@ -167,10 +179,10 @@ state.add_child("stunned_base","stunned",{
     },
     step:function (){ 
         if(airborne){
-            //y_speed += gravity_force*0.5;
+            y_speed += gravity_force*0.5;
         }
         
-        image_angle -= sign(x_speed) * 10;
+        image_angle -= sign(x_speed) * 16;
         
         if(on_wall || x_speed == 0){
             //hitting wall after meteoring
@@ -200,7 +212,6 @@ state.add_child("stunned_base","stunned",{
     leave: function(){
         invulnerable = false;
         meteor = false;
-        image_angle = 0;
         meteor_trace_array = [];
     }
 })

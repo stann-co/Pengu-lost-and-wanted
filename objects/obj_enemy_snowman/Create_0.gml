@@ -29,9 +29,9 @@ state
 	},
 	step:function(){
 		subimg+= sprite_get_speed(sprite_index);
-		var side = sign(x - obj_pengu.x);
-		if(side != 0){
-			image_xscale = side;
+		var side_ = sign(x - obj_pengu.x);
+		if(side_ != 0){
+			image_xscale = side_;
 		}
 		
 		if(t++ >= wait_duration){

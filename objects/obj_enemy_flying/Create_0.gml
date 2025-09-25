@@ -26,8 +26,8 @@ hurt = function(){
 	invulnerable = true;
 	sprite_index = spr_tigerbara_hurt;
 	state.change("die");
-	var sound = audio_play_sound(snd_seal_hurt,1,false);
-	audio_sound_pitch(sound,pitch_change(random_range(1.3,1.6)));	
+	var sound_ = audio_play_sound(snd_seal_hurt,1,false);
+	audio_sound_pitch(sound_,pitch_change(random_range(1.3,1.6)));	
 }
 
 

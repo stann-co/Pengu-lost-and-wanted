@@ -81,7 +81,6 @@ h_radius_slide	= 6;
 w_radius		= w_radius_normal; //width radius
 h_radius		= h_radius_normal; //height radius
 
-
 sliding = false;
 
 super_speed = false;
@@ -106,7 +105,6 @@ attack_type = ATTACK_TYPES.ATTACK;
 
 //after attacking there's a window where you can extend the combo
 attack_combo_max = 12; 
-attack_combo_launch = 8; //at this time the entity will be launched away
 attack_combo_t = 0;
 attack_cooldown = 0;
 attack_cooldown_max = 16;
@@ -116,24 +114,14 @@ attack_x = 16;
 attack_y = -8;
 attack_radius = 16;
 meteor_radius = 18;
+
 //enemies/entities currently being attacked
 attack_list = ds_list_create()
 
+entity = noone;
+
 on_land = false; //this is true on the frame you land again
 on_ceiling = false; //this is true whenever you are touching the ceiling
-
-mirror = 1; //+1 right | -1 left
-
-//squishing
-scale_x = 1;
-scale_y = 1;
-scale_x_squish = 1;
-scale_y_squish = 1;
-squishing = false;
-squishing_t = 0;
-squishing_duration = 0;
-
-anim_speed = 1; //set to -1 to reverse
 
 t = 0; //used for some states as a timer
 t2 = 0; //a secondary timer
@@ -166,20 +154,6 @@ hurt = function(_x_side = 0){
 	}
 }
 
-///@function squish()
-///@param _scale_x
-///@param _scale_y
-///@param _duration
-squish = function(_scale_x,_scale_y,_duration = GAME_SPEED*0.4){
-	//scale_x = _scale_x;
-	//scale_y = _scale_y;
-	scale_x_squish = _scale_x;
-	scale_y_squish = _scale_y;
-	squishing = true;
-	squishing_t = 0;
-	squishing_duration = _duration;
-}
-
 #region sensors
 
 vec_r = new Vector2(0,0); //right
@@ -203,7 +177,7 @@ pick_move_state = function(_include_idle = true){
     if(airborne){
         state.change("fall");
     } else if (input_h != 0){
-		if( input_h != mirror ) state.change("turning");
+		if( input_h != facing ) state.change("turning");
 		else if( !state.state_is("running") )state.change("running");
 	} else if(_include_idle && !state.state_is("idle")){
 		state.change("idle");
@@ -214,825 +188,770 @@ pick_move_state = function(_include_idle = true){
 // feather disable gm1065
 state = new SnowState("idle");
 
-	state.event_set_default_function("draw",function(){
-		//when rotated on slopes, pengu appears a few pixels off
-		var slope_offset_y_ = 0;
-		if(!airborne) slope_offset_y_ = abs(dsin(ground_angle*2)) * sign(dcos(ground_angle))  * 4 //the pixel offset when at a 45deg angle
-		draw_sprite_ext(sprite_index,subimg,x,y+slope_offset_y_,scale_x*mirror,scale_y,image_angle,-1,1);
-	})
-	
-	state.event_set_default_function("draw_gui",function(){
-		
-	})
-	
-	//parent states
-	state.add("tall",{
-		enter: function(){
-			mask_index = spr_pengu_hitbox_tall;
-			w_radius = w_radius_normal;
-			h_radius = h_radius_normal;
-			subimg = 0;
-			anim_speed = 1;
-			image_to_ground_angle = true;
-			airborne = false;
-			sliding = false;
-		
-			acceleration_speed	= normal_acceleration_speed;
-			deceleration_speed	= normal_deceleration_speed;
-			friction_speed		= normal_friction_speed;
-			top_speed			= normal_top_speed;
-			
-			slope_factor		= normal_slope_factor;
-		}
-	})
+state.event_set_default_function("draw",function(){
+    default_draw();
+})
 
-	state.add("prone",{
-		enter: function(){
-			mask_index = spr_pengu_hitbox_prone;
-			w_radius = w_radius_slide;
-			h_radius = h_radius_slide;
-			subimg = 0;
-			anim_speed = 1;
-			image_to_ground_angle = true;
-			airborne = false;
-			sliding = true;
-			
-			acceleration_speed	= slide_acceleration_speed;
-			deceleration_speed	= slide_deceleration_speed;
-			friction_speed		= slide_friction_speed;
-			top_speed			= slide_top_speed;
-			
-			slope_factor		= slide_slope_factor;
-		
-		}
-	})
+//parent states
+state.add("tall",{
+    enter: function(){
+        mask_index = spr_pengu_hitbox_tall;
+        w_radius = w_radius_normal;
+        h_radius = h_radius_normal;
+        subimg = 0;
+        anim_speed = 1;
+        image_to_ground_angle = true;
+        airborne = false;
+        sliding = false;
+    
+        acceleration_speed	= normal_acceleration_speed;
+        deceleration_speed	= normal_deceleration_speed;
+        friction_speed		= normal_friction_speed;
+        top_speed			= normal_top_speed;
+        
+        slope_factor		= normal_slope_factor;
+    }
+})
 
-	state.add("airborne",{
-		enter: function(){
-			mask_index = spr_pengu_hitbox_tall;
-			w_radius = w_radius_normal;
-			h_radius = h_radius_normal;
-			subimg = 0;
-			anim_speed = 1;
-			image_to_ground_angle = false;
-			airborne = true;
-			sliding = false;
-		}
-	})
-	
-	//states where pengu is controlled by some object
-	state.add_child("airborne","skilift", {
-		enter: function() {
-			image_angle = 0;
-			super_speed = false;
-			state.inherit();
-			sprite_index = spr_pengu_sitting;
-			controlled = false;
-			
-		}
-	})
-	
-	state.add_child("airborne","spring_ball", {
-		enter: function() {
-			super_speed = false;
-			state.inherit();
-			sprite_index = spr_pengu_grab_on;
-			controlled = false;
-			
-		}
-	})
-	
-	state.add_child("airborne","tube", {
-		enter: function() {
-			state.inherit();
-			sprite_index = spr_pengu_spinning;
-			controlled = false;
-			active_layer = layers
-			
-		},
-		step: function(){
-			image_angle = point_direction(xstart,ystart,x,y)-90;
-			xstart = x;
-			ystart = y;
+state.add("prone",{
+    enter: function(){
+        mask_index = spr_pengu_hitbox_prone;
+        w_radius = w_radius_slide;
+        h_radius = h_radius_slide;
+        subimg = 0;
+        anim_speed = 1;
+        image_to_ground_angle = true;
+        airborne = false;
+        sliding = true;
+        
+        acceleration_speed	= slide_acceleration_speed;
+        deceleration_speed	= slide_deceleration_speed;
+        friction_speed		= slide_friction_speed;
+        top_speed			= slide_top_speed;
+        
+        slope_factor		= slide_slope_factor;
+    
+    }
+})
 
-			if(path_position == 1){
-				x_speed = lengthdir_x(ground_spd,image_angle+90);
-				y_speed = lengthdir_y(ground_spd,image_angle+90);
-				
-				collision_layer_switch(active_layer,true);
-				controlled = true;		
-				state.change("launch");
-			}	
-		}
-	})
+state.add("airborne",{
+    enter: function(){
+        mask_index = spr_pengu_hitbox_tall;
+        w_radius = w_radius_normal;
+        h_radius = h_radius_normal;
+        subimg = 0;
+        anim_speed = 1;
+        image_to_ground_angle = false;
+        airborne = true;
+        sliding = false;
+    }
+})
 
-	//child states
-	state.add_child("tall","idle", {
-		enter: function() {
-			state.inherit();
-			sprite_index = spr_pengu_idle;
-			
-		},
-		step: function() {
-			pick_move_state();
-		}
-	})
+//states where pengu is controlled by some object
+state.add_child("airborne","skilift", {
+    enter: function() {
+        image_angle = 0;
+        super_speed = false;
+        state.inherit();
+        sprite_index = spr_pengu_sitting;
+        controlled = false;
+        
+    }
+})
 
-	state.add_child("tall","turning", {
-	    enter: function() {
-			state.inherit();
-			sprite_index = spr_pengu_turn;
-			
-			mirror = -mirror;
-			
-			squish(1.2,0.8);
-	    },
-		step:function(){
-			if(animation_end(sprite_index,subimg)){
-				pick_move_state();	
-			}
-		}
-	})
+state.add_child("airborne","spring_ball", {
+    enter: function() {
+        super_speed = false;
+        state.inherit();
+        sprite_index = spr_pengu_grab_on;
+        controlled = false;
+        
+    }
+})
 
-	state.add_child("tall","running", {
-	    enter: function() {
-			state.inherit();
-			sprite_index = spr_pengu_idle;
-	    },
-		step: function() {
-			pick_move_state();
-		}
-	})
+state.add_child("airborne","tube", {
+    enter: function() {
+        state.inherit();
+        sprite_index = spr_pengu_spinning;
+        controlled = false;
+        active_layer = layers
+        
+    },
+    step: function(){
+        image_angle = point_direction(xstart,ystart,x,y)-90;
+        xstart = x;
+        ystart = y;
 
-	state.add_child("tall","pushing", {
-	    enter: function() {
-			state.inherit()
-			mirror = sign(ground_spd);
-			sprite_index = spr_pengu_pushing;
-	    },
-		
-		step: function(){
-			//need to find a better solution than this
-			if(input_h != mirror){
-				pick_move_state();
-			}
-		}
-	})
-		
-	state.add_child("tall","look_up", {
-	    enter: function() {
-			state.inherit()
-			sprite_index = spr_pengu_look_up;
-	    },
-		
-		step: function(){
-			subimg = clamp(subimg,0,1);
-			if(input_v == 0){
-				state.change("look_up_end")	
-			}
-			
-			pick_move_state(false);
-		}
-	})
-	
-	state.add_child("tall","look_up_end", {
-	    enter: function() {
-			var subimg_current_ = subimg;
-			state.inherit()
-			subimg = subimg_current_;
-			sprite_index = spr_pengu_look_up;
-			anim_speed = -1;
-	    },
-		
-		step: function(){
-			if(subimg <= 0){
-				state.change("idle")	
-			}
-			pick_move_state(false);
-		}
-	})
-	
-	state.add_child("tall","edge", {
-	    enter: function() {
-			state.inherit()
-			sprite_index = spr_pengu_edge;
-	    },
-		step: function() {
-			pick_move_state(false);
-		}
-	})
-		
-	state.add_child("airborne","fall_up", {
-	    enter: function() {
-			state.inherit()
-			sprite_index = spr_pengu_jump;
-			ground_angle = 0;
-	    },
-		step: function(){
-			if(on_ceiling && y_speed < -jump_release_force){
-				y_speed = -jump_release_force;	
-			}
-			if(y_speed > 0) state.change("begin_fall");
-			if(on_land) {
-				squish(1.4,0.8,GAME_SPEED);
-				if(FORCE_SLIDE_FALSE) state.change("idle");
-				else state.change("sliding");	
-			}
-		}
-	})
-	
-	state.add_child("airborne","begin_fall", {
-	    enter: function() {
-			state.inherit()
-			sprite_index = spr_pengu_begin_fall;
-	    },
-		step: function() {
-			if (animation_end(sprite_index,subimg)){
-				state.change("fall");
-			}
-		}
-	})
-	
-	state.add_child("airborne","fall", {
-	    enter: function() {
-			state.inherit()
-			sprite_index = spr_pengu_fall;
-			ground_angle = 0;
-	    },
-		step: function(){
-			if(on_land){
-				squish(1.4,0.8,GAME_SPEED);
-				if(FORCE_SLIDE_FALSE) state.change("idle");
-				else state.change("sliding");	
-			}
-		}
-	})
-	
-	state.add_child("airborne","jump", {
-	    enter: function() {
-			state.inherit()
-			sprite_index = spr_pengu_jump;
-
-			var up_down_ = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
-			
-			y_speed = (-jump_force*up_down_) - gravity_force //subtracting gravity force cancels out gravity for one frame
-			x_speed -= jump_force *dsin(ground_angle) * 0.5;
-			
-			if(x_speed != 0) mirror = sign(x_speed);
-			
-			image_angle -= 90 * dsin(ground_angle);
-			
-			squish(0.4,1.4,GAME_SPEED*0.4);
-			
-			//when jumping from a slide you start rotated
-			if(state.get_previous_state() == "sliding"){
-				image_angle -= 90 * mirror;
-			}
-			
-			audio_play_sound_random(0,0,snd_jump1,snd_jump2)
-	    },
-		step: function() {
-			if((InputReleased(INPUT_VERB.JUMP) || on_ceiling) && y_speed < -jump_release_force){
-				y_speed = -jump_release_force;	
-			}
-	
-			if(y_speed > 0) state.change("begin_fall");
-			if(on_land) pick_move_state();
-		}
-	})
-	
-	state.add_child("airborne","launch", {
-	    enter: function() {
-			state.inherit();
-			sprite_index = spr_pengu_spinning;		
-			
-			squish(0.4,2.1);
-			
-			anim_speed = 0;
-			
-	    },
-		step: function() {
-			var spin_spd_ = point_distance(0,0,x_speed,y_speed);
-			subimg+=spin_spd_/10;
-			
-			if (y_speed > 0) state.change("launch_end")
-			if(!airborne){
-				pick_move_state();
-			}
-		},
-		leave: function(){
-			if x_speed != 0{
-				if x_speed > 0 mirror = 1;
-				else mirror = -1;
-			}
-		}
-	})
-
-	state.add_child("airborne","launch_end", {
-	    enter: function() {
-			state.inherit();
-			sprite_index = spr_pengu_spinning_end;
-	    },
-		step: function() {
-			if (animation_end(sprite_index,subimg)){
-				state.change("begin_fall");
-			}
-			if(!airborne){
-				//scaleY = 0.7;
-				//scaleX = 1.3;
-				pick_move_state();
-			}
-		},
-	})
-	
-	state.add_child("jump","enemy_jump", {
-	    enter: function() {
-			state.inherit()
-			audio_play_sound_random(0,0,snd_jump1,snd_jump2)
-			
-			var up_down_ = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
-			y_speed = (-enemy_jump_force*up_down_) - gravity_force //subtracting gravity force cancels out gravity for one frame
-			x_speed -= enemy_jump_force *dsin(ground_angle) * 0.5;
-
-	    },
-	})
-	
-	state.add_child("jump","hurt", {
-	    enter: function() {
-			state.inherit()
-			sprite_index = spr_pengu_hurt;
-			var sound_ = audio_play_sound(snd_hurt,0,false);
-			audio_sound_pitch(sound_,pitch_change(random_range(2,10)));			
-			
-			if (global.coins == 0){
-				transition(function(){
-					obj_game.state.change("level_checkpoint_start");	
-					state.change("idle");
-				})
-				
-				
-			}else{
-				var points = min(global.coins,16);
-				point_scatter(points,false,false);
-				global.coins = 0;
-			}
-			
-			gravity_force = hurt_gravity_force;			
-			invulnerable = invulnerable_duration;
-			
-			set_control_lock(GAME_SPEED*0.8);
-			
-			y_speed = hurt_y_force;
-
-	    },
-		step: function() {	
-			
-			if(on_land) {
-				gravity_force = normal_gravity_force;
-				x_speed = 0;
-				y_speed = 0;
-				ground_spd = 0;
-				state.change("idle");
-			}
-		}
-	})
-	
-	state.add_child("airborne","double_jump", {
-	    enter: function() {
-			state.inherit()
-			sprite_index = spr_pengu_flap;
-
-			double_jump_count++;
-			y_speed = -double_jump_force;	
-			x_speed *= 0.6;
-	
-			squish(0.4,1.4,GAME_SPEED*0.4);
-			
-			audio_play_sound_random(0,0,snd_wingflap1,snd_wingflap2);
-	    },
-		step: function() {			
-			if(y_speed > 0) state.change("begin_fall");
-			if(on_land) state.change("idle");
-		},
-	})
-	
-	state.add_child("airborne","attack_base", {
-	    enter: function() {
-			state.inherit()
+        if(path_position == 1){
+            x_speed = lengthdir_x(ground_spd,image_angle+90);
+            y_speed = lengthdir_y(ground_spd,image_angle+90);
             
-            if(attack_count == 0 && input_h != 0){
-                mirror = input_h;
-            }
-			
-			attack_count++;
+            collision_layer_switch(active_layer,true);
+            controlled = true;		
+            state.change("launch");
+        }	
+    }
+})
+
+//child states
+state.add_child("tall","idle", {
+    enter: function() {
+        state.inherit();
+        sprite_index = spr_pengu_idle;
+        
+    },
+    step: function() {
+        pick_move_state();
+    }
+})
+
+state.add_child("tall","turning", {
+    enter: function() {
+        state.inherit();
+        sprite_index = spr_pengu_turn;
+        
+        facing = -facing;
+        
+        squish(1.2,0.8);
+    },
+    step:function(){
+        if(animation_end(sprite_index,subimg)){
+            pick_move_state();	
+        }
+    }
+})
+
+state.add_child("tall","running", {
+    enter: function() {
+        state.inherit();
+        sprite_index = spr_pengu_idle;
+    },
+    step: function() {
+        pick_move_state();
+    }
+})
+
+state.add_child("tall","pushing", {
+    enter: function() {
+        state.inherit()
+        facing = sign(ground_spd);
+        sprite_index = spr_pengu_pushing;
+    },
+    
+    step: function(){
+        //need to find a better solution than this
+        if(input_h != facing){
+            pick_move_state();
+        }
+    }
+})
+    
+state.add_child("tall","look_up", {
+    enter: function() {
+        state.inherit()
+        sprite_index = spr_pengu_look_up;
+    },
+    
+    step: function(){
+        subimg = clamp(subimg,0,1);
+        if(input_v == 0){
+            state.change("look_up_end")	
+        }
+        
+        pick_move_state(false);
+    }
+})
+
+state.add_child("tall","look_up_end", {
+    enter: function() {
+        var subimg_current_ = subimg;
+        state.inherit()
+        subimg = subimg_current_;
+        sprite_index = spr_pengu_look_up;
+        anim_speed = -1;
+    },
+    
+    step: function(){
+        if(subimg <= 0){
+            state.change("idle")	
+        }
+        pick_move_state(false);
+    }
+})
+
+state.add_child("tall","edge", {
+    enter: function() {
+        state.inherit()
+        sprite_index = spr_pengu_edge;
+    },
+    step: function() {
+        pick_move_state(false);
+    }
+})
+    
+state.add_child("airborne","fall_up", {
+    enter: function() {
+        state.inherit()
+        sprite_index = spr_pengu_jump;
+        ground_angle = 0;
+    },
+    step: function(){
+        if(on_ceiling && y_speed < -jump_release_force){
+            y_speed = -jump_release_force;	
+        }
+        if(y_speed > 0) state.change("begin_fall");
+        if(on_land) {
+            squish(1.4,0.8,GAME_SPEED);
+            if(FORCE_SLIDE_FALSE) state.change("idle");
+            else state.change("sliding");	
+        }
+    }
+})
+
+state.add_child("airborne","begin_fall", {
+    enter: function() {
+        state.inherit()
+        sprite_index = spr_pengu_begin_fall;
+    },
+    step: function() {
+        if (animation_end(sprite_index,subimg)){
+            state.change("fall");
+        }
+    }
+})
+
+state.add_child("airborne","fall", {
+    enter: function() {
+        state.inherit()
+        sprite_index = spr_pengu_fall;
+        ground_angle = 0;
+    },
+    step: function(){
+        if(on_land){
+            squish(1.4,0.8,GAME_SPEED);
+            if(FORCE_SLIDE_FALSE) state.change("idle");
+            else state.change("sliding");	
+        }
+    }
+})
+
+state.add_child("airborne","jump", {
+    enter: function() {
+        state.inherit()
+        sprite_index = spr_pengu_jump;
+
+        var up_down_ = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
+        
+        y_speed = (-jump_force*up_down_) - gravity_force //subtracting gravity force cancels out gravity for one frame
+        x_speed -= jump_force *dsin(ground_angle) * 0.5;
+        
+        if(x_speed != 0) facing = sign(x_speed);
+        
+        image_angle -= 90 * dsin(ground_angle);
+        
+        squish(0.4,1.4,GAME_SPEED*0.4);
+        
+        //when jumping from a slide you start rotated
+        if(state.get_previous_state() == "sliding"){
+            image_angle -= 90 * facing;
+        }
+        
+        audio_play_sound_random(0,0,snd_jump1,snd_jump2)
+    },
+    step: function() {
+        if((InputReleased(INPUT_VERB.JUMP) || on_ceiling) && y_speed < -jump_release_force){
+            y_speed = -jump_release_force;	
+        }
+
+        if(y_speed > 0) state.change("begin_fall");
+        if(on_land) pick_move_state();
+    }
+})
+
+state.add_child("airborne","launch", {
+    enter: function() {
+        state.inherit();
+        sprite_index = spr_pengu_spinning;		
+        
+        squish(0.4,2.1);
+        
+        anim_speed = 0;
+        
+    },
+    step: function() {
+        var spin_spd_ = point_distance(0,0,x_speed,y_speed);
+        subimg+=spin_spd_/10;
+        
+        if (y_speed > 0) state.change("launch_end")
+        if(!airborne){
+            pick_move_state();
+        }
+    },
+    leave: function(){
+        if x_speed != 0{
+            if x_speed > 0 facing = 1;
+            else facing = -1;
+        }
+    }
+})
+
+state.add_child("airborne","launch_end", {
+    enter: function() {
+        state.inherit();
+        sprite_index = spr_pengu_spinning_end;
+    },
+    step: function() {
+        if (animation_end(sprite_index,subimg)){
+            state.change("begin_fall");
+        }
+        if(!airborne){
+            //scaleY = 0.7;
+            //scaleX = 1.3;
+            pick_move_state();
+        }
+    },
+})
+
+state.add_child("jump","enemy_jump", {
+    enter: function() {
+        state.inherit()
+        audio_play_sound_random(0,0,snd_jump1,snd_jump2)
+        
+        var up_down_ = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
+        y_speed = (-enemy_jump_force*up_down_) - gravity_force //subtracting gravity force cancels out gravity for one frame
+        x_speed -= enemy_jump_force *dsin(ground_angle) * 0.5;
+
+    },
+})
+
+state.add_child("jump","hurt", {
+    enter: function() {
+        state.inherit()
+        sprite_index = spr_pengu_hurt;
+        var sound_ = audio_play_sound(snd_hurt,0,false);
+        audio_sound_pitch(sound_,pitch_change(random_range(2,10)));			
+        
+        if (global.coins == 0){
+            transition(function(){
+                obj_game.state.change("level_checkpoint_start");
+                state.change("idle");
+            })
             
-            attack_combo_t = 0
-			attacking = true;
             
-			y_speed = attack_y_force;
-            x_speed = max(attack_x_force,abs(x_speed))*mirror;
-            
-			//squish(0.9,1.1,GAME_SPEED*0.4);
-            
-            attack_hit = false;
-            
-            //hits enemies/entities
-            var attack_list_check_ = ds_list_create();
-            var attack_x_ = x+(attack_x*mirror)
-            var attack_y_ = y+attack_y;
-            
-            var num_ = collision_circle_list(attack_x_,attack_y_,attack_radius,obj_enemy,true,true,attack_list_check_,true);
-            
-            for (var i_ = 0; i_ < num_; i_++) {
-                //does not add entities that are already being hit to the attack list
-                entity = attack_list_check_[|i_];
-                if (ds_list_find_index(attack_list,entity) == -1 && !entity.invulnerable){
-                    ds_list_add(attack_list,entity)
-                    //runs on hit
-                    entity.state.change("stunned")
-                    entity.x_speed = (attack_launch_x + random_range(0,1))*mirror;
-                    entity.y_speed = (attack_launch_y + random_range(0,1))
-                        
-                    attack_hit = true;
-                    entity.hurt(attack_type); //called last so it can override state
-                }
-            }
-            ds_list_destroy(attack_list_check_)
-            
-	    },
-		step: function() {
-            
-            if(attack_combo_t < attack_combo_max){
+        }else{
+            var points_ = min(global.coins,16);
+            point_scatter(points_,false,false);
+            global.coins = 0;
+        }
+        
+        gravity_force = hurt_gravity_force;			
+        invulnerable = invulnerable_duration;
+        
+        set_control_lock(GAME_SPEED*0.8);
+        
+        y_speed = hurt_y_force;
+
+    },
+    step: function() {	
+        
+        if(on_land) {
+            gravity_force = normal_gravity_force;
+            x_speed = 0;
+            y_speed = 0;
+            ground_spd = 0;
+            state.change("idle");
+        }
+    }
+})
+
+state.add_child("airborne","double_jump", {
+    enter: function() {
+        state.inherit()
+        sprite_index = spr_pengu_flap;
+
+        double_jump_count++;
+        y_speed = -double_jump_force;	
+        x_speed *= 0.6;
+
+        squish(0.4,1.4,GAME_SPEED*0.4);
+        
+        audio_play_sound_random(0,0,snd_wingflap1,snd_wingflap2);
+    },
+    step: function() {			
+        if(y_speed > 0) state.change("begin_fall");
+        if(on_land) state.change("idle");
+    },
+})
+
+state.add_child("airborne","attack_base", {
+    enter: function() {
+        state.inherit()
+        
+        if(attack_count == 0 && input_h != 0){
+            facing = input_h;
+        }
+        
+        attack_count++;
+        
+        attack_combo_t = 0
+        attacking = true;
+        
+        y_speed = attack_y_force;
+        x_speed = max(attack_x_force,abs(x_speed))*facing;
+        
+        //squish(0.9,1.1,GAME_SPEED*0.4);
+        
+        attack_hit = false;
+        
+        //hits enemies/entities
+        var attack_list_check_ = ds_list_create();
+        var attack_x_ = x+(attack_x*facing)
+        var attack_y_ = y+attack_y;
+        
+        var num_ = collision_circle_list(attack_x_,attack_y_,attack_radius,obj_enemy,true,true,attack_list_check_,true);
+        
+        for (var i_ = 0; i_ < num_; i_++) {
+            //does not add entities that are already being hit to the attack list
+            entity = attack_list_check_[|i_];
+            if (ds_list_find_index(attack_list,entity) == -1 && !entity.invulnerable){
+                ds_list_add(attack_list,entity)
+                //runs on hit
                 
-                if(attack_combo_t < attack_combo_launch){
-                    
-                    var attack_x_ = x+(attack_x*mirror)
-                    var attack_y_ = y+attack_y;
-                    
-                    for (var i_ = 0; i_ < ds_list_size(attack_list); i_++) {
-                    	var entity_ = attack_list[|i_];
-                        with (entity_) {
-                            //runs every frame while attacked entities are stun locked
-                            
-                            var toward_x_ = sign(attack_x_ - x);
-                            var toward_y_ = sign(attack_y_ - y);
-                            
-                            x = attack_x_;
-                            y = attack_y_;
-                            
-                            //snaps entity to not be inside walls
-                            while (place_meeting(x,y,ENTITY_COLLISION_LAYER)) {
-                            	x -= toward_x_;
-                                y -= toward_y_;
-                            }
-                        }
-                    }
-                }
-                //combo can only be continued if your attack hit something
-                if(InputBufferPressed(INPUT_VERB.ATTACK,10) && attack_hit){
-                    attack_next()
-                }
-                
-            } else {
-                attacking = false;
-                pick_move_state();
+                attack_hit = true;
+                entity.hurt(attack_type,function(){
+                        entity.state.change("stunned")
+                        entity.x_speed = (attack_launch_x + random_range(0,1))*facing;
+                        entity.y_speed = (attack_launch_y);
+                        entity.x = x+(attack_x*facing);
+                        entity.y = y+attack_y;
+                });
             }
-            
-            attack_combo_t++
-            
-		},
-		leave: function(){
-			attacking = false;
-            attack_cooldown = attack_cooldown_max;
-            ds_list_clear(attack_list)
-		}
-	})
-
-    state.add_child("attack_base","attack_1",{
-        enter: function(){
-            attack_launch_x = abs(x_speed) + 1;
-            attack_launch_y = y_speed -3;
-            attack_type = ATTACK_TYPES.ATTACK;
-            
-            sprite_index = spr_pengu_attack_1;
-            attack_next = function(){
-                state.change("attack_2");
-            }
-            
-            state.inherit()
         }
-    })
-
-    state.add_child("attack_base","attack_2",{
-        enter: function(){ 
-            sprite_index = spr_pengu_attack_2;
-            attack_next = function(){
-                state.change("attack_3");
+        ds_list_destroy(attack_list_check_)
+        
+    },
+    step: function() {
+        
+        if(attack_combo_t < attack_combo_max){
+            //combo can only be continued if your attack hit something
+            if(InputBufferPressed(INPUT_VERB.ATTACK,10) && attack_hit){
+                attack_next()
             }
-            attack_launch_x = abs(x_speed) + 3;
-            attack_launch_y = y_speed -3;
-            attack_type = ATTACK_TYPES.ATTACK;
             
-            state.inherit()
+        } else {
+            attacking = false;
+            pick_move_state();
         }
-    })
+        
+        attack_combo_t++
+        
+    },
+    leave: function(){
+        attacking = false;
+        attack_cooldown = attack_cooldown_max;
+        ds_list_clear(attack_list)
+    }
+})
 
-    state.add_child("attack_base","attack_3",{
-        enter: function(){
-            sprite_index = spr_pengu_attack_3;
-            attack_next = function(){
-                state.change("attack_kick");
-            }
-            attack_launch_x = abs(x_speed) + 4;
-            attack_launch_y = y_speed -4;
-            attack_type = ATTACK_TYPES.ATTACK;
-            
-            state.inherit()
+state.add_child("attack_base","attack_1",{
+    enter: function(){
+        attack_launch_x = abs(x_speed) + 1;
+        attack_launch_y = y_speed -3;
+        attack_type = ATTACK_TYPES.ATTACK;
+        
+        sprite_index = spr_pengu_attack_1;
+        attack_next = function(){
+            state.change("attack_2");
         }
-    })
+        
+        state.inherit()
+    }
+})
 
-	state.add_child("attack_base","attack_kick", {
-	    enter: function() {
-            sprite_index = spr_pengu_attack_kick;
-            attack_next = function(){ 
-                //no more attacks
-            }
-            attack_launch_x = 6;
-            attack_launch_y = 0;
-            attack_type = ATTACK_TYPES.KICK;
-            
-            state.inherit()
-            
-	    }, 
-        step: function() {
-            if(attack_combo_t < attack_combo_max){
-                if(attack_combo_t < attack_combo_launch){
-                    var attack_x_ = x+(attack_x*mirror)
-                    var attack_y_ = y+attack_y;
-                    
-                    for (var i_ = 0; i_ < ds_list_size(attack_list); i_++) {
-                    	var entity = attack_list[|i_];
-                        with (entity) {
-                            //runs every frame while attacked entities are stun locked
-                            
-                            var toward_x_ = sign(attack_x_ - x);
-                            var toward_y_ = sign(attack_y_ - y);
-                            
-                            x = attack_x_;
-                            y = attack_y_;
-                            
-                            meteor = true;
-                            
-                            //snaps entity to not be inside walls
-                            while (place_meeting(x,y,ENTITY_COLLISION_LAYER)) {
-                            	x -= toward_x_;
-                                y -= toward_y_;
-                            }
-                        }
-                    }
-                }
-            } else {
-                attacking = false;
-                pick_move_state();
-            }
-            
-            attack_combo_t++
-            
-		},
-    })
-		
-	state.add_child("airborne","dash_air_charge",{
-		enter: function(){
-			state.inherit();
-			sprite_index = spr_pengu_dash_charge_air;
-			image_angle = 0;
-			y_speed = -2;
-			x_speed *= 0.8;
-			
-			t = 0;
-			dash_air_count++;
-			
-			if(input_h != 0) mirror = input_h;
-			else if (x_speed != 0) mirror = sign(x_speed);
-			
-			squish(1.4,1.4,dash_air_windup);
-			
-		},
-		step: function(){
-			
-			var posx = (t/dash_air_windup);
-			image_angle = animcurve_read(ac_dash_ball_rotate,0,posx)*360 * -mirror;
-			t++
-			if(t == dash_air_windup){
-                if(InputCheck(INPUT_VERB.DOWN)) state.change("dash_air_down");
-                else if(InputCheck(INPUT_VERB.UP)) state.change("dash_air_up");
-				else state.change("dash_air");	
-			}
-		},	
-	})
-	
-	state.add_child("prone","dash_air", {
-	    enter: function() { 
-			
-			global.camera.shake_screen(2,GAME_SPEED*0.2);
-			
-			state.inherit();
-			airborne = true;
-			image_to_ground_angle = false;
-			
-			sprite_index = spr_pengu_dash;
-			
-			if(input_h != 0) x_speed += dash_air_force * input_h;
-			else x_speed += dash_air_force * mirror;
-			y_speed += -4;
-			
-			image_angle = (mirror) ? 22 : 338;
-			
-			mirror = sign(x_speed);
-			
-			squish(1.2,1.2,GAME_SPEED*0.2);
-			
-			super_speed = true;
-			super_speed_fadeout = super_speed_fadeout_time;
-			super_speed_trace_arr = [];
-            
-            var attack_list_check = ds_list_create();
-            var num = instance_place_list(x,y,obj_enemy,attack_list_check,false);
-            for (var i_ = 0; i_ < num; i_++) {
-            	var inst = attack_list_check[|i_];
-                if(inst.invulnerable == 0){
-                    inst.x_speed = 4*-mirror;
-                    inst.y_speed = -3;
-                    inst.state.change("launched");
-                }
-                
-            }
-            ds_list_destroy(attack_list_check)
-			
-			audio_play_sound(snd_dashing,0,false)
-	    },
-		step: function() {
-			if(on_land){
-				state.change("sliding");
-			}
-		}
-	})
-
-	state.add_child("dash_air","dash_air_down", {
-	    enter: function() { 
-			
-			state.inherit();
-            
-            image_angle = (mirror) ? 270 : 90;
-            
-            x_speed *= 0.5;
-			y_speed = 3;
+state.add_child("attack_base","attack_2",{
+    enter: function(){ 
+        sprite_index = spr_pengu_attack_2;
+        attack_next = function(){
+            state.change("attack_3");
         }
-	})
+        attack_launch_x = abs(x_speed) + 3;
+        attack_launch_y = y_speed -3;
+        attack_type = ATTACK_TYPES.ATTACK;
+        
+        state.inherit()
+    }
+})
 
-	state.add_child("dash_air","dash_air_up", {
-	    enter: function() { 
-			
-			state.inherit();
+state.add_child("attack_base","attack_3",{
+    enter: function(){
+        sprite_index = spr_pengu_attack_3;
+        attack_next = function(){
+            state.change("attack_kick");
+        }
+        attack_launch_x = abs(x_speed) + 4;
+        attack_launch_y = y_speed -4;
+        attack_type = ATTACK_TYPES.ATTACK;
+        
+        state.inherit()
+    }
+})
+
+state.add_child("attack_base","attack_kick", {
+    enter: function() {
+        sprite_index = spr_pengu_attack_kick;
+        attack_next = function(){ 
+            //no more attacks
+        }
+        attack_launch_x = 6;
+        attack_launch_y = -3;
+        attack_type = ATTACK_TYPES.KICK;
+        
+        state.inherit()
+        
+    }, 
+    step: function() {
+        if(attack_combo_t >= attack_combo_max){
+            attacking = false;
+            pick_move_state();
+        }
+        
+        attack_combo_t++
+        
+    },
+})
+    
+state.add_child("airborne","dash_air_charge",{
+    enter: function(){
+        state.inherit();
+        sprite_index = spr_pengu_dash_charge_air;
+        image_angle = 0;
+        y_speed = -2;
+        x_speed *= 0.8;
+        
+        t = 0;
+        dash_air_count++;
+        
+        if(input_h != 0) facing = input_h;
+        else if (x_speed != 0) facing = sign(x_speed);
+        
+        squish(1.4,1.4,dash_air_windup);
+        
+    },
+    step: function(){
+        
+        var posx_ = (t/dash_air_windup);
+        image_angle = animcurve_read(ac_dash_ball_rotate,0,posx_)*360 * -facing;
+        t++
+        if(t == dash_air_windup){
+            if(InputCheck(INPUT_VERB.DOWN)) state.change("dash_air_down");
+            else if(InputCheck(INPUT_VERB.UP)) state.change("dash_air_up");
+            else state.change("dash_air");	
+        }
+    },	
+})
+
+state.add_child("prone","dash_air", {
+    enter: function() { 
+        
+        global.camera.shake_screen(2,GAME_SPEED*0.2);
+        
+        state.inherit();
+        airborne = true;
+        image_to_ground_angle = false;
+        
+        sprite_index = spr_pengu_dash;
+        
+        if(input_h != 0) x_speed += dash_air_force * input_h;
+        else x_speed += dash_air_force * facing;
+        y_speed += -4;
+        
+        image_angle = (facing) ? 22 : 338;
+        
+        facing = sign(x_speed);
+        
+        squish(1.2,1.2,GAME_SPEED*0.2);
+        
+        super_speed = true;
+        super_speed_fadeout = super_speed_fadeout_time;
+        super_speed_trace_arr = [];
+        
+        var attack_list_check_ = ds_list_create();
+        var num_ = instance_place_list(x,y,obj_enemy,attack_list_check_,false);
+        for (var i_ = 0; i_ < num_; i_++) {
+            var inst_ = attack_list_check_[|i_];
+            if(inst_.invulnerable == 0){
+                inst_.x_speed = 4*-facing;
+                inst_.y_speed = -3;
+                inst_.state.change("launched");
+            }
             
-            image_angle = (mirror) ? 45 : 315;
-            
-            x_speed *= 0.5;
-			y_speed = -6;
+        }
+        ds_list_destroy(attack_list_check_)
+        
+        audio_play_sound(snd_dashing,0,false)
+    },
+    step: function() {
+        if(on_land){
+            state.change("sliding");
+        }
+    }
+})
+
+state.add_child("dash_air","dash_air_down", {
+    enter: function() { 
+        
+        state.inherit();
+        
+        image_angle = (facing) ? 270 : 90;
+        
+        x_speed *= 0.5;
+        y_speed = 3;
+    }
+})
+
+state.add_child("dash_air","dash_air_up", {
+    enter: function() { 
+        
+        state.inherit();
+        
+        image_angle = (facing) ? 45 : 315;
+        
+        x_speed *= 0.5;
+        y_speed = -6;
+    }
+
+})
+
+state.add_child("prone","dash_charge", {
+
+    enter: function(){
+        state.inherit();
+        sprite_index = spr_pengu_dash_charge;
+        
+        if(input_h != 0) facing = input_h;
+        
+        dash_ground_force = dash_ground_force_min;
+        t = 0;
+        control_lock = 10;
+        input_h = 0;
+        
+        squish(0.8,1.2,GAME_SPEED*0.5);
+    },
+    step: function(){
+        
+        control_lock = 10;
+        input_h = 0;
+        
+        if(t < dash_ground_windup) t++; 
+        if(!InputCheck(INPUT_VERB.DASH)){
+            state.change("dash");
+        }
+        
+        if(InputPressed(INPUT_VERB.LEFT)){
+            facing = -1;
+        }
+        
+        if(InputPressed(INPUT_VERB.RIGHT)){
+            facing = 1;
+        }
+        
+        var amount_ = t/dash_ground_windup;
+        dash_ground_force = lerp(dash_ground_force_min,dash_ground_force_max,amount_);
+        scale_x = lerp(1,1.2,amount_);
+        scale_y = lerp(1,0.9,amount_);
+        
+    },
+    draw_gui: function(){
+        var offset_ = 18;
+        var radius_ = 6;
+        
+        var x_ = global.camera.room_to_gui_x(x-(offset_*facing));
+        var y_ = global.camera.room_to_gui_y(y-offset_);
+        
+        draw_percentage_donut((t/dash_ground_windup),radius_,x_,y_,PENGU_BLUE,PENGU_WHITE);
+    }
+})
+
+state.add_child("prone","dash", {
+    enter: function() {
+        
+        global.camera.shake_screen(2,GAME_SPEED*0.2);
+        
+        state.inherit()
+        sprite_index = spr_pengu_dash;
+        ground_spd = dash_ground_force * facing
+        
+        squish(1.2,1.2,GAME_SPEED*0.8);
+        
+        t = 0;
+        
+        super_speed = true;
+        super_speed_fadeout = super_speed_fadeout_time;
+        super_speed_trace_arr = [];
+        
+        audio_play_sound(snd_dashing,0,false)
+    },
+    step: function() {
+        
+        t++;
+        if(t >= GAME_SPEED*1){
+            state.change("sliding");
         }
 
-	})
-	
-	state.add_child("prone","dash_charge", {
-	
-		enter: function(){
-			state.inherit();
-			sprite_index = spr_pengu_dash_charge;
-			
-			if(input_h != 0) mirror = input_h;
-			
-			dash_ground_force = dash_ground_force_min;
-			t = 0;
-			control_lock = 10;
-			input_h = 0;
-			
-			squish(0.8,1.2,GAME_SPEED*0.5);
-		},
-		step: function(){
-			
-			control_lock = 10;
-			input_h = 0;
-			
-			if(t < dash_ground_windup) t++; 
-			if(!InputCheck(INPUT_VERB.DASH)){
-				state.change("dash");
-			}
-            
-            if(InputPressed(INPUT_VERB.LEFT)){
-                mirror = -1;
-            }
-            
-            if(InputPressed(INPUT_VERB.RIGHT)){
-                mirror = 1;
-            }
-			
-			var amount = t/dash_ground_windup;
-			dash_ground_force = lerp(dash_ground_force_min,dash_ground_force_max,amount);
-			scale_x = lerp(1,1.2,amount);
-			scale_y = lerp(1,0.9,amount);
-			
-		},
-		draw_gui: function(){
-			var offset_ = 18;
-			var radius_ = 6;
-			
-			var x_ = global.camera.room_to_gui_x(x-(offset_*mirror));
-			var y_ = global.camera.room_to_gui_y(y-offset_);
-			
-			draw_percentage_donut((t/dash_ground_windup),radius_,x_,y_,PENGU_BLUE,PENGU_WHITE);
-		}
-	})
-	
-	state.add_child("prone","dash", {
-	    enter: function() {
-			
-			global.camera.shake_screen(2,GAME_SPEED*0.2);
-			
-			state.inherit()
-			sprite_index = spr_pengu_dash;
-			ground_spd = dash_ground_force * mirror
-			
-			squish(1.2,1.2,GAME_SPEED*0.8);
-			
-			t = 0;
-			
-			super_speed = true;
-			super_speed_fadeout = super_speed_fadeout_time;
-			super_speed_trace_arr = [];
-			
-			audio_play_sound(snd_dashing,0,false)
-	    },
-		step: function() {
-			
-			t++;
-			if(t >= GAME_SPEED*1){
-				state.change("sliding");
-			}
-	
-		},
-	})
-	
-	state.add_child("prone","begin_slide", {
-	    enter: function() {
-			state.inherit()
-			sprite_index = spr_pengu_begin_slide;
+    },
+})
 
-	    },
-		step: function() {
-			if (animation_end(sprite_index,subimg)){
-				state.change("sliding");
-			}
-		},
-	})
-	
-	state.add_child("tall","end_slide", {
-	    enter: function() {
-			state.inherit()
-			subimg = 1;
-			sprite_index = spr_pengu_begin_slide;
-			anim_speed = -0.8;
-			ground_spd *=0.4;
-	    },
-		step: function() {
-			if (subimg <= 0){
-				squish(0.8,1.1);
-				pick_move_state();
-			}
-		},
-	})
-	
-	state.add_child("prone","sliding", {
-	    enter: function() {
-			state.inherit()
-			sprite_index = spr_pengu_sliding;
+state.add_child("prone","begin_slide", {
+    enter: function() {
+        state.inherit()
+        sprite_index = spr_pengu_begin_slide;
 
-			squish(1.4,0.8);
+    },
+    step: function() {
+        if (animation_end(sprite_index,subimg)){
+            state.change("sliding");
+        }
+    },
+})
 
-			if(mirror == 1) sliding_subimg = 12; //decides wether to start pointing left or right
-			else sliding_subimg = 0;
-			
-			subimg = sliding_subimg;
-			mirror = 1;
-	    },
-		step: function() {
-			sliding_subimg+=ground_spd/8;
-			sliding_subimg = clamp(sliding_subimg,0,12);
-			subimg = sliding_subimg;
-		},
-		leave: function() {			
-			if(sliding_subimg<6) mirror = -1;
-		}
-	})
+state.add_child("tall","end_slide", {
+    enter: function() {
+        state.inherit()
+        subimg = 1;
+        sprite_index = spr_pengu_begin_slide;
+        anim_speed = -0.8;
+        ground_spd *=0.4;
+    },
+    step: function() {
+        if (subimg <= 0){
+            squish(0.8,1.1);
+            pick_move_state();
+        }
+    },
+})
+
+state.add_child("prone","sliding", {
+    enter: function() {
+        state.inherit()
+        sprite_index = spr_pengu_sliding;
+
+        squish(1.4,0.8);
+
+        if(facing == 1) sliding_subimg = 12; //decides wether to start pointing left or right
+        else sliding_subimg = 0;
+        
+        subimg = sliding_subimg;
+        facing = 1;
+    },
+    step: function() {
+        sliding_subimg+=ground_spd/8;
+        sliding_subimg = clamp(sliding_subimg,0,12);
+        subimg = sliding_subimg;
+    },
+    leave: function() {			
+        if(sliding_subimg<6) facing = -1;
+    }
+})
 
 #endregion
 // feather restore gm1065

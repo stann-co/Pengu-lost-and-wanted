@@ -17,7 +17,7 @@ if(super_speed_fadeout > 0){
 			y: y,
 			scale_x: scale_x,
 			scale_y, scale_y,
-			mirror: mirror,
+			facing: facing,
 			image_angle: image_angle,
 			color: super_speed_colors[(global.t / super_speed_trace_offset) mod array_length(super_speed_colors)]
 		}
@@ -43,7 +43,7 @@ if(super_speed_fadeout > 0){
 		
 		var alpha_ = (animcurve_read(ac_super_speed_alpha,0,i_/super_speed_trace_count) * fadeout_)*invulnerable_alpha_;
 		gpu_set_colourwriteenable(1,1,1,0);
-		draw_sprite_ext(trace_.sprite_index,trace_.subimg,trace_.x,trace_.y,trace_.scale_x*trace_.mirror,trace_.scale_y,trace_.image_angle,-1,alpha_);
+		draw_sprite_ext(trace_.sprite_index,trace_.subimg,trace_.x,trace_.y,trace_.scale_x*trace_.facing,trace_.scale_y,trace_.image_angle,-1,alpha_);
 		gpu_set_colourwriteenable(1,1,1,1);
 	}
 	shader_reset();

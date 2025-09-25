@@ -9,6 +9,8 @@ state.step();
 
 if(global.freeze_duration > 0) global.freeze_duration--;
 
+global.t_always++;
+
 if(CAN_MOVE){
 	global.t++;
 	

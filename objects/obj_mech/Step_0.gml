@@ -133,9 +133,9 @@ if(CAN_MOVE){
 	
 
 
-    if(abs(x_speed) > min_flip_speed) mirror = sign(x_speed);
+    if(abs(x_speed) > min_flip_speed) facing = sign(x_speed);
     
-    mirror_component = lerp(mirror_component,mirror,0.05);
+    mirror_component = lerp(mirror_component,facing,0.05);
     
     vec_leg_l = new Vector2(-26 * mirror_component, 26); 
     vec_leg_r = new Vector2( 26 * mirror_component, 26);

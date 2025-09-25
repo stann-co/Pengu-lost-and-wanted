@@ -1,7 +1,16 @@
 /// @description
+event_inherited();
 
 if(CAN_MOVE){
     state.step();
+    
+    //stamina regain
+    if(stamina <= 0){
+        if(stamina_regain_t == 0){
+            stamina_regain_t = stamina_regain_max;
+            stamina = stamina_max;
+        } else stamina_regain_t--;
+    }
      
     if(on_land) on_land = false;
     if(on_ceiling) on_ceiling = false;

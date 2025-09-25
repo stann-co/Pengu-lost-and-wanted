@@ -15,6 +15,9 @@ trigger = function(){
 	}
 }
 
+collision_layer = COLLISION_LAYERS.A
+
+
 t_offset = irandom(60);
 
 y_offset_max = 2;

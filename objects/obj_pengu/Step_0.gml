@@ -1,6 +1,8 @@
 /// @description step
+
+event_inherited();
+
 if(CAN_MOVE){
-    subimg+= (sprite_get_speed(sprite_index)*anim_speed);
     
     state.step();
     
@@ -41,7 +43,11 @@ if(CAN_MOVE){
                 }
                 if(InputBufferPressed(INPUT_VERB.ATTACK,10)){
                     if(attack_count == 0 && attack_cooldown == 0 && (ground_angle <= 45 || ground_angle >= 315)) {
-                        state.change("attack_1");
+                        if(InputCheck(INPUT_VERB.DOWN)){
+                           state.change("attack_kick");
+                        } else {
+                           state.change("attack_1");
+                        }
                     }
                 }
             }
@@ -297,10 +303,10 @@ if(CAN_MOVE){
                         if(sliding){ //when sliding off a surface, you are angled
                             if(ground_spd > 0){
                                 image_angle -= 90;
-                                mirror = 1;
+                                facing = 1;
                             } else{
                                 image_angle += 90;
-                                mirror = -1;
+                                facing = -1;
                             }
                         }	
                         //falling
@@ -363,8 +369,8 @@ if(CAN_MOVE){
             
             #region edge slipping animation
             if(!state.state_is("edge") && !airborne && !sliding && (bl_sensor_ != noone xor br_sensor_ != noone) && !point_sensor(vec_b) && ground_angle == 0 && ground_spd == 0){
-                if(bl_sensor_) mirror = 1;
-                else mirror = -1;
+                if(bl_sensor_) facing = 1;
+                else facing = -1;
                 state.change("edge");
             }
             
@@ -385,36 +391,41 @@ if(CAN_MOVE){
             if(!state.state_is("attack_1")){
                 //enemy collisions
                 num_ = instance_place_list(x,y,obj_enemy,list_,false);
+                var enemy_jump_ = false;
                 for (var i_ = 0; i_ < num_; ++i_;){
-                    var entity_ = list_[| i_];
-                    if (ds_list_find_index(attack_list,entity_) == -1 && entity_.invulnerable == 0){ 
+                    entity = list_[| i_];
+                    if (ds_list_find_index(attack_list,entity) == -1 && entity.invulnerable == 0){ 
                         
                         //Landing on enemy
-                        var side_ = find_side(x,y,entity_);
-                        if(airborne && entity_.jump_attackable && side_ == SIDES.TOP && y_speed > 0){
-                            invulnerable++
-                            
-                            state.change("enemy_jump");
-                            double_jump_count = 0;
-                            dash_air_count = 0;
-                            attack_count = 0;
-                            
-                            entity_.x_speed = random_range(-1,1);
-                            entity_.y_speed = -1;
-                            entity_.state.change("stunned")
-                            entity_.hurt();
+                        var side_ = find_side(x,y,entity);
+                        if(airborne && entity.jump_attackable && side_ == SIDES.TOP && y_speed > 0){
+                            enemy_jump_ = true;
+                            entity.hurt(ATTACK_TYPES.ATTACK,function(){
+                                entity.x_speed = random_range(-1,1);
+                                entity.y_speed = -1;
+                                entity.state.change("stunned")
+                            });
                             
                         } else if(super_speed){	
                             //Dashing into enemy
-                            ds_list_add(attack_list,entity_)
-                            
-                            entity_.x_speed = sign(-x_speed) * 1;
-                            entity_.y_speed = -3;
-                            entity_.state.change("stunned")
-                            entity_.hurt();
+                            ds_list_add(attack_list,entity)
+                            entity.hurt(ATTACK_TYPES.ATTACK,function(){
+                                entity.x_speed = sign(-x_speed) * 1;
+                                entity.y_speed = -3;
+                                entity.state.change("stunned")    
+                            });
                         }
                     }
                 } 
+                
+                //once all collided enemies have been efected pengu changes to enemy_jump state
+                if(enemy_jump_){
+                    invulnerable++
+                    state.change("enemy_jump");
+                    double_jump_count = 0;
+                    dash_air_count = 0;
+                    attack_count = 0;
+                }
                 
                 //removes entities from attack list when no longer colliding
                 for (var i_ = 0; i_ < ds_list_size(attack_list); ++i_;){
@@ -447,24 +458,6 @@ if(CAN_MOVE){
         
         
         #endregion
-        
-        #region squish scale_x & scale_y
-        if(squishing){
-            if(squishing_t != squishing_duration){
-                var val_ = animcurve_read(ac_squish,0,squishing_t/squishing_duration)
-                
-                scale_x = lerp(1,scale_x_squish,val_);
-                scale_y = lerp(1,scale_y_squish,val_);
-                
-                squishing_t++;
-            } else squishing = false;	
-        }
-
-        #endregion
-        
-        if(image_to_ground_angle){
-            image_angle += angle_difference(ground_angle,image_angle)*0.5;
-        }
         
         if(invulnerable > 0) invulnerable--;
         if(control_lock > 0) control_lock--;

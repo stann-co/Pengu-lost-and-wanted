@@ -241,6 +241,14 @@ state.add("level_start",{
 	//}
 //});
 
+//checkpoint system broken rn, just restarts level
+state.add("level_checkpoint_start",{
+	enter: function(){
+		room_restart()
+		state.change("level_start")
+    }
+});
+
 #endregion
 
 #region demo_select
@@ -265,9 +273,9 @@ state.add("demo_select", {
 				state.change("main_menu");
 			}
 			
-			var left_right = InputPressed(INPUT_VERB.RIGHT) - InputPressed(INPUT_VERB.LEFT);
-			if(left_right != 0){
-				selected += left_right
+			var left_right_ = InputPressed(INPUT_VERB.RIGHT) - InputPressed(INPUT_VERB.LEFT);
+			if(left_right_ != 0){
+				selected += left_right_
 				audio_play_sound(snd_ui_hover,1,false);
 			}
 			

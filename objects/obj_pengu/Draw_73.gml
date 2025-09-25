@@ -91,7 +91,7 @@ if(global.debug){
         draw_set_color(RED);
         draw_set_alpha(0.5)
         //if attack pos collides with wall, move it back
-        var attack_x_ = x+(attack_x*mirror);
+        var attack_x_ = x+(attack_x*facing);
         var attack_y_ = y+attack_y;
         if( collision_point(attack_x_,attack_y_,ENTITY_COLLISION_LAYER,true,true) != noone ){
                        attack_x_ = (attack_x_ > x) ? bbox_right : bbox_left;

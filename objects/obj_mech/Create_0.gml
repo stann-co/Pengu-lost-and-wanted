@@ -32,7 +32,7 @@ jump_release_force = 4;
 sensor_length_base = 35;
 
 //animation variables
-mirror = 1;
+facing = 1;
 mirror_component = 1;
 
 rotation_speed = 0.0215; //when going airborne how fast you rotate to be back upright
@@ -331,7 +331,7 @@ state = new SnowState("idle")
 			foot_l.y_prev = foot_l.y;
 			foot_r.y_prev = foot_r.y;
 			
-			if(x_speed != 0) mirror = sign(x_speed);
+			if(x_speed != 0) facing = sign(x_speed);
 			
 			
 			//jump sfx			
