@@ -13,11 +13,12 @@ gravity_force = 0.2251;
 //enable disable collision checking code, for dying state, or maybe flying
 colliding = true;
 
-hp_max = 20;
+hp_max = 12;
 hp = hp_max;
 
-stamina_max = 6;
+stamina_max = 4;
 stamina = stamina_max;
+
 stamina_regain_max = GAME_SPEED * 5;
 stamina_regain_t = 0;
 

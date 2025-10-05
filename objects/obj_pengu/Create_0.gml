@@ -147,7 +147,7 @@ set_control_lock = function(_duration = GAME_SPEED*1){
 ///@function hurt()
 hurt = function(_x_side = 0){
 	//nothing happens if invulnerable
-	if(invulnerable == 0){
+	if(invulnerable == 0 && !godmode){
 		global.camera.shake_screen(4,GAME_SPEED*0.5);
 		x_speed = hurt_x_force * _x_side;
 		state.change("hurt");

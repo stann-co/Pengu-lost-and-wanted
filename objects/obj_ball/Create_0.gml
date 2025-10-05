@@ -9,6 +9,12 @@ floor_friction = 0.91;
 
 jump_attackable = false;
 
+hp_max = infinity;
+hp = hp_max;
+
+stamina_max = 0;
+stamina = stamina_max;
+
 state.add("idle",{
 
     enter:function(){

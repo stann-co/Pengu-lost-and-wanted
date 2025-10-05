@@ -6,7 +6,6 @@ ground_angle = 0;
 ground_spd = 0;
 subimg = 0;
 anim_speed = 1; //set to -1 to reverse
-airborne = false;
 collision_layer = COLLISION_LAYERS.A
 
 image_to_ground_angle = false;
