@@ -1,4 +1,7 @@
 /// @description debug drawing
+
+event_inherited();
+
 if(global.debug){
 	//draws vector lines
 	

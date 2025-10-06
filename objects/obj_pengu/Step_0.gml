@@ -10,6 +10,11 @@ if(CAN_MOVE){
         input_h = (InputCheck(INPUT_VERB.RIGHT) - InputCheck(INPUT_VERB.LEFT));
         input_v = (InputCheck(INPUT_VERB.DOWN) - InputCheck(INPUT_VERB.UP));
         
+        if(InputCheck(INPUT_VERB.DASH)){
+            input_h*=4;
+            input_v*=4;
+        }
+        
         x+=input_h * 4;
         y+=input_v * 4;
         

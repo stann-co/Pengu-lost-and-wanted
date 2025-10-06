@@ -24,7 +24,7 @@ t = 0;
 
 top_speed = 2;
 
-windup_t = GAME_SPEED*0.15;
+windup_t = GAME_SPEED*0.3;
 attack_pause = GAME_SPEED*1.4;
 attack_duration = GAME_SPEED*0.4;
 attack_cooldown = 0;
@@ -36,7 +36,7 @@ punch_y = -6;
 kick_x = -28;
 kick_y = 6;
 
-attack_force = 8;
+attack_force = 6;
 
 attack_target = obj_pengu;
 
