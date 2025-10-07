@@ -366,10 +366,10 @@ state.add("pause_menu",{
 			} else if(selected == 1){
 				state.change("settings");
 			} else if(selected == 2 && !transition_in){ //level select
-				transition(function(){
-					room_goto(rm_init)
-					state.change("demo_select")
-				});
+				//transition(function(){
+				//	room_goto(rm_init)
+				//	state.change("demo_select")
+				//});
 			} else if(selected == 3 && !transition_in){ // restart level
 				transition(function(){
 					room_restart();
@@ -412,6 +412,10 @@ state.add("pause_menu",{
 		for (var i_ = 0; i_ < array_length(options); ++i_) {
 			//if(selected == 4 && global.active_level.checkpoint == undefined) shader_set(sh_greyed);
 			if(selected != i_) shader_set(sh_deselected)
+            
+            //level select is off until we actually have levels
+            if(selected == i_ && i_ == 2) shader_set(sh_greyed);
+            
 		    draw_text(x_,y_ + h_ * i_,options[i_]);
 			
 			shader_reset()
@@ -489,8 +493,11 @@ state.add("settings",{
 			case MENU_SETTINGS.DEBUG_DRAW:
 		        if(action){
 					global.debug = !global.debug
-                    global.show_collisions = !global.show_collisions
-					show_collisions(global.show_collisions)
+				}
+            case MENU_SETTINGS.SHOW_COLLISIONS:
+		        if(action){
+                    global.show_collisions = !global.show_collisions;
+                    show_collisions(global.show_collisions);
 				}
 		        break;
 		}
@@ -513,7 +520,8 @@ state.add("settings",{
 		var x_ = global.game_w/2;
 		var y_ = global.game_h/2 - h_/2;
 		
-		var setting_text =	["FULLSCREEN","MUSIC VOLUME", "SOUND VOLUME", "SHINY TILES", "SHADER FX", "DEBUG DRAWING"];
+		var setting_text =	["FULLSCREEN","MUSIC VOLUME",
+        "SOUND VOLUME", "SHINY TILES", "SHADER FX", "DEBUG DRAWING", "SHOW COLLISIONS"];
 		var setting_value = [
 			(window_get_fullscreen() ? "ON" : "OFF"),
 			global.music_volume,
@@ -521,6 +529,7 @@ state.add("settings",{
 			(global.draw_shine ? "ON" : "OFF"),
 			(global.draw_reflections ? "ON" : "OFF"),
 			(global.debug ? "ON" : "OFF"),
+            (global.show_collisions ? "ON" : "OFF"),
 		]
 		
 		draw_set_halign(fa_middle);

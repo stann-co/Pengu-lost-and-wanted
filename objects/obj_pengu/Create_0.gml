@@ -587,6 +587,8 @@ state.add_child("airborne","attack_base", {
     enter: function() {
         state.inherit()
         
+        ds_list_clear(attack_list);
+        
         if(attack_count == 0 && input_h != 0){
             facing = input_h;
         }
@@ -649,7 +651,6 @@ state.add_child("airborne","attack_base", {
     leave: function(){
         attacking = false;
         attack_cooldown = attack_cooldown_max;
-        ds_list_clear(attack_list)
     }
 })
 

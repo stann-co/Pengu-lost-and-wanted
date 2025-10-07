@@ -21,19 +21,19 @@ target_y = y;
 
 attack_target = obj_pengu;
 
-radius_spot = 200;
+radius_spot = 250;
 radius_loose = 360;
 
-stalk_attack_wait = GAME_SPEED*0.5;
+stalk_attack_wait = GAME_SPEED*0.3;
 swoop_windup = GAME_SPEED*0.3;
 swoop_duration = GAME_SPEED*0.65;
 
 //when stalking how far away to position itself before swooping
 stalk_dist_x = 145;
 stalk_dist_y = -100;
-stalk_threshold = 25; //how far away from the target pos to begin swooping down
+stalk_threshold = 35; //how far away from the target pos to begin swooping down
 
-stalk_speed = 1.4;
+stalk_speed = 1.6;
 swoop_speed = 15;
 swoop_angle = 57;
 

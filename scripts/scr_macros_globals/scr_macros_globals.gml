@@ -62,6 +62,7 @@ enum MENU_SETTINGS {
 	DRAW_SHINE,
 	DRAW_REFLECTIONS,
 	DEBUG_DRAW,
+    SHOW_COLLISIONS,
 	TOTAL
 }
 
@@ -133,7 +134,7 @@ global.collision_layers[? COLLISION_LAYERS.C] = undefined
 
 global.activation_list = [];
 
-global.debug = true;
+global.debug = false;
 global.show_collisions = true;
 global.checkpoint = -1;
 

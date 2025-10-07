@@ -1175,6 +1175,7 @@
     {"id":{"name":"spr_ts_winter2_r","path":"sprites/spr_ts_winter2_r/spr_ts_winter2_r.yy",},},
     {"id":{"name":"spr_ts_winter2","path":"sprites/spr_ts_winter2/spr_ts_winter2.yy",},},
     {"id":{"name":"spr_tunnel_ride","path":"sprites/spr_tunnel_ride/spr_tunnel_ride.yy",},},
+    {"id":{"name":"spr_tutorial_buttons","path":"sprites/spr_tutorial_buttons/spr_tutorial_buttons.yy",},},
     {"id":{"name":"spr_tutorial_sign_1","path":"sprites/spr_tutorial_sign_1/spr_tutorial_sign_1.yy",},},
     {"id":{"name":"spr_tutorial_sign_2","path":"sprites/spr_tutorial_sign_2/spr_tutorial_sign_2.yy",},},
     {"id":{"name":"spr_tutorial_sign_3","path":"sprites/spr_tutorial_sign_3/spr_tutorial_sign_3.yy",},},
