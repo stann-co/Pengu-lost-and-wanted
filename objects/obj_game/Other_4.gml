@@ -9,7 +9,7 @@ if(global.sidescroller){
     set_active_collisions(COLLISION_LAYERS.A);
     
 	//error reminders
-	if(room != rm_init && (global.collision_layers[? COLLISION_LAYERS.A] == -1)){
+	if(room != rm_init && room != rm_intro && (global.collision_layers[? COLLISION_LAYERS.A] == -1)){
 		show_error($"Missing collision layers_ in {room}",true);
 	}
 	

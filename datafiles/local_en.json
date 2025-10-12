@@ -1,7 +1,7 @@
 {
-    "language": "English",
-    "locale": "en-US",
-    "text": {
+	"language": "English",
+	"locale": "en-US",
+	"text": {
 		"gui": {
 			"on": "on",
 			"off": "off",
@@ -27,6 +27,14 @@
 					"language.description": "change the language"
 				}
 			}
+		},
+		"intro": {
+			"1": "Long ago, in the snowy peaks of the north",
+			"2": "A young Penguin was venturing out from his home",
+			"3": "Hungry and curious, he ventured through the snow longer than he ever had before",
+			"4": "He had never seen a shade other than white blue or gray",
+			"5": "Or any structure not made of ice or snow",
+			"6": "And yet… there it was"
 		}
 	}
 }
