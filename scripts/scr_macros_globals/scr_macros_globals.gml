@@ -1,4 +1,4 @@
-#macro VERSION "0.1.3-alpha"
+#macro VERSION "0.1.5-alpha"
 
 #macro IN_BROWSER (os_type != os_windows)
 
@@ -152,7 +152,7 @@ global.freeze_duration = 0;
 //when a layer get's set to a obj_layer_draw, it's added to this with the layer name as the key
 global.tile_draw_layers = ds_map_create()
 
-//particles
+#region particles
 global.part_stars = part_type_create();
 part_type_sprite(global.part_stars,spr_hit_stars,false,false,true);
 //part_type_shape(global.part_stars,pt_shape_star);
@@ -164,9 +164,21 @@ part_type_speed(global.part_stars,3,4,-0.18,0);
 part_type_alpha3(global.part_stars,1,1,0);
 //part_type_gravity(global.part_stars,0.05,270);
 part_type_orientation(global.part_stars,0,360,2,1,false);
+#endregion
+
+//gui
+global.gui_draw = true;
 
 //fonts
 global.gui_font = font_add_sprite_ext(spr_gui_font,"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]",false,0);
+
+
+
+
+#region lexicon / languages
+    lexicon_index_declare_from_json("local_en.json");
+    lexicon_language_set("English");
+#endregion
 
 function LevelDetails(_name,_room) constructor {
 	name = _name
@@ -188,7 +200,7 @@ global.levels = [
 ]
 
 //3D
-#macro BBMOD_MATERIAL_DEFAULT -1
+//#macro BBMOD_MATERIAL_DEFAULT -1
 
 //spawns persistent objects
 

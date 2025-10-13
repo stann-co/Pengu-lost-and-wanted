@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"snd_keypress4",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":128,
+  "compression":3,
+  "conversionMode":0,
+  "duration":0.37501132,
+  "name":"snd_keypress4",
+  "parent":{
+    "name":"key press",
+    "path":"folders/Sounds/key press.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_keypress4.wav",
+  "type":0,
+  "volume":1.0,
+}

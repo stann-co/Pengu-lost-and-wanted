@@ -9,7 +9,7 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":1.2785,
+  "duration":1.2785034,
   "name":"snd_mech_stomp",
   "parent":{
     "name":"mech",

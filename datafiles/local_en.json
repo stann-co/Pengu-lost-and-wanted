@@ -29,12 +29,12 @@
 			}
 		},
 		"intro": {
-			"1": "Long ago, in the snowy peaks of the north",
-			"2": "A young Penguin was venturing out from his home",
-			"3": "Hungry and curious, he ventured through the snow longer than he ever had before",
-			"4": "He had never seen a shade other than white blue or gray",
-			"5": "Or any structure not made of ice or snow",
-			"6": "And yet… there it was"
+			"1": "Long ago,[delay] in the snowy peaks of the north[speed,0.1]...",
+			"2": "A young Penguin[delay] was venturing out from his home.",
+			"3": "Hungry and curious,[delay] he ventured through the snow[delay] longer than he ever had before",
+			"4": "He had never seen a shade other than white[delay] blue[delay] or gray",
+			"5": "Or any structure not made of ice[delay] or snow",
+			"6": "And yet...[delay] there it was"
 		}
 	}
 }

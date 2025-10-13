@@ -29,16 +29,14 @@ audio_group_load(audiogroup_music);
 layer_create(-100,"particles");
 global.particles = part_system_create_layer("particles", true);
 
-#region lexicon / languages
-
-#endregion
-
-#region menu states
-
 //sets text_
 draw_set_font(global.gui_font);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
+
+#region menu states
+
+
 
 state = new SnowState("quick_start");
 //state = new SnowState("demo_start");
