@@ -1,5 +1,28 @@
 #region backgrounds
 
+function set_background_beginning_obelisq(){
+	global.background = function(){
+        var x_ = global.camera.get_x();
+        var y_ = global.camera.get_y();
+        var width_ = sprite_get_width(spr_bg_beginning_obelisq);
+        var height_ = sprite_get_height(spr_bg_beginning_obelisq);
+        
+        shader_set(sh_bg_morph);
+        var u_resolution = shader_get_uniform(sh_bg_morph,"u_resolution");
+        var u_t = shader_get_uniform(sh_bg_morph,"u_t");
+        
+        shader_set_uniform_f(u_resolution,width_,height_);
+        shader_set_uniform_f(u_t ,global.t);
+        
+        gpu_set_tex_filter(true)
+        
+        draw_sprite(spr_bg_beginning_obelisq,0,x_,y_);
+        gpu_set_tex_filter(false)
+        
+        shader_reset();
+	}
+}
+
 function set_background_workshop1(){
 	global.background = function(){
 		//the background is scaled up so it appears smooth when being parralaxed

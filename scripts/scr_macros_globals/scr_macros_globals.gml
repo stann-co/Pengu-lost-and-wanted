@@ -135,7 +135,8 @@ global.collision_layers[? COLLISION_LAYERS.C] = undefined
 global.activation_list = [];
 
 global.debug = false;
-global.show_collisions = true;
+global.show_collisions = false;
+
 global.checkpoint = -1;
 
 global.score = 0;

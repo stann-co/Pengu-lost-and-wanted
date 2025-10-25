@@ -1,1 +1,1 @@
-set_background_original()
+set_background_beginning_obelisq()

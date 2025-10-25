@@ -621,6 +621,7 @@ state.add_child("airborne","attack_base", {
                 
                 attack_hit = true;
                 entity.hurt(attack_type,function(){
+                        ///THIS SHOULD ALL BE ON THE ENEMY, NOT ON PENGU
                         entity.state.change("stunned")
                         entity.x_speed = (attack_launch_x + random_range(0,1))*facing;
                         entity.y_speed = (attack_launch_y);

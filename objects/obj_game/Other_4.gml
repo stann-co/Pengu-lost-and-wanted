@@ -40,3 +40,5 @@ if(global.checkpoint != -1){
 	}
 }
 #endregion
+
+show_collisions(global.show_collisions);

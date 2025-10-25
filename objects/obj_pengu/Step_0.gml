@@ -135,7 +135,6 @@ if(CAN_MOVE){
                             state.change("fall");
                         }
                     }
-                    
                 }
             }
             #endregion
