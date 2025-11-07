@@ -36,8 +36,6 @@ draw_set_valign(fa_top);
 
 #region menu states
 
-
-
 state = new SnowState("quick_start");
 //state = new SnowState("demo_start");
 

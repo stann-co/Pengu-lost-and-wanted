@@ -11,7 +11,7 @@
 #macro MAIN_MENUS (room == rm_init)
 #macro PAUSING     (obj_game.state.state_is("pause_menu") || obj_game.state.state_is("settings"))
 #macro FREEZE_FRAME (global.freeze_duration != 0)
-#macro CAN_MOVE   (!PAUSING && !FREEZE_FRAME)
+#macro CAN_MOVE   (!PAUSING && !FREEZE_FRAME && !instance_exists(obj_level_editor))
 
 
 #macro ENTITY_COLLISION_LAYER [obj_collision,global.collision_layers[? collision_layer]]
