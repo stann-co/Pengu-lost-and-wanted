@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_mech_ball",
   "bboxMode":0,
   "bbox_bottom":16,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"a1f9fbce-ae73-4d0f-9d3e-4445d2b1e913","name":"a1f9fbce-ae73-4d0f-9d3e-4445d2b1e913","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"a5f11dba-0637-4468-a142-2580e1cf24c8","name":"a5f11dba-0637-4468-a142-2580e1cf24c8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a1f9fbce-ae73-4d0f-9d3e-4445d2b1e913","name":"a1f9fbce-ae73-4d0f-9d3e-4445d2b1e913","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a5f11dba-0637-4468-a142-2580e1cf24c8","name":"a5f11dba-0637-4468-a142-2580e1cf24c8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

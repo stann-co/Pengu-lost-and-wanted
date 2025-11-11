@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_pengu_begin_slide",
   "bboxMode":0,
   "bbox_bottom":32,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"dcbc4aac-3ba1-4ca3-beb1-b73300b009c7","name":"dcbc4aac-3ba1-4ca3-beb1-b73300b009c7","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"dcbc4aac-3ba1-4ca3-beb1-b73300b009c7","name":"dcbc4aac-3ba1-4ca3-beb1-b73300b009c7","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
