@@ -4053,8 +4053,11 @@ function ImGui() constructor {
 			display_set_gui_size(window_get_width(), window_get_height());
 			display_set_gui_maximize(__Scale, __Scale, 0, 0);
 			draw_surface(__Surface, 0, 0);
-			display_set_gui_maximize();
+
 			display_set_gui_size(_w, _h);
+            with (__obj_stanncam_manager) {
+                display_set_gui_maximize(__gui_x_scale , __gui_y_scale, stanncam_ratio_compensate_x(), stanncam_ratio_compensate_y());	
+            }
 		}
 	}
 	return self;

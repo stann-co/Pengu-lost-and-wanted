@@ -4,7 +4,7 @@ stanncam_init(480,270,1920*0.8,1080*0.8);
 stanncam_set_keep_aspect_ratio(false);
 
 global.camera = new stanncam(global.game_w, global.game_h);
-global.camera.room_constrain = true;
+global.camera.room_constrain = false;
 global.camera.bounds_w = 16;
 global.camera.bounds_h = 4;
 global.camera.spd = 1;

@@ -36,6 +36,7 @@ draw_set_font(global.gui_font);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
+
 #region menu states
 
 state = new SnowState("quick_start");
@@ -671,3 +672,4 @@ state.add_child("level_tally_start","level_tally_anykey", {
 #endregion
 
 #endregion
+
