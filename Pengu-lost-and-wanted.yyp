@@ -256,6 +256,7 @@
     {"id":{"name":"stanncam_ac_bouncy","path":"animcurves/stanncam_ac_bouncy/stanncam_ac_bouncy.yy",},},
     {"id":{"name":"stanncam_ac_ease","path":"animcurves/stanncam_ac_ease/stanncam_ac_ease.yy",},},
     {"id":{"name":"stanncam_ac_linear","path":"animcurves/stanncam_ac_linear/stanncam_ac_linear.yy",},},
+    {"id":{"name":"editor_data","path":"extensions/editor_data/editor_data.yy",},},
     {"id":{"name":"ImGui_GM","path":"extensions/ImGui_GM/ImGui_GM.yy",},},
     {"id":{"name":"Shady","path":"extensions/Shady/Shady.yy",},},
     {"id":{"name":"Steamworks","path":"extensions/Steamworks/Steamworks.yy",},},

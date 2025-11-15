@@ -9,27 +9,27 @@ if (window_command_check(window_command_close)) {
 #region camera
 
     //Move camera
-    var hspd_ = InputCheck(INPUT_VERB.RIGHT) - InputCheck(INPUT_VERB.LEFT) * move_spd;
-    var vspd_ = InputCheck(INPUT_VERB.DOWN)  - InputCheck(INPUT_VERB.UP)   * move_spd;
+    var hspd_ = (InputCheck(INPUT_VERB.RIGHT) - InputCheck(INPUT_VERB.LEFT)) * move_spd;
+    var vspd_ = (InputCheck(INPUT_VERB.DOWN)  - InputCheck(INPUT_VERB.UP))   * move_spd;
 
     if (!ImGui.IsWindowHovered(ImGuiHoveredFlags.AnyWindow)){
         if (mouse_check_button(mb_middle)){
             hspd_ = -window_mouse_get_delta_x() / stanncam_get_res_scale_x() * global.camera.zoom_amount;
             vspd_ = -window_mouse_get_delta_y() / stanncam_get_res_scale_y() * global.camera.zoom_amount;
         }
+        
+        //zoom
+        var zoom_ = mouse_wheel_down() - mouse_wheel_up();
+        if(zoom_ != 0){
+            zoom_ = clamp(global.camera.zoom_amount - zoom_ / log2(global.camera.zoom_amount * 0.1),0.5,4);
+            global.camera.zoom(zoom_,0);
+        }
     }
-    
+
     if(hspd_ != 0 || vspd_ != 0){
     	var x_ = global.camera.x + hspd_;
     	var y_ = global.camera.y + vspd_;
     	global.camera.move(x_, y_, 0);
-    }
-
-    //zoom
-    var zoom_ = mouse_wheel_down() - mouse_wheel_up();
-    if(zoom_ != 0){
-        zoom_ = clamp(global.camera.zoom_amount - zoom_ / log2(global.camera.zoom_amount * 0.1),0.5,4);
-        global.camera.zoom(zoom_,0);
     }
     
     var mx_ = window_mouse_get_x();
@@ -65,6 +65,10 @@ for (var i_ = 0; i_ < array_length(layers); i_++) {
 }
 
 ImGui.EndChild();
+parralax = ImGui.SliderFloat("Parralax",parralax,-10,10);
+level_data[$ room_name] ??= {};
+level_data[$ room_name][$ layer_active.name] ??= {};
+level_data[$ room_name][$ layer_active.name].parallax = parralax;
 
 ImGui.End()
 #endregion

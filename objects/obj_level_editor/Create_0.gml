@@ -57,14 +57,12 @@ tilebrush_surface = -1;
 //room_data = json_load(room_file);
 
 room_data = room_get_info(room,false,false,true,true,true);
-level_data = {}
-level_data = json_load("level_data");
-
-show_debug_message(room_data);
+room_name = room_get_name(room);
+level_data = json_load("level_data.json");
 
 layers = [];
 layer_index = 0;
-layer_active = 0;
+parralax = 0; //parralax value for specific layer
 
 element_active = undefined;
 
@@ -117,9 +115,19 @@ set_layer = function(_layer_index){
         }
         tilemap = layer_tilemap_get_id(layer_active.id);
         tileset = tilemap_get_tileset(tilemap);
+        tile = 0;
+        tile_flipped = false;
+        tile_mirrored = false;
+        tile_rotated = false;
     } else {
         tilemap = undefined;
         tileset = undefined;
+    }
+    
+    try {
+        parralax = level_data[$room_name][$ layer_active.name].parallax;
+    } catch(_){
+        parralax = 0;
     }
 }
 
