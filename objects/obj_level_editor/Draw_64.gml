@@ -1,9 +1,15 @@
 /// @description
 
+set_draw(WHITE,0.4);
+
+draw_circle(30,30,30,false)
+
 //Tile grid
 if(tilemap != undefined){
     
-    set_draw(WHITE,0.4);
+    
+    
+    
     
     var info_ = tileset_get_info(tileset);
     var cell_w_ = 16//info_.tile_width;
@@ -25,4 +31,4 @@ if(tilemap != undefined){
     reset_draw();
 }
 
-if (initialized) ImGui.__Render();
+//if (initialized) ImGui.__Render();

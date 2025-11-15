@@ -12,11 +12,11 @@ if(variable_global_exists("editor_data")){
     global.editor_data = {}
 }
 
+//room_instance_add(room,0,0,obj_ImGM);
+
 //close button intercept
 window_command_hook(window_command_close);
-
-ImGui.__Initialize();
-font = ImGui.AddFontFromFile("fonts/AtkinsonHyperlegible.ttf",24);
+font = ImGui.AddFontFromFileTTF("fonts/AtkinsonHyperlegible.ttf",24);
 
 global.show_collisions = true;
 show_collisions(true);

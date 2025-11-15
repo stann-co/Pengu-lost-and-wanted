@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"ImGui_Misc",
+  "%Name":"ImExtNodeEditor",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"ImGui_Misc",
+  "name":"ImExtNodeEditor",
   "parent":{
-    "name":"ImGui",
-    "path":"folders/Extensions/ImGM/Scripts/ImGui.yy",
+    "name":"ImExt",
+    "path":"folders/Extensions/ImGM/Scripts/ImExt.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

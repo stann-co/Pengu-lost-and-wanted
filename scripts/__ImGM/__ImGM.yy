@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"ImGui_Misc",
+  "%Name":"__ImGM",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"ImGui_Misc",
+  "name":"__ImGM",
   "parent":{
-    "name":"ImGui",
-    "path":"folders/Extensions/ImGM/Scripts/ImGui.yy",
+    "name":"Scripts",
+    "path":"folders/Extensions/ImGM/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

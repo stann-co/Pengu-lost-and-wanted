@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"ImGui_Misc",
+  "%Name":"ImGui_Extras",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"ImGui_Misc",
+  "name":"ImGui_Extras",
   "parent":{
     "name":"ImGui",
     "path":"folders/Extensions/ImGM/Scripts/ImGui.yy",
