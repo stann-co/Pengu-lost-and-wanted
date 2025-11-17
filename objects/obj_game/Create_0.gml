@@ -64,12 +64,12 @@ state.add("quick_start", {
 		call_later(1,time_source_units_frames,function(){
 			state.change("idle");	
 			
-			for (var i_ = 0; i_ < array_length(global.levels); ++i_) {
-			    if (room_next(room) == global.levels[i_].room_id) {
-					global.active_level = global.levels[i_]
-					break;	
-				}
-			}
+			//for (var i_ = 0; i_ < array_length(global.levels); ++i_) {
+			    //if (room_next(room) == global.levels[i_].room_id) {
+					//global.active_level = global.levels[i_]
+					//break;	
+				//}
+			//}
 			
 			room_goto_next();
 			

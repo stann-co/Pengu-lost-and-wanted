@@ -37,6 +37,8 @@ function stanncam(_x=0, _y=0, _width=global.game_w, _height=global.game_h, _surf
 	offset_y = 0;
 	
 	follow = noone;
+    
+    after_move_func = function(){}; //can be set, and will run code immedietly after the camera changes position
 	
 	//The extra surface is only neccesary if you are drawing the camera recursively in the room
 	//Like a tv screen, where it can capture itself
@@ -623,8 +625,9 @@ function stanncam(_x=0, _y=0, _width=global.game_w, _height=global.game_h, _surf
     static __room_to_view_x = function(_x){
         var _zoom = __get_zoom();
         var _zoom_offset = (width  * (1-_zoom)) / 2;
+        var pos_x = smooth_draw ? x : floor(x);
         
-        _x -= _zoom_offset + (x-width/2)-1;
+        _x -= _zoom_offset + (pos_x-width/2)-1;
 	    _x /= _zoom;
         
         return _x;
@@ -640,7 +643,8 @@ function stanncam(_x=0, _y=0, _width=global.game_w, _height=global.game_h, _surf
         
         _x *= _zoom;
         
-        _x += _zoom_offset + (x-width/2) -1;
+        var pos_x = smooth_draw ? x : floor(x);
+        _x += _zoom_offset + (pos_x-width/2) -1;
         
         return _x;
     }
@@ -652,8 +656,9 @@ function stanncam(_x=0, _y=0, _width=global.game_w, _height=global.game_h, _surf
     static __room_to_view_y = function(_y){
         var _zoom = __get_zoom();
         var _zoom_offset = (height  * (1-_zoom)) / 2;
+        var pos_y = smooth_draw ? y : floor(y);
         
-        _y -= _zoom_offset + (y-height/2)-1;
+        _y -= _zoom_offset + (pos_y-height/2)-1;
         
 	    _y /= _zoom;
         
@@ -670,7 +675,8 @@ function stanncam(_x=0, _y=0, _width=global.game_w, _height=global.game_h, _surf
         var _zoom_offset = (height * (1 - _zoom)) / 2; 
         _y *= _zoom;
         
-        _y += _zoom_offset + (y-height/2)-1;
+        var pos_y = smooth_draw ? y : floor(y);
+        _y += _zoom_offset + (pos_y-height/2)-1;
         
         return _y;
     }
@@ -939,11 +945,12 @@ function stanncam(_x=0, _y=0, _width=global.game_w, _height=global.game_h, _surf
         
         //when smooth draw is off, the fractions are applied directly on the camera and not in draw step
         if(!smooth_draw){
-            _new_x+=x_frac + __constrain_frac_x;
-            _new_y+=y_frac + __constrain_frac_y;
+            //_new_x+=x_frac + __constrain_frac_x;
+            //_new_y+=y_frac + __constrain_frac_y;
         }
         
 		camera_set_view_pos(__camera, _new_x, _new_y);
+        after_move_func()
 	}
 #endregion
 

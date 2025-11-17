@@ -1,12 +1,5 @@
 /// @description
 
-enum LAYER_TYPE {
-    COLLISION,
-    DECOR,
-    ASSET,
-    INSTANCE
-}
-
 if(variable_global_exists("editor_data")){
     //when stopping level editor the tile data and stuff is still present
     global.editor_data = {}
@@ -32,9 +25,6 @@ global.camera.follow = noone;
 global.gui_draw = false;
 
 move_spd = 2;
-drag_x = 0;
-drag_y = 0;
-dragging = false;
 
 quit = function(){ //stops level editor
     //maybe make a warning or popup or something
@@ -58,7 +48,8 @@ tilebrush_surface = -1;
 
 room_data = room_get_info(room,false,false,true,true,true);
 room_name = room_get_name(room);
-level_data = json_load("level_data.json");
+
+editor_data = json_load("editor_data.json");
 
 layers = [];
 layer_index = 0;
@@ -70,12 +61,29 @@ tilemap = undefined;
 tileset = undefined;
 tilemap_w = 0;
 tilemap_h = 0;
-tile = 0;
-tile_w = 16;
+
+tile_w = 16; //tile cell size
 tile_h = 16;
+
+//is either a tileindex, or a ds_grid 
+brush = -1; //-1 is none selected
+
 tile_flipped = false;
 tile_mirrored = false;
 tile_rotated = false;
+
+tileset_info = undefined;
+tileset_brushes = undefined;
+
+//tile picker offset and zoom
+tiles_x = 0;
+tiles_y = 0;
+tiles_zoom = 1;
+
+//tile brush pickers offset and zoom
+brushes_x = 0;
+brushes_y = 0;
+brushes_size = 64;
 
 //gets relevant layers, and adds a type for ease of use
 for (var i_ = 0; i_ < array_length(room_data.layers); i_++) {
@@ -103,32 +111,55 @@ set_layer = function(_layer_index){
     layer_index = _layer_index;
     layer_active = layers[_layer_index];
     
-    if(layer_active.type == LAYER_TYPE.COLLISION || layer_active.type == LAYER_TYPE.DECOR){
+    if(layer_active.type == LAYER_TYPE.COLLISION || layer_active.type == LAYER_TYPE.DECOR){ 
         if(is_array(layer_active.elements)){
             element_active = layer_active.elements[0];
-            tilemap_w = element_active.width;
-            tilemap_h = element_active.height;
+            
+            tilemap = layer_tilemap_get_id(layer_active.id);
+            tilemap_w = tilemap_get_width(tilemap)
+            tilemap_h = tilemap_get_height(tilemap)
+            tileset = tilemap_get_tileset(tilemap);
+            tileset_info = tileset_get_info(tileset);
+            
+            tileset_info.name = tileset_get_name(tileset);
+            
+            var brush_width_ = struct_get_chained(editor_data,tileset_info.name,"brush_width");
+            var brush_height_ = struct_get_chained(editor_data,tileset_info.name,"brush_height");
+            var brush_tiles_ = struct_get_chained(editor_data,tileset_info.name,"brush_tiles");
+            
+            tileset_brushes = ds_grid_create(brush_width_,brush_height_);
+            ds_grid_populate(tileset_brushes,brush_tiles_);
+            
+            //is either a tileindex, or a ds_grid
+            brush = -1; //-1 is none selected
+            
+            tile_flipped = false;
+            tile_mirrored = false;
+            tile_rotated = false;
+            
+            //tile picker offset and zoom
+            tiles_x = 0;
+            tiles_y = 0;
+            
+            //biggest dimension
+            tiles_zoom = (tileset_info.width > tileset_info.height) ? tileset_info.width : tileset_info.height;
+            
+            //tile brush pickers offset and zoom
+            brushes_x = 0;
+            brushes_y = 0;
+            brushes_size = 512;
         } else {
             element_active = undefined
             tilemap = undefined;
             tileset = undefined;
         }
-        tilemap = layer_tilemap_get_id(layer_active.id);
-        tileset = tilemap_get_tileset(tilemap);
-        tile = 0;
-        tile_flipped = false;
-        tile_mirrored = false;
-        tile_rotated = false;
-    } else {
+    } else { //asset layer
         tilemap = undefined;
         tileset = undefined;
     }
     
-    try {
-        parralax = level_data[$room_name][$ layer_active.name].parallax;
-    } catch(_){
-        parralax = 0;
-    }
+    parralax = struct_get_chained(global.level_data,"layers",layer_active.name,"parralax") ?? 0;
+
 }
 
 set_layer(layer_index); //sets first layer active
