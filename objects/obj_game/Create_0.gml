@@ -1,5 +1,7 @@
 /// @description starts the game
 
+//live_init(1,"http://127.0.0.1:5100","");
+
 //vars
 saved_pengu = {
 	x: -1,

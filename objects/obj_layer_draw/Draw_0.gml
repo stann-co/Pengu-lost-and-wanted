@@ -2,7 +2,6 @@
 var parralax_ = struct_get_chained(global.level_data,"layers",name,"parralax") ?? 0;
 var offset_x_ = floor(global.camera.get_x() * parralax_);
 var offset_y_ = floor(global.camera.get_y() * parralax_);
-	
 if(type == LAYER_TYPE.DECOR){
 	draw_tilemap(tilemap,offset_x_,offset_y_);
 }
@@ -10,7 +9,7 @@ else if(type == LAYER_TYPE.ASSET){
 	var elements_ = layer_get_all_elements(layer_id);
 	
 	for (var i_ = 0; i_ < array_length(elements_); i_++) {
-		element_ = elements_[i_];
+		var element_ = elements_[i_];
 		var sprite_ = layer_sprite_get_sprite(element_);
 		var subimg_ = layer_sprite_get_index(element_);
 		var x_ = layer_sprite_get_x(element_);
@@ -19,7 +18,8 @@ else if(type == LAYER_TYPE.ASSET){
 		var scale_y_ = layer_sprite_get_yscale(element_);
 		var alpha_ = layer_sprite_get_alpha(element_);
 		var rot_ = layer_sprite_get_angle(element_);
-		draw_sprite_ext(sprite_,subimg_,x_+offset_x_,y_+offset_y_,scale_x_,scale_y_,rot_,c_white,alpha_);
+		var color_ = layer_sprite_get_blend(element_);
+		draw_sprite_ext(sprite_,subimg_,x_+offset_x_,y_+offset_y_,scale_x_,scale_y_,rot_,color_,alpha_);
 	}
 }
 

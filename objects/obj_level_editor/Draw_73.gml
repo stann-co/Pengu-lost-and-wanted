@@ -1,14 +1,12 @@
 /// @description
 if(tileset != undefined && brush != -1){
-	var cell_w_ = tileset_info.tile_width;
-	var cell_h_ = tileset_info.tile_height;
-	
-	var mx_ = floor(global.camera.get_mouse_x() / cell_w_) * cell_w_;
-	var my_ = floor(global.camera.get_mouse_y() / cell_h_) * cell_h_;
+    var brush_offset_x_ = ds_grid_width( brush)*grid_cell_w / 2;
+    var brush_offset_y_ = ds_grid_height(brush)*grid_cell_h / 2;
+    
+	var mx_ = round((global.camera.get_mouse_x()-brush_offset_x_) / grid_cell_w) * grid_cell_w;
+	var my_ = round((global.camera.get_mouse_y()-brush_offset_y_) / grid_cell_h) * grid_cell_h;
 	
 	if(ds_exists(brush,ds_type_grid)){ 
 		draw_grid_tiles(brush,tileset,mx_,my_);
-	} else { 
-		draw_tile(tileset,brush,0,mx_,my_);
 	}
 }

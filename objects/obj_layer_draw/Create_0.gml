@@ -2,6 +2,7 @@
 
 if(type == LAYER_TYPE.DECOR){
 	tilemap = layer_tilemap_get_id(layer_id);
+	if(tilemap == -1) instance_destroy();
 }
 else if(type == LAYER_TYPE.ASSET){
 	
