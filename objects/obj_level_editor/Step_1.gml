@@ -72,6 +72,14 @@ ImGui.SetNextWindowSize(menu_size_,global.res_h);
 
 ImGui.Begin("Left",true,ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoDecoration)
 
+if(ImGui.Button("save")){
+    show_question("Save changes?"){
+        //show_debug_message(room_get_info(room,false,false,true,true,true));   
+        
+        RoomSaveData();
+    }
+}
+
 ImGui.Text("Layers:")
 ImGui.BeginChild("Layers",,300, ImGuiChildFlags.Border);
 for (var i_ = 0; i_ < array_length(layers); i_++) {
@@ -197,7 +205,9 @@ if(layer_active.type == LAYER_TYPE.COLLISION || layer_active.type == LAYER_TYPE.
             
             surface_set_target(tilebrush_data_surface);    
             draw_grid_tiles(tileset_brushes,tileset,0,0);
+            set_draw(BLACK,0.5);
             draw_grid(0,0,grid_cell_w,grid_cell_h,brushes_width_,brushes_height_,1);
+            reset_draw();
             surface_reset_target();
         }
     }

@@ -58,6 +58,8 @@ room_name = room_get_name(room);
 
 editor_data = json_load("editor_data.json");
 
+RoomSaveData()
+
 layers = [];
 layer_index = 0;
 parralax = 0; //parralax value for specific layer

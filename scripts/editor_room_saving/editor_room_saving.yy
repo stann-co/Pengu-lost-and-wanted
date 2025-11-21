@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"editor_functions",
+  "%Name":"editor_room_saving",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"editor_functions",
+  "name":"editor_room_saving",
   "parent":{
     "name":"editor",
     "path":"folders/Scripts/editor.yy",

@@ -208,6 +208,6 @@ global.gui_font = font_add_sprite_ext(spr_gui_font,"!\"#$%&'()*+,-./0123456789:;
 
 //spawns persistent objects
 
-room_instance_add(rm_init,0,0,obj_gmlive);
+//room_instance_add(rm_init,0,0,obj_gmlive);
 room_instance_add(rm_init,0,0,obj_camera);
 room_instance_add(rm_init,0,0,obj_game);

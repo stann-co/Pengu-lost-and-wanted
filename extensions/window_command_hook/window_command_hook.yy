@@ -92,8 +92,8 @@
   "optionsFile":"options.json",
   "packageId":"",
   "parent":{
-    "name":"Extensions",
-    "path":"folders/Extensions.yy",
+    "name":"Editor Specific",
+    "path":"folders/Extensions/Editor Specific.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",
