@@ -15,8 +15,7 @@
 		{ xoffset : 0, hspeed : 0, vspeed : 0, elements : [
 				{ x : 224, y : -16, image_xscale : 1, image_yscale : 1, image_angle : 0, image_alpha : 1, image_blend : 16777215, image_speed : 1, id : 5, type : 4, name : "graphic_5AD60AD2", sprite_index : ref sprite spr_hit_stars, image_index : 0, speed_type : 1
 				},
-				{ x : 240, y : 176, image_xscale : 1, image_yscale : 1, image_angle : 0, im
-age_alpha : 1, image_blend : 16777215, image_speed : 1, id : 4, type : 4, name : "graphic_7FA0BEE7", sprite_index : ref sprite spr_crystal_01, image_index : 0, speed_type : 0
+				{ x : 240, y : 176, image_xscale : 1, image_yscale : 1, image_angle : 0, image_alpha : 1, image_blend : 16777215, image_speed : 1, id : 4, type : 4, name : "graphic_7FA0BEE7", sprite_index : ref sprite spr_crystal_01, image_index : 0, speed_type : 0
 				},
 				{ x : 192, y : 112, image_xscale : 1, image_yscale : 1, image_angle : 0, image_alpha : 1, image_blend : 16777215, image_speed : 1, id : 3, type : 4, name : "graphic_63A1DC4F", sprite_index : ref sprite spr_points, image_index : 0, speed_type : 1
 				},

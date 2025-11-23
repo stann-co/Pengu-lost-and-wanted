@@ -46,19 +46,10 @@ tilebrush_data_surface = -1;
 tileset_data_update = false;
 tilebrush_data_update = false;
 
-
-//room_directory = "D:\\projects\\Game Dev\\Pengu Lost and Wanted\\Pengu lost and wanted\\rooms\\";
-//room_name = room_get_name(room);
-//room_file = room_directory + room_name + "\\" + room_name + ".yy";
-//
-//room_data = json_load(room_file);
-
 room_data = room_get_info(room,false,false,true,true,true);
 room_name = room_get_name(room);
 
 editor_data = json_load("editor_data.json");
-
-RoomSaveData()
 
 layers = [];
 layer_index = 0;

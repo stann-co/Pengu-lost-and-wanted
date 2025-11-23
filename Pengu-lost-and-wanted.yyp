@@ -416,6 +416,7 @@
     {"id":{"name":"rm_demo","path":"rooms/rm_demo/rm_demo.yy",},},
     {"id":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
     {"id":{"name":"rm_intro","path":"rooms/rm_intro/rm_intro.yy",},},
+    {"id":{"name":"rm_layer_example","path":"rooms/rm_layer_example/rm_layer_example.yy",},},
     {"id":{"name":"rm_level_devzone","path":"rooms/rm_level_devzone/rm_level_devzone.yy",},},
     {"id":{"name":"rm_level_rainside","path":"rooms/rm_level_rainside/rm_level_rainside.yy",},},
     {"id":{"name":"rm_level_template","path":"rooms/rm_level_template/rm_level_template.yy",},},
@@ -1440,6 +1441,7 @@
         {"roomId":{"name":"rm_up_mountain","path":"rooms/rm_up_mountain/rm_up_mountain.yy",},},
       ],"groupName":"scrapped",},
     {"roomId":{"name":"rm_demo","path":"rooms/rm_demo/rm_demo.yy",},},
+    {"roomId":{"name":"rm_layer_example","path":"rooms/rm_layer_example/rm_layer_example.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[

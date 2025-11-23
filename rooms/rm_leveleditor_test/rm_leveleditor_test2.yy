@@ -242,6 +242,7 @@
     "inheritRoomSettings":false,
     "persistent":false,
     "Width":200,
+    "width":200,
   },
   "sequenceId":null,
   "views":[
