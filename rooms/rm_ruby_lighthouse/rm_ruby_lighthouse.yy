@@ -1958,8 +1958,8 @@
   ],
   "name":"rm_ruby_lighthouse",
   "parent":{
-    "name":"map tryouts",
-    "path":"folders/Rooms/map tryouts.yy",
+    "name":"!scrapped",
+    "path":"folders/Rooms/!scrapped.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

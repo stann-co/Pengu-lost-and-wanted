@@ -2,9 +2,9 @@
   "$GMSprite":"v2",
   "%Name":"spr_matcap_bubble",
   "bboxMode":0,
-  "bbox_bottom":1023,
+  "bbox_bottom":255,
   "bbox_left":0,
-  "bbox_right":1023,
+  "bbox_right":255,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -16,7 +16,7 @@
   ],
   "gridX":0,
   "gridY":0,
-  "height":1024,
+  "height":256,
   "HTile":false,
   "layers":[
     {"$GMImageLayer":"","%Name":"6fadac72-267e-40cc-b43c-b6b2f8488f0c","blendMode":0,"displayName":"default","isLocked":false,"name":"6fadac72-267e-40cc-b43c-b6b2f8488f0c","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
@@ -86,5 +86,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":1024,
+  "width":256,
 }

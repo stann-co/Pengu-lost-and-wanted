@@ -1,0 +1,43 @@
+{
+  "$GMTileSet":"v1",
+  "%Name":"ts_futurecity",
+  "autoTileSets":[],
+  "macroPageTiles":{
+    "SerialiseHeight":12,
+    "SerialiseWidth":23,
+    "TileCompressedData":[
+      -134,0,4,13,0,14,15,-6,0,6,1,2,0,30,31,268435486,-3,0,8,16,17,0,18,19,0,20,21,-6,0,6,3,4,0,32,33,268435488,
+      -3,0,7,22,23,0,24,25,0,26,-10,0,3,34,35,268435490,-3,0,5,27,28,0,29,8,-35,0,3,37,36,268435493,-20,0,
+      3,34,36,268435490,-11,0,
+    ],
+    "TileDataFormat":1,
+  },
+  "name":"ts_futurecity",
+  "out_columns":6,
+  "out_tilehborder":2,
+  "out_tilevborder":2,
+  "parent":{
+    "name":"ts_future_city",
+    "path":"folders/Tile Sets/ts_future_city.yy",
+  },
+  "resourceType":"GMTileSet",
+  "resourceVersion":"2.0",
+  "spriteId":{
+    "name":"spr_ts_futurecity",
+    "path":"sprites/spr_ts_futurecity/spr_ts_futurecity.yy",
+  },
+  "spriteNoExport":true,
+  "textureGroupId":{
+    "name":"Default",
+    "path":"texturegroups/Default",
+  },
+  "tileAnimationFrames":[],
+  "tileAnimationSpeed":15.0,
+  "tileHeight":16,
+  "tilehsep":0,
+  "tilevsep":0,
+  "tileWidth":16,
+  "tilexoff":0,
+  "tileyoff":0,
+  "tile_count":42,
+}
