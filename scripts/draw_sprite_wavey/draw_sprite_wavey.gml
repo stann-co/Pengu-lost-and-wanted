@@ -1,44 +1,43 @@
 function draw_sprite_wavey(_sprite,_subimg,_x,_y,_xscale,_yscale,_angle,_opacity = 1,_speed = 0.2,_x_freq = 10000, _x_size = 0.05){
 	
-	var uvs = sprite_get_uvs(_sprite,_subimg);
+	var uvs_ = sprite_get_uvs(_sprite,_subimg);
 	
-	u_spriteSize = shader_get_uniform(sh_wave,"u_spriteSize");
+	var u_sprite_size_ = shader_get_uniform(sh_wave,"u_spriteSize");
 	
-	u_speed = shader_get_uniform(sh_wave,"u_speed");
-	u_time = shader_get_uniform(sh_wave,"u_time");
-	u_xFrequency = shader_get_uniform(sh_wave,"u_xFrequency");
-	u_xSize = shader_get_uniform(sh_wave,"u_xSize");
+	var u_speed_ = shader_get_uniform(sh_wave,"u_speed");
+	var u_time_ = shader_get_uniform(sh_wave,"u_time");
+	var u_x_frequency_ = shader_get_uniform(sh_wave,"u_xFrequency");
+	var u_x_size_ = shader_get_uniform(sh_wave,"u_xSize");
 
 	shader_set(sh_wave)
-	shader_set_uniform_f(u_spriteSize,uvs[2]-uvs[0],uvs[3]-uvs[1]);
-	shader_set_uniform_f(u_speed,_speed);
-	shader_set_uniform_f(u_time,global.t);
-	shader_set_uniform_f(u_xFrequency,_x_freq);
-	shader_set_uniform_f(u_xSize,_x_size);
+	shader_set_uniform_f(u_sprite_size_,uvs_[2]-uvs_[0],uvs_[3]-uvs_[1]);
+	shader_set_uniform_f(u_speed_,_speed);
+	shader_set_uniform_f(u_time_,global.t);
+	shader_set_uniform_f(u_x_frequency_,_x_freq);
+	shader_set_uniform_f(u_x_size_,_x_size);
 	
-	draw_sprite_ext(_sprite,_subimg,_x,_y,_xscale,_yscale,_angle,white,_opacity);
-	shader_reset()
-
+	draw_sprite_ext(_sprite,_subimg,_x,_y,_xscale,_yscale,_angle,WHITE,_opacity);
+	shader_reset();
 }
 
-function draw_sprite_uv_move(_sprite,_subimg,_x,_y,_xscale,_yscale,_angle,_opacity = 1,_xSpeed = 0.2,_ySpeed = 0.2){
+function draw_sprite_uv_move(_sprite,_subimg,_x,_y,_xscale,_yscale,_angle,_opacity = 1,_x_speed = 0.2,_y_speed = 0.2){
 	
 	
-	var uvs = sprite_get_uvs(_sprite,_subimg);
+	var uvs_ = sprite_get_uvs(_sprite,_subimg);
 	
-	u_spriteSize = shader_get_uniform(sh_wave,"u_spriteSize");
-	u_speed = shader_get_uniform(sh_wave,"u_speed");
-	u_time = shader_get_uniform(sh_wave,"u_time");
+	var u_sprite_size_ = shader_get_uniform(sh_wave,"u_spriteSize");
+	var u_speed_ = shader_get_uniform(sh_wave,"u_speed");
+	var u_time_ = shader_get_uniform(sh_wave,"u_time");
 	
 	gpu_set_tex_repeat(true);
 	
 	shader_set(sh_uv_move)
-	shader_set_uniform_f(u_spriteSize,uvs[2]-uvs[0],uvs[3]-uvs[1]);
-	shader_set_uniform_f(u_speed,_xSpeed,_ySpeed);
-	shader_set_uniform_f(u_time,global.t);
+	shader_set_uniform_f(u_sprite_size_,uvs_[2]-uvs_[0],uvs_[3]-uvs_[1]);
+	shader_set_uniform_f(u_speed_,_x_speed,_y_speed);
+	shader_set_uniform_f(u_time_,global.t);
 	
 	
-	draw_sprite_ext(_sprite,_subimg,_x,_y,_xscale,_yscale,_angle,white,_opacity);
+	draw_sprite_ext(_sprite,_subimg,_x,_y,_xscale,_yscale,_angle,WHITE,_opacity);
 	
 	shader_reset()
 	gpu_set_tex_repeat(false);

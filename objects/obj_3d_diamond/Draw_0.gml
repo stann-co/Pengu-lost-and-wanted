@@ -2,10 +2,10 @@
     gpu_set_ztestenable(true);
     gpu_set_zwriteenable(true);
     
-    var scale = 100;
+    var scale_ = 100;
     
     new BBMOD_Matrix()
-    	.Scale(scale,scale,scale)
+    	.scale_(scale_,scale_,scale_)
         .RotateX(rotx*5)
         .RotateY(roty*5)
         .RotateZ(rotz*5)

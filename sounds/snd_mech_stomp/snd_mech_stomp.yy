@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":1.2785,
+  "duration":1.2785034,
   "exportDir":"",
   "name":"snd_mech_stomp",
   "parent":{

@@ -1,61 +1,61 @@
 function draw_sprite_cubemap(_sprite,_subimg,_x,_y,_texture,_n_strength = 0.5,_r_strength = 1,_scale = 1,_offset_scale = -0.25,_xscale=1,_yscale=1,_rot = 0, _opacity = 1.0){
 	if(global.draw_shine){
-		var s_texture =	shader_get_sampler_index(sh_shine,"s_Texture");
+		var s_texture_ =	shader_get_sampler_index(sh_shine,"s_texture_");
 		
 		//uniforms
-		var u_normal_strength		= shader_get_uniform(sh_shine,"u_normal_strength");
-		var u_roughness_strength	= shader_get_uniform(sh_shine,"u_roughness_strength");
-		var u_dimensions			= shader_get_uniform(sh_shine,"u_dimensions");
-		var u_texture_offset		= shader_get_uniform(sh_shine,"u_texture_offset");
-		var u_texture_scale			= shader_get_uniform(sh_shine,"u_texture_scale");
-		var u_opacity				= shader_get_uniform(sh_shine,"u_opacity");
+		var u_normal_strength_		= shader_get_uniform(sh_shine,"u_normal_strength_");
+		var u_roughness_strength_	= shader_get_uniform(sh_shine,"u_roughness_strength_");
+		var u_dimensions_			= shader_get_uniform(sh_shine,"u_dimensions_");
+		var u_texture_offset_		= shader_get_uniform(sh_shine,"u_texture_offset_");
+		var u_texture_scale_			= shader_get_uniform(sh_shine,"u_texture_scale_");
+		var u_opacity_				= shader_get_uniform(sh_shine,"u_opacity_");
 		
-		var u_texcoord_n = shader_get_uniform(sh_shine,"u_texcoord_n");
-		var u_texcoord_r = shader_get_uniform(sh_shine,"u_texcoord_r");
+		var u_texcoord_n_ = shader_get_uniform(sh_shine,"u_texcoord_n_");
+		var u_texcoord_r_ = shader_get_uniform(sh_shine,"u_texcoord_r_");
 			
 		shader_set(sh_shine);
 		
-		shader_set_uniform_f(u_opacity,_opacity)
+		shader_set_uniform_f(u_opacity_,_opacity)
 		
-		var t_tex = sprite_get_texture(_texture,0);
+		var t_tex_ = sprite_get_texture(_texture,0);
 		
-		var sprite_name = sprite_get_name(_sprite);
+		var sprite_name_ = sprite_get_name(_sprite);
 		
-		var uvs = sprite_get_uvs(_sprite,_subimg)
+		var uvs_ = sprite_get_uvs(_sprite,_subimg)
 		
 		//gets normal sprite coordinate offset
-		var _normal = asset_get_index(sprite_name+"_n");
-		if(_normal != -1){
-			var uvs_n = sprite_get_uvs(_normal,_subimg)
-			shader_set_uniform_f(u_texcoord_n,uvs[0]-uvs_n[0],uvs[1]-uvs_n[1]);
+		var normal_ = asset_get_index(sprite_name_+"_n");
+		if(normal_ != -1){
+			var uvs_n_ = sprite_get_uvs(normal_,_subimg)
+			shader_set_uniform_f(u_texcoord_n_,uvs_[0]-uvs_n_[0],uvs_[1]-uvs_n_[1]);
 		} else {
-			shader_set_uniform_f(u_texcoord_n,-1,-1);
+			shader_set_uniform_f(u_texcoord_n_,-1,-1);
 		}
 		
 		//gets roughness sprite coordinate offset
-		var _roughness = asset_get_index(sprite_name+"_r");
-		if(_roughness != -1){
-			var uvs_r = sprite_get_uvs(_roughness,_subimg)
-			shader_set_uniform_f(u_texcoord_r,uvs[0]-uvs_r[0],uvs[1]-uvs_r[1]);
+		var roughness_ = asset_get_index(sprite_name_+"_r");
+		if(roughness_ != -1){
+			var uvs_r_ = sprite_get_uvs(roughness_,_subimg)
+			shader_set_uniform_f(u_texcoord_r_,uvs_[0]-uvs_r_[0],uvs_[1]-uvs_r_[1]);
 		} else {
-			shader_set_uniform_f(u_texcoord_r,-1,-1);
+			shader_set_uniform_f(u_texcoord_r_,-1,-1);
 		}
 		
-		gpu_set_tex_repeat_ext(s_texture,true);
-		texture_set_stage(s_texture,t_tex);
+		gpu_set_tex_repeat_ext(s_texture_,true);
+		texture_set_stage(s_texture_,t_tex_);
 		
-		shader_set_uniform_f(u_normal_strength,_n_strength);
-		shader_set_uniform_f(u_roughness_strength,_r_strength);
+		shader_set_uniform_f(u_normal_strength_,_n_strength);
+		shader_set_uniform_f(u_roughness_strength_,_r_strength);
 		
-		shader_set_uniform_f(u_dimensions,sprite_get_width(_texture),sprite_get_height(_texture));
-		shader_set_uniform_f(u_texture_scale,_scale);
+		shader_set_uniform_f(u_dimensions_,sprite_get_width(_texture),sprite_get_height(_texture));
+		shader_set_uniform_f(u_texture_scale_,_scale);
 		
-		var tex_offset_x = (_x - (global.camera.get_x() * _offset_scale) ) / sprite_get_width(_texture);
-		var tex_offset_y = (_y - (global.camera.get_y() * _offset_scale) ) / sprite_get_height(_texture);
-		shader_set_uniform_f(u_texture_offset,tex_offset_x,tex_offset_y);
+		var tex_offset_x_ = (_x - (global.camera.get_x() * _offset_scale) ) / sprite_get_width(_texture);
+		var tex_offset_y_ = (_y - (global.camera.get_y() * _offset_scale) ) / sprite_get_height(_texture);
+		shader_set_uniform_f(u_texture_offset_,tex_offset_x_,tex_offset_y_);
 		
-		var new_mat = matrix_build(_x, _y, 0, 0, 0, _rot, _xscale, _yscale, 1);
-		matrix_set(matrix_world, new_mat);
+		var new_mat_ = matrix_build(_x, _y, 0, 0, 0, _rot, _xscale, _yscale, 1);
+		matrix_set(matrix_world, new_mat_);
 		
 		draw_sprite(_sprite,_subimg,0,0)
 		
@@ -75,20 +75,20 @@ function draw_tilemap_cubemap(_tilemap,_texture,_n_strength = 0.5,_r_strength = 
         //
 		//var _tileset = tilemap_get_tileset(_tilemap);
         //var tileset_name = tileset_get_name(_tileset);
-		//var uvs = tileset_get_uvs(_tileset)
+		//var uvs_ = tileset_get_uvs(_tileset)
 		//
-		//var s_texture =	shader_get_sampler_index(sh_shine,"s_Texture");
+		//var s_texture_ =	shader_get_sampler_index(sh_shine,"s_texture_");
 		//
 		////uniforms
-		//var u_normal_strength		= shader_get_uniform(sh_shine,"u_normal_strength");
-		//var u_roughness_strength	= shader_get_uniform(sh_shine,"u_roughness_strength");
-		//var u_dimensions			= shader_get_uniform(sh_shine,"u_dimensions");
-		//var u_texture_offset		= shader_get_uniform(sh_shine,"u_texture_offset");
-		//var u_texture_scale			= shader_get_uniform(sh_shine,"u_texture_scale");
-		//var u_opacity				= shader_get_uniform(sh_shine,"u_opacity");
+		//var u_normal_strength_		= shader_get_uniform(sh_shine,"u_normal_strength_");
+		//var u_roughness_strength_	= shader_get_uniform(sh_shine,"u_roughness_strength_");
+		//var u_dimensions_			= shader_get_uniform(sh_shine,"u_dimensions_");
+		//var u_texture_offset_		= shader_get_uniform(sh_shine,"u_texture_offset_");
+		//var u_texture_scale_			= shader_get_uniform(sh_shine,"u_texture_scale_");
+		//var u_opacity_				= shader_get_uniform(sh_shine,"u_opacity_");
 		//
-		//var u_texcoord_n = shader_get_uniform(sh_shine,"u_texcoord_n");
-		//var u_texcoord_r = shader_get_uniform(sh_shine,"u_texcoord_r");
+		//var u_texcoord_n_ = shader_get_uniform(sh_shine,"u_texcoord_n_");
+		//var u_texcoord_r_ = shader_get_uniform(sh_shine,"u_texcoord_r_");
         //var u_texcoord_d = shader_get_uniform(sh_shine,"u_texcoord_d");
 			//
 		//shader_set(sh_shine);
@@ -102,7 +102,7 @@ function draw_tilemap_cubemap(_tilemap,_texture,_n_strength = 0.5,_r_strength = 
 		//var _depthness = asset_get_index(tileset_name+"_d");
 		//if(_depthness != -1){
 			//var uvs_d = tileset_get_uvs(_depthness)
-			//shader_set_uniform_f(u_texcoord_d,uvs[0]-uvs_d[0],uvs[1]-uvs_d[1]);
+			//shader_set_uniform_f(u_texcoord_d,uvs_[0]-uvs_d[0],uvs_[1]-uvs_d[1]);
             //
             //draw_tilemap(_tilemap,-camx,-camy);
             //
@@ -117,40 +117,40 @@ function draw_tilemap_cubemap(_tilemap,_texture,_n_strength = 0.5,_r_strength = 
         //var srf_tiles = surface_create(global.game_w,global.game_h);
         //surface_set_target(srf_tiles);
 		//
-		//shader_set_uniform_f(u_opacity,_opacity)
+		//shader_set_uniform_f(u_opacity_,_opacity)
 		//
-		//var t_tex = sprite_get_texture(_texture,0);
+		//var t_tex_ = sprite_get_texture(_texture,0);
 		//
 		////gets normal sprite coordinate offset
-		//var _normal = asset_get_index(tileset_name+"_n");
-		//if(_normal != -1){
-			//var uvs_n = tileset_get_uvs(_normal)
-			//shader_set_uniform_f(u_texcoord_n,uvs[0]-uvs_n[0],uvs[1]-uvs_n[1]);
+		//var normal_ = asset_get_index(tileset_name+"_n");
+		//if(normal_ != -1){
+			//var uvs_n_ = tileset_get_uvs(normal_)
+			//shader_set_uniform_f(u_texcoord_n_,uvs_[0]-uvs_n_[0],uvs_[1]-uvs_n_[1]);
 		//} else {
-			//shader_set_uniform_f(u_texcoord_n,0,0);
+			//shader_set_uniform_f(u_texcoord_n_,0,0);
 		//}
 		//
 		////gets roughness sprite coordinate offset
-		//var _roughness = asset_get_index(tileset_name+"_r");
-		//if(_roughness != -1){
-			//var uvs_r = tileset_get_uvs(_roughness)
-			//shader_set_uniform_f(u_texcoord_r,uvs[0]-uvs_r[0],uvs[1]-uvs_r[1]);
+		//var roughness_ = asset_get_index(tileset_name+"_r");
+		//if(roughness_ != -1){
+			//var uvs_r_ = tileset_get_uvs(roughness_)
+			//shader_set_uniform_f(u_texcoord_r_,uvs_[0]-uvs_r_[0],uvs_[1]-uvs_r_[1]);
 		//} else {
-			//shader_set_uniform_f(u_texcoord_r,0,0);
+			//shader_set_uniform_f(u_texcoord_r_,0,0);
 		//}
 		//
 		//gpu_set_texrepeat(true);
-		//texture_set_stage(s_texture,t_tex);
+		//texture_set_stage(s_texture_,t_tex_);
 		//
-		//shader_set_uniform_f(u_normal_strength,_n_strength);
-		//shader_set_uniform_f(u_roughness_strength,_r_strength);
+		//shader_set_uniform_f(u_normal_strength_,_n_strength);
+		//shader_set_uniform_f(u_roughness_strength_,_r_strength);
 		//
-		//shader_set_uniform_f(u_dimensions,sprite_get_width(_texture),sprite_get_height(_texture));
-		//shader_set_uniform_f(u_texture_scale,_scale);
+		//shader_set_uniform_f(u_dimensions_,sprite_get_width(_texture),sprite_get_height(_texture));
+		//shader_set_uniform_f(u_texture_scale_,_scale);
 		//
-		//var tex_offset_x = (camx * _offset_scale) / sprite_get_width(_texture);
-		//var tex_offset_y = (camy * _offset_scale) / sprite_get_height(_texture);
-		//shader_set_uniform_f(u_texture_offset,tex_offset_x,tex_offset_y);
+		//var tex_offset_x_ = (camx * _offset_scale) / sprite_get_width(_texture);
+		//var tex_offset_y_ = (camy * _offset_scale) / sprite_get_height(_texture);
+		//shader_set_uniform_f(u_texture_offset_,tex_offset_x_,tex_offset_y_);
 		//
 		//draw_tilemap(_tilemap,-camx,-camy);
 		//

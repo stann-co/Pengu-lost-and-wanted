@@ -1,3 +1,3 @@
 function set_freeze_frame(_wait_time = 0.30){
-	global.freeze_duration = _wait_time * game_speed;
+	global.freeze_duration = _wait_time * GAME_SPEED;
 }

@@ -1,5 +1,5 @@
 /// @description
-if(can_move){
+if(CAN_MOVE){
 
 phys.update(0);
 phys.spring(xstart,ystart,0.1);

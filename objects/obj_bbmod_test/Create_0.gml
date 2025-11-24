@@ -8,15 +8,15 @@ player = {
 	shape : cm_box(matrix_build_identity()),
 	
 	update_shape : function(){
-		var pos_mat = matrix_build(pos.x,pos.y,pos.z,0,0,0,size.x,size.y,size.z)
+		var pos_mat_ = matrix_build(pos.x,pos.y,pos.z,0,0,0,size.x,size.y,size.z)
 		rot = rot.rotate_to(target,0.1);
-		var rot_mat = stanncam_3d_rotation_matrix(rot)
-		shape[@ CM_BOX.M] = matrix_multiply(rot_mat,pos_mat);
+		var rot_mat_ = stanncam_3d_rotation_matrix(rot)
+		shape[@ CM_BOX.M] = matrix_multiply(rot_mat_,pos_mat_);
 	},
 	
 	move : function(_x,_y,_z){
-		var move_amount = new stanncam_vec3(_x,_y,_z);
-		pos = pos.add(move_amount);
+		var move_amount_ = new stanncam_vec3(_x,_y,_z);
+		pos = pos.add(move_amount_);
 	}
 }
 player.update_shape()
@@ -28,6 +28,7 @@ global.camera_3d.set_target(player.pos.x,player.pos.y,player.pos.z);
 test = new BBMOD_Model("3D/rig_test.bbmod").freeze();
 anim = new BBMOD_Animation("3D/rig_test_move.bbanim");
 
+//Feather ignore once GM2017
 test.Materials[@ 0] = new material_animated();
 
 animplayer = new BBMOD_AnimationPlayer(test);
@@ -39,8 +40,8 @@ rot_y = 0;
 mx = 0;
 my = 0;
 
-var regionsize = 10;
-global.colmesh = cm_spatialhash(regionsize);
+var regionsize_ = 10;
+global.colmesh = cm_spatialhash(regionsize_);
 ground = cm_aab(0,0,-5,100,100,10);
 
 //list = cm_list()

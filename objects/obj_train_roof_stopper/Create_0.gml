@@ -16,9 +16,9 @@ with(zone){
 }
 
 hitpoint = instance_create_depth(x,y,depth,obj_train_roof_stopper_hitpoint);
-hitpoint.trigger = function(side_,object_){	
-	if(object_.super_speed){
-		global.camera.shake_screen(2,game_speed*0.5);
+hitpoint.trigger = function(_side,_object){	
+	if(_object.super_speed){
+		global.camera.shake_screen(2,GAME_SPEED*0.5);
 		
 		instance_destroy(zone)
 		instance_destroy(hitpoint);
@@ -26,7 +26,7 @@ hitpoint.trigger = function(side_,object_){
 		return false
 	} else {
 		
-		with(object_){
+		with(_object){
 			state.change("fall_up");
 			double_jump_count = 0;
 			dash_air_count = 0;
@@ -38,9 +38,9 @@ hitpoint.trigger = function(side_,object_){
 }
 
 //hurting laser
-trigger = function(side_,object_){
-	if(object_.object_index == obj_pengu){
-		object_.hurt(sign(-object_.x_speed));
+trigger = function(_side,_object){
+	if(_object.object_index == obj_pengu){
+		_object.hurt(sign(-_object.x_speed));
 	}
 	return true
 }
@@ -75,11 +75,11 @@ state.add("appear",{
 	},
 	step: function(){
 		t++
-		var val = animcurve_read(ac_basic,0,t / duration);
-		y = lerp(ystart,ydest,val);
+		var val_ = animcurve_read(ac_basic,0,t / duration);
+		y = lerp(ystart,ydest,val_);
 		
 		if(t >= duration){
-			global.camera.shake_screen(2,game_speed*0.5);
+			global.camera.shake_screen(2,GAME_SPEED*0.5);
 			state.change("active")
 		}
 	}

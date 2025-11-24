@@ -1,5 +1,5 @@
 reveal = false;
-duration = game_speed * 0.5;
+duration = GAME_SPEED * 0.5;
 t = 0;
 
 trigger = function(){

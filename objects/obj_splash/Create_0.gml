@@ -8,8 +8,9 @@ layer_script_begin(splash_layer,function(){
             if(!surface_exists(splash_surface)){
                 splash_surface = surface_create(global.game_w,global.game_h);
             }
+            // feather ignore once GM2046
             surface_set_target(splash_surface);
-            draw_clear_alpha(black,0);
+            draw_clear_alpha(BLACK,0);
             gpu_set_blendmode_ext(bm_one,bm_zero);
         }
     }

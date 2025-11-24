@@ -1,10 +1,10 @@
 /// @description 
 
 if(springing){
-	var val = animcurve_read(ac_spring_ball,0,(t/duration));
+	var val_ = animcurve_read(ac_spring_ball,0,(t/duration));
 	
-	ball_vec.x = lengthdir_x(launch_speed,dir)*val*5;
-	ball_vec.y = lengthdir_y(launch_speed,dir)*val*5;
+	ball_vec.x = lengthdir_x(launch_speed,dir)*val_*5;
+	ball_vec.y = lengthdir_y(launch_speed,dir)*val_*5;
 	
 	if(grabbed_on){
 		
@@ -14,7 +14,7 @@ if(springing){
 		//when duration is a quarter done pengu flys off
 		//or if meeting a collision when bouncing back, so pengu can't clip through geometry
 		//
-		if(t >= (duration*0.25) || (t >= (duration*0.21) && place_meeting(x+ball_vec.x,y+ball_vec.y,entity_collision_layer) )){
+		if(t >= (duration*0.25) || (t >= (duration*0.21) && place_meeting(x+ball_vec.x,y+ball_vec.y,ENTITY_COLLISION_LAYER) )){
 			grabbed_on = false;
 			with(obj_pengu){
 				
@@ -32,13 +32,3 @@ if(springing){
 		t = 0;
 	} else t++;
 }
-
-
-
-
-
-
-
-
-
-

@@ -1,5 +1,5 @@
 /// @description
-trigger = function(side_,object_){
+trigger = function(_side,_object){
 	
 	
 }

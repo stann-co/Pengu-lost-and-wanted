@@ -1,5 +1,5 @@
-///@function verlet(x_,y_, _mass, _fixed)
-function verlet(_x,_y, _mass = 1, _fixed = false) constructor {
+///@function verlet(_x,_y, _mass, _fixed)
+function Verlet(_x,_y, _mass = 1, _fixed = false) constructor {
 	//Written by STANN.co
 	//credit appreciated
 	
@@ -17,22 +17,22 @@ function verlet(_x,_y, _mass = 1, _fixed = false) constructor {
 	///@function updaate(_drag)
 	static update = function(_drag = 0.01){
 		
-		var x_vel = (x - x_prev);
-		var y_vel = (y - y_prev);
+		var x_vel_ = (x - x_prev);
+		var y_vel_ = (y - y_prev);
 		
 		x_prev = x;
 		y_prev = y;
 		
-		x_vel -= x_vel * _drag;
-		y_vel -= y_vel * _drag;
+		x_vel_ -= x_vel_ * _drag;
+		y_vel_ -= y_vel_ * _drag;
 		
-		//applies force
-		x+= x_vel;
-		y+= y_vel;
+		//applies force_
+		x+= x_vel_;
+		y+= y_vel_;
 	}
 	
-	///@description adds a force
-	static force = function(_force_x, _force_y){
+	///@description adds a force_
+	static force_ = function(_force_x, _force_y){
 		if(!fixed){
 			x+= _force_x / mass;
 			y+= _force_y / mass;
@@ -59,14 +59,14 @@ function verlet(_x,_y, _mass = 1, _fixed = false) constructor {
 		y_prev = y;
 	}
     
-	///@description check if point is mostly still
+	///@description check if point is mostly still_
 	static is_still = function(){
-		var x_vel = (x - x_prev);
-		var y_vel = (y - y_prev);
+		var x_vel_ = (x - x_prev);
+		var y_vel_ = (y - y_prev);
 		var threshold_ = 0.02;
-		var still_ = (abs(x_vel) <= threshold_) && (abs(y_vel) <= threshold_)
+		var still_ = (abs(x_vel_) <= threshold_) && (abs(y_vel_) <= threshold_)
 		
-		//must remain still for a few frames, to account for velocity being 0 when swinging
+		//must remain still_ for a few frames, to account for velocity being 0 when swinging
 		if(still_){
 			if(__still_count > 0) __still_count--;
 			else return true;
@@ -84,11 +84,11 @@ function verlet(_x,_y, _mass = 1, _fixed = false) constructor {
 	static spring = function(_target_x,_target_y,_stiffness){
 		
 		if(!fixed){
-			var dist = point_distance(x,y,_target_x,_target_y);
-			var dir = point_direction(x,y,_target_x,_target_y);
+			var dist_ = point_distance(x,y,_target_x,_target_y);
+			var dir_ = point_direction(x,y,_target_x,_target_y);
 			
-			x += (lengthdir_x(dist,dir) * _stiffness) / mass;
-			y += (lengthdir_y(dist,dir) * _stiffness) / mass;
+			x += (lengthdir_x(dist_,dir_) * _stiffness) / mass;
+			y += (lengthdir_y(dist_,dir_) * _stiffness) / mass;
 		}
 	}
 	
@@ -121,7 +121,7 @@ function verlet(_x,_y, _mass = 1, _fixed = false) constructor {
 ///@param 2nd point
 ///@param dist by default dist between points
 ///@param dir by default dir between points
-function verlet_line(_p1,_p2,_dist = point_distance(_p1.x,_p1.y,_p2.x,_p2.y), _dir = point_direction(_p1.x,_p1.y,_p2.x,_p2.y) ) constructor {
+function VerletLine(_p1,_p2,_dist = point_distance(_p1.x,_p1.y,_p2.x,_p2.y), _dir = point_direction(_p1.x,_p1.y,_p2.x,_p2.y) ) constructor {
 	p1 = _p1;
 	p2 = _p2;
 	dist = _dist;
@@ -129,17 +129,17 @@ function verlet_line(_p1,_p2,_dist = point_distance(_p1.x,_p1.y,_p2.x,_p2.y), _d
 	static constrain_length = function(_substeps = 1){
 		repeat(_substeps){
 			//moves both points to maintain the targeted distance
-			var _dist = max(0,point_distance(p1.x,p1.y,p2.x,p2.y) - dist) / 2;
-			var _dir  = point_direction(p1.x,p1.y,p2.x,p2.y);		
+			var dist_ = max(0,point_distance(p1.x,p1.y,p2.x,p2.y) - dist) / 2;
+			var dir_  = point_direction(p1.x,p1.y,p2.x,p2.y);		
 			
 			if(!p1.fixed){
-				p1.x += lengthdir_x(_dist,_dir) / p1.mass;
-				p1.y += lengthdir_y(_dist,_dir) / p1.mass;
+				p1.x += lengthdir_x(dist_,dir_) / p1.mass;
+				p1.y += lengthdir_y(dist_,dir_) / p1.mass;
 			}
 			
 			if(!p2.fixed){
-				p2.x -= lengthdir_x(_dist,_dir) / p2.mass;
-				p2.y -= lengthdir_y(_dist,_dir) / p2.mass;
+				p2.x -= lengthdir_x(dist_,dir_) / p2.mass;
+				p2.y -= lengthdir_y(dist_,dir_) / p2.mass;
 			}
 		}
 	}
@@ -151,18 +151,14 @@ function verlet_line(_p1,_p2,_dist = point_distance(_p1.x,_p1.y,_p2.x,_p2.y), _d
 	static set_direction = function(_dir_target){
 		if(!p2.fixed){
 			
-			//var dist_ = point_distance(p1.x,p1.y,p2.x,p2.y);
 			var dir_current_ = point_direction(p1.x,p1.y,p2.x,p2.y);
 			
-			var diff = angle_difference(dir_current_,_dir_target) / p2.mass;
+			var diff_ = angle_difference(dir_current_,_dir_target) / p2.mass;
 			
-			var force = dist * degtorad(diff);
+			var force_ = dist * degtorad(diff_);
 			
-			p2.x = p1.x + lengthdir_x(dist,dir_current_-diff);
-			p2.y = p1.y + lengthdir_y(dist,dir_current_-diff);
-			
-			//p2.x_prev = p2.x + lengthdir_x(force,_dir_target+90);
-			//p2.y_prev = p2.y + lengthdir_y(force,_dir_target+90);
+			p2.x = p1.x + lengthdir_x(dist,dir_current_-diff_);
+			p2.y = p1.y + lengthdir_y(dist,dir_current_-diff_);
 		}
 	}
 	
@@ -185,72 +181,72 @@ function verlet_line(_p1,_p2,_dist = point_distance(_p1.x,_p1.y,_p2.x,_p2.y), _d
 }
 
 function verlet_rope(_start_x,_start_y,_end_x,_end_y,_segment_num = 2, _substeps = 10) {
-	var _points = array_create(_segment_num+1);
+	var points_ = array_create(_segment_num+1);
 
 	//creates verlet points
-	for (var i = 0; i <= _segment_num; ++i) {
-		var val_ = i / _segment_num;
+	for (var i_ = 0; i_ <= _segment_num; ++i_) {
+		var val_ = i_ / _segment_num;
 		var x_ = lerp(_start_x,_end_x,val_);
 		var y_ = lerp(_start_y,_end_y,val_);
-	    _points[i] = new verlet(x_,y_);
+	    points_[i_] = new Verlet(x_,y_);
 	}
 	
-	return new verlet_rope_points(_points,_substeps)
+	return new VerletRopePoints(points_,_substeps)
 }
 
 //define rope points manually
-function verlet_rope_points(_points, _substeps = 10) constructor { //figure out better way to do these typa functions with inheritance
+function VerletRopePoints(_points, _substeps = 10) constructor { //figure out better way to do these typa functions with inheritance
 	substeps = _substeps;
 	points = _points;
 	segment_num = array_length(points)-1;
 	segments = array_create(segment_num);
 	
 	//creates rope segments
-	for (var i = 0; i < segment_num; ++i) {
-		var p1_ = points[i];
-		var p2_ = points[i+1];
-		segments[i] = new verlet_line(p1_,p2_);
+	for (var i_ = 0; i_ < segment_num; ++i_) {
+		var p1_ = points[i_];
+		var p2_ = points[i_+1];
+		segments[i_] = new VerletLine(p1_,p2_);
 	}
 	
 	//methods	
 	static update = function(_drag = 0.01){
-		for (var i = 0; i <= segment_num; ++i) {
-			points[i].update(_drag);
+		for (var i_ = 0; i_ <= segment_num; ++i_) {
+			points[i_].update(_drag);
 		}
 		
-		for (var i = 0; i < segment_num; ++i) {
-			segments[i].constrain_length(substeps);
+		for (var i_ = 0; i_ < segment_num; ++i_) {
+			segments[i_].constrain_length(substeps);
 		}
 	}
     
 	static is_still = function(){
-		var still = true;
-		for (var i = 0; i < array_length(points); ++i) {
-		    var p = points[i];
-			if(p.is_still() == false){
-				still = false
+		var still_ = true;
+		for (var i_ = 0; i_ < array_length(points); ++i_) {
+		    var p_ = points[i_];
+			if(p_.is_still() == false){
+				still_ = false
 				break;
 			}
 		}
-		return still;
+		return still_;
 	}
 	
 	//imagine a rope dangling inside a train, even though the train is moving really fast, the rope wouldn't be stuck to the ceiling
 	//you can move the rope with the train with a certain amount
 	static move_relative = function(_x,_y,_relative_amount = 1){
-		var old_x = get_first_point().x;
-		var old_y = get_first_point().y;
+		var old_x_ = get_first_point().x;
+		var old_y_ = get_first_point().y;
 		
-		var offset_x = _x - old_x;
-		var offset_y = _y - old_y;
+		var offset_x_ = _x - old_x_;
+		var offset_y_ = _y - old_y_;
 		
-		for (var i = 0; i <= segment_num; ++i) {
-		    var p = points[i];
+		for (var i_ = 0; i_ <= segment_num; ++i_) {
+		    var p_ = points[i_];
 			
-			p.x += offset_x * _relative_amount;
-			p.y += offset_y * _relative_amount;
-			p.x_prev += offset_x * _relative_amount;
-			p.y_prev += offset_y * _relative_amount;
+			p_.x += offset_x_ * _relative_amount;
+			p_.y += offset_y_ * _relative_amount;
+			p_.x_prev += offset_x_ * _relative_amount;
+			p_.y_prev += offset_y_ * _relative_amount;
 		}
 		
 	}
@@ -261,8 +257,8 @@ function verlet_rope_points(_points, _substeps = 10) constructor { //figure out 
 	}
 	
 	static gravity_force = function(_dir = -90, _force = 0.09807){
-		for (var i = 0; i <= segment_num; ++i) {
-			if(!points[i].fixed) points[i].gravity_force(_dir,_force);
+		for (var i_ = 0; i_ <= segment_num; ++i_) {
+			if(!points[i_].fixed) points[i_].gravity_force(_dir,_force);
 		}	
 	}
 	
@@ -275,103 +271,103 @@ function verlet_rope_points(_points, _substeps = 10) constructor { //figure out 
 	}
 	
 	static set_position = function(_start_x,_start_y,_end_x,_end_y){
-		for (var i = 0; i <= segment_num; ++i) {
-			var p = points[i];
-			var v = i / segment_num
-			p.x = lerp(_start_x,_end_x,v);
-			p.y = lerp(_start_y,_end_y,v);
+		for (var i_ = 0; i_ <= segment_num; ++i_) {
+			var p_ = points[i_];
+			var v_ = i_ / segment_num
+			p_.x = lerp(_start_x,_end_x,v_);
+			p_.y = lerp(_start_y,_end_y,v_);
 		}
 	}
 	
 	static draw = function(_x = 0,_y = 0){
-		for (var i = 0; i < segment_num; ++i) {
-			segments[i].draw(_x,_y);
+		for (var i_ = 0; i_ < segment_num; ++i_) {
+			segments[i_].draw(_x,_y);
 		}	
 	}
 	
 	static draw_points = function(){
-		for (var i = 0; i <= segment_num; ++i) {
-			points[i].draw(2);
+		for (var i_ = 0; i_ <= segment_num; ++i_) {
+			points[i_].draw(2);
 		}	
 	}
 	
 	static draw_velocity = function(_multiply = 1){
-		for (var i = 0; i <= segment_num; ++i) {
-			points[i].draw_velocity(_multiply);
+		for (var i_ = 0; i_ <= segment_num; ++i_) {
+			points[i_].draw_velocity(_multiply);
 		}	
 	}
 }
 
-function verlet_rod(_start_x,_start_y,_end_x,_end_y,_segment_num = 2, _substeps = 10) constructor {
-	var _points = array_create(_segment_num+1);
+function VerletRod(_start_x,_start_y,_end_x,_end_y,_segment_num = 2, _substeps = 10) constructor {
+	var points_ = array_create(_segment_num+1);
 
 	//creates verlet points
-	for (var i = 0; i <= _segment_num; ++i) {
-		var val_ = i / _segment_num;
+	for (var i_ = 0; i_ <= _segment_num; ++i_) {
+		var val_ = i_ / _segment_num;
 		var x_ = lerp(_start_x,_end_x,val_);
 		var y_ = lerp(_start_y,_end_y,val_);
-	    _points[i] = new verlet(x_,y_);
+	    points_[i_] = new Verlet(x_,y_);
 	}
 	
-	return new verlet_rod_points(_points,_substeps)
+	return new VerletRodPoints(points_,_substeps)
 }
 
-function verlet_rod_points(_points, _substeps = 10) : verlet_rope_points(_points, _substeps) constructor {
+function VerletRodPoints(_points, _substeps = 10) : VerletRopePoints(_points, _substeps) constructor {
 	dir = point_direction(points[0].x,points[0].y,points[1].x,points[1].y);
 	
 	//methods	
 	static update = function(_drag = 0.01, _stiffness = 0.9){
 		
-		for (var i = 0; i <= segment_num; ++i) {
-			points[i].update((_drag));
+		for (var i_ = 0; i_ <= segment_num; ++i_) {
+			points[i_].update((_drag));
 		}
 		
-		for (var i = segment_num-1; i >= 0; --i) {
-			segments[i].constrain_length(substeps);
+		for (var i_ = segment_num-1; i_ >= 0; --i_) {
+			segments[i_].constrain_length(substeps);
 		}
 		
 		repeat(substeps){
 			
-			//for each segment sets it's direction to be halfway between next and previous segment's rotation
-			//first segment is set to dir
+			//for each segment_ sets it's direction to be halfway between next and previous segment_'s rotation
+			//first segment_ is set to dir
 			
-			for (var i = 0; i < segment_num; ++i) {
-				var segment = segments[i];
-				var dir_ = segment.get_direction();
+			for (var i_ = 0; i_ < segment_num; ++i_) {
+				var segment_ = segments[i_];
+				var dir_ = segment_.get_direction();
 				var dir_prev_ = dir_;
 				var dir_next_ = dir_;
 				var dir_target_ = dir_;
 				
-				if(i == 0){
-					segment.set_direction(dir)
+				if(i_ == 0){
+					segment_.set_direction(dir)
 					
 				} else {
-					if(i > 0){
-						dir_prev_ = segments[i-1].get_direction();
+					if(i_ > 0){
+						dir_prev_ = segments[i_-1].get_direction();
 					}
 					
-					if(i < segment_num-1){
-						dir_next_ = segments[i+1].get_direction();
+					if(i_ < segment_num-1){
+						dir_next_ = segments[i_+1].get_direction();
 					}
 					
 					dir_target_ -= ((angle_difference(dir_,dir_prev_) / 2) * _stiffness) / 1;
 					dir_target_ -= ((angle_difference(dir_,dir_next_) / 2) * _stiffness) / 1;
-					segment.set_direction(dir_target_);
+					segment_.set_direction(dir_target_);
 				}
 			}
 		}
 	}
     
     static is_still = function(){
-		var still = true;
-		for (var i = 0; i < array_length(points); ++i) {
-		    var p = points[i];
-			if(p.is_still() == false){
-				still = false
+		var still_ = true;
+		for (var i_ = 0; i_ < array_length(points); ++i_) {
+		    var p_ = points[i_];
+			if(p_.is_still() == false){
+				still_ = false
 				break;
 			}
 		}
-		return still;
+		return still_;
 	}
 }
 

@@ -1,8 +1,8 @@
 /// @description
 
-trigger = function(side_,object_){
+trigger = function(_side,_object){
 	//only solid from the top
 	
-	if (side_ == SIDES.Top) return true
+	if (_side == SIDES.TOP) return true
 	else return false
 }

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"ds_grid_functions",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ds_grid_functions",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

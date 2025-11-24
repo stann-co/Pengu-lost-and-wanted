@@ -1,3 +1,5 @@
+/// Feather ignore all
+
 function material(_texture = sprite_get_texture(spr_white,0)) constructor {
 	BaseOpacity = _texture;
 	static apply = function(_vertexFormat){
@@ -37,3 +39,4 @@ function material_policesiren() constructor {
 		return true;
 	}
 }
+

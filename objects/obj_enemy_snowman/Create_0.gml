@@ -2,7 +2,7 @@
 event_inherited();
 
 t=0;
-wait_duration = game_speed*2;
+wait_duration = GAME_SPEED*2;
 thrown = false;
 
 snowball_throw_speed = 4;
@@ -29,9 +29,9 @@ state
 	},
 	step:function(){
 		subimg+= sprite_get_speed(sprite_index);
-		var side = sign(x - obj_pengu.x);
-		if(side != 0){
-			image_xscale = side;
+		var side_ = sign(x - obj_pengu.x);
+		if(side_ != 0){
+			image_xscale = side_;
 		}
 		
 		if(t++ >= wait_duration){

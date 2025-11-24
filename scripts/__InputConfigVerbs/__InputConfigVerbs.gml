@@ -22,8 +22,8 @@ function __InputConfigVerbs()
     InputDefineVerb(INPUT_VERB.RIGHT,    "right",    [vk_right ,"D"],  [ gp_axislh,gp_padr]);
     
     InputDefineVerb(INPUT_VERB.JUMP,     "jump",     [vk_space  ,"Z"], [ gp_face1]);
-    InputDefineVerb(INPUT_VERB.ATTACK,   "attack",   [vk_control,"X"], [ gp_face3]);
-    InputDefineVerb(INPUT_VERB.DASH,     "dash",     [vk_shift,"C"],   [ gp_face2]);
+    InputDefineVerb(INPUT_VERB.ATTACK,   "attack",   [vk_control,"X"], [ gp_face3,gp_shoulderlb]);
+    InputDefineVerb(INPUT_VERB.DASH,     "dash",     [vk_shift,"C"],   [ gp_face2,gp_shoulderrb]);
     InputDefineVerb(INPUT_VERB.INTERACT, "interact", ["E","V"],        [ gp_face4]);
     
     InputDefineVerb(INPUT_VERB.ACCEPT,   "accept",   [vk_enter, "Z"],  [ gp_face1,gp_face4]);

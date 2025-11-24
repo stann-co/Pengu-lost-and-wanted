@@ -1,5 +1,5 @@
 /// @description
-if(can_move){
+if(CAN_MOVE){
 
 if(falling){
 		

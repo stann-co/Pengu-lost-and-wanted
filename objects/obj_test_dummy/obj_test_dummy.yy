@@ -39,6 +39,9 @@
     "name":"spr_test_dummy_full",
     "path":"sprites/spr_test_dummy_full/spr_test_dummy_full.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"spr_test_dummy_full",
+    "path":"sprites/spr_test_dummy_full/spr_test_dummy_full.yy",
+  },
   "visible":true,
 }

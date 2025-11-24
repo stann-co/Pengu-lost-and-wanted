@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":1.333333,
+  "duration":1.3333334,
   "exportDir":"",
   "name":"snd_ui_hover",
   "parent":{

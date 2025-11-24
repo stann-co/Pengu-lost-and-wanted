@@ -1,11 +1,11 @@
 /// @description
 
-for(var i = 0; i < array_length(enemies);i++){
+for(var i_ = 0; i_ < array_length(enemies);i_++){
     
     
-    if (!instance_exists(enemies[i])){
-        array_delete(enemies,i,1);
-        i--;
+    if (!instance_exists(enemies[i_])){
+        array_delete(enemies,i_,1);
+        i_--;
     }
 }
 
