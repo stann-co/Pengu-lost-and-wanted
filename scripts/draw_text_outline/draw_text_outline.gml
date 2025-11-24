@@ -1,23 +1,23 @@
 ///@function draw_text_outline()
-///@description draws text with outline
-function draw_text_outline(x,y,text,width=1,color = white,outline_color = black,detail = 9){
+///@description draws _text with outline
+function draw_text_outline(_x,_y,_text,_width=1,_color = WHITE,_outline_color = BLACK,_detail = 9){
 	
-	var prev_color = draw_get_color();
+	var prev_color_ = draw_get_color();
 	
-	var dir = 0;
+	var dir_ = 0;
 	
-	draw_set_color(outline_color);
-	for (var i = 0; i < detail; ++i) {
-		var x_offset = lengthdir_x(width,dir);
-		var y_offset = lengthdir_y(width,dir);
+	draw_set_color(_outline_color);
+	for (var i_ = 0; i_ < _detail; ++i_) {
+		var x_offset_ = lengthdir_x(_width,dir_);
+		var y_offset_ = lengthdir_y(_width,dir_);
 		
-	    draw_text(x+x_offset,y+y_offset,text);
+	    draw_text(_x+x_offset_,_y+y_offset_,_text);
 		
-		dir += 360 / detail;		
+		dir_ += 360 / _detail;		
 	}
 	
 	
-	draw_set_color(color);
-	draw_text(x,y,text);
-	draw_set_color(prev_color);
+	draw_set_color(_color);
+	draw_text(_x,_y,_text);
+	draw_set_color(prev_color_);
 }

@@ -1,19 +1,19 @@
 /// @description
-if(can_move){
+if(CAN_MOVE){
 
 	if(active){		
 		last_x = x;
 		last_y = y;
 		last_rot = rotation;
 		
-		var global_time = (global.t + offset_duration);
-		var total_duration = duration + pause_duration
+		var global_time_ = (global.t + offset_duration);
+		var total_duration_ = duration + pause_duration
 		
 		if(cycle != "do once"){
-			t = global_time - total_duration * (global_time div total_duration );
+			t = global_time_ - total_duration_ * (global_time_ div total_duration_ );
 		} else {
 			t++;
-			if(t >= total_duration){
+			if(t >= total_duration_){
 				active = false;	
 			}
 		}
@@ -23,9 +23,9 @@ if(can_move){
 			   case "cycle":
 			    break;
 			case "cycle rotation continue":		
-				var new_end_rot = end_rot_ - start_rot_;
+				var new_end_rot_ = end_rot_ - start_rot_;
 				start_rot_ = end_rot_;
-				end_rot_ += new_end_rot;					
+				end_rot_ += new_end_rot_;					
 			    break;
 			case "ping pong":
 				forward = !forward;
@@ -56,16 +56,16 @@ if(can_move){
 			};
 		};
 		
-		var clamp_t = clamp(t,0,duration);
-		var val = animcurve_read(animcurve,animcurve_channel,clamp_t/duration);
+		var clamp_t_ = clamp(t,0,duration);
+		var val_ = animcurve_read(animcurve,animcurve_channel,clamp_t_/duration);
 		
 		if(info_target != -1){
-			x = round(lerp(start_x_,end_x_,val));
-			y = round(lerp(start_y_,end_y_,val));
+			x = round(lerp(start_x_,end_x_,val_));
+			y = round(lerp(start_y_,end_y_,val_));
 		}
 		
 		if(end_rotation != 0){
-			rotation = lerp(start_rot_,end_rot_,val);
+			rotation = lerp(start_rot_,end_rot_,val_);
 			image_angle = rotation mod 360;
 		}
 	}

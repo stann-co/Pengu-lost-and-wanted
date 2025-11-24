@@ -9,23 +9,34 @@ if(global.sidescroller){
     set_active_collisions(COLLISION_LAYERS.A);
     
 	//error reminders
-	if(room != rm_init && (global.collision_layers[? COLLISION_LAYERS.A] == -1)){
-		show_error($"Missing collision layers in {room}",true);
+	if(room != rm_init && room != rm_intro && (global.collision_layers[? COLLISION_LAYERS.A] == -1)){
+		show_error($"Missing collision layers_ in {room}",true);
 	}
 	
-	// tiles
-	ds_map_clear(global.tile_draw_layers)
-	//makes special drawing objects for tile layers
-	var layers =  layer_get_all();
-	for (var i = 0; i < array_length(layers); ++i) {
-	    var lay = layers[i];
-		var name = layer_get_name(lay);
-		if(string_starts_with(name,"decor_")){
-			var layer_draw = instance_create_depth(0,0,layer_get_depth(lay),obj_layer_draw,{
-				lay: lay
-			});
-			ds_map_set(global.tile_draw_layers,name,layer_draw);
-		}
+	// turns off automatic drawing for visual layers, and draws them manually with parralax and shaders
+	var layers_ =  layer_get_all();
+	for (var i_ = 0; i_ < array_length(layers_); ++i_) {
+		var lay_id_ = layers_[i_];
+		var name_ = layer_get_name(lay_id_);
+		
+		if(string_starts_with(name_,"decor")){
+			
+			instance_create_depth(0,0,layer_get_depth(lay_id_),obj_layer_draw,{
+				layer_id : lay_id_,
+	        	type : LAYER_TYPE.DECOR,
+				name : name_
+			})
+			layer_set_visible(lay_id_,false);
+	    } else
+	    
+	    if(string_starts_with(name_,"asset")){
+			instance_create_depth(0,0,layer_get_depth(lay_id_),obj_layer_draw,{
+				layer_id : lay_id_,
+	        	type : LAYER_TYPE.ASSET,
+				name : name_
+			})
+			layer_set_visible(lay_id_,false);
+	    }
 	}
 }
 
@@ -35,8 +46,8 @@ if(global.checkpoint != -1){
 	obj_pengu.y = global.checkpoint.y;
 	global.t = global.checkpoint.time;
 		
-	for (var i = 0; i < array_length(global.checkpoint.taken_points); ++i) {
-		instance_destroy(global.checkpoint.taken_points[i]);
+	for (var i_ = 0; i_ < array_length(global.checkpoint.taken_points); ++i_) {
+		instance_destroy(global.checkpoint.taken_points[i_]);
 	}
 }
 #endregion

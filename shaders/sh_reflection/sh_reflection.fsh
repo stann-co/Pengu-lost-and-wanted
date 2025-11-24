@@ -37,9 +37,9 @@ void main()
 	vec2 coords = vec2(v_vTexcoord.x, v_vTexcoord.y + (noisy * u_distortion - u_distortion * 0.5)/u_size.y);
 	
 	vec4 tex = v_vColour * texture2D( gm_BaseTexture, coords);
-	float gray = dot(tex, vec4(0.299, 0.587, 0.114, 0.0));
+	float GRAY = dot(tex, vec4(0.299, 0.587, 0.114, 0.0));
 
-	vec4 shade = vec4(gray * u_tint.rgb, tex.a);
+	vec4 shade = vec4(GRAY * u_tint.rgb, tex.a);
 	vec4 color = mix(shade, tex, 0.5);
 	
 	color.rgb *= u_brightness;

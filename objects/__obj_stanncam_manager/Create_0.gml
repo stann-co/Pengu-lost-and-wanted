@@ -10,7 +10,12 @@ resize_height = 0;
 
 __display_scale_x = 1;
 __display_scale_y = 1;
+
+__switching_window_mode = false;
+
 draw_zones = false;
 
 __gui_res_w = 1;
 __gui_res_h = 1;
+__gui_x_scale = 1;
+__gui_y_scale = 1;

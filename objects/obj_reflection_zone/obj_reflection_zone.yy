@@ -33,7 +33,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"distortion_type","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"distortion_type","filters":[],"listItems":[
         "\"none\"",
         "\"waterfall\"",
         "\"ice\"",

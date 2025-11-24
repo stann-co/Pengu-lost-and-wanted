@@ -1,4 +1,4 @@
-/// @description draws only with global.debug on
-if(global.debug){
+/// @description draws only with global.show_collisions on
+if(global.show_collisions){
 	draw_self();	
 }

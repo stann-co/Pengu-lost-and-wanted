@@ -2,8 +2,10 @@
 
 //3D
 ball = new BBMOD_Model("3D/policemech.bbmod").freeze();
+//Feather disable GM2017
 ball.Materials[@ 0] = new material(sprite_get_texture(spr_3d_policemech,0))
 ball.Materials[@ 1] = new material_policesiren()
+//Feather enable GM2017
 
 rotx = -18;
 roty = 0;

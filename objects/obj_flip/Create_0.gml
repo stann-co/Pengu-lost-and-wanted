@@ -16,7 +16,7 @@ trigger = function(){
 		with(obj_pengu){
 			if(state.state_is("prone")){
 				
-				mirror = -mirror;
+				facing = -facing;
 				
 				ground_angle += 180;
 				if(ground_angle >= 360) ground_angle-=360;

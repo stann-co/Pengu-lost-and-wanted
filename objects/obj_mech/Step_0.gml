@@ -1,6 +1,6 @@
 /// @description
 
-if(can_move){
+if(CAN_MOVE){
     state.step();
 	#region input
     if(controlled && global.control){
@@ -52,7 +52,7 @@ if(can_move){
 		x_speed += air_acceleration_speed * input_h;
 		y_speed += gravity_force;
 		
-		//air drag
+		//air drag_
 		if (y_speed < 0 && y_speed > -4){
 			x_speed -= floor(x_speed / 0.125) / 256;
 		}
@@ -66,27 +66,27 @@ if(can_move){
 	y+=y_speed;
 	
 	#region push sensors
-	var push_sensor = noone;
+	var push_sensor_ = noone;
 
-	if((!airborne && ground_spd < 0) || airborne) { //left
-		push_sensor = sensor(vec_l,-90,sensor_length_base,abs(x_speed));
+	if((!airborne && ground_spd < 0) || airborne) { //left_
+		push_sensor_ = sensor(vec_l,-90,sensor_length_base,abs(x_speed));
 		
-		if(push_sensor != noone && push_sensor.distance < 1){		
-			if (sensor_trigger(push_sensor)){
-				x+= push_sensor.x;
-				y+= push_sensor.y;
+		if(push_sensor_ != noone && push_sensor_.distance < 1){		
+			if (sensor_trigger(push_sensor_)){
+				x+= push_sensor_.x;
+				y+= push_sensor_.y;
 				x_speed = 0;
 			}
 		} 
 	}  
 	
-	if((!airborne && ground_spd > 0) || airborne) { //right
-		push_sensor = sensor(vec_r,90,sensor_length_base,abs(x_speed));
+	if((!airborne && ground_spd > 0) || airborne) { //right_
+		push_sensor_ = sensor(vec_r,90,sensor_length_base,abs(x_speed));
 		
-		if(push_sensor != noone && push_sensor.distance < 1){		
-			if (sensor_trigger(push_sensor)){
-				x+= push_sensor.x;
-				y+= push_sensor.y;
+		if(push_sensor_ != noone && push_sensor_.distance < 1){		
+			if (sensor_trigger(push_sensor_)){
+				x+= push_sensor_.x;
+				y+= push_sensor_.y;
 				x_speed = 0;
 			}
 		} 
@@ -98,26 +98,26 @@ if(can_move){
 	#region ground sensors
 	if(!airborne || (airborne && y_speed > 0)){
 		
-		var sensor_length = sensor_length_base;
+		var sensor_length_ = sensor_length_base;
 		
-		var bl_sensor = sensor(vec_bl,0,sensor_length);
-		var br_sensor = sensor(vec_br,0,sensor_length);
-		var b_sensor = sensor(vec_b,0,sensor_length);
+		var bl_sensor_ = sensor(vec_bl,0,sensor_length_);
+		var br_sensor_ = sensor(vec_br,0,sensor_length_);
+		var b_sensor_ = sensor(vec_b,0,sensor_length_);
 		
 		//sensors check which is closest to the ground
-		var updown_sensor = noone;
+		var updown_sensor_ = noone;
 		
-		if(b_sensor != noone) updown_sensor = b_sensor;
-		if(updown_sensor == noone || (bl_sensor != noone && bl_sensor.distance < updown_sensor.distance)) updown_sensor = bl_sensor;
-		if(updown_sensor == noone || (br_sensor != noone && br_sensor.distance < updown_sensor.distance)) updown_sensor = br_sensor;		
+		if(b_sensor_ != noone) updown_sensor_ = b_sensor_;
+		if(updown_sensor_ == noone || (bl_sensor_ != noone && bl_sensor_.distance < updown_sensor_.distance)) updown_sensor_ = bl_sensor_;
+		if(updown_sensor_ == noone || (br_sensor_ != noone && br_sensor_.distance < updown_sensor_.distance)) updown_sensor_ = br_sensor_;		
 		
-		if(updown_sensor != noone){
-            if (sensor_trigger(updown_sensor)){
-			    x+= updown_sensor.x;
-			    y+= updown_sensor.y;
+		if(updown_sensor_ != noone){
+            if (sensor_trigger(updown_sensor_)){
+			    x+= updown_sensor_.x;
+			    y+= updown_sensor_.y;
 			    
-			    x+=updown_sensor.x_change;
-			    y+=updown_sensor.y_change;
+			    x+=updown_sensor_.x_change;
+			    y+=updown_sensor_.y_change;
                 
                 if(airborne){
 			    	on_land = true;
@@ -133,9 +133,9 @@ if(can_move){
 	
 
 
-    if(abs(x_speed) > min_flip_speed) mirror = sign(x_speed);
+    if(abs(x_speed) > min_flip_speed) facing = sign(x_speed);
     
-    mirror_component = lerp(mirror_component,mirror,0.05);
+    mirror_component = lerp(mirror_component,facing,0.05);
     
     vec_leg_l = new Vector2(-26 * mirror_component, 26); 
     vec_leg_r = new Vector2( 26 * mirror_component, 26);
@@ -166,32 +166,32 @@ if(can_move){
     	
     	body.update(body_drag);
     	
-    	var body_target_x = lerp(foot_l.x,foot_r.x,0.5);
-    	var body_target_y = lerp(foot_l.y,foot_r.y,0.5) - legs_height + (y_speed * 2);
+    	var body_target_x_ = lerp(foot_l.x,foot_r.x,0.5);
+    	var body_target_y_ = lerp(foot_l.y,foot_r.y,0.5) - legs_height + (y_speed * 2);
     	
-    	body_target_x = lerp(body_target_x,x,0.4);
-    	body_target_x += dsin(body_angle_component) * 20; //moves based on rotation
+    	body_target_x_ = lerp(body_target_x_,x,0.4);
+    	body_target_x_ += dsin(body_angle_component) * 20; //moves based on rotation
     	
-    	body.spring(body_target_x,body_target_y,body_stiffness);
+    	body.spring(body_target_x_,body_target_y_,body_stiffness);
     	
     	if(!foot_l.stepping && !foot_r.stepping ){
-    		var left = noone;
-    		var right = noone;
+    		var left_ = noone;
+    		var right_ = noone;
     		if(foot_l.x < foot_r.x){
-    			left = foot_l;
-    			right = foot_r;
+    			left_ = foot_l;
+    			right_ = foot_r;
     		} else {
-    			left = foot_r;
-    			right = foot_l;
+    			left_ = foot_r;
+    			right_ = foot_l;
     			
     		}
-    		body_angle = (-point_direction(left.x,left.y,right.x,right.y) * 0.5);
+    		body_angle = (-point_direction(left_.x,left_.y,right_.x,right_.y) * 0.5);
     		if(body_angle < -90) body_angle+=180;
     		
-    		var extra_rotation = (x - body.x ) * 0.5;
-    		extra_rotation = clamp(extra_rotation,-10,10);
+    		var extra_rotation_ = (x - body.x ) * 0.5;
+    		extra_rotation_ = clamp(extra_rotation_,-10,10);
     		
-    		body_angle+=extra_rotation;
+    		body_angle+=extra_rotation_;
     	}
     	
     	foot_l.set_knee_pos();
@@ -207,19 +207,19 @@ if(can_move){
     	body.x_prev = body.x;
     	body.y_prev = body.y;
     	
-    	var drag = 0.34;
+    	var drag_ = 0.34;
     	
-    	foot_l.update(drag);
-    	foot_r.update(drag);
+    	foot_l.update(drag_);
+    	foot_r.update(drag_);
     	
-    	var foot_l_x = x+vec_foot_l.x+vec_body.x + (x_speed * 4);
-    	var foot_l_y = y+vec_foot_l.y+vec_body.y + (x_speed * mirror_component * 1.2);
+    	var foot_l_x_ = x+vec_foot_l.x+vec_body.x + (x_speed * 4);
+    	var foot_l_y_ = y+vec_foot_l.y+vec_body.y + (x_speed * mirror_component * 1.2);
     	
-    	var foot_r_x = x+vec_foot_r.x+vec_body.x + (x_speed * 4);
-    	var foot_r_y = y+vec_foot_r.y+vec_body.y - (x_speed * mirror_component * 1.2);
+    	var foot_r_x_ = x+vec_foot_r.x+vec_body.x + (x_speed * 4);
+    	var foot_r_y_ = y+vec_foot_r.y+vec_body.y - (x_speed * mirror_component * 1.2);
     	
-    	foot_l.spring(foot_l_x,foot_l_y,0.2);
-    	foot_r.spring(foot_r_x,foot_r_y,0.2);
+    	foot_l.spring(foot_l_x_,foot_l_y_,0.2);
+    	foot_r.spring(foot_r_x_,foot_r_y_,0.2);
     	
     	foot_l.set_knee_pos();
     	foot_r.set_knee_pos();
@@ -250,38 +250,38 @@ if(can_move){
     
     //seperate dice
     
-    var p1 = die1.get_last_point();
-    var p2 = die2.get_last_point();
+    var p1_ = die1.get_last_point();
+    var p2_ = die2.get_last_point();
     
-    var dist = point_distance(p1.x,p1.y,p2.x,p2.y) / 2;
-    var dir = point_direction(p1.x,p1.y,p2.x,p2.y);
+    var dist_ = point_distance(p1_.x,p1_.y,p2_.x,p2_.y) / 2;
+    var dir_ = point_direction(p1_.x,p1_.y,p2_.x,p2_.y);
     
-    if(dist < 2) {
-    	p1.x -= lengthdir_x(0.1,dir);	
-    	p1.y -= lengthdir_y(0.1,dir);					
-    	p2.x += lengthdir_x(0.1,dir);	
-    	p2.y += lengthdir_y(0.1,dir);
+    if(dist_ < 2) {
+    	p1_.x -= lengthdir_x(0.1,dir_);	
+    	p1_.y -= lengthdir_y(0.1,dir_);					
+    	p2_.x += lengthdir_x(0.1,dir_);	
+    	p2_.y += lengthdir_y(0.1,dir_);
     }
     
     
-    for (var i = 0; i < die1.segment_num; ++i) {
+    for (var i_ = 0; i_ < die1.segment_num; ++i_) {
         
-    	p1 = die1.points[i];
-    	var dist1 = point_distance(p1.x,p1.y,dome.x+vec_dome.x,dome.y+vec_dome.y);
-    	var dir1 = point_direction(p1.x,p1.y,dome.x+vec_dome.x,dome.y+vec_dome.y);
+    	p1_ = die1.points[i_];
+    	var dist1_ = point_distance(p1_.x,p1_.y,dome.x+vec_dome.x,dome.y+vec_dome.y);
+    	var dir1_ = point_direction(p1_.x,p1_.y,dome.x+vec_dome.x,dome.y+vec_dome.y);
     	
-    	p2 = die2.points[i];
-    	var dist2 = point_distance(p2.x,p2.y,dome.x+vec_dome.x,dome.y+vec_dome.y);
-    	var dir2 = point_direction(p2.x,p2.y,dome.x+vec_dome.x,dome.y+vec_dome.y);
+    	p2_ = die2.points[i_];
+    	var dist2_ = point_distance(p2_.x,p2_.y,dome.x+vec_dome.x,dome.y+vec_dome.y);
+    	var dir2_ = point_direction(p2_.x,p2_.y,dome.x+vec_dome.x,dome.y+vec_dome.y);
     	
-    	if(dist1 > dome_radius){
-    		p1.x = dome.x + vec_dome.x - lengthdir_x(dome_radius,dir1);
-    		p1.y = dome.y + vec_dome.y - lengthdir_y(dome_radius,dir1);
+    	if(dist1_ > dome_radius){
+    		p1_.x = dome.x + vec_dome.x - lengthdir_x(dome_radius,dir1_);
+    		p1_.y = dome.y + vec_dome.y - lengthdir_y(dome_radius,dir1_);
     	}
     	
-    	if(dist2 > dome_radius){		
-    		p2.x = dome.x + vec_dome.x - lengthdir_x(dome_radius,dir2);
-    		p2.y = dome.y + vec_dome.y - lengthdir_y(dome_radius,dir2);
+    	if(dist2_ > dome_radius){		
+    		p2_.x = dome.x + vec_dome.x - lengthdir_x(dome_radius,dir2_);
+    		p2_.y = dome.y + vec_dome.y - lengthdir_y(dome_radius,dir2_);
     	}
     }
     

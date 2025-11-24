@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_pengu_jump",
   "bboxMode":0,
   "bbox_bottom":124,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"6d6e2c8b-d0d0-430b-a233-c6e8eec5e701","name":"6d6e2c8b-d0d0-430b-a233-c6e8eec5e701","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"6d6e2c8b-d0d0-430b-a233-c6e8eec5e701","name":"6d6e2c8b-d0d0-430b-a233-c6e8eec5e701","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

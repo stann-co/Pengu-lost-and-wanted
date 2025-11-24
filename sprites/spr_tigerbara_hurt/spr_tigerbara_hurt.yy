@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_tigerbara_hurt",
   "bboxMode":0,
   "bbox_bottom":31,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"9b735be6-ee7e-464c-8a9a-918f6c64a21e","name":"9b735be6-ee7e-464c-8a9a-918f6c64a21e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"9b735be6-ee7e-464c-8a9a-918f6c64a21e","name":"9b735be6-ee7e-464c-8a9a-918f6c64a21e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

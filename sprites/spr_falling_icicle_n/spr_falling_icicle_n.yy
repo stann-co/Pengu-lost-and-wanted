@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_falling_icicle_n",
   "bboxMode":2,
   "bbox_bottom":26,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"25284809-fbb2-48b5-933b-51bcbe5415ef","name":"25284809-fbb2-48b5-933b-51bcbe5415ef","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"25284809-fbb2-48b5-933b-51bcbe5415ef","name":"25284809-fbb2-48b5-933b-51bcbe5415ef","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

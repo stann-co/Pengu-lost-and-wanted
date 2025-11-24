@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_stanncam_zone_corner",
   "bboxMode":0,
   "bbox_bottom":15,
@@ -12,14 +12,14 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"f0c5359e-863a-4eb0-a39c-8d0c9ea08914","name":"f0c5359e-863a-4eb0-a39c-8d0c9ea08914","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"f0c5359e-863a-4eb0-a39c-8d0c9ea08914","name":"f0c5359e-863a-4eb0-a39c-8d0c9ea08914","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
   "height":16,
   "HTile":false,
   "layers":[
-    {"$GMImageLayer":"","%Name":"76d49faf-df58-47ca-9f03-02785f5fcb2f","blendMode":0,"displayName":"Layer 1","isLocked":false,"name":"76d49faf-df58-47ca-9f03-02785f5fcb2f","opacity":35.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
+    {"$GMImageLayer":"","%Name":"76d49faf-df58-47ca-9f03-02785f5fcb2f","blendMode":0,"displayName":"Layer 1","isLocked":false,"name":"76d49faf-df58-47ca-9f03-02785f5fcb2f","opacity":50.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
     {"$GMImageLayer":"","%Name":"f6884eec-9d9a-4a19-b539-64ffb7c6c359","blendMode":0,"displayName":"default","isLocked":false,"name":"f6884eec-9d9a-4a19-b539-64ffb7c6c359","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
   "name":"spr_stanncam_zone_corner",

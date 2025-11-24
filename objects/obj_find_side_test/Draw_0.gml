@@ -1,27 +1,27 @@
 /// @description
 draw_self()
 
-var mx = global.camera.get_mouse_x();
-var my = global.camera.get_mouse_y();
+var mx_ = global.camera.get_mouse_x();
+var my_ = global.camera.get_mouse_y();
 
-var side = find_side(mx,my,self);
-var text = ""
+var side_ = find_side(mx_,my_,self);
+var text_ = ""
 
-switch (side) {
-    case SIDES.Bottom:
-        text = "BOTTOM"
+switch (side_) {
+    case SIDES.BOTTOM:
+        text_ = "BOTTOM"
         break
-    case SIDES.Left:
-        text = "LEFT"
+    case SIDES.LEFT:
+        text_ = "LEFT"
         break
-    case SIDES.Right:
-        text = "RIGHT"
+    case SIDES.RIGHT:
+        text_ = "RIGHT"
         break
-    case SIDES.Top:
-        text = "TOP"
+    case SIDES.TOP:
+        text_ = "TOP"
         break
 }
-draw_text(x,y,text)
+draw_text(x,y,text_)
 
 image_angle++
 
@@ -40,8 +40,8 @@ image_angle++
 //var top		= mid_y - h;
 //var bottom  = mid_y + h;
 //
-//var offset_x = mx - mid_x;
-//var offset_y = my - mid_y;
+//var offset_x = mx_ - mid_x;
+//var offset_y = my_ - mid_y;
 //
 //var offset_x_clamped = offset_x;
 //var offset_y_clamped = offset_y;
@@ -49,15 +49,15 @@ image_angle++
 //var is_vertical = false;
 //
 //if(sprite_height < sprite_width){
-    //var offset_clamped = mx - clamp(mx,left+h,right-h);
+    //var offset_clamped = mx_ - clamp(mx_,left+h,right-h);
     //is_vertical = abs(offset_y) > abs(offset_clamped );
 //} else {
-    //var offset_clamped = my - clamp(my,top+w,bottom-w);
+    //var offset_clamped = my_ - clamp(my_,top+w,bottom-w);
     //is_vertical = abs(offset_clamped) > abs(offset_x );
 //}
 //
-//var x_ = mx;
-//var y_ = my;
+//var x_ = mx_;
+//var y_ = my_;
 //
 //if( is_vertical){
     //y_ = (offset_y > 0) ? bottom : top;
@@ -67,5 +67,5 @@ image_angle++
 //
 //draw_circle(x_,y_,10,false)
 //
-////block_x += x_ - mx;
-////block_y += y_ - my;
+////block_x += x_ - mx_;
+////block_y += y_ - my_;

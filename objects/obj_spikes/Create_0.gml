@@ -1,11 +1,11 @@
 /// @description
 
-trigger = function(side_,object_){
+trigger = function(_side,_object){
 	
 	//hurt
-	if(side_ == SIDES.Top){
-		if(object_.object_index == obj_pengu){
-			object_.hurt(sign(object_.x - x));
+	if(_side == SIDES.TOP){
+		if(_object.object_index == obj_pengu){
+			_object.hurt(sign(_object.x - x));
 		}
 	}
 	return true

@@ -1,7 +1,7 @@
 /// @description
 
 if(global.draw_reflections){
-	var cam_surf = global.camera.surface;
+	var cam_surf_ = global.camera.surface;
 	
 	if(!surface_exists(water_surf)){
 		water_surf = surface_create(width,height);
@@ -9,10 +9,10 @@ if(global.draw_reflections){
 	
 	surface_set_target(water_surf);
 	
-	var x_offset = global.camera.get_x() - x;
-	var y_offset = global.camera.get_y() - y;
+	var x_offset_ = global.camera.get_x() - x;
+	var y_offset_ = global.camera.get_y() - y;
 	
-	draw_surface(cam_surf,x_offset,y_offset);
+	draw_surface(cam_surf_,x_offset_,y_offset_);
 	
 	surface_reset_target();
 	

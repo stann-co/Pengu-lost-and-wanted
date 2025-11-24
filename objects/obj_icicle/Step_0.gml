@@ -1,5 +1,5 @@
 /// @description 
-if(can_move){
+if(CAN_MOVE){
 state.step();
 
 //if origin and the icicle iteself is out of view it resets

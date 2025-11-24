@@ -15,13 +15,16 @@ trigger = function(){
 	}
 }
 
+collision_layer = COLLISION_LAYERS.A
+
+
 t_offset = irandom(60);
 
 y_offset_max = 2;
 rot_offset_max = 10;
-anim_duration = game_speed * 1.2;
+anim_duration = GAME_SPEED * 1.2;
 
-collect_duration = game_speed * 0.4;
+collect_duration = GAME_SPEED * 0.4;
 
 collect_t = 0;
 
@@ -40,10 +43,10 @@ vec_hor = new Vector2(sign(xspeed)*radius,0);
 vec_ver = new Vector2(0,sign(yspeed)*radius);
 
 pickup_t = 0;
-pickup_t_max = game_speed * 1;
+pickup_t_max = GAME_SPEED * 1;
 
 disappear = false;
-disappear_duration = game_speed * 4;
+disappear_duration = GAME_SPEED * 4;
 
 start_time = 0;
 
@@ -70,23 +73,23 @@ state
 		
 		if(collect_t < collect_duration){
 			
-			var collect_val = animcurve_read(ac_coin,"collect",collect_t/collect_duration);
+			var collect_val_ = animcurve_read(ac_coin,"collect",collect_t/collect_duration);
 			
-			x_speed = (obj_pengu.x - x) * collect_val;
-			y_speed = (obj_pengu.y - y) * collect_val;
+			x_speed = (obj_pengu.x - x) * collect_val_;
+			y_speed = (obj_pengu.y - y) * collect_val_;
 			
 			x += x_speed;
 			y += y_speed;
 			
-			image_xscale = lerp(1,0.2,collect_val);
-			image_yscale = lerp(1,0.2,collect_val);
+			image_xscale = lerp(1,0.2,collect_val_);
+			image_yscale = lerp(1,0.2,collect_val_);
 			
 			collect_t++;
 		} else {
 			if scoring score_increase(1);
 			global.coins+=1;
-			var sound = audio_play_sound(snd_point,0,0);
-			audio_sound_pitch(sound,pitch_change(random_range(2,10)));	
+			var sound_ = audio_play_sound(snd_point,0,0);
+			audio_sound_pitch(sound_,pitch_change(random_range(2,10)));	
 			
 			instance_destroy();
 		}
@@ -109,20 +112,20 @@ state
 		vec_hor = new Vector2(sign(xspeed)*radius,0);
 		vec_ver = new Vector2(0,sign(yspeed)*radius);
 		
-		var hor_sensor = sensor(vec_hor,90,sign(xspeed) * sensor_dist);
-		var ver_sensor = sensor(vec_ver,0,sign(yspeed) * sensor_dist);
+		var hor_sensor_ = sensor(vec_hor,90,sign(xspeed) * sensor_dist);
+		var ver_sensor_ = sensor(vec_ver,0,sign(yspeed) * sensor_dist);
 		
-		if(hor_sensor != noone){
+		if(hor_sensor_ != noone){
 			xspeed = -xspeed * falloff;
-			x+= hor_sensor.x;
-			y+= hor_sensor.y;
+			x+= hor_sensor_.x;
+			y+= hor_sensor_.y;
 		}
 		
-		if(ver_sensor != noone){
+		if(ver_sensor_ != noone){
 			yspeed = -yspeed * falloff;
 			xspeed = xspeed * falloff;
-			x+= ver_sensor.x;
-			y+= ver_sensor.y;
+			x+= ver_sensor_.x;
+			y+= ver_sensor_.y;
 		}
 		
 		if(pickup_t > 0) pickup_t--;

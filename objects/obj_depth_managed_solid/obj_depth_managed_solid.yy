@@ -29,7 +29,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"depth_layer","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"depth_layer","filters":[],"listItems":[
         "\"above A\"",
         "\"A\"",
         "\"B\"",

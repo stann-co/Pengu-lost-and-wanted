@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_spikes_ice_n",
   "bboxMode":2,
   "bbox_bottom":31,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"238b7943-f9b8-4bc5-a73f-61c9548038d3","name":"238b7943-f9b8-4bc5-a73f-61c9548038d3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"238b7943-f9b8-4bc5-a73f-61c9548038d3","name":"238b7943-f9b8-4bc5-a73f-61c9548038d3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

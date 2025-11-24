@@ -4,7 +4,7 @@ ps = part_system_create();
 colliding = false;
 
 
-squish_dur = game_speed*0.8;
+squish_dur = GAME_SPEED*0.8;
 squish_t = squish_dur;
 
 trigger = function(){

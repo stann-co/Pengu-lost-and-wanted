@@ -10,6 +10,6 @@ animplayer.update(delta_time);
 //var pos_l = node_l.GetTranslation()
 //var pos_r = node_r.GetTranslation()
 
-var updown = keyboard_check(ord("N")) - keyboard_check(ord("M"))
-depth+=updown;
+var updown_ = keyboard_check(ord("N")) - keyboard_check(ord("M"))
+depth+=updown_;
 

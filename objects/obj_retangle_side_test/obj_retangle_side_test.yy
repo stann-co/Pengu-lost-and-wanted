@@ -27,10 +27,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_stanncam_zone_block",
-    "path":"sprites/spr_stanncam_zone_block/spr_stanncam_zone_block.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

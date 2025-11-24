@@ -18,7 +18,7 @@ draw_marble(x,y,marblesize);
 //				  
 //draw_sprite_ext(spr_dark_gradient,0,radius,radius,1,1,0,-1,1);
 //				  
-//draw_set_color(white)
+//draw_set_color(WHITE)
 //gpu_set_colorwriteenable(true, true, true, true);
 //surface_reset_target();
 //

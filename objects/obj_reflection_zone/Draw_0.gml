@@ -11,7 +11,7 @@ if(global.draw_reflections){
 	var y_offset = global.camera.get_y() - (bbox_top-sprite_height);
 	
 	surface_set_target(refl_surf);
-		draw_clear_alpha(black,1)
+		draw_clear_alpha(BLACK,1)
 		
 		switch(distortion_type) {
 			case "none":
@@ -21,7 +21,7 @@ if(global.draw_reflections){
 				shader_set_uniform_f(u_speed,0)
 				shader_set_uniform_f(u_time,0)
 				shader_set_uniform_f(u_brightness,2);
-				var color = cyan;
+				var color = CYAN;
 				shader_set_uniform_f(u_tint,color_get_red(color)/255,color_get_green(color)/255,color_get_blue(color)/255);
 				shader_set_uniform_f(u_scale,0.07,0.07);
 				shader_set_uniform_f(u_distortion,0.135);
@@ -36,7 +36,7 @@ if(global.draw_reflections){
 				shader_set_uniform_f(u_speed,0.13)
 				shader_set_uniform_f(u_time,global.t)
 				shader_set_uniform_f(u_brightness,1.4);
-				color = pink;
+				color = PINK;
 				shader_set_uniform_f(u_tint,color_get_red(color)/255,color_get_green(color)/255,color_get_blue(color)/255);
 				shader_set_uniform_f(u_scale,1,0.085);
 				shader_set_uniform_f(u_distortion,0.06)

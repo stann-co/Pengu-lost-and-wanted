@@ -1,21 +1,21 @@
 ///@function draw_cross()
 ///@description draws a cross at position
-function draw_cross(x,y,radius,color = white,angle = 0){
+function draw_cross(_x,_y,_radius,_color = WHITE,_angle = 0){
 	
-	var prev_color = draw_get_color();
+	var prev_color_ = draw_get_color();
 	
-	draw_set_color(color);
+	draw_set_color(_color);
 	
-	var l1x = radius * dcos(angle);
-	var l1y = radius * dsin(angle);
+	var l1x_ = _radius * dcos(_angle);
+	var l1y_ = _radius * dsin(_angle);
 	
-	var l2x = radius * dcos(angle+90);
-	var l2y = radius * dsin(angle+90)
+	var l2x_ = _radius * dcos(_angle+90);
+	var l2y_ = _radius * dsin(_angle+90)
 
 	//horizontal
-	draw_line(x+l1x,y+l1y,x-l1x,y-l1y);
+	draw_line(_x+l1x_,_y+l1y_,_x-l1x_,_y-l1y_);
 	//vertical
-	draw_line(x+l2x,y+l2y,x-l2x,y-l2y);
+	draw_line(_x+l2x_,_y+l2y_,_x-l2x_,_y-l2y_);
 	
-	draw_set_color(prev_color);
+	draw_set_color(prev_color_);
 }

@@ -1,9 +1,9 @@
-function timer_text(time_){
-	if(time_ == undefined) return "#\"##'##"
+function timer_text(_time){
+	if(_time == undefined) return "#\"##'##"
 	
-	var minutes = time_ div (game_speed * 60);
-	var seconds = string_format(time_ div (game_speed) mod 60,2,0);
-	var frames =  string_format(time_ mod game_speed,2,0);
+	var minutes_ = _time div (GAME_SPEED * 60);
+	var seconds_ = string_format(_time div (GAME_SPEED) mod 60,2,0);
+	var frames_ =  string_format(_time mod GAME_SPEED,2,0);
 	
-	return string_replace_all($"{minutes}\"{seconds}'{frames}"," ","0");
+	return string_replace_all($"{minutes_}\"{seconds_}'{frames_}"," ","0");
 }

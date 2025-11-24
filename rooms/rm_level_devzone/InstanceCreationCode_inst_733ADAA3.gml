@@ -11,7 +11,7 @@ trigger = function(){
     //s_act(function(){
         //var camera_pos = inst_F632018_camera_pos1;
         //global.camera.follow = noone;
-        //global.camera.move(camera_pos.x,camera_pos.y,game_speed*0.5);    
+        //global.camera.move(camera_pos.x,camera_pos.y,GAME_SPEED*0.5);    
     //})
     //s_wait(2) 
     //
@@ -33,7 +33,7 @@ trigger = function(){
     //
 //
     //s_act(function(){
-        //global.camera.move(obj_pengu.x,obj_pengu.y,game_speed);
+        //global.camera.move(obj_pengu.x,obj_pengu.y,GAME_SPEED);
     //})
     //s_wait_condition(function(){
         //return (global.camera.x == obj_pengu.x && global.camera.y == obj_pengu.y)

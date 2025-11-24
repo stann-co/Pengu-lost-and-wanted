@@ -1,46 +1,46 @@
-///@function draw_sprite_tiled_area_ext(sprite,subimg,xx,yy,x1,y1,x2,y2,xscale,yscale,col,alpha)
+///@function draw_sprite_tiled_area_ext(_sprite,_subimg,_x,_y,_x1,_y1,_x2,_y2,_xscale,_yscale,_col,_alpha)
 //
-//  Draws a repeated sprite image, tiled to fill a given region and with
+//  Draws a repeated _sprite image, tiled to fill a given region and with
 //  a given offset. 
 //
-//      sprite      sprite to draw, real
-//      subimg      sprite subimage to draw, real
+//      _sprite      _sprite to draw, real
+//      _subimg      _sprite subimage to draw, real
 //      x,y         origin offset, real
-//      x1,y1       top-left corner of tiled area, real
-//      x2,y2       bottom-right corner of tiled area, real
-//      xscale,yscale       scale, real
-//      col         color, real
-//      alpha		alpha, real
+//      _x1,_y1       top_-left_ corner of tiled area, real
+//      _x2,_y2       bottom-right corner of tiled area, real
+//      _xscale,_yscale       scale, real
+//      _col         color, real
+//      _alpha		_alpha, real
 //
-function draw_sprite_tiled_area_ext(sprite,subimg,xx,yy,x1,y1,x2,y2,xscale=1,yscale=1,col=-1,alpha=1){ 
-    var sw,sh,i,j,jj,left,top,width,height,X,Y;
-    sw = sprite_get_width(sprite);
-    sh = sprite_get_height(sprite);
+function draw_sprite_tiled_area_ext(_sprite,_subimg,_x,_y,_x1,_y1,_x2,_y2,_xscale=1,_yscale=1,_col=-1,_alpha=1){ 
+    var sw_,sh_,i_,j_,jj_,left_,top_,width_,height_,x_,y_;
+    sw_ = sprite_get_width(_sprite);
+    sh_ = sprite_get_height(_sprite);
  
-    i = x1-((x1 mod sw) - (xx mod sw)) - sw*((x1 mod sw)<(xx mod sw));
-    j = y1-((y1 mod sh) - (yy mod sh)) - sh*((y1 mod sh)<(yy mod sh)); 
-    jj = j;
+    i_ = _x1-((_x1 mod sw_) - (_x mod sw_)) - sw_*((_x1 mod sw_)<(_x mod sw_));
+    j_ = _y1-((_y1 mod sh_) - (_y mod sh_)) - sh_*((_y1 mod sh_)<(_y mod sh_)); 
+    jj_ = j_;
  
-    for(i=i; i<=x2; i+=sw) {
-        for(j=j; j<=y2; j+=sh) {
+    for(i_=i_; i_<=_x2; i_+=sw_) {
+        for(j_=j_; j_<=_y2; j_+=sh_) {
  
-            if(i <= x1) left = x1-i;
-            else left = 0;
-            X = i+left;
+            if(i_ <= _x1) left_ = _x1-i_;
+            else left_ = 0;
+            x_ = i_+left_;
  
-            if(j <= y1) top = y1-j;
-            else top = 0;
-            Y = j+top;
+            if(j_ <= _y1) top_ = _y1-j_;
+            else top_ = 0;
+            y_ = j_+top_;
  
-            if(x2 <= i+sw) width = ((sw)-(i+sw-x2)+1)-left;
-            else width = sw-left;
+            if(_x2 <= i_+sw_) width_ = ((sw_)-(i_+sw_-_x2)+1)-left_;
+            else width_ = sw_-left_;
  
-            if(y2 <= j+sh) height = ((sh)-(j+sh-y2)+1)-top;
-            else height = sh-top;
+            if(_y2 <= j_+sh_) height_ = ((sh_)-(j_+sh_-_y2)+1)-top_;
+            else height_ = sh_-top_;
  
-            draw_sprite_part_ext(sprite,subimg,left,top,width,height,X,Y,xscale,yscale,col,alpha);
+            draw_sprite_part_ext(_sprite,_subimg,left_,top_,width_,height_,x_,y_,_xscale,_yscale,_col,_alpha);
         }
-        j = jj;
+        j_ = jj_;
     }
     return 0;
 }

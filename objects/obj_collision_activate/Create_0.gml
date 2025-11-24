@@ -16,10 +16,10 @@ trigger_leave = function(){
 }
 
 move_to_parent = function(){
-	var vec_parent = new Vector2(x_offset,y_offset);
-	vec_parent = vec_parent.rotated(-parent.image_angle);
-	x = parent.x+vec_parent.x;
-	y = parent.y+vec_parent.y;
+	var vec_parent_ = new Vector2(x_offset,y_offset);
+	vec_parent_ = vec_parent_.rotated(-parent.image_angle);
+	x = parent.x+vec_parent_.x;
+	y = parent.y+vec_parent_.y;
 	image_angle = parent.image_angle;
 }
 

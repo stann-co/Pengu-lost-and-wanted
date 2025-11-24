@@ -1,0 +1,1 @@
+global.camera.follow = obj_pengu
