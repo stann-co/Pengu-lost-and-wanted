@@ -1,9 +1,5 @@
 /// @description
-
 event_inherited();
-
-global.camera.follow = self;
-global.camera.move(x,y,0);
 
 #region variables
 godmode = false;

@@ -11,7 +11,7 @@
 #macro MAIN_MENUS (room == rm_init)
 #macro PAUSING     (obj_game.state.state_is("pause_menu") || obj_game.state.state_is("settings"))
 #macro FREEZE_FRAME (global.freeze_duration != 0)
-#macro CAN_MOVE   (!PAUSING && !FREEZE_FRAME)
+#macro CAN_MOVE   (!PAUSING && !FREEZE_FRAME && !instance_exists(obj_level_editor))
 
 
 #macro ENTITY_COLLISION_LAYER [obj_collision,global.collision_layers[? collision_layer]]
@@ -82,6 +82,13 @@ enum ATTACK_TYPES {
     SPEICAL
 }
 
+enum LAYER_TYPE {
+    COLLISION,
+    DECOR,
+    ASSET,
+    INSTANCE
+}
+
 #macro VOLUME_MAX 10
 global.music_volume = 10;
 global.sound_volume = 10;
@@ -150,9 +157,6 @@ global.control = true;
 //freeze frame is active when greater than 0, ticks down 1 each frame
 global.freeze_duration = 0;
 
-//when a layer get's set to a obj_layer_draw, it's added to this with the layer name as the key
-global.tile_draw_layers = ds_map_create()
-
 #region particles
 global.part_stars = part_type_create();
 part_type_sprite(global.part_stars,spr_hit_stars,false,false,true);
@@ -181,29 +185,30 @@ global.gui_font = font_add_sprite_ext(spr_gui_font,"!\"#$%&'()*+,-./0123456789:;
     lexicon_language_set("English");
 #endregion
 
-function LevelDetails(_name,_room) constructor {
-	name = _name
-	room_id = _room
-	level_score = 0
-	level_time = undefined
-	checkpoint = undefined
-	checkpoint_score = 0
-	checkpoint_coins = 0
-	checkpoint_timer = 0
-}
-
-global.active_level = undefined;
-
-global.levels = [
-	new LevelDetails("TUTORIAL",rm_demo_tutorial),
-	new LevelDetails("DEMO",rm_demo_demo),
-	new LevelDetails("CHALLENGE",rm_demo_challenge)
-]
+//function LevelDetails(_name,_room) constructor {
+	//name = _name
+	//room_id = _room
+	//level_score = 0
+	//level_time = undefined
+	//checkpoint = undefined
+	//checkpoint_score = 0
+	//checkpoint_coins = 0
+	//checkpoint_timer = 0
+//}
+//
+//global.active_level = undefined;
+//
+//global.levels = [
+	//new LevelDetails("TUTORIAL",rm_demo_tutorial),
+	//new LevelDetails("DEMO",rm_demo_demo),
+	//new LevelDetails("CHALLENGE",rm_demo_challenge)
+//]
 
 //3D
 //#macro BBMOD_MATERIAL_DEFAULT -1
 
 //spawns persistent objects
 
-room_instance_add(rm_init,0,0,obj_camera)
-room_instance_add(rm_init,0,0,obj_game)
+//room_instance_add(rm_init,0,0,obj_gmlive);
+room_instance_add(rm_init,0,0,obj_camera);
+room_instance_add(rm_init,0,0,obj_game);

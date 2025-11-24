@@ -70,7 +70,7 @@ void main() {
     vec2 offset = vec2(u_t,0.)*0.005;
     
     vec2 warp = 1. - vec2(fractal_noise(v_vTexcoord+offset,4,0.1)) * 2.;
-    warp *= ratio * 0.005;
+    warp *= ratio * 0.015;
     
     vec4 color = texture2D(gm_BaseTexture, v_vTexcoord + warp);
     
@@ -78,7 +78,7 @@ void main() {
 
     color.rgb += vec3((1./255.)*1.) * dither;
     
-    color.rgb = quantize(color.rgb,42.0);
+    color.rgb = quantize(color.rgb,32.0);
     
     gl_FragColor = color;
 }

@@ -261,9 +261,9 @@ function __stanncam_update_resolution(){
 	
 	with(__obj_stanncam_manager){
         
-        var _gui_x_scale = global.res_w / __gui_res_w; 
-        var _gui_y_scale = global.res_h / __gui_res_h;
-
+        __gui_x_scale = global.res_w / __gui_res_w; 
+        __gui_y_scale = global.res_h / __gui_res_h;
+        
         global.gui_w = __gui_res_w;
         global.gui_h = __gui_res_h;
         
@@ -279,13 +279,13 @@ function __stanncam_update_resolution(){
 		} else {
 			__display_scale_x = stanncam_get_res_scale_x();
 			__display_scale_y = stanncam_get_res_scale_y();
-        
+            
     		if(stanncam_get_gui_keep_aspect_ratio()){
-                global.gui_w *= (_gui_x_scale / _gui_y_scale);
-                _gui_x_scale = _gui_y_scale;
+                global.gui_w *= (__gui_x_scale / __gui_y_scale);
+                __gui_x_scale = __gui_y_scale;
             }
         } 
-        display_set_gui_maximize(_gui_x_scale , _gui_y_scale, stanncam_ratio_compensate_x(), stanncam_ratio_compensate_y());
+        display_set_gui_maximize(__gui_x_scale , __gui_y_scale, stanncam_ratio_compensate_x(), stanncam_ratio_compensate_y());
 	}
 }
 

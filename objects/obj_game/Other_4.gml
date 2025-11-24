@@ -13,19 +13,30 @@ if(global.sidescroller){
 		show_error($"Missing collision layers_ in {room}",true);
 	}
 	
-	// tiles
-	ds_map_clear(global.tile_draw_layers)
-	//makes special drawing objects for tile layers_
+	// turns off automatic drawing for visual layers, and draws them manually with parralax and shaders
 	var layers_ =  layer_get_all();
 	for (var i_ = 0; i_ < array_length(layers_); ++i_) {
-	    var lay_ = layers_[i_];
-		var name_ = layer_get_name(lay_);
-		if(string_starts_with(name_,"decor_")){
-			var layer_draw_ = instance_create_depth(0,0,layer_get_depth(lay_),obj_layer_draw,{
-				lay: lay_
-			});
-			ds_map_set(global.tile_draw_layers,name_,layer_draw_);
-		}
+		var lay_id_ = layers_[i_];
+		var name_ = layer_get_name(lay_id_);
+		
+		if(string_starts_with(name_,"decor")){
+			
+			instance_create_depth(0,0,layer_get_depth(lay_id_),obj_layer_draw,{
+				layer_id : lay_id_,
+	        	type : LAYER_TYPE.DECOR,
+				name : name_
+			})
+			layer_set_visible(lay_id_,false);
+	    } else
+	    
+	    if(string_starts_with(name_,"asset")){
+			instance_create_depth(0,0,layer_get_depth(lay_id_),obj_layer_draw,{
+				layer_id : lay_id_,
+	        	type : LAYER_TYPE.ASSET,
+				name : name_
+			})
+			layer_set_visible(lay_id_,false);
+	    }
 	}
 }
 

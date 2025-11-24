@@ -1,5 +1,7 @@
 /// @description starts the game
 
+//live_init(1,"http://127.0.0.1:5100","");
+
 //vars
 saved_pengu = {
 	x: -1,
@@ -18,6 +20,8 @@ transition_callback = function(){}
 timer = 0;
 tallying = false;
 
+debug = noone  //for debug view
+
 //loads settings or initializes the default ones
 settings_load();
 
@@ -34,9 +38,8 @@ draw_set_font(global.gui_font);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
+
 #region menu states
-
-
 
 state = new SnowState("quick_start");
 //state = new SnowState("demo_start");
@@ -63,12 +66,12 @@ state.add("quick_start", {
 		call_later(1,time_source_units_frames,function(){
 			state.change("idle");	
 			
-			for (var i_ = 0; i_ < array_length(global.levels); ++i_) {
-			    if (room_next(room) == global.levels[i_].room_id) {
-					global.active_level = global.levels[i_]
-					break;	
-				}
-			}
+			//for (var i_ = 0; i_ < array_length(global.levels); ++i_) {
+			    //if (room_next(room) == global.levels[i_].room_id) {
+					//global.active_level = global.levels[i_]
+					//break;	
+				//}
+			//}
 			
 			room_goto_next();
 			
@@ -672,55 +675,3 @@ state.add_child("level_tally_start","level_tally_anykey", {
 
 #endregion
 
-#region debugging
-
-	#region levels
-	//dbg_section("levels")
-	
-	//dbg_button("workshop",function(){
-	//	room_goto(rm_workshop);	
-	//})
-	//dbg_same_line();
-	//dbg_button("up_mountain",function(){
-	//	room_goto(rm_up_mountain);	
-	//})
-	#endregion
-	
-	#region debug
-	dbg_section("debug",false)	
-	dbg_button("toggle debug drawing",function(){
-		global.debug = !global.debug;
-        global.show_collisions = !global.show_collisions
-		show_collisions(global.show_collisions);
-	})
-	#endregion
-	
-	#region resolution
-	dbg_section("resolution",false);
-	dbg_button("windowed",function(){
-		stanncam_set_windowed()
-	})
-	dbg_same_line()
-	dbg_button("borderless",function(){
-		stanncam_set_borderless()
-	})
-	dbg_same_line()
-	dbg_button("fullscreen",function(){
-		stanncam_set_fullscreen();
-	})
-	
-	dbg_button("maintain aspect ratio",function(){
-		stanncam_set_keep_aspect_ratio(!stanncam_get_keep_aspect_ratio());
-	})
-	
-    //feather ignore once GM2017
-	dbg_watch(ref_create(__obj_stanncam_manager, "keep_aspect_ratio"), "keep_aspect_ratio"); 
-	#endregion
-	
-	#region variables
-	dbg_section("variables")
-		dbg_slider_int(ref_create(self,"SCORE_COMBO_T_MAX"),1,GAME_SPEED * 3,"Score cooldown frames");
-	#endregion
-	
-	show_debug_overlay(false);
-#endregion
