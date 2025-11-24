@@ -76,7 +76,7 @@ if(ImGui.Button("save")){
     show_question("Save changes?"){
         //show_debug_message(room_get_info(room,false,false,true,true,true));   
         
-        RoomSaveData();
+        save();
     }
 }
 
@@ -278,6 +278,38 @@ if(layer_active.type == LAYER_TYPE.COLLISION || layer_active.type == LAYER_TYPE.
     ImGui.EndChild();
     
     #endregion
+}
+#endregion
+
+#region sprite assets
+if(layer_active.type == LAYER_TYPE.ASSET){
+    ImGui.Text("Assets:")
+    ImGui.BeginChild("Assets",,300, ImGuiChildFlags.Border);
+    for (var i_ = 0; i_ < array_length(layer_active.transforms); i_++) {
+        var transform_ = layer_active.transforms[i_];
+        if(ImGui.Selectable(transform_.name,element_active == transform_)){
+            element_active = transform_;
+            
+        }
+    }
+    ImGui.EndChild();
+#endregion
+
+#region add sprite element
+    ImGui.Text("Add sprites:")
+    ImGui.BeginChild("Sprites",,300, ImGuiChildFlags.Border);
+    var sprites_ = asset_get_ids(asset_sprite);
+    for (var i_ = 0; i_ < array_length(sprites_); i_++) {
+        var sprite_ = sprites_[i_];
+        var cursor_pos_ = ImGui.GetCursorPosX();
+        if(ImGui.Selectable("     "+sprite_get_name(sprite_),false)){
+            add_sprite(sprite_);
+        }
+        ImGui.SameLine();
+        ImGui.SetCursorPosX(cursor_pos_);
+        ImGui.Image(sprite_,0,WHITE,1,20,20);
+    }
+    ImGui.EndChild();
 }
 #endregion
 

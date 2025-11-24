@@ -80,6 +80,9 @@
   },
   "swatchColours":null,
   "swfPrecision":2.525,
+  "tags":[
+    "decoration",
+  ],
   "textureGroupId":{
     "name":"Default",
     "path":"texturegroups/Default",

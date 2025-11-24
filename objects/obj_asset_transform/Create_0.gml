@@ -32,7 +32,6 @@ transform = function(){
 	layer_sprite_alpha(element_id,image_alpha);
 	layer_sprite_angle(element_id,image_angle);
 	layer_sprite_blend(element_id,image_blend);
-	
 }
 
 dragging = TRANSFORM_OPTIONS.NONE; //what state it's in

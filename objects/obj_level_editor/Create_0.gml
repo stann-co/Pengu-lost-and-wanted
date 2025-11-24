@@ -18,7 +18,7 @@ initialized = false
 call_later(1,time_source_units_frames,function (){ 
     //needs 1 frame delay before it can draw for some reason
     initialized = true;
-})
+});
 
 last_camera_follow = global.camera.follow;
 global.camera.follow = noone;
@@ -35,6 +35,76 @@ quit = function(){ //stops level editor
     global.camera.zoom(1,0);
     
     instance_destroy();
+}
+
+save = function(){
+    show_debug_message(GM_project_filename)
+    
+    var path_ = string_replace(GM_project_filename,"Pengu-lost-and-wanted.yyp","extensions/editor_data/");
+    
+    var room_data_ = {
+        width : room_width,
+        height : room_height,
+        layers : []
+    }
+    
+    var layers_ = layer_get_all();
+    show_debug_message(layers_);
+    //saves all layers, but only goes on detail with tiles and sprites
+    //starts at one because there's a layer made from code
+    for (var i_ = 1; i_ < array_length(layers_); i_++) {
+        var layer_id_ = layers_[i_];
+        
+        var element_ids_ = layer_get_all_elements(layer_id_);
+        var layer_ = {}
+        show_debug_message(element_ids_)
+        if(array_length(element_ids_) > 0){
+            //sprite
+            if(layer_get_element_type(element_ids_[0]) == layerelementtype_sprite ){
+                layer_.elements = [];
+                
+                for (var e_ = 0; e_ < array_length(element_ids_); e_++) {
+                    var element_id_ = element_ids_[e_];
+                    var element_ = {
+                        name : $"graphic_{element_id_}",
+                        image_speed : layer_sprite_get_speed(element_id_),
+                        image_blend : layer_sprite_get_blend(element_id_),
+                        image_alpha : layer_sprite_get_alpha(element_id_),
+                        image_index : layer_sprite_get_index(element_id_),
+                        image_angle : layer_sprite_get_angle(element_id_),
+                        image_xscale : layer_sprite_get_xscale(element_id_),
+                        image_yscale : layer_sprite_get_yscale(element_id_),
+                        sprite_index : sprite_get_name(layer_sprite_get_sprite(element_id_)),
+                        x : layer_sprite_get_x(element_id_),
+                        y : layer_sprite_get_y(element_id_)
+                    }
+                    array_push(layer_.elements,element_);
+                }
+            }
+            //tilemap
+            else if(layer_get_element_type(element_ids_[0]) == layerelementtype_tilemap ){
+                var tilemap_ = layer_tilemap_get_id(layer_id_);
+                var width_ = tilemap_get_width(tilemap_);
+                var height_ = tilemap_get_height(tilemap_);
+                layer_.tiles = {
+                    SerialiseWidth : width_,
+                    SerialiseHeight : height_,
+                    TileCompressedData : [] 
+                } 
+                for (var t_ = 0; t_ < width_*height_; t_++) {
+                    show_debug_message($"x:{t_ mod width_} y: {t_ div width_}");
+                    var tile_ = tilemap_get(tilemap_,t_ mod width_,t_ div width_) 
+                    array_push(layer_.tiles.TileCompressedData,tile_);
+                }
+                show_debug_message(layer_.tiles.TileCompressedData);
+            }
+        }
+        array_push(room_data_.layers,layer_);
+    }
+    
+    show_debug_message("Saving tile and sprite data");
+    json_save(path_+"temp_room_data.json",room_data_);
+    execute_shell_simple("RoomSaveData.bat",room_get_name(room),"open",1,path_);
 }
 
 tileset_surface = -1;
@@ -92,6 +162,9 @@ grid_cell_h = 16;
 grid_w = 4;
 grid_h = 4;
 
+//sprite asset list
+sprite_assets = asset_get_ids(asset_sprite);
+
 //gets relevant layers, and adds a type for ease of use
 for (var i_ = 0; i_ < array_length(room_data.layers); i_++) {
     //only show tile and decor layers, and store a type on them for ease
@@ -110,13 +183,15 @@ for (var i_ = 0; i_ < array_length(room_data.layers); i_++) {
     
     if(string_starts_with(name_,"asset")){
         layer_.type = LAYER_TYPE.ASSET
+        layer_.transforms = [];
 		//adds asset editor instance, so they can be manipulated
 		for (var e_ = 0; e_ < array_length(layer_.elements); e_++) {
 			var element_ = layer_.elements[e_];
-			instance_create_depth(0,0,0,obj_asset_transform,{
+			array_push(layer_.transforms,instance_create_depth(0,0,0,obj_asset_transform,{
 				element_id : element_.id,
+                name : sprite_get_name(element_.sprite_index),
 				layer_id : layer_.id,
-			});
+			}));
 		}
 		array_push(layers,layer_);
     }
@@ -173,9 +248,6 @@ set_layer = function(_layer_index){
             tiles_y = 0;
             tiles_size = 512; //this should automatically be set to fit the window
             
-            //biggest dimension
-            //tiles_zoom = (tileset_info.width > tileset_info.height) ? tileset_info.width : tileset_info.height;
-            
             //tile brush pickers offset and zoom
             brushes_x = 0;
             brushes_y = 0;
@@ -185,7 +257,8 @@ set_layer = function(_layer_index){
             tilemap = undefined;
             tileset = undefined;
         }
-    } else if(layer_active.type == LAYER_TYPE.ASSET) { //asset layer
+    } 
+else if(layer_active.type == LAYER_TYPE.ASSET) { //asset layer
 		element_active = noone;
 		grid_cell_w = 16;
 		grid_cell_h = 16;
@@ -196,6 +269,19 @@ set_layer = function(_layer_index){
     }
     
     parralax = struct_get_chained(global.level_data,"layers",layer_active.name,"parralax") ?? 0;
+}
+
+add_sprite = function(_sprite){
+    var x_ = global.camera.x;
+    var y_ = global.camera.y;
+    var element_ = layer_sprite_create(layer_active.id,x_,y_,_sprite);
+    var transform_ = instance_create_depth(0,0,0,obj_asset_transform,{
+        element_id : element_,
+        name :  sprite_get_name(_sprite),
+        layer_id : layer_active.id,
+    });
+    element_active = transform_;
+    array_push(layer_active.transforms,transform_);
 }
 
 set_layer(layer_index); //sets first layer active

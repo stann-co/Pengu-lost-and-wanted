@@ -3,17 +3,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-/**
- * Enum for common colors.
- * @readonly
- * @enum number
- */
-const ElementType = Object.freeze({
-  INSTANCE:   2,
-  ASSET:  4,
-	TILEMAP: 5,
-});
-
 // Base layer template with common properties
 //#region Layer Templates
 const BaseLayer = {
@@ -109,10 +98,13 @@ const BackgroundLayer = {
 //#endregion
 
 function Sprite(_sprite_name) {
+/*   console.log(_sprite_name)
   //'@ref sprite(spr_points)' -> spr_points
   const reg = /\w*(?=\))/;
   _sprite_name = reg.exec(_sprite_name)[0];
 
+  this.name = _sprite_name;
+  this.path = `sprites/${_sprite_name}/${_sprite_name}.yy`; */
   this.name = _sprite_name;
   this.path = `sprites/${_sprite_name}/${_sprite_name}.yy`;
 }
@@ -125,8 +117,38 @@ function Sprite(_sprite_name) {
  */
 function colour(bgr, alpha) {
 	const a = Math.round(alpha * 255) & 0xFF;
-	const bgr24 = bgr & 0xFFFFFF;
-	return ((a << 24) | bgr24) >>> 0;
+  console.log(a);
+  console.log(a << 24 >>> 0);
+	return ((a << 24 >>> 0) | bgr) >>> 0;
+}
+
+function RunLengthEncode(arr) {
+	const encoded = [];
+	let i = 0;
+	
+	while (i < arr.length) {
+		const value = arr[i];
+		let count = 1;
+		
+		// Count consecutive identical values
+		while (i + count < arr.length && arr[i + count] === value && count < 127) {
+			count++;
+		}
+		
+		if (count === 1) {
+			// Single value: store as positive (literal)
+			encoded.push(1);
+			encoded.push(value);
+		} else {
+			// Multiple identical values: store as negative (run)
+			encoded.push(-count);
+			encoded.push(value);
+		}
+		
+		i += count;
+	}
+	
+	return encoded;
 }
 
 const Asset = {
@@ -182,22 +204,17 @@ for (let i = 0; i < roomFileObj.layers.length; i++) {
 
   //updates asset layer
   if ('$GMRAssetLayer' in layer) {
-    console.log(`Updating asset layer: ${layer["%Name"]}`);
-
     //clear assets
     layer.assets = [];
 
     //add new assets
     for (let j = 0; j < dataLayer.elements.length; j++) {
-      const assetData = dataLayer.elements[j];
-      console.log(assetData);
-
-      let asset = Asset;
+      let assetData = dataLayer.elements[j];
+      let asset = {...Asset};
       asset.name = assetData.name;
       asset['%Name'] = asset.name;
       asset.animationSpeed = assetData.image_speed;
       asset.colour = colour(assetData.image_blend, assetData.image_alpha);
-      console.log(`Colour set to: ${asset.colour}`);
       asset.headPosition = assetData.image_index;
       asset.rotation = assetData.image_angle;
       asset.scaleX = assetData.image_xscale;
@@ -205,26 +222,17 @@ for (let i = 0; i < roomFileObj.layers.length; i++) {
       asset.spriteId = new Sprite(assetData.sprite_index);
       asset.x = assetData.x;
       asset.y = assetData.y;
-
-      layer.assets.push(asset);
-      console.log(`Added asset: ${asset.name}`);
+      layer.assets[j] = asset;
     }
   }
-  
   //updates tile layer
   else if ('$GMRTileLayer' in layer) {
-    //update tileset id
-/*     layer.tilesetId = {
-      "name": roomDataObj.tilesetName,
-      "path": `tilesets/${roomDataObj.tilesetName}/${roomDataObj.tilesetName}.yy`,
-    };
-    //update tile data
-    layer.tiles = JSON.parse(JSON.stringify(Tiles)); */
+    layer.tiles = {...Tiles}
+    layer.tiles.SerialiseWidth = dataLayer.tiles.SerialiseWidth;
+    layer.tiles.SerialiseHeight = dataLayer.tiles.SerialiseHeight;
+    layer.tiles.TileCompressedData = RunLengthEncode(dataLayer.tiles.TileCompressedData);
   }
-
 }
-
-console.log(roomName);
 Yy.writeSync(path.join(__dirname, `../../rooms/${roomName}/${roomName}.yy`), roomFileObj);
 
 //const outputPath = path.join(__dirname, 'test.txt');
