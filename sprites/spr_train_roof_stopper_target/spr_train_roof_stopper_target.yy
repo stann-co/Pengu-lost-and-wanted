@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_train_roof_stopper_target",
   "bboxMode":0,
   "bbox_bottom":31,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"2b17f76b-4992-427a-a7b3-16b384e6b9ef","name":"2b17f76b-4992-427a-a7b3-16b384e6b9ef","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"2b17f76b-4992-427a-a7b3-16b384e6b9ef","name":"2b17f76b-4992-427a-a7b3-16b384e6b9ef","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

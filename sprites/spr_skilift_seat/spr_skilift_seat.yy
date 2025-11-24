@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_skilift_seat",
   "bboxMode":2,
   "bbox_bottom":56,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"9a5c4d39-6809-4e5d-bbbe-3350823da0df","name":"9a5c4d39-6809-4e5d-bbbe-3350823da0df","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"9a5c4d39-6809-4e5d-bbbe-3350823da0df","name":"9a5c4d39-6809-4e5d-bbbe-3350823da0df","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
