@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_skilift_pole",
   "bboxMode":2,
   "bbox_bottom":58,
@@ -12,10 +12,10 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"38d089d5-92d1-4a89-b670-ee4acc0814b3","name":"38d089d5-92d1-4a89-b670-ee4acc0814b3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"6f9d049e-496f-4203-9bda-4a06dfd4e90c","name":"6f9d049e-496f-4203-9bda-4a06dfd4e90c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"0edc2284-5b21-4421-965b-1fd5667f904b","name":"0edc2284-5b21-4421-965b-1fd5667f904b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"ad0dc276-53af-4182-bc31-c4715bb0cecf","name":"ad0dc276-53af-4182-bc31-c4715bb0cecf","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"38d089d5-92d1-4a89-b670-ee4acc0814b3","name":"38d089d5-92d1-4a89-b670-ee4acc0814b3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"6f9d049e-496f-4203-9bda-4a06dfd4e90c","name":"6f9d049e-496f-4203-9bda-4a06dfd4e90c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"0edc2284-5b21-4421-965b-1fd5667f904b","name":"0edc2284-5b21-4421-965b-1fd5667f904b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"ad0dc276-53af-4182-bc31-c4715bb0cecf","name":"ad0dc276-53af-4182-bc31-c4715bb0cecf","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

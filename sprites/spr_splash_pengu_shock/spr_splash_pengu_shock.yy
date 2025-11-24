@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_splash_pengu_shock",
   "bboxMode":0,
   "bbox_bottom":710,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"3fad04d4-ada3-4939-bd3c-b39b1e6cfa9c","name":"3fad04d4-ada3-4939-bd3c-b39b1e6cfa9c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"3fad04d4-ada3-4939-bd3c-b39b1e6cfa9c","name":"3fad04d4-ada3-4939-bd3c-b39b1e6cfa9c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

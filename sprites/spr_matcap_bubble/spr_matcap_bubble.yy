@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_matcap_bubble",
   "bboxMode":0,
   "bbox_bottom":1023,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":true,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"70715336-2e5e-4558-ae4a-bf08f2a49ff8","name":"70715336-2e5e-4558-ae4a-bf08f2a49ff8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"70715336-2e5e-4558-ae4a-bf08f2a49ff8","name":"70715336-2e5e-4558-ae4a-bf08f2a49ff8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

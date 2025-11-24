@@ -17,7 +17,7 @@
   "exportToGame":true,
   "extensionVersion":"2.1.2",
   "files":[
-    {"$GMExtensionFile":"","%Name":"Steamworks.ext","constants":[
+    {"$GMExtensionFile":"v1","%Name":"Steamworks.ext","constants":[
         {"$GMExtensionConstant":"","%Name":"ov_friends","hidden":false,"name":"ov_friends","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"0",},
         {"$GMExtensionConstant":"","%Name":"ov_community","hidden":false,"name":"ov_community","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"1",},
         {"$GMExtensionConstant":"","%Name":"ov_players","hidden":false,"name":"ov_players","resourceType":"GMExtensionConstant","resourceVersion":"2.0","value":"2",},
@@ -550,12 +550,12 @@
         {"$GMExtensionFunction":"","%Name":"steam_timeline_game_phase_set_id","argCount":0,"args":[],"documentation":"/// @param {string} id The id to attach to the current game phase.\r\n/// @returns {bool}","externalName":"steam_timeline_game_phase_set_id","help":"","hidden":false,"kind":4,"name":"steam_timeline_game_phase_set_id","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
         {"$GMExtensionFunction":"","%Name":"steam_timeline_game_phase_recording_exists","argCount":0,"args":[],"documentation":"/// @param {real} phase_id The id of the game phase.\r\n/// @returns {bool}","externalName":"steam_timeline_game_phase_recording_exists","help":"","hidden":false,"kind":4,"name":"steam_timeline_game_phase_recording_exists","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
         {"$GMExtensionFunction":"","%Name":"steam_timeline_game_phase_open_overlay","argCount":0,"args":[],"documentation":"/// @param {real} phase_id The id of the game phase.\r\n/// @returns {bool}","externalName":"steam_timeline_game_phase_open_overlay","help":"","hidden":false,"kind":4,"name":"steam_timeline_game_phase_open_overlay","resourceType":"GMExtensionFunction","resourceVersion":"2.0","returnType":1,},
-      ],"init":"steam_init","kind":4,"name":"Steamworks.ext","order":[],"origname":"extensions\\Steamworks.dll","ProxyFiles":[
+      ],"init":"steam_init","kind":4,"name":"Steamworks.ext","origname":"extensions\\Steamworks.dll","ProxyFiles":[
         {"$GMProxyFile":"","%Name":"libSteamworks.dylib","name":"libSteamworks.dylib","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":1,},
         {"$GMProxyFile":"","%Name":"Steamworks.so","name":"Steamworks.so","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":7,},
         {"$GMProxyFile":"","%Name":"Steamworks_x64.dll","name":"Steamworks_x64.dll","resourceType":"GMProxyFile","resourceVersion":"2.0","TargetMask":6,},
       ],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":true,},
-    {"$GMExtensionFile":"","%Name":"libsteam_api.dylib","constants":[],"copyToTargets":2,"filename":"libsteam_api.dylib","final":"","functions":[],"init":"","kind":4,"name":"libsteam_api.dylib","order":[],"origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
+    {"$GMExtensionFile":"v1","%Name":"libsteam_api.dylib","constants":[],"copyToTargets":2,"filename":"libsteam_api.dylib","final":"","functions":[],"init":"","kind":4,"name":"libsteam_api.dylib","origname":"","ProxyFiles":[],"resourceType":"GMExtensionFile","resourceVersion":"2.0","uncompress":false,"usesRunnerInterface":false,},
   ],
   "gradleinject":"",
   "hasConvertedCodeInjection":true,

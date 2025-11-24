@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_conic_gradient",
   "bboxMode":0,
   "bbox_bottom":254,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"d344a939-5807-45cb-b796-59fcdce2c271","name":"d344a939-5807-45cb-b796-59fcdce2c271","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"d344a939-5807-45cb-b796-59fcdce2c271","name":"d344a939-5807-45cb-b796-59fcdce2c271","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

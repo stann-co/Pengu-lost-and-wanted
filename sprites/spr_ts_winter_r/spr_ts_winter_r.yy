@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_ts_winter_r",
   "bboxMode":0,
   "bbox_bottom":351,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"fcf8f401-ab27-4201-aafb-8056991ebc2c","name":"fcf8f401-ab27-4201-aafb-8056991ebc2c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"fcf8f401-ab27-4201-aafb-8056991ebc2c","name":"fcf8f401-ab27-4201-aafb-8056991ebc2c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

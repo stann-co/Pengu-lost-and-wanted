@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_bg_checker_grid",
   "bboxMode":0,
   "bbox_bottom":63,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"fd8f9af5-a4d8-4e7d-85e2-ccf215173a03","name":"fd8f9af5-a4d8-4e7d-85e2-ccf215173a03","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"fd8f9af5-a4d8-4e7d-85e2-ccf215173a03","name":"fd8f9af5-a4d8-4e7d-85e2-ccf215173a03","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

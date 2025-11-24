@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_3d_pixelart_diamond",
   "bboxMode":0,
   "bbox_bottom":95,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":true,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"bb88172b-670a-4a8d-ad38-23f5f38765ae","name":"bb88172b-670a-4a8d-ad38-23f5f38765ae","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"bb88172b-670a-4a8d-ad38-23f5f38765ae","name":"bb88172b-670a-4a8d-ad38-23f5f38765ae","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

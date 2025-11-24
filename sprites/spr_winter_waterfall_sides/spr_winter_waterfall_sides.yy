@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_winter_waterfall_sides",
   "bboxMode":0,
   "bbox_bottom":63,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":true,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"66fa2475-b297-42f5-8d27-b5f849f06ff7","name":"66fa2475-b297-42f5-8d27-b5f849f06ff7","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"66fa2475-b297-42f5-8d27-b5f849f06ff7","name":"66fa2475-b297-42f5-8d27-b5f849f06ff7","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

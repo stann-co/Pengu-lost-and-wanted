@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_checkpoint",
   "bboxMode":2,
   "bbox_bottom":31,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"c0cb9d8b-bc59-40f9-88d0-c8f489232bd2","name":"c0cb9d8b-bc59-40f9-88d0-c8f489232bd2","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"006488a9-53bb-4e3c-8ce4-8223967a16a4","name":"006488a9-53bb-4e3c-8ce4-8223967a16a4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"c0cb9d8b-bc59-40f9-88d0-c8f489232bd2","name":"c0cb9d8b-bc59-40f9-88d0-c8f489232bd2","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"006488a9-53bb-4e3c-8ce4-8223967a16a4","name":"006488a9-53bb-4e3c-8ce4-8223967a16a4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

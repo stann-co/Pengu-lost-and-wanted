@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_pengu_dash_charge",
   "bboxMode":0,
   "bbox_bottom":32,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"8ed8bda6-a669-4b64-8c32-d2878b609ade","name":"8ed8bda6-a669-4b64-8c32-d2878b609ade","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"e0ef1100-c1ed-40a3-91aa-6f8e9026a300","name":"e0ef1100-c1ed-40a3-91aa-6f8e9026a300","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"8ed8bda6-a669-4b64-8c32-d2878b609ade","name":"8ed8bda6-a669-4b64-8c32-d2878b609ade","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"e0ef1100-c1ed-40a3-91aa-6f8e9026a300","name":"e0ef1100-c1ed-40a3-91aa-6f8e9026a300","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

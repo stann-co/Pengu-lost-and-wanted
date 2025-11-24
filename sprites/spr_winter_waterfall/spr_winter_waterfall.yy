@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_winter_waterfall",
   "bboxMode":0,
   "bbox_bottom":63,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":true,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"7e335a7d-28ce-4918-99ec-9232c90bcb3e","name":"7e335a7d-28ce-4918-99ec-9232c90bcb3e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"b59040d3-67ea-4c5b-a867-59ae1defd7fe","name":"b59040d3-67ea-4c5b-a867-59ae1defd7fe","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"7e335a7d-28ce-4918-99ec-9232c90bcb3e","name":"7e335a7d-28ce-4918-99ec-9232c90bcb3e","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"b59040d3-67ea-4c5b-a867-59ae1defd7fe","name":"b59040d3-67ea-4c5b-a867-59ae1defd7fe","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

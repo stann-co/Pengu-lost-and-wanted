@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_pengu_attack_2",
   "bboxMode":0,
   "bbox_bottom":31,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"4acd368a-3243-4c6f-9d3a-ccbc1eb3d333","name":"4acd368a-3243-4c6f-9d3a-ccbc1eb3d333","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"4acd368a-3243-4c6f-9d3a-ccbc1eb3d333","name":"4acd368a-3243-4c6f-9d3a-ccbc1eb3d333","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

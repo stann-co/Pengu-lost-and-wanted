@@ -28,7 +28,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"sequence_element","filters":[
+    {"$GMObjectProperty":"v2","%Name":"sequence_element","filters":[
         "GMSequence",
       ],"listItems":[],"multiselect":false,"name":"sequence_element","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":5,},
   ],

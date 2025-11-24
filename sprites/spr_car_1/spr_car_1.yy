@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_car_1",
   "bboxMode":2,
   "bbox_bottom":37,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"65450c47-145c-4a69-85f5-6ee80d69ace6","name":"65450c47-145c-4a69-85f5-6ee80d69ace6","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"65450c47-145c-4a69-85f5-6ee80d69ace6","name":"65450c47-145c-4a69-85f5-6ee80d69ace6","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

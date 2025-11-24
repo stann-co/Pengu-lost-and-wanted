@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_falling_platform_snow",
   "bboxMode":0,
   "bbox_bottom":15,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"2d3b55db-1be6-4602-a8fd-cd0c113ee2e0","name":"2d3b55db-1be6-4602-a8fd-cd0c113ee2e0","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"b8e87582-5ecf-404b-9e55-b3d4a0799501","name":"b8e87582-5ecf-404b-9e55-b3d4a0799501","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"2d3b55db-1be6-4602-a8fd-cd0c113ee2e0","name":"2d3b55db-1be6-4602-a8fd-cd0c113ee2e0","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"b8e87582-5ecf-404b-9e55-b3d4a0799501","name":"b8e87582-5ecf-404b-9e55-b3d4a0799501","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

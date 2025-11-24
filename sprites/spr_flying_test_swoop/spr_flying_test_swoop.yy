@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_flying_test_swoop",
   "bboxMode":2,
   "bbox_bottom":37,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"cc33ba82-3214-4b77-b161-f44cb56f308a","name":"cc33ba82-3214-4b77-b161-f44cb56f308a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"cc33ba82-3214-4b77-b161-f44cb56f308a","name":"cc33ba82-3214-4b77-b161-f44cb56f308a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

@@ -2,8 +2,8 @@
   "$GMProject":"v1",
   "%Name":"Pengu-lost-and-wanted",
   "AudioGroups":[
-    {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
-    {"$GMAudioGroup":"","%Name":"audiogroup_music","name":"audiogroup_music","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_default","exportDir":"","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_music","exportDir":"","name":"audiogroup_music","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
   "configs":{
     "children":[
@@ -170,6 +170,7 @@
     {"$GMFolder":"","%Name":"Sprites","folderPath":"folders/Sprites.yy","name":"Sprites","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"backgrounds","folderPath":"folders/Sprites/backgrounds.yy","name":"backgrounds","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"original","folderPath":"folders/Sprites/backgrounds/original.yy","name":"original","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"beginning obelisq","folderPath":"folders/Sprites/beginning obelisq.yy","name":"beginning obelisq","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"decorations","folderPath":"folders/Sprites/decorations.yy","name":"decorations","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"demo tutorial sign","folderPath":"folders/Sprites/decorations/demo tutorial sign.yy","name":"demo tutorial sign","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"winter","folderPath":"folders/Sprites/decorations/winter.yy","name":"winter","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -180,7 +181,6 @@
     {"$GMFolder":"","%Name":"test_dummy","folderPath":"folders/Sprites/enemies/test_dummy.yy","name":"test_dummy","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"tigerbara","folderPath":"folders/Sprites/enemies/tigerbara.yy","name":"tigerbara","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"toybot","folderPath":"folders/Sprites/enemies/toybot.yy","name":"toybot","resourceType":"GMFolder","resourceVersion":"2.0",},
-    {"$GMFolder":"","%Name":"beginning obelisq","folderPath":"folders/Sprites/beginning obelisq.yy","name":"beginning obelisq","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"level elements","folderPath":"folders/Sprites/level elements.yy","name":"level elements","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"cars","folderPath":"folders/Sprites/level elements/cars.yy","name":"cars","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"platforms","folderPath":"folders/Sprites/level elements/platforms.yy","name":"platforms","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -231,7 +231,7 @@
     {"name":"GM_Burst","path":"particlelib/GM_Burst/GM_Burst.yy",},
   ],
   "MetaData":{
-    "IDEVersion":"2024.13.1.193",
+    "IDEVersion":"2024.14.1.210",
   },
   "name":"Pengu-lost-and-wanted",
   "resources":[

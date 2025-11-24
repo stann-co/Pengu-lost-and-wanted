@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"spr_3d_policemech",
   "bboxMode":0,
   "bbox_bottom":127,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":true,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"5cb2769a-9c11-4ed0-8df3-1d2c9d28914a","name":"5cb2769a-9c11-4ed0-8df3-1d2c9d28914a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"5cb2769a-9c11-4ed0-8df3-1d2c9d28914a","name":"5cb2769a-9c11-4ed0-8df3-1d2c9d28914a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
