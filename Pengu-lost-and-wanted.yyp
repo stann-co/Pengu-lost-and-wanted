@@ -1427,8 +1427,8 @@
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
-    {"roomId":{"name":"rm_leveleditor_test","path":"rooms/rm_leveleditor_test/rm_leveleditor_test.yy",},},
     {"roomId":{"name":"rm_obelisk","path":"rooms/rm_obelisk/rm_obelisk.yy",},},
+    {"roomId":{"name":"rm_leveleditor_test","path":"rooms/rm_leveleditor_test/rm_leveleditor_test.yy",},},
     {"roomId":{"name":"rm_level_rainside","path":"rooms/rm_level_rainside/rm_level_rainside.yy",},},
     {"roomId":{"name":"rm_intro","path":"rooms/rm_intro/rm_intro.yy",},},
     {"roomId":{"name":"rm_level_template","path":"rooms/rm_level_template/rm_level_template.yy",},},
@@ -1446,6 +1446,7 @@
       ],"groupName":"scrapped",},
     {"roomId":{"name":"rm_demo","path":"rooms/rm_demo/rm_demo.yy",},},
     {"roomId":{"name":"rm_layer_example","path":"rooms/rm_layer_example/rm_layer_example.yy",},},
+    {"roomId":{"name":"rm_level_sim","path":"rooms/rm_level_sim/rm_level_sim.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[

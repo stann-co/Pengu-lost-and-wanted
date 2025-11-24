@@ -8,8 +8,6 @@
   "instanceCreationOrder":[
     {"name":"inst_16A07FB5_1","path":"rooms/rm_level_rainside/rm_level_rainside.yy",},
     {"name":"inst_71CEB684","path":"rooms/rm_level_rainside/rm_level_rainside.yy",},
-    {"name":"inst_6730A12E","path":"rooms/rm_level_rainside/rm_level_rainside.yy",},
-    {"name":"inst_3E1C64C9","path":"rooms/rm_level_rainside/rm_level_rainside.yy",},
   ],
   "isDnd":false,
   "layers":[
