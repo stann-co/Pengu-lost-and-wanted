@@ -85,8 +85,7 @@ if(CAN_MOVE){
                     //if top speed has already been exceeded before this event
                     //that becomes the new temporary top speed
                     //like for speed ramps and springs and dashing
-                    if(abs(ground_spd) > top_speed) var ground_top_speed_ = abs(ground_spd); 
-                    else ground_top_speed_ = top_speed;
+                    var ground_top_speed_ = (abs(ground_spd) > top_speed) ? abs(ground_spd) : top_speed;
                     ground_top_speed_ = min(ground_top_speed_,absolute_top_speed);
                     
                     //if pressing in the opposite direction of ground_spd it decelerates

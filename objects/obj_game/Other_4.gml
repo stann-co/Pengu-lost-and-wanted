@@ -12,6 +12,12 @@ if(global.sidescroller){
 	if(room != rm_init && room != rm_intro && (global.collision_layers[? COLLISION_LAYERS.A] == -1)){
 		show_error($"Missing collision layers_ in {room}",true);
 	}
+    
+    #region external layers
+    //additional layers, instances, assets, and tiles are saved externally as json for each level
+    //for layers with parralax
+    
+    #endregion
 	
 	// turns off automatic drawing for visual layers, and draws them manually with parralax and shaders
 	var layers_ =  layer_get_all();

@@ -28,7 +28,7 @@ air_acceleration_speed = 0.15;
 air_horizontal_top_speed = 4;
 air_vertical_top_speed = 7;
 
-jump_force = 6.5;
+jump_force = 6.3;
 jump_release_force = 4;
 double_jump_force = 4;
 double_jump_count = 0;
@@ -43,7 +43,7 @@ dash_air_windup = GAME_SPEED*0.2;
 dash_air_count = 0;
 
 dash_ground_force_min = 4;
-dash_ground_force_max = 12;
+dash_ground_force_max = slide_top_speed;
 dash_ground_force = undefined;
 dash_ground_windup = GAME_SPEED*1; //you can hold it down longer, but after this it's hit max potential
 

@@ -29,8 +29,8 @@
   "out_tilehborder":0,
   "out_tilevborder":0,
   "parent":{
-    "name":"Tile Sets",
-    "path":"folders/Tile Sets.yy",
+    "name":"winter",
+    "path":"folders/Tile Sets/winter.yy",
   },
   "resourceType":"GMTileSet",
   "resourceVersion":"2.0",
