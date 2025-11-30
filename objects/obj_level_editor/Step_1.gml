@@ -51,6 +51,8 @@ if (!ImGui.IsWindowHovered(ImGuiHoveredFlags.AnyWindow)){
     if(hspd_ != 0 || vspd_ != 0){
         var x_ = global.camera.x + hspd_;
         var y_ = global.camera.y + vspd_;
+        show_debug_message(hspd_)
+        show_debug_message(vspd_)
         global.camera.move(x_, y_, 0);
     }
 }
@@ -84,16 +86,22 @@ ImGui.Text("Layers:")
 ImGui.BeginChild("Layers",,300, ImGuiChildFlags.Border);
 for (var i_ = 0; i_ < array_length(layers); i_++) {
     var layer_ = layers[i_];
-    if(ImGui.Selectable(layer_.name,layer_index == i_)){
+    var flags_ = (layer_.external == false) ? ImGuiSelectableFlags.Disabled : ImGuiSelectableFlags.None
+    if(ImGui.Selectable(layer_.name,layer_index == i_,flags_)){
         set_layer(i_)
     }
 }
 ImGui.EndChild();
 
+if(layer_active != undefined){
+    
 #region parralax slider
     parralax = ImGui.SliderFloat("Parralax",parralax,-1,1,"%.2f");
     struct_set_chained(global.level_data,parralax,"layers",layer_active.name,"parralax");
 #endregion
+    
+    
+}
 
 ImGui.End()
 #endregion
@@ -104,282 +112,286 @@ ImGui.SetNextWindowPos(global.res_w-menu_size_,0)
 ImGui.SetNextWindowSize(menu_size_,global.res_h);
 ImGui.Begin("Right",true,ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoDecoration)
 
-#region selecting tiles
-if(layer_active.type == LAYER_TYPE.COLLISION || layer_active.type == LAYER_TYPE.DECOR){
-    
-    #region tileset
+if(layer_active != undefined){
+
+    #region selecting tiles
+    if(layer_active.type == LAYER_TYPE.COLLISION || layer_active.type == LAYER_TYPE.DECOR){
         
-    ImGui.Text("Tileset:");
-    ImGui.BeginChild("Tileset",,menu_size_);
-    
-    if(element_active != noone){
-        //also instance tileset
-        //TODO consider making updating tiledata surfaces it's own function
-    }
-    
-    if(!surface_exists(tileset_surface)){
-        tileset_surface = surface_create(menu_size_,menu_size_);
-    }
-    surface_set_target(tileset_surface);
-    draw_clear(BLACK);
-    
-    if(element_active != noone){
-        draw_sprite_tiled(spr_bg_checker_grid,0,0,0);
-		if(ImGui.IsWindowHovered() ){ 
-			//zoom (centered on view)
-			var zoom_ = mouse_wheel_down() - mouse_wheel_up();
-			if(zoom_ != 0){
-				var tiles_size_prev_ = tiles_size;
-				tiles_size = clamp(tiles_size + zoom_*log2(tiles_size)*10, 64, 1024);
-				if (tiles_size != tiles_size_prev_) { 
-					var factor_ = tiles_size_prev_ / tiles_size;
-					var center_ = menu_size_ * 0.5;
-					// adjust translation so the center point stays fixed when scaling
-					tiles_x = center_ - (center_ - tiles_x) * factor_;
-					tiles_y = center_ - (center_ - tiles_y) * factor_;
-				}
-			}
-			//dragging
-			if (mouse_check_button(mb_middle)){
-				tiles_x -= mouse_spd_h_;
-				tiles_y -= mouse_spd_v_;
-			}
-		}
+        #region tileset
+            
+        ImGui.Text("Tileset:");
+        ImGui.BeginChild("Tileset",,menu_size_);
         
-        var scale_ = menu_size_ / tiles_size;
+        if(element_active != noone){
+            //also instance tileset
+            //TODO consider making updating tiledata surfaces it's own function
+        }
         
-        //zooms and offsets view
-        matrix_set(matrix_world,matrix_build(tiles_x,tiles_y,0,0,0,0,scale_,scale_,0));
-		
-		var tiles_width_  = ds_grid_width( tileset_tiles);
-		var tiles_height_ = ds_grid_height(tileset_tiles);
-		draw_grid_tiles(tileset_tiles,tileset,0,0);
-		draw_grid(0,0,grid_cell_w,grid_cell_h,tiles_width_,tiles_height_,1);
-        //Here
-		
-		if(ImGui.IsWindowHovered() ){ 
-			var xx_ = ImGui.GetCursorScreenPosX(), yy_ = ImGui.GetCursorScreenPosY(); 
-			var hover_x_ = ((mx_-xx_ - tiles_x) / scale_);
-			var hover_y_ = ((my_-yy_ - tiles_y) / scale_);
-			
-			hover_x_ = hover_x_ div grid_cell_w;
-			hover_y_ = hover_y_ div grid_cell_h;
-				
-			set_draw(WHITE,0.5);
-			draw_cell(0,0, grid_cell_w,grid_cell_h,hover_x_,hover_y_);
-			reset_draw();
-			
-			if(mouse_check_button_pressed(mb_left)){
-				var brush_ = ds_grid_get(tileset_tiles,hover_x_,hover_y_);
-				if(brush_ != undefined){
-                    brush = ds_grid_create(1,1);
-                    ds_grid_add(brush,0,0,brush_);
-				} else brush = -1;
-			}
-		}
-        matrix_set(matrix_world,matrix_build_identity());
+        if(!surface_exists(tileset_surface)){
+            tileset_surface = surface_create(menu_size_,menu_size_);
+        }
+        surface_set_target(tileset_surface);
+        draw_clear(BLACK);
+        
+        if(element_active != noone){
+            draw_sprite_tiled(spr_bg_checker_grid,0,0,0);
+    		if(ImGui.IsWindowHovered() ){ 
+    			//zoom (centered on view)
+    			var zoom_ = mouse_wheel_down() - mouse_wheel_up();
+    			if(zoom_ != 0){
+    				var tiles_size_prev_ = tiles_size;
+    				tiles_size = clamp(tiles_size + zoom_*log2(tiles_size)*10, 64, 1024);
+    				if (tiles_size != tiles_size_prev_) { 
+    					var factor_ = tiles_size_prev_ / tiles_size;
+    					var center_ = menu_size_ * 0.5;
+    					// adjust translation so the center point stays fixed when scaling
+    					tiles_x = center_ - (center_ - tiles_x) * factor_;
+    					tiles_y = center_ - (center_ - tiles_y) * factor_;
+    				}
+    			}
+    			//dragging
+    			if (mouse_check_button(mb_middle)){
+    				tiles_x -= mouse_spd_h_;
+    				tiles_y -= mouse_spd_v_;
+    			}
+    		}
+            
+            var scale_ = menu_size_ / tiles_size;
+            
+            //zooms and offsets view
+            matrix_set(matrix_world,matrix_build(tiles_x,tiles_y,0,0,0,0,scale_,scale_,0));
+    		
+    		var tiles_width_  = ds_grid_width( tileset_tiles);
+    		var tiles_height_ = ds_grid_height(tileset_tiles);
+    		draw_grid_tiles(tileset_tiles,tileset,0,0);
+    		draw_grid(0,0,grid_cell_w,grid_cell_h,tiles_width_,tiles_height_,1);
+            //Here
+    		
+    		if(ImGui.IsWindowHovered() ){ 
+    			var xx_ = ImGui.GetCursorScreenPosX(), yy_ = ImGui.GetCursorScreenPosY(); 
+    			var hover_x_ = ((mx_-xx_ - tiles_x) / scale_);
+    			var hover_y_ = ((my_-yy_ - tiles_y) / scale_);
+    			
+    			hover_x_ = hover_x_ div grid_cell_w;
+    			hover_y_ = hover_y_ div grid_cell_h;
+    				
+    			set_draw(WHITE,0.5);
+    			draw_cell(0,0, grid_cell_w,grid_cell_h,hover_x_,hover_y_);
+    			reset_draw();
+    			
+    			if(mouse_check_button_pressed(mb_left)){
+    				var brush_ = ds_grid_get(tileset_tiles,hover_x_,hover_y_);
+    				if(brush_ != undefined){
+                        brush = ds_grid_create(1,1);
+                        ds_grid_add(brush,0,0,brush_);
+    				} else brush = -1;
+    			}
+    		}
+            matrix_set(matrix_world,matrix_build_identity());
+        }
+        
+        surface_reset_target();
+        
+        ImGui.Surface(tileset_surface);
+        
+        ImGui.EndChild();
+        
+        #endregion
+        
+        #region tile brushes
+        
+        ImGui.Text("Tile Brushes:");
+        
+        ImGui.BeginChild("Tilebrushes",,menu_size_);
+        
+        //Draws and instances tiledata
+        if(element_active != noone){ 
+            if(!surface_exists(tilebrush_data_surface) || tilebrush_data_update){
+                tilebrush_data_update = false;
+                
+                var brushes_width_ = ds_grid_width(tileset_brushes); 
+                var brushes_height_ = ds_grid_height(tileset_brushes);
+                tilebrush_data_surface = surface_create(brushes_width_*grid_cell_w,brushes_height_*grid_cell_h);
+                
+                surface_set_target(tilebrush_data_surface);    
+                draw_grid_tiles(tileset_brushes,tileset,0,0);
+                set_draw(BLACK,0.5);
+                draw_grid(0,0,grid_cell_w,grid_cell_h,brushes_width_,brushes_height_,1);
+                reset_draw();
+                surface_reset_target();
+            }
+        }
+        
+        if(!surface_exists(tilebrush_surface)){
+            tilebrush_surface = surface_create(menu_size_,menu_size_);
+        }
+        surface_set_target(tilebrush_surface);
+        draw_clear(BLACK);
+        
+        if(element_active != noone){ 
+            draw_sprite_tiled(spr_bg_checker_grid,0,0,0);
+    		if(ImGui.IsWindowHovered() ){ 
+    			//zoom (centered on view)
+    			var zoom_ = mouse_wheel_down() - mouse_wheel_up();
+    			if(zoom_ != 0){
+    				var brushes_size_prev_ = brushes_size;
+    				brushes_size = clamp(brushes_size + zoom_*log2(brushes_size)*10, 64, 1024);
+    				if (brushes_size != brushes_size_prev_) { 
+    					var factor_ = brushes_size_prev_ / brushes_size;
+    					var center_ = menu_size_ * 0.5;
+    					// adjust translation so the center point stays fixed when scaling
+    					brushes_x = center_ - (center_ - brushes_x) * factor_;
+    					brushes_y = center_ - (center_ - brushes_y) * factor_;
+    				}
+    			}
+    			//dragging
+    			if (mouse_check_button(mb_middle)){
+    				brushes_x -= mouse_spd_h_;
+    				brushes_y -= mouse_spd_v_;
+    			}
+    		}
+            
+            var scale_ = menu_size_ / brushes_size;
+            
+            //zooms and offsets view
+            matrix_set(matrix_world,matrix_build(brushes_x,brushes_y,0,0,0,0,scale_,scale_,0));
+    		
+            //draw instanced tiledata
+            draw_surface(tilebrush_data_surface,0,0);
+    		
+    		if(ImGui.IsWindowHovered(ImGuiHoveredFlags.ChildWindows) ){ 
+    			var xx_ = ImGui.GetCursorScreenPosX(), yy_ = ImGui.GetCursorScreenPosY(); 
+    			var hover_x_ = ((mx_-xx_ - brushes_x) / scale_);
+    			var hover_y_ = ((my_-yy_ - brushes_y) / scale_);
+    			
+    			hover_x_ = hover_x_ div grid_cell_w;
+    			hover_y_ = hover_y_ div grid_cell_h;
+    				
+    			set_draw(WHITE,0.5);
+    			draw_cell(0,0, grid_cell_w,grid_cell_h,hover_x_,hover_y_);
+    			reset_draw();
+    			
+    			if(mouse_check_button_pressed(mb_left)){
+    				var brush_ = ds_grid_pick(tileset_brushes,hover_x_,hover_y_);
+    				if(brush_ != undefined){
+    					brush = brush_;
+    				}
+    			}
+    		}
+            matrix_set(matrix_world,matrix_build_identity());
+        }
+        
+        surface_reset_target();
+        
+        ImGui.Surface(tilebrush_surface);
+        
+        ImGui.EndChild();
+        
+        #endregion
     }
-    
-    surface_reset_target();
-    
-    ImGui.Surface(tileset_surface);
-    
-    ImGui.EndChild();
-    
     #endregion
     
-    #region tile brushes
-    
-    ImGui.Text("Tile Brushes:");
-    
-    ImGui.BeginChild("Tilebrushes",,menu_size_);
-    
-    //Draws and instances tiledata
-    if(element_active != noone){ 
-        if(!surface_exists(tilebrush_data_surface) || tilebrush_data_update){
-            tilebrush_data_update = false;
-            
-            var brushes_width_ = ds_grid_width(tileset_brushes); 
-            var brushes_height_ = ds_grid_height(tileset_brushes);
-            tilebrush_data_surface = surface_create(brushes_width_*grid_cell_w,brushes_height_*grid_cell_h);
-            
-            surface_set_target(tilebrush_data_surface);    
-            draw_grid_tiles(tileset_brushes,tileset,0,0);
-            set_draw(BLACK,0.5);
-            draw_grid(0,0,grid_cell_w,grid_cell_h,brushes_width_,brushes_height_,1);
-            reset_draw();
-            surface_reset_target();
+    #region sprite assets
+    if(layer_active.type == LAYER_TYPE.ASSET){
+        ImGui.Text("Assets:")
+        ImGui.BeginChild("Assets",,300, ImGuiChildFlags.Border);
+        for (var i_ = 0; i_ < array_length(layer_active.transforms); i_++) {
+            var transform_ = layer_active.transforms[i_];
+            if(ImGui.Selectable(transform_.name,element_active == transform_)){
+                element_active = transform_;
+                
+            }
         }
-    }
-    
-    if(!surface_exists(tilebrush_surface)){
-        tilebrush_surface = surface_create(menu_size_,menu_size_);
-    }
-    surface_set_target(tilebrush_surface);
-    draw_clear(BLACK);
-    
-    if(element_active != noone){ 
-        draw_sprite_tiled(spr_bg_checker_grid,0,0,0);
-		if(ImGui.IsWindowHovered() ){ 
-			//zoom (centered on view)
-			var zoom_ = mouse_wheel_down() - mouse_wheel_up();
-			if(zoom_ != 0){
-				var brushes_size_prev_ = brushes_size;
-				brushes_size = clamp(brushes_size + zoom_*log2(brushes_size)*10, 64, 1024);
-				if (brushes_size != brushes_size_prev_) { 
-					var factor_ = brushes_size_prev_ / brushes_size;
-					var center_ = menu_size_ * 0.5;
-					// adjust translation so the center point stays fixed when scaling
-					brushes_x = center_ - (center_ - brushes_x) * factor_;
-					brushes_y = center_ - (center_ - brushes_y) * factor_;
-				}
-			}
-			//dragging
-			if (mouse_check_button(mb_middle)){
-				brushes_x -= mouse_spd_h_;
-				brushes_y -= mouse_spd_v_;
-			}
-		}
-        
-        var scale_ = menu_size_ / brushes_size;
-        
-        //zooms and offsets view
-        matrix_set(matrix_world,matrix_build(brushes_x,brushes_y,0,0,0,0,scale_,scale_,0));
-		
-        //draw instanced tiledata
-        draw_surface(tilebrush_data_surface,0,0);
-		
-		if(ImGui.IsWindowHovered(ImGuiHoveredFlags.ChildWindows) ){ 
-			var xx_ = ImGui.GetCursorScreenPosX(), yy_ = ImGui.GetCursorScreenPosY(); 
-			var hover_x_ = ((mx_-xx_ - brushes_x) / scale_);
-			var hover_y_ = ((my_-yy_ - brushes_y) / scale_);
-			
-			hover_x_ = hover_x_ div grid_cell_w;
-			hover_y_ = hover_y_ div grid_cell_h;
-				
-			set_draw(WHITE,0.5);
-			draw_cell(0,0, grid_cell_w,grid_cell_h,hover_x_,hover_y_);
-			reset_draw();
-			
-			if(mouse_check_button_pressed(mb_left)){
-				var brush_ = ds_grid_pick(tileset_brushes,hover_x_,hover_y_);
-				if(brush_ != undefined){
-					brush = brush_;
-				}
-			}
-		}
-        matrix_set(matrix_world,matrix_build_identity());
-    }
-    
-    surface_reset_target();
-    
-    ImGui.Surface(tilebrush_surface);
-    
-    ImGui.EndChild();
-    
+        ImGui.EndChild();
     #endregion
-}
-#endregion
-
-#region sprite assets
-if(layer_active.type == LAYER_TYPE.ASSET){
-    ImGui.Text("Assets:")
-    ImGui.BeginChild("Assets",,300, ImGuiChildFlags.Border);
-    for (var i_ = 0; i_ < array_length(layer_active.transforms); i_++) {
-        var transform_ = layer_active.transforms[i_];
-        if(ImGui.Selectable(transform_.name,element_active == transform_)){
-            element_active = transform_;
-            
+    
+    #region add sprite element
+        ImGui.Text("Add sprites:")
+        ImGui.BeginChild("Sprites",,300, ImGuiChildFlags.Border);
+        var sprites_ = asset_get_ids(asset_sprite);
+        for (var i_ = 0; i_ < array_length(sprites_); i_++) {
+            var sprite_ = sprites_[i_];
+            var cursor_pos_ = ImGui.GetCursorPosX();
+            if(ImGui.Selectable("     "+sprite_get_name(sprite_),false)){
+                add_sprite(sprite_);
+            }
+            ImGui.SameLine();
+            ImGui.SetCursorPosX(cursor_pos_);
+            ImGui.Image(sprite_,0,WHITE,1,20,20);
         }
+        ImGui.EndChild();
     }
-    ImGui.EndChild();
-#endregion
-
-#region add sprite element
-    ImGui.Text("Add sprites:")
-    ImGui.BeginChild("Sprites",,300, ImGuiChildFlags.Border);
-    var sprites_ = asset_get_ids(asset_sprite);
-    for (var i_ = 0; i_ < array_length(sprites_); i_++) {
-        var sprite_ = sprites_[i_];
-        var cursor_pos_ = ImGui.GetCursorPosX();
-        if(ImGui.Selectable("     "+sprite_get_name(sprite_),false)){
-            add_sprite(sprite_);
-        }
-        ImGui.SameLine();
-        ImGui.SetCursorPosX(cursor_pos_);
-        ImGui.Image(sprite_,0,WHITE,1,20,20);
-    }
-    ImGui.EndChild();
+    #endregion
+    
+    ImGui.End()
 }
-#endregion
-
-ImGui.End()
-
+    
 #endregion
 #endregion
 
 #region tile placing / asset moving
-if (!ImGui.IsWindowHovered(ImGuiHoveredFlags.AnyWindow) && !ImGui.IsAnyItemActive()){
-	
-	if(layer_active.type == LAYER_TYPE.COLLISION || layer_active.type == LAYER_TYPE.DECOR){
-		//tile drawing
-
-        //TODO:
-        //Make it so it only pastes once, until the mouse has moved the brushes length away again
-        //floor snapping based on the width/height maybe
-            
-        if(tileset != undefined){
-            if(ds_exists(brush,ds_type_grid)){
-                //rotate brush
-                if(keyboard_check_pressed(ord("Z"))){
-                    var clockwise_ = !keyboard_check(vk_shift);
-                    brush_rotate(brush,clockwise_);
-                }
+if(layer_active != undefined){   
+    if (!ImGui.IsWindowHovered(ImGuiHoveredFlags.AnyWindow) && !ImGui.IsAnyItemActive()){
+    	
+    	if(layer_active.type == LAYER_TYPE.COLLISION || layer_active.type == LAYER_TYPE.DECOR){
+    		//tile drawing
+            //TODO:
+            //Make it so it only pastes once, until the mouse has moved the brushes length away again
+            //floor snapping based on the width/height maybe
                 
-                //mirror brush
-                if(keyboard_check_pressed(ord("X"))){
-                    brush_mirror(brush);
-                }
-                
-                //flip brush
-                if(keyboard_check_pressed(ord("Y"))){
-                    brush_flip(brush);
-                }
-                
-                if(InputMouseCheck(mb_left) || InputMouseCheck(mb_right)){
-                    var brush_offset_x_ = (ds_grid_width( brush)*grid_cell_w / 2)-grid_cell_w/2;
-                    var brush_offset_y_ = (ds_grid_height(brush)*grid_cell_h / 2)-grid_cell_h/2;
-                    
-                    var cx_ = floor((rmx_-brush_offset_x_)/grid_cell_w);
-                    var cy_ = floor((rmy_-brush_offset_y_)/grid_cell_h);
-                    
-                    if (InputMouseCheck(mb_left)){
-                        paste_tile_grid(tilemap,brush,cx_,cy_);
+            if(tileset != undefined){
+                if(ds_exists(brush,ds_type_grid)){
+                    //rotate brush
+                    if(keyboard_check_pressed(ord("Z"))){
+                        var clockwise_ = !keyboard_check(vk_shift);
+                        brush_rotate(brush,clockwise_);
                     }
                     
-                    if (InputMouseCheck(mb_right)){ 
-                        //uses brush to erase tiles
-                        erase_tile_grid(tilemap,brush,cx_,cy_);
+                    //mirror brush
+                    if(keyboard_check_pressed(ord("X"))){
+                        brush_mirror(brush);
+                    }
+                    
+                    //flip brush
+                    if(keyboard_check_pressed(ord("Y"))){
+                        brush_flip(brush);
+                    }
+                    
+                    if(InputMouseCheck(mb_left) || InputMouseCheck(mb_right)){
+                        var brush_offset_x_ = (ds_grid_width( brush)*grid_cell_w / 2)-grid_cell_w/2;
+                        var brush_offset_y_ = (ds_grid_height(brush)*grid_cell_h / 2)-grid_cell_h/2;
+                        
+                        var cx_ = floor((rmx_-brush_offset_x_)/grid_cell_w);
+                        var cy_ = floor((rmy_-brush_offset_y_)/grid_cell_h);
+                        
+                        if (InputMouseCheck(mb_left)){
+                            paste_tile_grid(tilemap,brush,cx_,cy_);
+                        }
+                        
+                        if (InputMouseCheck(mb_right)){ 
+                            //uses brush to erase tiles
+                            erase_tile_grid(tilemap,brush,cx_,cy_);
+                        }
                     }
                 }
             }
-        }
-	}
-	else if(layer_active.type == LAYER_TYPE.ASSET){
-		//asset manipulation
-		var offset_x_ = floor(global.camera.get_x() * parralax);
-		var offset_y_ = floor(global.camera.get_y() * parralax);
-		
-		var x_ = rmx_-offset_x_;
-		var y_ = rmy_-offset_y_;
-		
-		//transforms already selecteed asset
-		if(element_active == noone){
-			//selects asset at position
-			if(mouse_check_button_pressed(mb_left)){
-				element_active = instance_position(x_,y_,obj_asset_transform);
-			}
-		}
-	}
+    	}
+    	else if(layer_active.type == LAYER_TYPE.ASSET){
+    		//asset manipulation
+    		var offset_x_ = floor(global.camera.get_x() * parralax);
+    		var offset_y_ = floor(global.camera.get_y() * parralax);
+    		
+    		var x_ = rmx_-offset_x_;
+    		var y_ = rmy_-offset_y_;
+    		
+    		//transforms already selecteed asset
+    		if(element_active == noone){
+    			//selects asset at position
+    			if(mouse_check_button_pressed(mb_left)){
+    				element_active = instance_position(x_,y_,obj_asset_transform);
+    			}
+    		}
+    	}
+    }
 }
 #endregion

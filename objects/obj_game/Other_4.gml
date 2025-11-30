@@ -16,7 +16,13 @@ if(global.sidescroller){
     #region external layers
     //additional layers, instances, assets, and tiles are saved externally as json for each level
     //for layers with parralax
-    
+    var room_data_ = json_load("room_data/"+room_get_name(room)+".json");
+    if( room_data_ != undefined ){
+        var layers_ = struct_get(room_data_,"layers");
+        for (var i_ = 0; i_ < array_length(layers_ ); i_++) {
+        	global.room_data_layers[i_] = layers_[i_];
+        }
+    }
     #endregion
 	
 	// turns off automatic drawing for visual layers, and draws them manually with parralax and shaders

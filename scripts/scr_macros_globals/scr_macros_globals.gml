@@ -139,6 +139,8 @@ global.collision_layers[? COLLISION_LAYERS.A] = undefined
 global.collision_layers[? COLLISION_LAYERS.B] = undefined
 global.collision_layers[? COLLISION_LAYERS.C] = undefined
 
+global.room_data_layers = []; //externally loaded json room data, parralax layers
+
 global.activation_list = [];
 
 global.debug = false;

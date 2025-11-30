@@ -939,8 +939,8 @@ function stanncam(_x=0, _y=0, _width=global.game_w, _height=global.game_h, _surf
         
         //when smooth draw is off, the fractions are applied directly on the camera and not in draw step
         if(!smooth_draw){
-            _new_x+=x_frac + __constrain_frac_x;
-            _new_y+=y_frac + __constrain_frac_y;
+            //_new_x+=x_frac + __constrain_frac_x;
+            //_new_y+=y_frac + __constrain_frac_y;
         }
         
 		camera_set_view_pos(__camera, _new_x, _new_y);
