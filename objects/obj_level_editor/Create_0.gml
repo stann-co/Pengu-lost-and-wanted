@@ -1,20 +1,25 @@
 /// @description
 
-if(variable_global_exists("editor_data")){
+if(!variable_global_exists("editor_data")){
     //when stopping level editor the tile data and stuff is still present
-    global.editor_data = {}
+    global.editor_data = {
+        //initialized : false
+    }
 }
 
 //close button intercept
 window_command_hook(window_command_close);
 
 ImGui.__Initialize();
+ImGui.ConfigFlagToggle(ImGuiConfigFlags.DockingEnable);
+
 font = ImGui.AddFontFromFile("fonts/AtkinsonHyperlegible.ttf",24);
 
 global.show_collisions = true;
 show_collisions(true);
 
-initialized = false
+dock_init = false;
+initialized = false;
 call_later(1,time_source_units_frames,function (){ 
     //needs 1 frame delay before it can draw for some reason
     initialized = true;
@@ -22,6 +27,7 @@ call_later(1,time_source_units_frames,function (){
 
 last_camera_follow = global.camera.follow;
 global.camera.follow = noone;
+global.camera.zone_constrain = false;
 global.gui_draw = false;
 
 move_spd = 2;
@@ -30,6 +36,7 @@ quit = function(){ //stops level editor
     //maybe make a warning or popup or something
     
     global.camera.follow = last_camera_follow;
+    global.camera.zone_constrain = true;
     global.gui_draw = true;
     
     global.camera.zoom(1,0);
@@ -125,6 +132,10 @@ layers = [];
 layer_index = 0;
 layer_active = undefined;
 parralax = 0; //parralax value for specific layer
+
+//add layers
+add_layer_types = ["instances","assets","tilemap"]
+add_layer_type = 0;
 
 element_active = noone;
 

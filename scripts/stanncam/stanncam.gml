@@ -49,6 +49,7 @@ function stanncam(_x=0, _y=0, _width=global.game_w, _height=global.game_h, _surf
 	spd_threshold = 50; //the minimum distance the camera is away, for the speed to be in full effect
 	
 	room_constrain = false; //if camera should be constrained to the room size
+    zone_constrain = true; //if camera should be constrained to zones
 	
 	//the camera bounding box, for the followed instance to leave before the camera starts moving
 	bounds_w = 20;
@@ -801,101 +802,105 @@ function stanncam(_x=0, _y=0, _width=global.game_w, _height=global.game_h, _surf
         _view_top += offset_y;
         _view_bottom += offset_y;
         
-        //zone constricting        
-        for (var l = 0; l < array_length(__zone_lists); l++) {
-            
-            if(__zone_lists[l] != noone){
-                
-                var _zone_left   = undefined;
-                var _zone_right  = undefined;
-                var _zone_top    = undefined;
-                var _zone_bottom = undefined;
-                
-                //needs to loop through every zone & room bounds, to find narrowest relative to camera position
-                // eg zone.right zone.left ect
-                
-        		for (var z = 0; z < ds_list_size(__zone_lists[l]); z++) {
-                    var _zone = __zone_lists[l][|z];
-                    
-        			if(_zone.left ){ // if dist from the zone edge to the center is shorter than previous it takes over
-                        if(_zone_left == undefined || _zone.bbox_left < _zone_left){
-                            _zone_left = _zone.bbox_left;
-                        }
-        			}
-        			if(_zone.right){
-        				if(_zone_right == undefined || _zone.bbox_right > _zone_right){
-                            _zone_right = _zone.bbox_right;
-                        }
-        			}
-        			if(_zone.top){
-        				if(_zone_top == undefined || _zone.bbox_top < _zone_top){
-                            _zone_top = _zone.bbox_top;
-                        }
-        			}
-        			if(_zone.bottom){
-        				if(_zone_bottom == undefined || _zone.bbox_bottom > _zone_bottom){
-                            _zone_bottom = _zone.bbox_bottom;
-                        }
-        			}
-                }
-        		
-        		//Constrains camera to zones/room bounds
-                
-                #region horizontal constraint
-                var _zone_center_h = false;
-                if(_zone_left != undefined && _zone_right != undefined){
-                    //if width of zone is narrower than width of camera, constrain to center
-                    var _zone_width = (_zone_right - _zone_left)
-                    if((_view_right - _view_left) > _zone_width){
-                        var _middle = ((_zone_left + _zone_right)/2)-1;
-                        _constrain_offset_x[l] = _middle - x - offset_x;
-                        _zone_center_h = true;
-                    }
-                }
-                
-                if(!_zone_center_h && (_zone_left != undefined || _zone_right != undefined)){
-                    if(_zone_left != undefined){ //left zone
-                        _constrain_offset_x[l] -= min(_view_left - _zone_left,0);    
-                    }
-                    
-                    if(_zone_right != undefined){ //right zone
-                        _constrain_offset_x[l] -= max(_view_right - _zone_right,0);    
-                    }
-                }
-                
-                #endregion
-                
-                #region vertical constraint
-                var _zone_center_v = false;
-                if(_zone_top != undefined && _zone_bottom != undefined){
-                    //if height of zone is narrower than height of camera, constrain to center
-                    var _zone_height = (_zone_bottom - _zone_top)
-                    if((_view_bottom - _view_top) > _zone_height){
-                        var _middle = ((_zone_top + _zone_bottom)/2)-1;
-                        _constrain_offset_y[l] = _middle - y -offset_y;
-                        _zone_center_v = true;
-                    }
-                }
-                
-                if(!_zone_center_v && (_zone_top != undefined || _zone_bottom != undefined)){
-                    if(_zone_top != undefined){ //top zone
-                        _constrain_offset_y[l] -= min(_view_top - _zone_top,0);
-                    }
-                    
-                    if(_zone_bottom != undefined){ //bottom zone
-                        _constrain_offset_y[l] -= max(_view_bottom  - _zone_bottom ,0);    
-                    }
-                }
-                #endregion 
-            }
+        //zone constricting
+        if(zone_constrain){ 
+           for (var l = 0; l < array_length(__zone_lists); l++) {
+               
+               if(__zone_lists[l] != noone){
+                   
+                   var _zone_left   = undefined;
+                   var _zone_right  = undefined;
+                   var _zone_top    = undefined;
+                   var _zone_bottom = undefined;
+                   
+                   //needs to loop through every zone & room bounds, to find narrowest relative to camera position
+                   // eg zone.right zone.left ect
+                   
+           		for (var z = 0; z < ds_list_size(__zone_lists[l]); z++) {
+                       var _zone = __zone_lists[l][|z];
+                       
+           			if(_zone.left ){ // if dist from the zone edge to the center is shorter than previous it takes over
+                           if(_zone_left == undefined || _zone.bbox_left < _zone_left){
+                               _zone_left = _zone.bbox_left;
+                           }
+           			}
+           			if(_zone.right){
+           				if(_zone_right == undefined || _zone.bbox_right > _zone_right){
+                               _zone_right = _zone.bbox_right;
+                           }
+           			}
+           			if(_zone.top){
+           				if(_zone_top == undefined || _zone.bbox_top < _zone_top){
+                               _zone_top = _zone.bbox_top;
+                           }
+           			}
+           			if(_zone.bottom){
+           				if(_zone_bottom == undefined || _zone.bbox_bottom > _zone_bottom){
+                               _zone_bottom = _zone.bbox_bottom;
+                           }
+           			}
+                   }
+           		
+           		//Constrains camera to zones/room bounds
+                   
+                   #region horizontal constraint
+                   var _zone_center_h = false;
+                   if(_zone_left != undefined && _zone_right != undefined){
+                       //if width of zone is narrower than width of camera, constrain to center
+                       var _zone_width = (_zone_right - _zone_left)
+                       if((_view_right - _view_left) > _zone_width){
+                           var _middle = ((_zone_left + _zone_right)/2)-1;
+                           _constrain_offset_x[l] = _middle - x - offset_x;
+                           _zone_center_h = true;
+                       }
+                   }
+                   
+                   if(!_zone_center_h && (_zone_left != undefined || _zone_right != undefined)){
+                       if(_zone_left != undefined){ //left zone
+                           _constrain_offset_x[l] -= min(_view_left - _zone_left,0);    
+                       }
+                       
+                       if(_zone_right != undefined){ //right zone
+                           _constrain_offset_x[l] -= max(_view_right - _zone_right,0);    
+                       }
+                   }
+                   
+                   #endregion
+                   
+                   #region vertical constraint
+                   var _zone_center_v = false;
+                   if(_zone_top != undefined && _zone_bottom != undefined){
+                       //if height of zone is narrower than height of camera, constrain to center
+                       var _zone_height = (_zone_bottom - _zone_top)
+                       if((_view_bottom - _view_top) > _zone_height){
+                           var _middle = ((_zone_top + _zone_bottom)/2)-1;
+                           _constrain_offset_y[l] = _middle - y -offset_y;
+                           _zone_center_v = true;
+                       }
+                   }
+                   
+                   if(!_zone_center_v && (_zone_top != undefined || _zone_bottom != undefined)){
+                       if(_zone_top != undefined){ //top zone
+                           _constrain_offset_y[l] -= min(_view_top - _zone_top,0);
+                       }
+                       
+                       if(_zone_bottom != undefined){ //bottom zone
+                           _constrain_offset_y[l] -= max(_view_bottom  - _zone_bottom ,0);    
+                       }
+                   }
+                   #endregion 
+               }
+           }
         }
         
         __constrain_offset_x = 0;
         __constrain_offset_y = 0;
         
-        for (var i = 0; i < array_length(__zone_lists_strength); i++) {
-            __constrain_offset_x += _constrain_offset_x[i] * __zone_lists_strength[i];
-            __constrain_offset_y += _constrain_offset_y[i] * __zone_lists_strength[i];
+        if(zone_constrain){
+            for (var i = 0; i < array_length(__zone_lists_strength); i++) {
+                __constrain_offset_x += _constrain_offset_x[i] * __zone_lists_strength[i];
+                __constrain_offset_y += _constrain_offset_y[i] * __zone_lists_strength[i];
+            }
         }
         
         if(room_constrain){
@@ -939,8 +944,8 @@ function stanncam(_x=0, _y=0, _width=global.game_w, _height=global.game_h, _surf
         
         //when smooth draw is off, the fractions are applied directly on the camera and not in draw step
         if(!smooth_draw){
-            //_new_x+=x_frac + __constrain_frac_x;
-            //_new_y+=y_frac + __constrain_frac_y;
+            _new_x+=x_frac + __constrain_frac_x;
+            _new_y+=y_frac + __constrain_frac_y;
         }
         
 		camera_set_view_pos(__camera, _new_x, _new_y);

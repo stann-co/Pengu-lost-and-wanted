@@ -51,9 +51,7 @@ if (!ImGui.IsWindowHovered(ImGuiHoveredFlags.AnyWindow)){
     if(hspd_ != 0 || vspd_ != 0){
         var x_ = global.camera.x + hspd_;
         var y_ = global.camera.y + vspd_;
-        show_debug_message(hspd_)
-        show_debug_message(vspd_)
-        global.camera.move(x_, y_, 0);
+        global.camera.move(x_, y_);
     }
 }
 
@@ -69,51 +67,72 @@ ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize,0)
 var menu_size_ = 300;
 
 #region left panel
-ImGui.SetNextWindowPos(0,0)
-ImGui.SetNextWindowSize(menu_size_,global.res_h);
-
-ImGui.Begin("Left",true,ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoDecoration)
-
-if(ImGui.Button("save")){
-    show_question("Save changes?"){
-        //show_debug_message(room_get_info(room,false,false,true,true,true));   
+ImGui.SetNextWindowPos(0,0);
+ImGui.SetNextWindowSize(menu_size_,window_get_height());
+if (ImGui.Begin("Left",true,ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoDecoration)){
+    if(ImGui.Button("save")){
+        show_question("Save changes?"){
+            //show_debug_message(room_get_info(room,false,false,true,true,true));   
+            save();
+        }
+    }
+    
+    if(ImGui.Button("Add Layer")){
         
-        save();
     }
-}
-
-ImGui.Text("Layers:")
-ImGui.BeginChild("Layers",,300, ImGuiChildFlags.Border);
-for (var i_ = 0; i_ < array_length(layers); i_++) {
-    var layer_ = layers[i_];
-    var flags_ = (layer_.external == false) ? ImGuiSelectableFlags.Disabled : ImGuiSelectableFlags.None
-    if(ImGui.Selectable(layer_.name,layer_index == i_,flags_)){
-        set_layer(i_)
+    ImGui.SameLine();
+    var preview_val_ = add_layer_types[add_layer_type];
+    ImGui.SetNextItemWidth(180);
+    if (ImGui.BeginCombo("##combo",preview_val_,ImGuiComboFlags.None)){
+        for (var i_ = 0; i_ < array_length(add_layer_types); ++i_) {
+            var selected_ = add_layer_type == i_;
+            if(ImGui.Selectable(add_layer_types[i_],selected_)){
+                add_layer_type = i_;	
+            }
+            if(selected_) ImGui.SetItemDefaultFocus(); 
+        }
+        ImGui.EndCombo();
     }
+    
+    ImGui.Text("Layers:")
+    ImGui.BeginChild("Layers",,300, ImGuiChildFlags.Border);
+    for (var i_ = 0; i_ < array_length(layers); i_++) {
+        var layer_ = layers[i_];
+        var flags_ = (layer_.external == false) ? ImGuiSelectableFlags.Disabled : ImGuiSelectableFlags.None
+        if(ImGui.Selectable(layer_.name,layer_index == i_,flags_)){
+            set_layer(i_)
+        }
+    }
+    ImGui.EndChild();
+    
+    ImGui.Separator();
+	ImGui.Spacing();
+    
+    
+    
+    
+    
+    if(layer_active != undefined){
+        
+    #region parralax slider
+        parralax = ImGui.SliderFloat("Parralax",parralax,-1,1,"%.2f");
+        struct_set_chained(global.level_data,parralax,"layers",layer_active.name,"parralax");
+    #endregion
+        
+        
+    }
+    
+    ImGui.End()
 }
-ImGui.EndChild();
-
-if(layer_active != undefined){
-    
-#region parralax slider
-    parralax = ImGui.SliderFloat("Parralax",parralax,-1,1,"%.2f");
-    struct_set_chained(global.level_data,parralax,"layers",layer_active.name,"parralax");
-#endregion
-    
-    
-}
-
-ImGui.End()
 #endregion
 
 #region right panel
 
-ImGui.SetNextWindowPos(global.res_w-menu_size_,0)
-ImGui.SetNextWindowSize(menu_size_,global.res_h);
+ImGui.SetNextWindowPos(window_get_width()-menu_size_,0);
+ImGui.SetNextWindowSize(menu_size_,window_get_height());
 ImGui.Begin("Right",true,ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoDecoration)
-
 if(layer_active != undefined){
-
+    ImGui.Text("Hiii");
     #region selecting tiles
     if(layer_active.type == LAYER_TYPE.COLLISION || layer_active.type == LAYER_TYPE.DECOR){
         
