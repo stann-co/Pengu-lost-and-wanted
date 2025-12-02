@@ -1,8 +1,8 @@
 /// @description
-var parralax_ = struct_get_chained(global.level_data,"layers",name,"parralax") ?? 0;
+var parralax_ = struct_get_chained(global.room_data,"layers",name,"parralax") ?? 0;
 var offset_x_ = floor(global.camera.get_x() * parralax_);
 var offset_y_ = floor(global.camera.get_y() * parralax_);
-if(type == LAYER_TYPE.DECOR){
+if(type == LAYER_TYPE.TILEMAP){
 	draw_tilemap(tilemap,offset_x_,offset_y_);
 }
 else if(type == LAYER_TYPE.ASSET){

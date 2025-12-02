@@ -1,12 +1,12 @@
 {
-	"rm_leveleditor_test": {
-		"layers": {
-			"decor_01_A": {
-				"parralax": 0.9
-			},
-			"Assets_1": {
-				"parralax": 0.8
-			}
+	"layers": {
+		"decor_01_A": {
+			"depth": 100,
+			"parralax": 0.9
+		},
+		"Assets_1": {
+			"depth": 100,
+			"parralax": 0.8
 		}
 	}
 }

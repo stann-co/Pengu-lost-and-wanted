@@ -18,7 +18,7 @@ function file_read_all_text(_filename) {
 /// @param {string} content			The content to create/overwrite the file with.
 function file_write_all_text(_filename, _content) {
 	var buffer_ = buffer_create(string_length(_content), buffer_grow, 1);
-	buffer_write(buffer_, buffer_string, _content);
+	buffer_write(buffer_, buffer_text, _content);
 	buffer_save(buffer_, _filename);
 	buffer_delete(buffer_);
 }
@@ -44,7 +44,7 @@ function json_load(_filename) {
 /// @param {string} filename		The path of the JSON file to save.
 /// @param {any} value				The value to save as a JSON file.
 function json_save(_filename, _value) {
-	var json_content_ = json_stringify(_value);
+	var json_content_ = json_stringify(_value,true);
 	file_write_all_text(_filename, json_content_);
 }
 

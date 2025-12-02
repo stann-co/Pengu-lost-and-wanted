@@ -16,11 +16,20 @@ if(global.sidescroller){
     #region external layers
     //additional layers, instances, assets, and tiles are saved externally as json for each level
     //for layers with parralax
-    var room_data_ = json_load("room_data/"+room_get_name(room)+".json");
-    if( room_data_ != undefined ){
-        var layers_ = struct_get(room_data_,"layers");
-        for (var i_ = 0; i_ < array_length(layers_ ); i_++) {
-        	global.room_data_layers[i_] = layers_[i_];
+    global.room_data = {
+        layers : {}
+    };
+    var room_data_ = json_load("room_data\\"+room_get_name(room)+".json");
+    if(!is_undefined(room_data_)){
+        global.room_data = room_data_;
+        
+        //adds the extra layers, and all their assets/instances/tilemaps
+        //TODO:
+        var layers_ = struct_get_names(global.room_data.layers);
+        for (var i_ = 0; i_ < array_length(layers_); i_++) {
+            var name_ = layers_[i_];
+            var depth_ = struct_get_chained(global.room_data.layers,name_,"depth");
+        	layer_create(depth_,name_);
         }
     }
     #endregion
@@ -35,7 +44,7 @@ if(global.sidescroller){
 			
 			instance_create_depth(0,0,layer_get_depth(lay_id_),obj_layer_draw,{
 				layer_id : lay_id_,
-	        	type : LAYER_TYPE.DECOR,
+	        	type : LAYER_TYPE.TILEMAP,
 				name : name_
 			})
 			layer_set_visible(lay_id_,false);

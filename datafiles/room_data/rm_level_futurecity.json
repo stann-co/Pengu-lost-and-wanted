@@ -1,0 +1,16 @@
+{
+  "layers":{
+    "asset_1":{
+      "parralax":0.0,
+      "depth":900.0
+    },
+    "asset_2":{
+      "parralax":0.60000002384185791,
+      "depth":-200.0
+    },
+    "asset_0":{
+      "parralax":0.40000000596046448,
+      "depth":490.0
+    }
+  }
+}

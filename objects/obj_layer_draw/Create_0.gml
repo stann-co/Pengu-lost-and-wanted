@@ -1,6 +1,6 @@
 /// @description
 
-if(type == LAYER_TYPE.DECOR){
+if(type == LAYER_TYPE.TILEMAP){
 	tilemap = layer_tilemap_get_id(layer_id);
 	if(tilemap == -1) instance_destroy();
 }

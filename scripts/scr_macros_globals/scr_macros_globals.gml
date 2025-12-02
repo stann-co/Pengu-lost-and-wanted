@@ -83,8 +83,7 @@ enum ATTACK_TYPES {
 }
 
 enum LAYER_TYPE {
-    COLLISION,
-    DECOR,
+    TILEMAP,
     ASSET,
     INSTANCE
 }
@@ -139,7 +138,7 @@ global.collision_layers[? COLLISION_LAYERS.A] = undefined
 global.collision_layers[? COLLISION_LAYERS.B] = undefined
 global.collision_layers[? COLLISION_LAYERS.C] = undefined
 
-global.room_data_layers = []; //externally loaded json room data, parralax layers
+global.room_data = {}; //externally loaded json room data, parralax layers
 
 global.activation_list = [];
 
@@ -179,35 +178,10 @@ global.gui_draw = true;
 //fonts
 global.gui_font = font_add_sprite_ext(spr_gui_font,"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]",false,0);
 
-
-
-
 #region lexicon / languages
     lexicon_index_declare_from_json("local_en.json");
     lexicon_language_set("English");
 #endregion
-
-//function LevelDetails(_name,_room) constructor {
-	//name = _name
-	//room_id = _room
-	//level_score = 0
-	//level_time = undefined
-	//checkpoint = undefined
-	//checkpoint_score = 0
-	//checkpoint_coins = 0
-	//checkpoint_timer = 0
-//}
-//
-//global.active_level = undefined;
-//
-//global.levels = [
-	//new LevelDetails("TUTORIAL",rm_demo_tutorial),
-	//new LevelDetails("DEMO",rm_demo_demo),
-	//new LevelDetails("CHALLENGE",rm_demo_challenge)
-//]
-
-//3D
-//#macro BBMOD_MATERIAL_DEFAULT -1
 
 //spawns persistent objects
 

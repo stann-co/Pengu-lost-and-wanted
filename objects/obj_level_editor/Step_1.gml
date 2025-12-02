@@ -70,16 +70,30 @@ var menu_size_ = 300;
 ImGui.SetNextWindowPos(0,0);
 ImGui.SetNextWindowSize(menu_size_,window_get_height());
 if (ImGui.Begin("Left",true,ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoDecoration)){
-    if(ImGui.Button("save")){
-        show_question("Save changes?"){
-            //show_debug_message(room_get_info(room,false,false,true,true,true));   
-            save();
-        }
+    if(ImGui.Button("Save")){
+        ImGui.OpenPopup("Save Changes?")
+    }
+        
+    if (ImGui.BeginPopupModal("Save Changes?",, ImGuiWindowFlags.AlwaysAutoResize)) {
+        ImGui.Text("Save Changes?");
+        ImGui.Separator();
+        
+        if (ImGui.Button("Save")){
+            save()
+            ImGui.CloseCurrentPopup()
+        } 
+        ImGui.SetItemDefaultFocus();
+        ImGui.SameLine();
+        if (ImGui.Button("Cancel")){
+            ImGui.CloseCurrentPopup()  
+        } 
+        ImGui.EndPopup();
     }
     
     if(ImGui.Button("Add Layer")){
-        
+        add_layer(add_layer_type);
     }
+    
     ImGui.SameLine();
     var preview_val_ = add_layer_types[add_layer_type];
     ImGui.SetNextItemWidth(180);
@@ -94,33 +108,123 @@ if (ImGui.Begin("Left",true,ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove 
         ImGui.EndCombo();
     }
     
-    ImGui.Text("Layers:")
-    ImGui.BeginChild("Layers",,300, ImGuiChildFlags.Border);
-    for (var i_ = 0; i_ < array_length(layers); i_++) {
-        var layer_ = layers[i_];
-        var flags_ = (layer_.external == false) ? ImGuiSelectableFlags.Disabled : ImGuiSelectableFlags.None
-        if(ImGui.Selectable(layer_.name,layer_index == i_,flags_)){
-            set_layer(i_)
-        }
-    }
-    ImGui.EndChild();
-    
     ImGui.Separator();
 	ImGui.Spacing();
     
-    
-    
-    
+    #region layers list
+    ImGui.Text("Layers:")
+    ImGui.SameLine();
+    layers_hide_internal = ImGui.Checkbox("Hide Internal", layers_hide_internal);
+    ImGui.BeginChild("Layers",,300, ImGuiChildFlags.Border);
+    for (var i_ = 0; i_ < array_length(layers); i_++) {
+        var layer_ = layers[i_];
+        
+        var disabled_ = (!array_contains(struct_get_names(global.room_data.layers),layer_.name));
+        
+        //if layers_hide_internal is checked, don't display them in layer list
+        if(layers_hide_internal && disabled_) continue;
+            
+        var flags_ = disabled_ ? ImGuiSelectableFlags.Disabled : ImGuiSelectableFlags.None
+        if(ImGui.Selectable(layer_.name,layer_index == i_,flags_)){
+            set_layer(i_)
+        }
+        ImGui.SameLine();
+        
+        var depth_ = string(layer_get_depth(layer_.id));
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + max(0, ImGui.GetContentRegionAvailX() - ImGui.CalcTextWidth(depth_)));
+        
+        if (!disabled_) {
+            ImGui.Text(depth_); 
+        } else {
+            ImGui.TextDisabled(depth_);
+        }
+    }
+    ImGui.EndChild();
+    #endregion
     
     if(layer_active != undefined){
+        #region move layer
         
-    #region parralax slider
+        var depth_ = layer_get_depth(layer_active.id);
+        var depth_top_ = layer_get_depth(layers[0].id);
+        var depth_bottom_ = layer_get_depth(layers[array_length(layers)-1].id);
+        
+        var depth_new_ = depth_;
+        
+        if(ImGui.Button("Up")){
+            if(layer_index > 1){
+                var depth_1_ = layer_get_depth(layers[layer_index-1].id);
+                var depth_2_ = layer_get_depth(layers[layer_index-2].id);
+                depth_new_ = floor(lerp(depth_1_,depth_2_,0.5));
+            } else if(layer_index > 0){
+                depth_new_ = depth_top_ - 100;
+            }
+        }
+        ImGui.SameLine()
+        if(ImGui.Button("Down")){
+            if(layer_index < array_length(layers) - 2){
+                var depth_1_ = layer_get_depth(layers[layer_index+1].id);
+                var depth_2_ = layer_get_depth(layers[layer_index+2].id);
+                depth_new_= floor(lerp(depth_1_,depth_2_,0.5));
+            } else if(layer_index < array_length(layers) - 1){
+                depth_new_ = depth_bottom_ + 100;
+            }
+        }
+        ImGui.SameLine()
+        if(ImGui.Button("Top")){
+            if(layer_get_depth(layer_active.id) != depth_top_){
+                depth_new_= depth_top_ - 100;
+            }
+        }
+        ImGui.SameLine()
+        if(ImGui.Button("Bottom")){
+            if(layer_get_depth(layer_active.id) != depth_bottom_){
+                depth_new_ = depth_bottom_ + 100;
+            }
+        }
+        
+        var input_int_ = ImGui.InputInt("Depth",depth_,10,100);
+        if(input_int_ != depth_) depth_new_ = input_int_;
+            
+        if(depth_new_ != depth_){
+            struct_set_chained(global.room_data,depth_new_,"layers",layer_active.name,"depth");
+            layer_depth(layer_active.id,depth_new_);
+            layers_depth_order();
+        }
+        
+        #endregion
+        
+        #region parralax slider
         parralax = ImGui.SliderFloat("Parralax",parralax,-1,1,"%.2f");
-        struct_set_chained(global.level_data,parralax,"layers",layer_active.name,"parralax");
-    #endregion
-        
-        
+        struct_set_chained(global.room_data,parralax,"layers",layer_active.name,"parralax");
+        #endregion
     }
+    
+    #region delete layer
+    if(layer_active != undefined){
+        
+        ImGui.SetCursorPosY(ImGui.GetCursorPosY() + max(0, ImGui.GetContentRegionAvailY() - (ImGui.GetTextLineHeightWithSpacing() + 5 )));
+        if(ImGui.Button("Delete layer")){
+            ImGui.OpenPopup("Delete Layer?")
+        }
+        
+        if (ImGui.BeginPopupModal("Delete Layer?",, ImGuiWindowFlags.AlwaysAutoResize)) {
+            ImGui.Text("Delete layer?");
+            ImGui.Separator();
+            
+            if (ImGui.Button("Delete")){
+                delete_layer(layer_index);
+                ImGui.CloseCurrentPopup();
+            } 
+            ImGui.SetItemDefaultFocus();
+            ImGui.SameLine();
+            if (ImGui.Button("Cancel")){
+                ImGui.CloseCurrentPopup()  
+            } 
+            ImGui.EndPopup();
+        }
+    }
+    #endregion
     
     ImGui.End()
 }
@@ -134,7 +238,7 @@ ImGui.Begin("Right",true,ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | I
 if(layer_active != undefined){
     ImGui.Text("Hiii");
     #region selecting tiles
-    if(layer_active.type == LAYER_TYPE.COLLISION || layer_active.type == LAYER_TYPE.DECOR){
+    if(layer_active.type == LAYER_TYPE.TILEMAP){
         
         #region tileset
             
@@ -352,7 +456,7 @@ if(layer_active != undefined){
 if(layer_active != undefined){   
     if (!ImGui.IsWindowHovered(ImGuiHoveredFlags.AnyWindow) && !ImGui.IsAnyItemActive()){
     	
-    	if(layer_active.type == LAYER_TYPE.COLLISION || layer_active.type == LAYER_TYPE.DECOR){
+    	if(layer_active.type == LAYER_TYPE.TILEMAP){
     		//tile drawing
             //TODO:
             //Make it so it only pastes once, until the mouse has moved the brushes length away again
