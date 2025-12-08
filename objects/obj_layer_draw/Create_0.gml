@@ -1,5 +1,4 @@
 /// @description
-
 if(type == LAYER_TYPE.TILEMAP){
 	tilemap = layer_tilemap_get_id(layer_id);
 	if(tilemap == -1) instance_destroy();
@@ -44,11 +43,10 @@ else if(type == LAYER_TYPE.ASSET){
 //u_texture_scale   = shader_get_uniform(sh_tilemap_fx,"u_texture_scale");
 //u_texture_offset_scale  = shader_get_uniform(sh_tilemap_fx,"u_texture_offset_scale");
 
-//
 //Inspectron()
-	//.Slider("depth_",0,0.1)
-    //.Slider("roughness",0,1)
-    //.Slider("normal",0,1)
-    //.Slider("texture_offset_scale",-0.5,0)
-    //.Slider("texture_scale",0,2)
-	//.render()
+//.Slider("depth_",0,0.1)
+//.Slider("roughness",0,1)
+//.Slider("normal",0,1)
+//.Slider("texture_offset_scale",-0.5,0)
+//.Slider("texture_scale",0,2)
+//.render()

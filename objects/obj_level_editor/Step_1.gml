@@ -194,9 +194,18 @@ if (ImGui.Begin("Left",true,ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove 
         
         #endregion
         
+        #region offset
+        offset_x = ImGui.InputInt("offset X",offset_x,1,10);
+        offset_y = ImGui.InputInt("offset Y",offset_y,1,10);
+        struct_set_chained(global.room_data,offset_x,"layers",layer_active.name,"offset_x");
+        struct_set_chained(global.room_data,offset_y,"layers",layer_active.name,"offset_y");
+        #endregion
+        
         #region parralax slider
-        parralax = ImGui.SliderFloat("Parralax",parralax,-1,1,"%.2f");
-        struct_set_chained(global.room_data,parralax,"layers",layer_active.name,"parralax");
+        parralax_x = ImGui.SliderFloat("Parralax X",parralax_x,-1,1,"%.2f");
+        parralax_y = ImGui.SliderFloat("Parralax Y",parralax_y,-1,1,"%.2f");
+        struct_set_chained(global.room_data,parralax_x,"layers",layer_active.name,"parralax_x");
+        struct_set_chained(global.room_data,parralax_y,"layers",layer_active.name,"parralax_y");
         #endregion
     }
     
@@ -501,8 +510,8 @@ if(layer_active != undefined){
     	}
     	else if(layer_active.type == LAYER_TYPE.ASSET){
     		//asset manipulation
-    		var offset_x_ = floor(global.camera.get_x() * parralax);
-    		var offset_y_ = floor(global.camera.get_y() * parralax);
+    		var offset_x_ = floor(global.camera.get_x() * parralax_x) + offset_x;
+    		var offset_y_ = floor(global.camera.get_y() * parralax_y) + offset_y;
     		
     		var x_ = rmx_-offset_x_;
     		var y_ = rmy_-offset_y_;

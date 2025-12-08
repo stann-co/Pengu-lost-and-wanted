@@ -50,7 +50,11 @@ layers_hide_internal = false;
 layers = [];
 layer_index = 0;
 layer_active = undefined;
-parralax = 0; //parralax value for specific layer
+parralax_x = 0; //parralax value for specific layer
+parralax_y = 0;
+
+offset_x = 0; //layer offset, useful to move parralaxed layers back into view
+offset_y = 0;
 
 //add layers
 add_layer_types = ["tilemap","assets","instances"]
@@ -127,17 +131,18 @@ for (var i_ = 0; i_ < array_length(layers_); i_++) {
     if(string_starts_with(layer_.name,"asset")){
         layer_.type = LAYER_TYPE.ASSET
         layer_.transforms = [];
+        array_push(layers,layer_);
+        
 		//adds asset editor instance, so they can be manipulated
-        var elements_ = struct_get_chained(layer_,"elements");
+        var elements_ = layer_get_all_elements(layer_.id);
 		for (var e_ = 0; e_ < array_length(elements_); e_++) {
 			var element_ = elements_[e_];
 			array_push(layer_.transforms,instance_create_depth(0,0,0,obj_asset_transform,{
-				element_id : element_.id,
-                name : sprite_get_name(element_.sprite_index),
+				element_id : element_,
+                name : sprite_get_name(layer_sprite_get_sprite(element_)),
 				layer_id : layer_.id,
 			}));
 		}
-		array_push(layers,layer_);
     }
 }
 #endregion
@@ -154,10 +159,14 @@ layers_depth_order = function (){
             break;
         }
     }
+    //sets new layer depth
+    with(obj_layer_draw){
+        depth = layer_get_depth(layer_id);
+    }
 }
 
 add_layer = function(_type){
-     var layer_ = {
+    var layer_ = {
         type : _type,
     }
     var name_ = "";
@@ -190,8 +199,36 @@ add_layer = function(_type){
     
     struct_set_chained(global.room_data,{
         depth: depth_,
-        parralax: 0,
-    },"layers",name_)
+        parralax_x: 0,
+        parralax_y: 0,
+        offset_x: 0,
+        offset_y: 0,
+    },"layers",name_);
+    
+    switch (_type) {
+        case LAYER_TYPE.TILEMAP:
+            
+            instance_create_depth(0,0,depth_,obj_layer_draw,{
+                layer_id : layer_.id,
+                type : LAYER_TYPE.TILEMAP,
+                name : name_
+            })
+            layer_set_visible(layer_.id,false);
+            break;
+            
+        case LAYER_TYPE.INSTANCE:
+            struct_set_chained(global.room_data,[],"layers",name_,"elements");
+        case LAYER_TYPE.ASSET:
+            struct_set_chained(global.room_data,[],"layers",name_,"elements");
+            
+            instance_create_depth(0,0,depth_,obj_layer_draw,{
+                layer_id : layer_.id,
+                type : LAYER_TYPE.ASSET,
+                name : name_
+            })
+            layer_set_visible(layer_.id,false);
+            break;
+    }
     
     array_push(layers,layer_);
     set_layer(array_length(layers)-1);
@@ -275,13 +312,17 @@ set_layer = function(_layer_index){
         brush = -1;
     }
     
-    parralax = struct_get_chained(global.room_data,"layers",layer_active.name,"parralax") ?? 0;
+    parralax_x = struct_get_chained(global.room_data,"layers",layer_active.name,"parralax_x") ?? 0;
+    parralax_y = struct_get_chained(global.room_data,"layers",layer_active.name,"parralax_y") ?? 0;
+    offset_x = struct_get_chained(global.room_data,"layers",layer_active.name,"offset_x") ?? 0;
+    offset_y = struct_get_chained(global.room_data,"layers",layer_active.name,"offset_y") ?? 0;
 }
 
 add_sprite = function(_sprite){
-    var x_ = global.camera.x;
-    var y_ = global.camera.y;
-    var element_ = layer_sprite_create(layer_active.id,x_,y_,_sprite);
+    var x_ = global.camera.x + offset_x - global.camera.get_x() * parralax_x;
+    var y_ = global.camera.y + offset_y - global.camera.get_y() * parralax_y;
+    
+    var element_ = layer_sprite_create(layer_active.id,x_,y_,_sprite); 
     var transform_ = instance_create_depth(0,0,0,obj_asset_transform,{
         element_id : element_,
         name :  sprite_get_name(_sprite),

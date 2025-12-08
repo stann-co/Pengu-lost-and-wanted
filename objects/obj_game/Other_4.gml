@@ -19,7 +19,7 @@ if(global.sidescroller){
     global.room_data = {
         layers : {}
     };
-    var room_data_ = json_load("room_data\\"+room_get_name(room)+".json");
+    var room_data_ = json_load("room_data/"+room_get_name(room)+".json");
     if(!is_undefined(room_data_)){
         global.room_data = room_data_;
         
@@ -30,6 +30,22 @@ if(global.sidescroller){
             var name_ = layers_[i_];
             var depth_ = struct_get_chained(global.room_data.layers,name_,"depth");
         	layer_create(depth_,name_);
+            
+            if(string_starts_with(name_,"asset")){
+                var elements_ = struct_get_chained(global.room_data.layers,name_,"elements");
+                for (var e_ = 0; e_ < array_length(elements_); e_++) {
+                    var element_ = elements_[e_];
+                    
+                    var element_id_ = layer_sprite_create(name_,element_.x,element_.y,element_.sprite_index)
+                    layer_sprite_xscale(element_id_,element_.image_xscale);
+                    layer_sprite_yscale(element_id_,element_.image_yscale);
+                    layer_sprite_angle(element_id_,element_.image_angle);
+                    layer_sprite_alpha(element_id_,element_.image_alpha);
+                    layer_sprite_blend(element_id_,element_.image_blend);
+                    layer_sprite_speed(element_id_,element_.image_speed);
+                    layer_sprite_index(element_id_,element_.image_index);
+                }
+            }
         }
     }
     #endregion
@@ -41,7 +57,6 @@ if(global.sidescroller){
 		var name_ = layer_get_name(lay_id_);
 		
 		if(string_starts_with(name_,"decor")){
-			
 			instance_create_depth(0,0,layer_get_depth(lay_id_),obj_layer_draw,{
 				layer_id : lay_id_,
 	        	type : LAYER_TYPE.TILEMAP,

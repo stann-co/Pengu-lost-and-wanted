@@ -5,8 +5,8 @@ if(show_grid){
     
     set_draw(WHITE,0.4);
     
-	var offset_x_ = floor(global.camera.get_x() * parralax);
-	var offset_y_ = floor(global.camera.get_y() * parralax);
+	var offset_x_ = floor(global.camera.get_x() * parralax_x);
+	var offset_y_ = floor(global.camera.get_y() * parralax_y);
     
     var cell_w_ = grid_cell_w;
     var cell_h_ = grid_cell_h;

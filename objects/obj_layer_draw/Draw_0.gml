@@ -1,7 +1,13 @@
 /// @description
-var parralax_ = struct_get_chained(global.room_data,"layers",name,"parralax") ?? 0;
-var offset_x_ = floor(global.camera.get_x() * parralax_);
-var offset_y_ = floor(global.camera.get_y() * parralax_);
+var parralax_x_ = struct_get_chained(global.room_data,"layers",name,"parralax_x") ?? 0;
+var parralax_y_ = struct_get_chained(global.room_data,"layers",name,"parralax_y") ?? 0;
+
+var offset_x_ = struct_get_chained(global.room_data,"layers",name,"offset_x") ?? 0;
+var offset_y_ = struct_get_chained(global.room_data,"layers",name,"offset_y") ?? 0;
+
+offset_x_ = floor(global.camera.get_x() * parralax_x_) + offset_x_;
+offset_y_ = floor(global.camera.get_y() * parralax_y_) + offset_y_;
+
 if(type == LAYER_TYPE.TILEMAP){
 	draw_tilemap(tilemap,offset_x_,offset_y_);
 }
