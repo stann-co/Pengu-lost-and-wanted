@@ -9,7 +9,7 @@ global.camera.bounds_w = 16;
 global.camera.bounds_h = 4;
 global.camera.spd = 1;
 global.camera.spd_threshold = 1;
-global.camera.smooth_draw = false;
+global.camera.smooth_draw = true;
 
 depth = 16000;
 
