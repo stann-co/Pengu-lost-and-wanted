@@ -1,4 +1,4 @@
-/// @description
+/// @description progresses through the queed scene actions
 state.step();
 
 while(array_length(queue) != 0 && !halt && CAN_MOVE){

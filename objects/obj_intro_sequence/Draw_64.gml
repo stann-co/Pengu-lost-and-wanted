@@ -7,4 +7,3 @@ scribble(text)
 .padding(60,0,60,0)
 .align(fa_center,fa_top)
 .draw(global.game_w/2, 200, typist)
-

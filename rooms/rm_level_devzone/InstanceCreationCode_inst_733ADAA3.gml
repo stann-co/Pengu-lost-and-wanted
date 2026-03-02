@@ -1,9 +1,12 @@
 trigger = function(){
     
-    s_text(". . .");
+	s_control(false);
+    s_text(". . . .......................");
     s_text("hiiiiiii");
-    s_text("how^4 umm....^4&are you doing?");
+    s_text("how[w,10] umm....[w]are you doing?[w] fine?[w] Me too!!!!!");
     s_text("( :");
+	s_control(true);
+	s_text_end();
     
     //s_control(false)
     //s_text("hey^2 you see that [w][cy]car[cw][!w] ?")
