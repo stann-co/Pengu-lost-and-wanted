@@ -66,7 +66,7 @@ function s_text(_text){
     
     with {_text} array_push(global.scene.queue,function(){
         global.scene.halt = true;
-        global.scene.text_source = _text;
+        global.scene.text = _text;
         global.scene.state.change("textbox");
     });
 }
