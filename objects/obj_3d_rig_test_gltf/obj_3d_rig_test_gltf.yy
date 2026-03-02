@@ -1,13 +1,13 @@
 {
   "$GMObject":"",
-  "%Name":"obj_3d_mech_test",
+  "%Name":"obj_3d_rig_test_gltf",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_3d_mech_test",
+  "name":"obj_3d_rig_test_gltf",
   "overriddenProperties":[],
   "parent":{
     "name":"tests",

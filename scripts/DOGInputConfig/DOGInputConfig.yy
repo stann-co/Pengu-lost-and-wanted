@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"DOGInputConfig",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"DOGInputConfig",
+  "parent":{
+    "name":"Config",
+    "path":"folders/Extensions/Input/Config.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

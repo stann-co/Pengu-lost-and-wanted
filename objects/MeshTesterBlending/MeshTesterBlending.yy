@@ -1,21 +1,20 @@
 {
   "$GMObject":"",
-  "%Name":"obj_3d_mech_test",
+  "%Name":"MeshTesterBlending",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_3d_mech_test",
+  "name":"MeshTesterBlending",
   "overriddenProperties":[],
   "parent":{
-    "name":"tests",
-    "path":"folders/Objects/tests.yy",
+    "name":"objects",
+    "path":"folders/Extensions/gltfParser/objects.yy",
   },
   "parentObjectId":{
-    "name":"obj_depth_managed",
-    "path":"objects/obj_depth_managed/obj_depth_managed.yy",
+    "name":"MeshTester",
+    "path":"objects/MeshTester/MeshTester.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

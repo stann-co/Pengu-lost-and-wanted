@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"gltfSkinning",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"gltfSkinning",
+  "parent":{
+    "name":"gltfParser",
+    "path":"folders/Extensions/gltfParser.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
