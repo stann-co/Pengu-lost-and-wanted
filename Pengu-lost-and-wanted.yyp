@@ -1342,7 +1342,7 @@
     {"id":{"name":"spr_platform_workshop_mid","path":"sprites/spr_platform_workshop_mid/spr_platform_workshop_mid.yy",},},
     {"id":{"name":"spr_platform_workshop","path":"sprites/spr_platform_workshop/spr_platform_workshop.yy",},},
     {"id":{"name":"spr_points","path":"sprites/spr_points/spr_points.yy",},},
-    {"id":{"name":"spr_portrait_pengu_test","path":"sprites/spr_portrait_pengu_test/spr_portrait_pengu_test.yy",},},
+    {"id":{"name":"spr_portrait_pengu","path":"sprites/spr_portrait_pengu/spr_portrait_pengu.yy",},},
     {"id":{"name":"spr_rain","path":"sprites/spr_rain/spr_rain.yy",},},
     {"id":{"name":"spr_reflection_1","path":"sprites/spr_reflection_1/spr_reflection_1.yy",},},
     {"id":{"name":"spr_reflection_2","path":"sprites/spr_reflection_2/spr_reflection_2.yy",},},

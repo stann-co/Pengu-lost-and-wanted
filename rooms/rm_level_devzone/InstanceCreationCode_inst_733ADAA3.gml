@@ -2,7 +2,7 @@ trigger = function(){
     
 	s_control(false);
     s_text(". . . .......................");
-    s_text("hiiiiiii");
+    s_text("hiiiiiii [whisper]da fuck....");
     s_text("how[w,10] umm....[w]are you doing?[w] fine?[w] Me too!!!!!");
     s_text("( :");
 	s_control(true);

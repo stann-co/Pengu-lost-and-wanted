@@ -14,7 +14,8 @@ text_speed = 1;
 //textbox
 textbox_w = 346;
 textbox_h = 52;
-portrait_w = 60;
+portrait = spr_portrait_pengu;
+portrait_w = 80;
 
 //scribble
 typist = scribble_typist()
@@ -29,6 +30,10 @@ scribble_font_set_default("f_pixel");
 scribble_add_macro("w",function(_wait = "4"){
 	var wait_ = int64(_wait) * 100;
 	return $"[delay,{wait_}]"
+})
+
+scribble_add_macro("whisper",function(){
+	return "[scale,0.5][c_gray]\n"
 })
 
 scribble_typists_add_event("mute",function(_element, _parameter_array, _character_index){
@@ -64,13 +69,19 @@ state.add("textbox",{
 		var y_ = global.gui_h-textbox_h-6;
 		
 		var margin_ = 6;
+        var border_ = 3;
 		
         draw_sprite_stretched(spr_textbox,0,x_,y_,textbox_w,textbox_h);
 		draw_sprite_stretched(spr_textbox_bubble,0,x_+portrait_w+margin_,y_+margin_,textbox_w-portrait_w-margin_*2,textbox_h-margin_*2);
-		draw_sprite(spr_textbox_bubble_tail,0,x_+portrait_w+margin_,y_+textbox_h-margin_); //draws textbox tail
+        
+		draw_sprite(spr_textbox_bubble_tail,0,x_+portrait_w+margin_,y_+textbox_h-margin_-2); //draws textbox tail
 		
+        var portrait_x_ = x_ + border_ + sprite_get_width(portrait)/2;
+        var portrait_y_ = y_ + textbox_h - border_
+        draw_sprite_ext(spr_portrait_pengu,0,portrait_x_,portrait_y_,1,1,0,-1,1)
+        
 		scribble(text)
-		.scale(1.1)
+		.scale(1.0)
 		.wrap(textbox_w-portrait_w,textbox_h)
 		.starting_format(text_font,WHITE)
 		.align(fa_left,fa_top)
