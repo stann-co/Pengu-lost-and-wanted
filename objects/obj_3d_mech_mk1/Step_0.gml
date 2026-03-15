@@ -27,20 +27,24 @@ if(hatch_open){
 	if(hatch_t > 0) hatch_t -= 1/60;
 }
 
-var anim_hatch_ = rig.skin.animate(hatch_t, "hatch");
-
 t += (1/60);
 if(t > t_max) t = 0;
 
 
-var anim_main_ = rig.skin.animate(t,anim_main);
 
-var blended_ = rig.blendAnimation(anim_main_,anim_hatch_,test);
+var anim_hatch_ = skinned_mesh.skin.animate(hatch_t, "hatch");
 
-//var added_ = rig.addAnimation(anim_main_,anim_hatch_,test);
+var anim_main_ = skinned_mesh.skin.animate(t,anim_main);
+
+var mask_ = ["DEF-hatch","DEF-ear.L","DEF-ear.R"];
+anim_hatch_ = skinned_mesh.maskAnimation(anim_hatch_,mask_,true);
+
+var blended_ = skinned_mesh.blendAnimation(anim_main_,anim_hatch_,test);
 
 
-rig.animateBlended(blended_);
-//rig.animate(t);
+skinned_mesh.animateBlended(blended_);
+
+
+//skinned_mesh.animate(t);
 
 #endregion

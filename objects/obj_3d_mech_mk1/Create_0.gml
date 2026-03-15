@@ -25,16 +25,14 @@ base_zoom_level = 1;
 //3D
 var loaded_ = gltfLoad("3D/mech1.gltf")
 
-rig = new gltfSkinnedMesh("rig-mech");
-rig.setAnimation("bindpose");
-rig.animate(0)
-
-scale = 32 //1 meter is 32 pixels, maybe make a macro
+skinned_mesh = new gltfSkinnedMesh("rig-mech");
+skinned_mesh.setAnimation("bindpose");
+skinned_mesh.animate(0)
 
 //animation
 hatch_t = 0;
 hatch_open = false;
-hatch_anim_length = rig.getAnimationLength("hatch");
+hatch_anim_length = skinned_mesh.getAnimationLength("hatch");
 
 anim_main = undefined;
 
@@ -64,9 +62,9 @@ state = new SnowState("standby")
 .add("standby",{
 	enter: function(){
 		controlled = false;
-		//rig.setAnimation("standby");
+		//skinned_mesh.setAnimation("standby");
 		anim_main = "standby"
-		t_max = rig.getAnimationLength("standby");
+		t_max = skinned_mesh.getAnimationLength("standby");
 	},
 	step: function(){ 
 		if (collision_rectangle(x-w_radius,y-h_radius,x+w_radius,y+h_radius,obj_pengu,false,true) && InputPressed(INPUT_VERB.INTERACT)){
@@ -89,9 +87,9 @@ state = new SnowState("standby")
 
 .add("walking",{
 	enter: function(){
-		//rig.setAnimation("walk");
+		//skinned_mesh.setAnimation("walk");
 		anim_main = "walk"
-		t_max = rig.getAnimationLength("walk");
+		t_max = skinned_mesh.getAnimationLength("walk");
 	},
 	step: function(){
 		
@@ -100,11 +98,11 @@ state = new SnowState("standby")
 
 #endregion
 
-//Inspectron()
-    //.Section("angle")
-    //.SliderInt("rotx",-180,180)
-    //.SliderInt("roty",-180,180)
-    //.SliderInt("rotz",-180,180)
-	//.Slider("test",0,1)
-//.render()
+Inspectron()
+    .Section("angle")
+    .SliderInt("rotx",-180,180)
+    .SliderInt("roty",-180,180)
+    .SliderInt("rotz",-180,180)
+	.Slider("test",0,1)
+.render()
 

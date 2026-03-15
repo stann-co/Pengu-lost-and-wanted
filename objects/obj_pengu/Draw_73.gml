@@ -103,7 +103,7 @@ if(global.debug){
     if(state.state_is("dash_air_charge")){
         draw_set_color(RED);
         draw_set_alpha(0.5)
-        draw_circle(x,y,meteor_radius,false)
+        draw_circle(x,y,attack_radius,false)
         draw_set_color(WHITE);
         draw_set_alpha(1)
     }

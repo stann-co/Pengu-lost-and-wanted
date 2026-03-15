@@ -94,5 +94,6 @@ default_draw = function(){
     //when rotated on slopes, appears a few pixels 1off
     var slope_offset_y_ = 0;
 	if(!airborne) slope_offset_y_ = abs(dsin(ground_angle*2)) * sign(dcos(ground_angle)) * 4 //the pixel offset when at a 45deg angle
+	
     draw_sprite_entity(sprite_index,subimg,x,y+slope_offset_y_,facing,1,image_angle,-1,1);
 }

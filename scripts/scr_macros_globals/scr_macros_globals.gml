@@ -11,13 +11,15 @@
 #macro MAIN_MENUS (room == rm_init)
 #macro PAUSING     (obj_game.state.state_is("pause_menu") || obj_game.state.state_is("settings"))
 #macro FREEZE_FRAME (global.freeze_duration != 0)
-#macro CAN_MOVE   (!PAUSING && !FREEZE_FRAME && !instance_exists(obj_level_editor))
+#macro CAN_MOVE_NOFREEZE (!PAUSING && !instance_exists(obj_level_editor)) 
+#macro CAN_MOVE   (CAN_MOVE_NOFREEZE && !FREEZE_FRAME)
 
 
 #macro ENTITY_COLLISION_LAYER [obj_collision,global.collision_layers[? collision_layer]]
 
 #macro TEXT_HEIGHT 14
-//#macro gamepad gamey_pad
+
+#macro SCALE_3D 32 //meter in blender = 32 pixels
 
 //colors
 #macro RED #ff0000
@@ -76,6 +78,7 @@ enum SIDES {
 enum ATTACK_TYPES {
     ATTACK,
     KICK,
+	DUNK,
     JUMP,
     DASH,
     COLLIDE, //Like hitting walls ect
@@ -143,7 +146,7 @@ global.room_data = {}; //externally loaded json room data, parralax layers
 global.activation_list = [];
 
 global.debug = false;
-global.show_collisions = false;
+global.show_collisions = true;
 
 global.checkpoint = -1;
 

@@ -35,6 +35,7 @@ meteor = false;
 meteor_trace_array = [];
 meteor_trace_offset = 1;
 meteor_trace_count = 6;
+meteor_min_speed = 2;
 
 on_land = false;     //gets true the frame enemy lands from being airborne
 on_ceiling = false;
@@ -60,7 +61,7 @@ hurt = function(_hurt_type = ATTACK_TYPES.ATTACK, _callback = function(){}){
     	case ATTACK_TYPES.ATTACK:
             global.camera.shake_screen(2,GAME_SPEED*0.2);
             part_particles_create(global.particles,x,y,global.part_stars,4);
-            set_freeze_frame(0.2);
+            set_freeze_frame(0.3);
             sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
         
             hurt_shake_start(4);
@@ -80,11 +81,11 @@ hurt = function(_hurt_type = ATTACK_TYPES.ATTACK, _callback = function(){}){
             hp--;
             stamina--;
             break;
-        case ATTACK_TYPES.COLLIDE:
+		
+        case ATTACK_TYPES.COLLIDE: //an enemy collides with another enemy
             global.camera.shake_screen(2,GAME_SPEED*0.2);
             part_particles_create(global.particles,x,y,global.part_stars,6);
             sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
-        
             hurt_shake_start(2);
             hp-=0.5;
             stamina-=0.5;
@@ -185,13 +186,23 @@ state.add_child("stunned_base","stunned",{
         
         image_angle -= sign(x_speed) * 16;
         
-        if(on_wall || x_speed == 0){
+        if(on_wall){ // || x_speed == 0){
             //hitting wall after meteoring
             x_speed = -x_speed;
             y_speed = -3;
             state.change("launched");
             hurt(ATTACK_TYPES.COLLIDE);
         }
+		
+		if(on_land && y_speed > 3){ //hitting floor hard
+			y_speed = -y_speed
+			
+		}
+		
+		//returns to launch state if meteor effect goes too slow
+		if(point_distance(0,0,x_speed,y_speed) < meteor_min_speed){ 
+			state.change("launched");
+		}
         
         var attack_list_check_ = ds_list_create();
         

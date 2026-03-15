@@ -50,7 +50,7 @@ state.add("idle", {
 		
 	},
 	step: function(){
-		if (CAN_MOVE && InputPressed(INPUT_VERB.PAUSE)){
+		if (CAN_MOVE_NOFREEZE && InputPressed(INPUT_VERB.PAUSE)){
 			//audio_play_sound(snd_ui_confirm,0,0);
 			state.change("pause_menu");	
 		}
@@ -353,6 +353,11 @@ state.add("pause_menu",{
 		selected = 0;
 	},
 	step: function(){
+		
+		if(InputPressed(INPUT_VERB.PAUSE)){ //unpause
+			state.change("idle");
+		}
+		
 		if(InputPressed(INPUT_VERB.DOWN) || InputPressed(INPUT_VERB.UP)){
 			audio_play_sound(snd_ui_hover,0,0);
 			if(InputPressed(INPUT_VERB.DOWN)) selected++;

@@ -18,6 +18,9 @@ drag = 0.01;
 stamina_max = 0;
 stamina = stamina_max;
 
+hp_max = 60;
+hp = hp_max;
+
 var points_ = []
 array_push(points_,new Verlet(0,-4,mass,1));
 array_push(points_,new Verlet(0,-15,mass,0));

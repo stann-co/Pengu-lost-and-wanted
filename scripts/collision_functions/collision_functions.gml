@@ -249,6 +249,12 @@ function snap_to_90(_rotation){
 	if(_rotation > 225 && _rotation < 315) return 270; //left
 }
 
+///@function rot_snap_to()
+///@desc returns _rotation snapped to nearest _increment
+//function rot_snap_to(_rotation,_increment){
+//	return round(_rotation / _increment) * _increment
+//}
+
 ///@function add_collision_child()
 function add_collision_child(_x_offset,_y_offset,_width,_height,_oneway = false){
 	var child_ = instance_create_depth(x+_x_offset,y+_y_offset,global.depth_a,obj_collision_activate);

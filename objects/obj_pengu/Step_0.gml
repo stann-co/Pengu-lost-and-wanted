@@ -2,6 +2,10 @@
 
 event_inherited();
 
+if(CAN_MOVE_NOFREEZE){ //state step events that run regardless of freeze frame
+	state.step_nofreeze();
+}
+
 if(CAN_MOVE){
     
     state.step();
@@ -39,8 +43,8 @@ if(CAN_MOVE){
                 
                 if(InputBufferPressed(INPUT_VERB.DASH,10)){ 
                     if(airborne){ 
-                        if(dash_air_count == 0){ 
-                            state.change("dash_air_charge"); 
+                        if(dash_air_count == 0){
+                            state.change("dash_air_charge");
                         }
                     } else if(ground_angle <= 45 || ground_angle >= 315) {
                         state.change("dash_charge");
@@ -48,10 +52,10 @@ if(CAN_MOVE){
                 }
                 if(InputBufferPressed(INPUT_VERB.ATTACK,10)){
                     if(attack_count == 0 && attack_cooldown == 0 && (ground_angle <= 45 || ground_angle >= 315)) {
-                        if(InputCheck(INPUT_VERB.DOWN)){
-                           state.change("attack_kick");
+                        if(InputCheck(INPUT_VERB.DOWN) && airborne){
+                        	state.change("attack_dunk_charge");
                         } else {
-                           state.change("attack_1");
+                        	state.change("attack_1");
                         }
                     }
                 }
@@ -399,9 +403,9 @@ if(CAN_MOVE){
                     entity = list_[| i_];
                     if (ds_list_find_index(attack_list,entity) == -1 && entity.invulnerable == 0){ 
                         
-                        //Landing on enemy
-                        var side_ = find_side(x,y,entity);
-                        if(airborne && entity.jump_attackable && side_ == SIDES.TOP && y_speed > 0){
+                        //Dashing down on enemy
+                        //var side_ = find_side(x,y,entity);
+                        if(airborne && entity.jump_attackable && state.state_is("dash_air_down")){
                             enemy_jump_ = true;
                             entity.hurt(ATTACK_TYPES.ATTACK,function(){
                                 entity.x_speed = random_range(-1,1);
@@ -409,13 +413,14 @@ if(CAN_MOVE){
                                 entity.state.change("stunned")
                             });
                             
-                        } else if(super_speed){	
+                        } else 
+						if(super_speed){	
                             //Dashing into enemy
                             ds_list_add(attack_list,entity)
                             entity.hurt(ATTACK_TYPES.ATTACK,function(){
                                 entity.x_speed = sign(-x_speed) * 1;
                                 entity.y_speed = -3;
-                                entity.state.change("stunned")    
+                                entity.state.change("stunned")
                             });
                         }
                     }

@@ -10,12 +10,12 @@ input_v = 0;
 normal_acceleration_speed = 0.1;
 normal_deceleration_speed = 0.2;
 normal_friction_speed = 0.24;
-normal_top_speed = 3;
+normal_top_speed = 3.073112;
 
 slide_acceleration_speed = 0.05;
 slide_deceleration_speed = 0.4;
 slide_friction_speed = 0.08;
-slide_top_speed = 8;
+slide_top_speed = 8.2144;
 
 slippery_multiplier = 0.2;
 
@@ -99,6 +99,8 @@ attack_x_force = 0;
 attack_y_force = -2;
 attack_type = ATTACK_TYPES.ATTACK;
 
+attack_hit = false; //wether an attack actually hit anything
+
 //after attacking there's a window where you can extend the combo
 attack_combo_max = 12; 
 attack_combo_t = 0;
@@ -106,10 +108,16 @@ attack_cooldown = 0;
 attack_cooldown_max = 16;
 
 //offset from origin where attack radius occurs
-attack_x = 16;
-attack_y = -8;
-attack_radius = 16;
-meteor_radius = 18;
+attack_x_punch = 16; //for regular punching attacks
+attack_y_punch = -8;
+attack_x_dunk = 12; //for dunking attacking downwards
+attack_y_dunk = 0;
+attack_x = attack_x_punch;
+attack_y = attack_y_punch;
+
+attack_radius_normal = 16;
+attack_radius_meteor = 26;
+attack_radius = attack_radius_normal;
 
 //enemies/entities currently being attacked
 attack_list = ds_list_create()
@@ -199,7 +207,7 @@ state.add("tall",{
         image_to_ground_angle = true;
         airborne = false;
         sliding = false;
-    
+		
         acceleration_speed	= normal_acceleration_speed;
         deceleration_speed	= normal_deceleration_speed;
         friction_speed		= normal_friction_speed;
@@ -226,7 +234,6 @@ state.add("prone",{
         top_speed			= slide_top_speed;
         
         slope_factor		= slide_slope_factor;
-    
     }
 })
 
@@ -270,14 +277,14 @@ state.add_child("airborne","tube", {
         state.inherit();
         sprite_index = spr_pengu_spinning;
         controlled = false;
-        active_layer = layers
+        active_layer = layers;
         
     },
     step: function(){
         image_angle = point_direction(xstart,ystart,x,y)-90;
         xstart = x;
         ystart = y;
-
+		
         if(path_position == 1){
             x_speed = lengthdir_x(ground_spd,image_angle+90);
             y_speed = lengthdir_y(ground_spd,image_angle+90);
@@ -285,7 +292,7 @@ state.add_child("airborne","tube", {
             collision_layer_switch(active_layer,true);
             controlled = true;		
             state.change("launch");
-        }	
+        }
     }
 })
 
@@ -312,7 +319,7 @@ state.add_child("tall","turning", {
     },
     step:function(){
         if(animation_end(sprite_index,subimg)){
-            pick_move_state();	
+            pick_move_state();
         }
     }
 })
@@ -320,6 +327,7 @@ state.add_child("tall","turning", {
 state.add_child("tall","running", {
     enter: function() {
         state.inherit();
+		anim_speed = 2.5;
         sprite_index = spr_pengu_idle;
     },
     step: function() {
@@ -353,8 +361,8 @@ state.add_child("tall","look_up", {
         if(input_v == 0){
             state.change("look_up_end")	
         }
-        
         pick_move_state(false);
+		
     }
 })
 
@@ -369,9 +377,10 @@ state.add_child("tall","look_up_end", {
     
     step: function(){
         if(subimg <= 0){
-            state.change("idle")	
+            state.change("idle");
         }
         pick_move_state(false);
+		
     }
 })
 
@@ -435,7 +444,7 @@ state.add_child("airborne","jump", {
     enter: function() {
         state.inherit()
         sprite_index = spr_pengu_jump;
-
+		
         var up_down_ = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
         
         y_speed = (-jump_force*up_down_) - gravity_force //subtracting gravity force cancels out gravity for one frame
@@ -533,7 +542,6 @@ state.add_child("jump","hurt", {
                 state.change("idle");
             })
             
-            
         }else{
             var points_ = min(global.coins,16);
             point_scatter(points_,false,false);
@@ -546,7 +554,6 @@ state.add_child("jump","hurt", {
         set_control_lock(GAME_SPEED*0.8);
         
         y_speed = hurt_y_force;
-
     },
     step: function() {	
         
@@ -564,16 +571,16 @@ state.add_child("airborne","double_jump", {
     enter: function() {
         state.inherit()
         sprite_index = spr_pengu_flap;
-
+		
         double_jump_count++;
         y_speed = -double_jump_force;	
         x_speed *= 0.6;
-
+		
         squish(0.4,1.4,GAME_SPEED*0.4);
         
         audio_play_sound_random(0,0,snd_wingflap1,snd_wingflap2);
     },
-    step: function() {			
+    step: function() {
         if(y_speed > 0) state.change("begin_fall");
         if(on_land) state.change("idle");
     },
@@ -589,15 +596,10 @@ state.add_child("airborne","attack_base", {
             facing = input_h;
         }
         
-        attack_count++;
-        
         attack_combo_t = 0
         attacking = true;
-        
-        y_speed = attack_y_force;
-        x_speed = max(attack_x_force,abs(x_speed))*facing;
-        
-        //squish(0.9,1.1,GAME_SPEED*0.4);
+		
+		attack_radius = attack_radius_normal;
         
         attack_hit = false;
         
@@ -629,14 +631,25 @@ state.add_child("airborne","attack_base", {
         ds_list_destroy(attack_list_check_)
         
     },
+	step_nofreeze: function() {
+		//animate subimg, despite a freeze frame
+  		subimg += (sprite_get_speed(sprite_index)*anim_speed);
+		subimg = min(subimg,sprite_get_number(sprite_index)-1);
+	},
     step: function() {
-        
         if(attack_combo_t < attack_combo_max){
             //combo can only be continued if your attack hit something
-            if(InputBufferPressed(INPUT_VERB.ATTACK,10) && attack_hit){
-                attack_next()
-            }
-            
+			if(attack_hit){
+				if(!state.state_is("attack_dunk") && InputCheck(INPUT_VERB.DOWN) && InputBufferPressed(INPUT_VERB.ATTACK,10)){
+					state.change("attack_dunk");
+				}
+	            else if(InputBufferPressed(INPUT_VERB.ATTACK,10)){
+	                attack_next()
+	            }
+				else if(InputBufferPressed(INPUT_VERB.DASH,10)){
+					state.change("dash_air_charge");
+				}
+			}
         } else {
             attacking = false;
             pick_move_state();
@@ -653,58 +666,114 @@ state.add_child("airborne","attack_base", {
 
 state.add_child("attack_base","attack_1",{
     enter: function(){
+		y_speed = attack_y_force;
+        x_speed = max(attack_x_force,abs(x_speed))*facing;
+
         attack_launch_x = abs(x_speed) + 1;
         attack_launch_y = y_speed -3;
+		attack_x = attack_x_punch
+		attack_y = attack_y_punch
         attack_type = ATTACK_TYPES.ATTACK;
         
         sprite_index = spr_pengu_attack_1;
+		subimg = 0;
+		
         attack_next = function(){
             state.change("attack_2");
         }
         
         state.inherit()
+		
+		attack_count++;
     }
 })
 
 state.add_child("attack_base","attack_2",{
     enter: function(){ 
+		y_speed = attack_y_force;
+        x_speed = max(attack_x_force,abs(x_speed))*facing;
+		
         sprite_index = spr_pengu_attack_2;
+		subimg = 0;
+		
         attack_next = function(){
             state.change("attack_3");
         }
         attack_launch_x = abs(x_speed) + 3;
         attack_launch_y = y_speed -3;
+		attack_x = attack_x_punch
+		attack_y = attack_y_punch
         attack_type = ATTACK_TYPES.ATTACK;
         
         state.inherit()
+		
+		attack_count++;
     }
 })
 
 state.add_child("attack_base","attack_3",{
     enter: function(){
+		y_speed = attack_y_force;
+        x_speed = max(attack_x_force,abs(x_speed))*facing;
+		
         sprite_index = spr_pengu_attack_3;
+		subimg = 0;
         attack_next = function(){
-            state.change("attack_kick");
+            state.change("attack_4");
         }
         attack_launch_x = abs(x_speed) + 4;
         attack_launch_y = y_speed -4;
+		attack_x = attack_x_punch
+		attack_y = attack_y_punch
         attack_type = ATTACK_TYPES.ATTACK;
         
         state.inherit()
+		
+		attack_count++;
+    }
+})
+
+state.add_child("attack_base","attack_4",{
+    enter: function(){
+		y_speed = attack_y_force;
+        x_speed = max(attack_x_force,abs(x_speed))*facing;
+		
+        sprite_index = spr_pengu_attack_4;
+		subimg = 0;
+        attack_next = function(){
+            //state.change("attack_kick");
+        }
+        attack_launch_x = abs(x_speed) + 2;
+        attack_launch_y = y_speed -6;
+		attack_x = attack_x_punch
+		attack_y = attack_y_punch
+        attack_type = ATTACK_TYPES.ATTACK;
+        
+        state.inherit()
+		
+		attack_count++;
     }
 })
 
 state.add_child("attack_base","attack_kick", {
     enter: function() {
+		y_speed = attack_y_force;
+        x_speed = max(attack_x_force,abs(x_speed))*facing;
+		
         sprite_index = spr_pengu_attack_kick;
+		subimg = 0;
+		
         attack_next = function(){ 
             //no more attacks
         }
         attack_launch_x = 6;
         attack_launch_y = -3;
+		attack_x = attack_x_punch
+		attack_y = attack_y_punch
         attack_type = ATTACK_TYPES.KICK;
         
         state.inherit()
+		attack_count++;
         
     }, 
     step: function() {
@@ -717,16 +786,73 @@ state.add_child("attack_base","attack_kick", {
         
     },
 })
-    
-state.add_child("airborne","dash_air_charge",{
+
+state.add_child("airborne","attack_dunk_charge",{
     enter: function(){
+		state.inherit()
+        sprite_index = spr_pengu_attack_dunk;
+		subimg = 0;
+		anim_speed = 0;
+		
+		if(InputReleased(INPUT_VERB.ATTACK)){
+			state.change("attack_dunk");
+		}
+    },
+	step: function (){
+		if(InputReleased(INPUT_VERB.ATTACK)){
+			state.change("attack_dunk");
+		}
+	},
+	leave: function(){
+		anim_speed = 1;
+	}
+})
+
+state.add_child("attack_base","attack_dunk",{
+    enter: function(){ 
+        sprite_index = spr_pengu_attack_dunk;
+		subimg = 1;
+        attack_next = function(){
+            //no more attacks
+        }
+		attack_radius = attack_radius_meteor;
+        attack_launch_x = abs(x_speed);
+        attack_launch_y = 4;
+		attack_x = attack_x_dunk;
+		attack_y = attack_y_dunk;
+        attack_type = ATTACK_TYPES.KICK;
+        
         state.inherit();
+		attack_count++;
+		
+		if(attack_hit){ //get upwards speed if you dunk
+			y_speed = -6;
+			double_jump_count = 0;
+            dash_air_count = 0;
+			attack_count = 0;
+		}
+    }
+})
+    
+state.add_child("attack_base","dash_air_charge",{
+    enter: function(){
+		
+		attack_radius = attack_radius_meteor;
+        attack_launch_x = abs(x_speed) + 2;
+        attack_launch_y = y_speed -6;
+		attack_x = attack_x_dunk;
+		attack_y = attack_y_dunk;
+        attack_type = ATTACK_TYPES.KICK;
+		
+        state.inherit();
+		
         sprite_index = spr_pengu_dash_charge_air;
         image_angle = 0;
         y_speed = -2;
         x_speed *= 0.8;
         
         t = 0;
+		
         dash_air_count++;
         
         if(input_h != 0) facing = input_h;
@@ -749,10 +875,7 @@ state.add_child("airborne","dash_air_charge",{
 })
 
 state.add_child("prone","dash_air", {
-    enter: function() { 
-        
-        global.camera.shake_screen(2,GAME_SPEED*0.2);
-        
+    enter: function() {  
         state.inherit();
         airborne = true;
         image_to_ground_angle = false;
@@ -817,7 +940,6 @@ state.add_child("dash_air","dash_air_up", {
         x_speed *= 0.5;
         y_speed = -6;
     }
-
 })
 
 state.add_child("prone","dash_charge", {
@@ -895,7 +1017,6 @@ state.add_child("prone","dash", {
         if(t >= GAME_SPEED*1){
             state.change("sliding");
         }
-
     },
 })
 
@@ -903,7 +1024,6 @@ state.add_child("prone","begin_slide", {
     enter: function() {
         state.inherit()
         sprite_index = spr_pengu_begin_slide;
-
     },
     step: function() {
         if (animation_end(sprite_index,subimg)){
