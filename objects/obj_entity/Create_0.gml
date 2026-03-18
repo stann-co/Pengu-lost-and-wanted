@@ -61,8 +61,6 @@ draw_sprite_entity = function(_sprite,_subimg,_x,_y,_xscale,_yscale,_rot,_color,
             shader_set(sh_stunned);
         }
         
-
-        
     } else {
         hurt_shake_x = 0;
         hurt_shake_y = 0;

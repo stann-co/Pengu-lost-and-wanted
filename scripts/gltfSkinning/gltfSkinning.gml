@@ -222,20 +222,25 @@ function gltfSkinnedMesh(skinName) constructor {
 	};
 	
 	/// local = animation * restpose
-	static getBoneLocalTransformMatrix = function(boneIndex) {
-		return localTransform[boneIndex];
+	static getBoneLocalTransformMatrix = function(bone) {
+		if(is_string(bone)){
+			return localTransform[getBoneIndex(bone)];
+		}
+		return localTransform[bone];
 	};
 	
 	/// model = model(parent) * local
-	static getBoneModelTransformMatrix = function(boneIndex) {
-		return modelTransform[boneIndex];
+	static getBoneModelTransformMatrix = function(bone) {
+		if(is_string(bone)){
+			return modelTransform[getBoneIndex(bone)];
+		}
+		return modelTransform[bone];
 	};
 	
 	/// placeholder: does not currently draw "leaf" bones because it doesnt display the bones themselves,
 	/// it only draws lines from child to parent locations
 	static debugDrawBones = function() {
 		var buff = vertex_create_buffer();
-		
 		vertex_begin(buff, __gltfVertexFormatWire());
 		
 		for (var i = 1; i < skin.bones; i++) {

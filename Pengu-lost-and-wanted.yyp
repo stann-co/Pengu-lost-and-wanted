@@ -231,6 +231,7 @@
   ],
   "IncludedFiles":[
     {"$GMIncludedFile":"","%Name":"3d_diamond.gltf","CopyToMask":-1,"filePath":"datafiles/3D","name":"3d_diamond.gltf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"gizmo.gltf","CopyToMask":-1,"filePath":"datafiles/3D","name":"gizmo.gltf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"mech1.gltf","CopyToMask":-1,"filePath":"datafiles/3D","name":"mech1.gltf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"mikuleek.gltf","CopyToMask":-1,"filePath":"datafiles/3D","name":"mikuleek.gltf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"rig_test.gltf","CopyToMask":-1,"filePath":"datafiles/3D","name":"rig_test.gltf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -279,7 +280,6 @@
     {"id":{"name":"stanncam_ac_bouncy","path":"animcurves/stanncam_ac_bouncy/stanncam_ac_bouncy.yy",},},
     {"id":{"name":"stanncam_ac_ease","path":"animcurves/stanncam_ac_ease/stanncam_ac_ease.yy",},},
     {"id":{"name":"stanncam_ac_linear","path":"animcurves/stanncam_ac_linear/stanncam_ac_linear.yy",},},
-    {"id":{"name":"execute_shell_simple_ext","path":"extensions/execute_shell_simple_ext/execute_shell_simple_ext.yy",},},
     {"id":{"name":"GMLive_fallback","path":"extensions/GMLive_fallback/GMLive_fallback.yy",},},
     {"id":{"name":"ImGui_GM","path":"extensions/ImGui_GM/ImGui_GM.yy",},},
     {"id":{"name":"Shady","path":"extensions/Shady/Shady.yy",},},

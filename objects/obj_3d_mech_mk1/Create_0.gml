@@ -1,31 +1,30 @@
+event_inherited();
 /// @description
-
-/// @description
-controlled = false;
 debug_draw = true;
-
-airborne = false;
-on_land = false;
-
-input_h = 0;
-input_v = 0;
-x_speed = 0;
-y_speed = 0;
-
-ground_spd = 0; //how fast it's moving on the ground
-ground_angle = 0; //the grounds angle
 
 w_radius = 49;
 h_radius = 60;
 
+//control
+controlled = false;
+input_h = 0;
+input_v = 0;
+
+acceleration_speed = 0.1;
+deceleration_speed = 0.2;
+friction_speed = 0.24;
+top_speed = 3.073112;
+absolute_top_speed = 12;
+
+//mech
 mech_zoom_level = 2;
 base_zoom_level = 1;
 
-
 //3D
-var loaded_ = gltfLoad("3D/mech1.gltf")
+gltfLoad("3D/mech1.gltf");
 
 skinned_mesh = new gltfSkinnedMesh("rig-mech");
+
 skinned_mesh.setAnimation("bindpose");
 skinned_mesh.animate(0)
 
@@ -37,13 +36,12 @@ hatch_anim_length = skinned_mesh.getAnimationLength("hatch");
 anim_main = undefined;
 
 t = 0;
+y_rot_amount = 52;
+roty = y_rot_amount;
 
-rotx = 0;
-roty = 52;
-rotz = 0;
-test = 0;
 
- #region States
+
+#region States
  
 state = new SnowState("standby")
 
@@ -51,7 +49,7 @@ state = new SnowState("standby")
 	enter: function(){
 		controlled = false;
 	},
-	step: function(){ 
+	step: function(){
 		state.change("standby");
 	},
 	draw_gui: function(){
@@ -62,7 +60,6 @@ state = new SnowState("standby")
 .add("standby",{
 	enter: function(){
 		controlled = false;
-		//skinned_mesh.setAnimation("standby");
 		anim_main = "standby"
 		t_max = skinned_mesh.getAnimationLength("standby");
 	},
@@ -70,7 +67,7 @@ state = new SnowState("standby")
 		if (collision_rectangle(x-w_radius,y-h_radius,x+w_radius,y+h_radius,obj_pengu,false,true) && InputPressed(INPUT_VERB.INTERACT)){
 			instance_destroy(obj_pengu);
 			controlled = true;
-			state.change("walking");
+			state.change("standing");
 			
 			global.camera.follow = self
 			global.camera.zoom(mech_zoom_level,GAME_SPEED*0.5);
@@ -78,16 +75,15 @@ state = new SnowState("standby")
 	},
 	draw_gui: function(){
 		if (collision_rectangle(x-w_radius,y-h_radius,x+w_radius,y+h_radius,obj_pengu,false,true)){
-			var x_ = global.camera.room_to_gui_x(x)
-			var y_ = global.camera.room_to_gui_y(y) - 60
+			var x_ = global.camera.room_to_gui_x(x);
+			var y_ = global.camera.room_to_gui_y(y) - 60;
 			draw_sprite(spr_gui_button_interact,using_gamepad(),x_,y_);
 		}
 	}
 })
 
-.add("walking",{
+.add("standing",{
 	enter: function(){
-		//skinned_mesh.setAnimation("walk");
 		anim_main = "walk"
 		t_max = skinned_mesh.getAnimationLength("walk");
 	},
@@ -98,11 +94,10 @@ state = new SnowState("standby")
 
 #endregion
 
-Inspectron()
-    .Section("angle")
-    .SliderInt("rotx",-180,180)
-    .SliderInt("roty",-180,180)
-    .SliderInt("rotz",-180,180)
-	.Slider("test",0,1)
-.render()
-
+//Inspectron()
+//    .Section("angle")
+//    .SliderInt("rotx",-180,180)
+//    .SliderInt("roty",-180,180)
+//    .SliderInt("rotz",-180,180)
+//	.Slider("test",0,1)
+//.render()

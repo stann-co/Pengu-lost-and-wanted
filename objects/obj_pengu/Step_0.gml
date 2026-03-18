@@ -40,7 +40,6 @@ if(CAN_MOVE){
                         state.change("look_up");
                     }
                 }
-                
                 if(InputBufferPressed(INPUT_VERB.DASH,10)){ 
                     if(airborne){ 
                         if(dash_air_count == 0){
