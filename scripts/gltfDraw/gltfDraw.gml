@@ -1,10 +1,5 @@
 // Feather disable all
 
-//builds matrix but with correct rotation preapplied
-function gltfMatrixBuild(px=0, py=0, pz=0, rx=0, ry=0, rz=0, scalex=1, scaley=1, scalez=1){
-	return matrix_build(px, py, pz, rx, ry+180, rz+180, scalex, scaley, scalez);
-}
-
 /**
  * run draw code at transformed coords, corrects for +Yup rotation.
  * useful for drawing models "side on" so the default room view roughly maps to what you see.
@@ -17,8 +12,11 @@ function gltfMatrixBuild(px=0, py=0, pz=0, rx=0, ry=0, rz=0, scalex=1, scaley=1,
  * @param {function} drawCode function containing draw code to run with this transform applied
  */
 function gltfDrawTransformed(px, py, pz, rot, scale, drawCode=function(){}) {
-	var m = matrix_build(px, py, pz, 0, 180, rot+180, scale, scale, scale);
-	gltfDrawTransformedMat(m,drawCode);
+	static m = array_create(16);
+	matrix_build(px, py, pz, 0, 180, rot+180, scale, scale, scale, m);
+	matrix_set(matrix_world, m);
+	drawCode();
+	gltfSetIdentity();
 }
 
 /**
@@ -33,16 +31,8 @@ function gltfDrawTransformed(px, py, pz, rot, scale, drawCode=function(){}) {
  * @param {function} drawCode function containing draw code to run with this transform applied
  */
 function gltfDrawTransformed3D(px, py, pz, rx, ry, rz, scale, drawCode=function(){}) {
-	var m = matrix_build(px, py, pz, rx, ry+180, rz+180, scale, scale, scale);
-	gltfDrawTransformedMat(m,drawCode);
-}
-
-/**
- * for drawing with a premade matrix
- * @param {transform} m world matrix
- * @param {function} drawCode function containing draw code to run with this transform applied
- */
-function gltfDrawTransformedMat(m, drawCode=function(){}){
+	static m = array_create(16);
+	matrix_build(px, py, pz, rx, ry+180, rz+180, scale, scale, scale, m);
 	matrix_set(matrix_world, m);
 	drawCode();
 	gltfSetIdentity();
@@ -52,47 +42,4 @@ function gltfDrawTransformedMat(m, drawCode=function(){}){
 function gltfSetIdentity() {
 	static I = matrix_build_identity();
 	matrix_set(matrix_world, I);
-}
-
-/**
- * gltfTransform() transforms a matrix
- * @param {real} px x position
- * @param {real} py y position
- * @param {real} pz z position
- * @param {real} rx rotation about x-axis
- * @param {real} ry rotation about y-axis
- * @param {real} rz rotation about z-axis
- * @param {real} scalex uniform scaling
- * @param {real} scaley uniform scaling
- * @param {real} scalez uniform scaling
- */
-function gltfTransform(m,px=0,py=0,pz=0,rx=0,ry=0,rz=0,scalex=1,scaley=1,scalez=1){
-	return matrix_multiply(m,matrix_build(px,py,pz,rx,ry,rz,scalex,scaley,scalez));
-}
-
-/**
- * gltfTransform() transforms a matrix
- * @param {matrix} m x position
- * @param {real} px x position
- * @param {real} py y position
- * @param {real} pz z position
- * @param {real} pixelScale pixel to meter ratio
- */
-function gltfTranslate(m,px,py,pz,pixelScale){
-	return matrix_multiply(m,matrix_build(px*pixelScale,py*pixelScale,pz*pixelScale,0,0,0,1,1,1));
-}
-
-//returns x position from matrix
-function gltfRoomX(m){
-	return m[12];
-}
-
-//returns y position from matrix
-function gltfRoomY(m){
-	return m[13];
-}
-
-//returns z position from matrix
-function gltfRoomZ(m){
-	return m[14];
 }

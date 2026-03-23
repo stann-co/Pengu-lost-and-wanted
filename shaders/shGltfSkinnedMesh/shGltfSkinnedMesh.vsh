@@ -16,7 +16,7 @@ varying vec2 vTexcoord;
 varying vec4 vColour;
 varying vec3 vNormal;
 
-uniform mat4 uBones[24]; //increase this if needing more bones
+uniform mat4 uBones[25]; //increase this if needing more bones
 
 void main()
 {

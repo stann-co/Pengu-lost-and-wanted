@@ -65,7 +65,7 @@ function __gltfVec4(_x=0, _y=0, _z=0, _w=1) constructor {
 	
 	/// toString
 	static toString = function() {
-		return string_ext("({0}, {1}, {2}, {3})", [ x, y, z, w ]);
+		return $"({x}, {y}, {z}, {w})";
 	};
 }
 
@@ -231,38 +231,16 @@ function __gltfMulMatVec(m, v) {
 
 /// multiply two matrices together, in the correct order
 function __gltfMulMats(m1, m2) {
+	// this function was needed for my own sanity
 	gml_pragma("forceinline");
-	/*
 	return matrix_multiply(m2, m1);
-	
-	__gltfDebugPrint(string(result));
-	*/
-	var result = [
-		m1[0]*m2[0] + m1[4]*m2[1] + m1[8]*m2[2] + m1[12]*m2[3],
-		m1[1]*m2[0] + m1[5]*m2[1] + m1[9]*m2[2] + m1[13]*m2[3],
-		m1[2]*m2[0] + m1[6]*m2[1] + m1[10]*m2[2] + m1[14]*m2[3],
-		m1[3]*m2[0] + m1[7]*m2[1] + m1[11]*m2[2] + m1[15]*m2[3],
-		
-		m1[0]*m2[4] + m1[4]*m2[5] + m1[8]*m2[6] + m1[12]*m2[7],
-		m1[1]*m2[4] + m1[5]*m2[5] + m1[9]*m2[6] + m1[13]*m2[7],
-		m1[2]*m2[4] + m1[6]*m2[5] + m1[10]*m2[6] + m1[14]*m2[7],
-		m1[3]*m2[4] + m1[7]*m2[5] + m1[11]*m2[6] + m1[15]*m2[7],
-		
-		m1[0]*m2[8] + m1[4]*m2[9] + m1[8]*m2[10] + m1[12]*m2[11],
-		m1[1]*m2[8] + m1[5]*m2[9] + m1[9]*m2[10] + m1[13]*m2[11],
-		m1[2]*m2[8] + m1[6]*m2[9] + m1[10]*m2[10] + m1[14]*m2[11],
-		m1[3]*m2[8] + m1[7]*m2[9] + m1[11]*m2[10] + m1[15]*m2[11],
-		
-		m1[0]*m2[12] + m1[4]*m2[13] + m1[8]*m2[14] + m1[12]*m2[15],
-		m1[1]*m2[12] + m1[5]*m2[13] + m1[9]*m2[14] + m1[13]*m2[15],
-		m1[2]*m2[12] + m1[6]*m2[13] + m1[10]*m2[14] + m1[14]*m2[15],
-		m1[3]*m2[12] + m1[7]*m2[13] + m1[11]*m2[14] + m1[15]*m2[15],
-	];
-	
-	//__gltfDebugPrint(string(matBuildFromVectors(columns)));
-	//__gltfDebugPrint(string(result));
-	
-	return result;
+}
+
+/// multiply two matrices together, in the correct order
+/// utilise result_matrix to cut down on temp data structures
+function __gltfMulMatsResult(m1, m2, result) {
+	gml_pragma("forceinline");
+	return matrix_multiply(m2, m1, result);
 }
 
 /// scalar product of s and v, returns new vector
@@ -272,50 +250,48 @@ function __gltfMulScalarVec(s, v) {
 	return v.duplicate().scale(s);
 }
 
-/// lerp two quaternions via spherical linear interpolation. not really tested but seems right
-/// TODO: find out if i need to shuffle parameters so its wxyz instead of xyzw
-function __gltfSlerp(qa, qb, t) {
-	var qm = [ ];
-	var cosHalfTheta = qa[0]*qb[0] + qa[1]*qb[1] + qa[2]*qb[2] + qa[3]*qb[3];
-	
-	if(cosHalfTheta < 0){
-		qb = [
-			-qb[0],
-			-qb[1],
-			-qb[2],
-			-qb[3]
-		]
-		cosHalfTheta = -cosHalfTheta
-	}
-	
-	if (abs(cosHalfTheta) >= 1) {
-		array_copy(qm, 0, qa, 0, 4);
-		return qm;
-	}
-	
-	var halfTheta = arccos(cosHalfTheta);
-	var sinHalfTheta = sqrt(1.0 - cosHalfTheta*cosHalfTheta);
-	
-	var ratioA, ratioB;
-	if (abs(sinHalfTheta) < 0.0001) {
-		ratioA = 1 - t;
-		ratioB = t;
-	}
-	else {
-		ratioA = sin((1 - t) * halfTheta) / sinHalfTheta;
-		ratioB = sin(t * halfTheta) / sinHalfTheta;
-	}
-	
-	qm[0] = (qa[0] * ratioA + qb[0] * ratioB);
-	qm[1] = (qa[1] * ratioA + qb[1] * ratioB);
-	qm[2] = (qa[2] * ratioA + qb[2] * ratioB);
-	qm[3] = (qa[3] * ratioA + qb[3] * ratioB);
-	return qm;
-}
-
 #region https://github.com/callmeEthan/Gamemaker_quaternion/blob/main/scripts/Quaternion/Quaternion.gml
 
-/// @function					gltfQuaternionToAngle(q)
+/// @function		__gltfQuaternionSlerp(qa, qb, amount, array)
+/// @description	Lerp the quaternions using spherical linear interpolation. See comments for details.
+/// @param	{Array<Real>}	qa		The quaternion from which to lerp
+/// @param	{Array<Real>}	qb		The quaternion to which to lerp
+/// @param	{Real}			amount	The lerp factor, from 0 to 1
+/// @param	{Array<Real>}	[array]	Optional pass-by-reference output array
+function __gltfQuaternionSlerp(qa, qb, amount, array=array_create(4)) {
+	// Interpolate between two quaternions representing rotations with Spherical-linear-interpolation for better quality
+	var qax=qa[0], qay=qa[1], qaz=qa[2], qaw=qa[3];
+	var qbx=qb[0], qby=qb[1], qbz=qb[2], qbw=qb[3];
+	var dot = qaw * qbw + qax * qbx + qay * qby + qaz * qbz;
+	if (dot < 0) {
+		// Make sure we take the shortest way around
+		qbx = -qbx;
+		qby = -qby;
+		qbz = -qbz;
+		qbw = -qbw;
+		dot = qaw * qbw + qax * qbx + qay * qby + qaz * qbz;
+	}
+	if (dot > 0.99) {
+		// Linear interpolation
+		array[@0] = lerp(qax, qbx, amount);
+		array[@1] = lerp(qay, qby, amount);
+		array[@2] = lerp(qaz, qbz, amount);
+		array[@3] = lerp(qaw, qbw, amount);
+		return array;
+	}
+	var angle = arccos(dot);
+	var denom = sin(angle);
+	// Spherical linear interpolation.
+	var r1 = sin((1-amount)*angle);
+	var r2 = sin(amount*angle);
+	array[@0] = (qax * r1 + qbx * r2)/denom
+	array[@1] = (qay * r1 + qby * r2)/denom
+	array[@2] = (qaz * r1 + qbz * r2)/denom
+	array[@3] = (qaw * r1 + qbw * r2)/denom
+	return array;
+}
+
+/// @function					__gltfQuaternionToAngle(q)
 /// @description				Returns the XYZ Euler angles (degrees) describing the provided quaternion; the roll-pitch-yaw
 /// @param	{Array<Real>}	q	The XYZW quaternion
 /// @return	{Array<Real>}		The XYZ Euler angles (degrees) equivalent to the provided quaternion; the roll-pitch-yaw
@@ -342,7 +318,7 @@ function __gltfQuaternionToAngle(q) {
     return [roll, pitch, yaw];
 }
 
-/// @function							gltfAngleToQuaternion(xangle, yangle, zangle, output)
+/// @function							__gltfAngleToQuaternion(xangle, yangle, zangle, output)
 /// @description						Returns the quaternion describing the provided XYZ Euler angles (degrees); the roll-pitch-yaw
 /// @param	{Real}	xangle				The X angle (degrees) of the Euler rotation; the roll
 /// @param	{Real}	yangle				The Y angle (degrees) of the Euler rotation; the pitch
@@ -402,7 +378,7 @@ function __gltfMatrixBuildQuaternion(x, y, z, quaternion, xscale, yscale, zscale
 	return matrix;
 }
 
-/// @function						matrix_to_quaternion(matrix, array=array_create(4))
+/// @function						__gltfMatrixToQuaternion(matrix, array=array_create(4))
 /// @description					Get the rotation from a transformation (4x4) matrix and return a quaternion unit.
 /// @param	{Array<Real>}	matrix	Transformation matrix (4x4)
 /// @param	{Array<Real>}	array	Optional pass-by-reference output array
@@ -480,26 +456,4 @@ function __gltfLerpArray(a, b, amount) {
 		i++;
 	}
 	return result;
-}
-
-/// for animation
-function __gltfCubicSplineInterpolate(ak, vk, bk, t) {
-	/*
-	vt = (2t^3-3t^2+1)*vk + td(t^3-2t^2+t)*bk+(-2t^3+3t^2)*v<k+1>+td(t^3-t^2)*a<k+1>
-	*/
-	// t squared and cubed
-	var t2 = t*t;
-	var t3 = t2*t;
-	
-	var vt = new __gltfVec4();
-	
-}
-
-function foo(){
-  static bar = 0;
-  return bar
-}
-
-function setfoo(val){
-	foo.bar = val
 }
