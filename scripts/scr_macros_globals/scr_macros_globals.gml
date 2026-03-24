@@ -147,6 +147,7 @@ global.activation_list = [];
 
 global.debug = false;
 global.show_collisions = true;
+global.show_background = false; //background layer Background_1 if off, it'll show the background drawing function set instead
 
 global.checkpoint = -1;
 

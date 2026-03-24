@@ -33,11 +33,20 @@ function show_collisions(_show){
         layer_set_visible("collision_A",true);
         layer_set_visible("collision_B",true);
         layer_set_visible("collision_C",true);
-        layer_set_visible("backgrounds_1",true);
     } else {
         layer_set_visible("collision_A",false);
         layer_set_visible("collision_B",false);
         layer_set_visible("collision_C",false);
+    }
+}
+
+///@function show_background()
+///@desc show background layers
+///@param show
+function show_background(_show){
+	if(_show){
+        layer_set_visible("backgrounds_1",true);
+    } else {
         layer_set_visible("backgrounds_1",false);
     }
 }
