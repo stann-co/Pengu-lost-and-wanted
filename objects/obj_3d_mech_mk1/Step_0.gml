@@ -85,7 +85,7 @@ var standing_ = skinned_mesh.skin.animate(t,"stand");
 
 walking_ = skinned_mesh.blendAnimation(standing_,walking_,abs(ground_spd)/top_speed);
 
-var mask_ = ["DEF-hatch","DEF-ear.L","DEF-ear.R"];
+//var mask_ = ["DEF-hatch","DEF-ear.L","DEF-ear.R"];
 //anim_hatch_ = skinned_mesh.maskAnimation(anim_hatch_,mask_,true);
 //var blended_ = skinned_mesh.blendAnimation(walking_,anim_hatch_,test);
 
