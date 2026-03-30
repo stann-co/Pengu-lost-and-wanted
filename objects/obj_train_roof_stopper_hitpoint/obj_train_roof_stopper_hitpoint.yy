@@ -9,8 +9,8 @@
   "name":"obj_train_roof_stopper_hitpoint",
   "overriddenProperties":[],
   "parent":{
-    "name":"train",
-    "path":"folders/Objects/obstacles/train.yy",
+    "name":"snow_train",
+    "path":"folders/Objects/areas/snow_train.yy",
   },
   "parentObjectId":{
     "name":"obj_trigger",

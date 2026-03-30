@@ -1,9 +1,11 @@
 /// @description
 
-if(only_grounded){
-	var ground_check = !other.airborne;
-} else var ground_check = true;
-
-if(ground_check){
-	collision_layer_switch(switch_layer,change_depth)
+if(active){
+	if(only_grounded){
+		var ground_check_ = !other.airborne;
+	} else var ground_check_ = true;
+	
+	if(ground_check_){
+		collision_layer_switch(other,switch_layer,change_depth)
+	}
 }

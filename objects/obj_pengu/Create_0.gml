@@ -15,7 +15,7 @@ normal_top_speed = 3.073112;
 slide_acceleration_speed = 0.05;
 slide_deceleration_speed = 0.4;
 slide_friction_speed = 0.08;
-slide_top_speed = 8.2144;
+slide_top_speed = 9;//8.2144;
 
 slippery_multiplier = 0.2;
 
@@ -50,7 +50,7 @@ dash_ground_windup = GAME_SPEED*1; //you can hold it down longer, but after this
 rotation_speed = 0.0215 * 2; //when going airborne how fast you rotate to be back upright
 
 normal_slope_factor = 0.129;
-slide_slope_factor  = 0.255;
+slide_slope_factor  = 0.22;//0.255;
 slope_factor = normal_slope_factor;
 
 acceleration_speed = normal_acceleration_speed;
@@ -63,8 +63,8 @@ force_slide_angle = 45; //if you walk on an incline above this angle you're forc
 
 force_detatch_angle = 120;
 
-ground_slip_min_spd = 4 //if abs ground_speed is less than this, and on steep slopes you will start slipping or even detatching
-ground_slip_min_spd_ceiling = 5
+ground_slip_min_spd = 4; //if abs ground_speed is less than this, and on steep slopes you will start slipping or even detatching
+ground_slip_min_spd_ceiling = 5.6;
 
 force_slide_angle_ceiling = 170; //above this angle ground_slip_min_spd_ceiling is used
 
@@ -289,7 +289,7 @@ state.add_child("airborne","tube", {
             x_speed = lengthdir_x(ground_spd,image_angle+90);
             y_speed = lengthdir_y(ground_spd,image_angle+90);
             
-            collision_layer_switch(active_layer,true);
+            collision_layer_switch(self,active_layer,true);
             controlled = true;		
             state.change("launch");
         }

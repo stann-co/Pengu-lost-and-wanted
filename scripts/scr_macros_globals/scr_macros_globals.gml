@@ -120,13 +120,14 @@ global.tile_angles = [
 global.persistent_objects = [
     obj_camera,
     __InputUpdateController,
-    __obj_stanncam_manager,
+    __obj_stanncam_manager, 
+	obj_stanncam_zone,
     obj_scene,
     obj_game,
     obj_pengu, 
     obj_depth_set,
     obj_layer_draw,
-    obj_splash
+    obj_splash,
 ]
 //Feather enable GM2017
 
@@ -140,6 +141,8 @@ global.collision_layers = ds_map_create()
 global.collision_layers[? COLLISION_LAYERS.A] = undefined
 global.collision_layers[? COLLISION_LAYERS.B] = undefined
 global.collision_layers[? COLLISION_LAYERS.C] = undefined
+
+global.level_step = function (){} //will run every step, override in each level, to have level specific step code happen
 
 global.room_data = {}; //externally loaded json room data, parralax layers
 
@@ -155,7 +158,7 @@ global.score = 0;
 global.score_mult = 1;
 global.score_combo_t = 0;
 #macro SCORE_COMBO_T_MAX (GAME_SPEED * 3)
-global.coins = 0;
+global.coins = 20;
 
 global.control = true;
 
@@ -186,6 +189,10 @@ global.gui_font = font_add_sprite_ext(spr_gui_font,"!\"#$%&'()*+,-./0123456789:;
     lexicon_index_declare_from_json("local_en.json");
     lexicon_language_set("English");
 #endregion
+
+//GPU/Texture settings
+gpu_set_tex_max_mip(5);
+gpu_set_tex_mip_bias(-1);
 
 //spawns persistent objects
 

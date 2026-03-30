@@ -12,8 +12,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_depth_managed_solid","path":"objects/obj_depth_managed_solid/obj_depth_managed_solid.yy",},"propertyId":{"name":"depth_layer","path":"objects/obj_depth_managed_solid/obj_depth_managed_solid.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"\"B\"",},
   ],
   "parent":{
-    "name":"train",
-    "path":"folders/Objects/obstacles/train.yy",
+    "name":"snow_train",
+    "path":"folders/Objects/areas/snow_train.yy",
   },
   "parentObjectId":{
     "name":"obj_trigger",

@@ -1,28 +1,28 @@
 ///@function collision_layer_switch()
 ///@desc changes active collision layer
+///@param Instance
 ///@param COLLISION_LAYERS
-function collision_layer_switch(_collision_layer,_change_depth){
+function collision_layer_switch(_inst,_collision_layer,_change_depth = false){
 	
     if(_change_depth){
 	    switch (_collision_layer) {
 	        case COLLISION_LAYERS.A:
-	    		other.depth = global.depth_a;	
+	    		_inst.depth = global.depth_a;	
 	            break;
 	    	case COLLISION_LAYERS.B:
-	    		other.depth = global.depth_b;	
+	    		_inst.depth = global.depth_b;	
 	            break;
 	    	case COLLISION_LAYERS.C:
-	    		other.depth = global.depth_c;	
+	    		_inst.depth = global.depth_c;	
 	            break;
 	    }
     }
-	
     
-    if(other.object_index == obj_pengu){
+    if(_inst.object_index == obj_pengu){
         set_active_collisions(_collision_layer);
     }
     
-    other.collision_layer = _collision_layer;
+    _inst.collision_layer = _collision_layer;
 }
 
 ///@function show_collisions()

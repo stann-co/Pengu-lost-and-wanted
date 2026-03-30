@@ -1,2 +1,4 @@
 /// @description
-if(global.debug) draw_self();
+if(global.debug){
+	debug_draw_self(active);
+}

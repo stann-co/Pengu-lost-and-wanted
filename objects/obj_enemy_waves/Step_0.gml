@@ -1,0 +1,50 @@
+/// @description
+if(active){
+	var wave_ = waves[wave];
+	while (index < array_length(wave_)) {
+		var item_ = wave_[index];
+		if(is_real(item_)){ //index is a delay timer
+			if(t < item_*GAME_SPEED){
+				t++;
+				break;
+			} else { //delay timer done
+				t = 0;
+				index++;
+			}
+			
+		} else { //index is EnemyWaveSpawn struct
+			var enemy_ = item_.spawn();
+			array_push(enemies,enemy_);
+			index++;
+		}
+	}
+	
+	//wave has fully spawned
+	if (index >= array_length(wave_)){
+		
+		var enemies_left_ = array_length(enemies);
+		for (var i_ = 0; i_ < enemies_left_; i_++) {
+			//TODO instead of checking if gone, maybe should check if they're marked as defeated, in case they still animate after
+			if (!instance_exists(enemies[i_])){
+				array_delete(enemies,i_,1);
+				break;
+			}
+		}
+		
+		if(array_length(enemies) == 0){
+			if(t < wave_pause*GAME_SPEED) t++;
+			else {
+				t = 0;
+				index = 0;
+				enemies = [];
+				wave++;
+				
+				//all waves cleared!
+				if(wave >= array_length(waves)){
+					trigger();
+					instance_destroy();
+				}
+			}
+		}
+	}
+}

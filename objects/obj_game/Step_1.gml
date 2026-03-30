@@ -5,6 +5,8 @@ if(!IN_BROWSER){
 	steam_update()
 }
 
+global.level_step();
+
 state.step();
 
 if(global.freeze_duration > 0) global.freeze_duration--;
@@ -31,7 +33,7 @@ if(CAN_MOVE){
 		instance_activate_region(left_, top_, width_, height_, true);
         
         for(var i_ = 0; i_ < array_length(global.persistent_objects);i_++){
-            instance_activate_object(global.persistent_objects[i_]);    
+            instance_activate_object(global.persistent_objects[i_]);
         }
 
 		//connected instances will all be active if just one of them is active

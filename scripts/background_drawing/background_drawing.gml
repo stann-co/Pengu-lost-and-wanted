@@ -115,31 +115,18 @@ function set_background_snow_train(){
 	        var y_ = global.camera.get_y();
 	        var width_ = sprite_get_width(spr_bg_snow_floor);
 	        var height_ = sprite_get_height(spr_bg_snow_floor);
-	        
-	        //shader_set(sh_bg_morph);
-	        //var u_resolution = shader_get_uniform(sh_bg_morph,"u_resolution");
-	        //var u_t = shader_get_uniform(sh_bg_morph,"u_t");
-	        //
-	        //shader_set_uniform_f(u_resolution,width_,height_);
-	        //shader_set_uniform_f(u_t ,global.t);
-	        //
-	        //gpu_set_tex_filter(true)
-	        //
-	        //draw_sprite(spr_bg_beginning_obelisq,0,x_,y_);
-	        //gpu_set_tex_filter(false)
-	        //
-	        //shader_reset();
 			
 			draw_sprite(spr_bg_snow_back,0,x_,y_+global.game_h/2);
 			
 			shader_set(sh_depth_plane)
 			var u_t = shader_get_uniform(sh_depth_plane,"u_t");
 			shader_set_uniform_f(u_t ,global.t);
-			gpu_set_tex_repeat(true)
+			gpu_set_tex_repeat(true);
+			gpu_set_tex_mip_filter(tf_linear);
 			
+			draw_sprite_stretched(spr_bg_snow_floor,0,x_,y_+global.game_h/2,global.game_w,room_height-(y_+global.game_h/2));
 			
-			draw_sprite_stretched(spr_bg_snow_floor,0,x_,y_+global.game_h/2,global.game_w,global.game_h/2);
-			
+			//gpu_set_tex_mip_filter(tf_point);
 			gpu_set_tex_repeat(false)
 			shader_reset()
 			
