@@ -19,11 +19,11 @@ if(CAN_MOVE){
             input_v*=4;
         }
         
-        x+=input_h * 4;
-        y+=input_v * 4;
+		set_x(x+input_h*4);
+		set_y(y+input_v*4);
         
     } else {
-        if(controlled && global.control){
+        if(CONTROLLED){
             #region input
             if(control_lock == 0){
                 input_h = (InputCheck(INPUT_VERB.RIGHT) - InputCheck(INPUT_VERB.LEFT));
@@ -161,7 +161,7 @@ if(CAN_MOVE){
                 if (y_speed < 0 && y_speed > -4){
                     x_speed -= floor(x_speed / 0.125) / 256;
                 }
-            
+				
                 x_speed = clamp(x_speed,-x_top_speed_,x_top_speed_);
                 y_speed = clamp(y_speed,-y_top_speed_,y_top_speed_);
                 
@@ -180,8 +180,8 @@ if(CAN_MOVE){
             repeat(substeps_){
                 #region speed
                 
-                x+=x_speed / substeps_;
-                y+=y_speed / substeps_;
+				set_x(x+x_speed / substeps_);
+				set_y(y+y_speed / substeps_);
                 
                 //when airborne sensors aren't rotated at all
                 sensor_angle = (airborne) ? 0 : ground_angle;
@@ -219,8 +219,8 @@ if(CAN_MOVE){
                     }
                     if(push_sensor_ != noone && push_sensor_.distance < 1){
                         if (sensor_trigger(push_sensor_)){
-                            x+= push_sensor_.x;
-                            y+= push_sensor_.y;
+							set_x(x+push_sensor_.x);
+							set_y(y+push_sensor_.y);
                             
                             if(abs(angle_difference(push_sensor_.angle,ground_angle)) >= 50){
                                 if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
@@ -241,8 +241,8 @@ if(CAN_MOVE){
                     if(push_sensor_ != noone && push_sensor_.distance < 1){		
                         
                         if (sensor_trigger(push_sensor_)){
-                            x+= push_sensor_.x;
-                            y+= push_sensor_.y;
+							set_x(x+push_sensor_.x);
+							set_y(y+push_sensor_.y);
                             
                             if(abs(angle_difference(push_sensor_.angle,ground_angle)) >= 50){
                                 if(!airborne && !sliding && !state.state_is("pushing")) state.change("pushing");
@@ -286,8 +286,8 @@ if(CAN_MOVE){
                     if(updown_sensor_ != noone && ( !airborne || (airborne && updown_sensor_.y < 0) )){
                         
                         if (sensor_trigger(updown_sensor_)){
-                            x+= updown_sensor_.x;
-                            y+= updown_sensor_.y;
+							set_x(x+updown_sensor_.x);
+							set_y(y+updown_sensor_.y);
                             
                             ground_angle = updown_sensor_.angle;	
                             
@@ -350,8 +350,8 @@ if(CAN_MOVE){
                         else if(tr_sensor_ != noone) updown_sensor_ = tr_sensor_;
                         
                         if (updown_sensor_ != noone && updown_sensor_.distance < 0 && sensor_trigger(updown_sensor_)){
-                            x+= updown_sensor_.x;
-                            y+= updown_sensor_.y;
+							set_x(x+updown_sensor_.x);
+							set_y(y+updown_sensor_.y);
                             
                             on_ceiling = true
                                 
@@ -359,18 +359,17 @@ if(CAN_MOVE){
                             if((tl_sensor_ != noone xor tr_sensor_ != noone) && !point_sensor(vec_t)){
                                 if(tl_sensor_){
                                     x_speed += 0.1;
-                                    x += 1;
+									set_x(x+1);
                                 } else
                                 if(tr_sensor_){
                                     x_speed  -= 0.1;
-                                    x -= 1;
+									set_x(x-1);
                                 }
                             }
                         }
                     }
                 }
                 #endregion
-                
             }
             
             #region edge slipping animation
@@ -380,9 +379,8 @@ if(CAN_MOVE){
                 state.change("edge");
             }
             
-            
             #endregion
-        
+			
             #region hitbox collisions
             var list_ = ds_list_create()
             var num_ = instance_place_list(x,y,obj_trigger_hitbox,list_,false);

@@ -5,17 +5,7 @@
 function collision_layer_switch(_inst,_collision_layer,_change_depth = false){
 	
     if(_change_depth){
-	    switch (_collision_layer) {
-	        case COLLISION_LAYERS.A:
-	    		_inst.depth = global.depth_a;	
-	            break;
-	    	case COLLISION_LAYERS.B:
-	    		_inst.depth = global.depth_b;	
-	            break;
-	    	case COLLISION_LAYERS.C:
-	    		_inst.depth = global.depth_c;	
-	            break;
-	    }
+		_inst.depth = global.depths[? _collision_layer];
     }
     
     if(_inst.object_index == obj_pengu){

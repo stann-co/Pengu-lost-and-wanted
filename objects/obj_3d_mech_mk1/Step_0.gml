@@ -1,6 +1,6 @@
 /// @description
 
-if (controlled){
+if (CONTROLLED){
 	if (InputPressed(INPUT_VERB.INTERACT)){
 		instance_create_layer(x,y,"Instances",obj_pengu);
 		global.camera.follow = obj_pengu;

@@ -19,7 +19,10 @@ stamina = stamina_max;
 target_x = x;
 target_y = y;
 
-attack_target = obj_pengu;
+//TODO maybe this could be improved, or just removed outright, and refer to controlled directly in code
+attack_target = function(){
+	return global.controlled;
+};
 
 radius_spot = 250;
 radius_loose = 360;
@@ -47,7 +50,7 @@ swoop_angle = 57;
 //.render()
 
 target_dist = function(){
-    return point_distance(x,y,attack_target.x,attack_target.y);
+    return point_distance(x,y,attack_target().x,attack_target().y);
 }
 
 choose_state = function(){
@@ -99,9 +102,9 @@ state.add("stalk",{
     },
     
     step: function (){
-        facing = sign(attack_target.x - x);
-        target_x = attack_target.x + stalk_dist_x*-facing;
-        target_y = attack_target.y + stalk_dist_y;
+        facing = sign(attack_target().x - x);
+        target_x = attack_target().x + stalk_dist_x*-facing;
+        target_y = attack_target().y + stalk_dist_y;
         
         var dist_x_ = (target_x - x);
         var dist_y_ = (target_y - y);
@@ -133,7 +136,7 @@ state.add("swoop_windup",{
         sprite_index = spr_flying_test_swoop_windup;
         subimg = 0;
         
-        facing = sign(attack_target.x - x)
+        facing = sign(attack_target().x - x)
         
         squish(1.2,0.8,GAME_SPEED*0.4);
         
@@ -176,7 +179,7 @@ state.add("swoop",{
         if(!facing) image_angle+= 180;
         
         // attack does damage
-        var inst_ = collision_circle(x,y,8,attack_target,false,true);
+        var inst_ = collision_circle(x,y,8,attack_target(),false,true);
         if (inst_ != noone){
             inst_.hurt(x_speed);
         }

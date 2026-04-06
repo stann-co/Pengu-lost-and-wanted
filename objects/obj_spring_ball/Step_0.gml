@@ -17,8 +17,7 @@ if(springing){
 		if(t >= (duration*0.25) || (t >= (duration*0.21) && place_meeting(x+ball_vec.x,y+ball_vec.y,ENTITY_COLLISION_LAYER) )){
 			grabbed_on = false;
 			with(obj_pengu){
-				
-				controlled = true;
+				set_controlled();
 				state.change("fall_up");
 				x_speed = -lengthdir_x(other.launch_speed,other.dir);
 				y_speed = -lengthdir_y(other.launch_speed,other.dir);

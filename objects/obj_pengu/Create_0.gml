@@ -1,6 +1,8 @@
 /// @description
 event_inherited();
 
+depth-=10; //by default pengu is above other entities
+
 #region variables
 godmode = false;
 
@@ -132,7 +134,7 @@ t2 = 0; //a secondary timer
 image_to_ground_angle = true;
 
 control_lock = 0; //When control lock is non-zero input is disabled, for when slipping down super steep slopes, or springs/speed ramps
-controlled = true;
+set_controlled();
 invulnerable = 0; //when over 0, pengu flashes and cannot take damage
 invulnerable_duration = GAME_SPEED * 1.6;
 
@@ -257,8 +259,7 @@ state.add_child("airborne","skilift", {
         super_speed = false;
         state.inherit();
         sprite_index = spr_pengu_sitting;
-        controlled = false;
-        
+        //controlled = false;
     }
 })
 
@@ -267,8 +268,7 @@ state.add_child("airborne","spring_ball", {
         super_speed = false;
         state.inherit();
         sprite_index = spr_pengu_grab_on;
-        controlled = false;
-        
+        //controlled = false;
     }
 })
 
@@ -276,8 +276,9 @@ state.add_child("airborne","tube", {
     enter: function() {
         state.inherit();
         sprite_index = spr_pengu_spinning;
-        controlled = false;
-        active_layer = layers;
+        //controlled = false;
+		//TODO might be broken completely
+        //active_layer = layers;
         
     },
     step: function(){
@@ -290,7 +291,7 @@ state.add_child("airborne","tube", {
             y_speed = lengthdir_y(ground_spd,image_angle+90);
             
             collision_layer_switch(self,active_layer,true);
-            controlled = true;		
+            set_controlled();	
             state.change("launch");
         }
     }

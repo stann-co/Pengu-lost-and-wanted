@@ -6,7 +6,6 @@ w_radius = 49;
 h_radius = 60;
 
 //control
-controlled = false;
 input_h = 0;
 input_v = 0;
 
@@ -39,16 +38,11 @@ t = 0;
 y_rot_amount = 52;
 roty = y_rot_amount;
 
-
-
 #region States
  
 state = new SnowState("standby")
 
 .add("standby_start",{
-	enter: function(){
-		controlled = false;
-	},
 	step: function(){
 		state.change("standby");
 	},
@@ -59,14 +53,13 @@ state = new SnowState("standby")
 
 .add("standby",{
 	enter: function(){
-		controlled = false;
 		anim_main = "standby"
 		t_max = skinned_mesh.getAnimationLength("standby");
 	},
 	step: function(){ 
 		if (collision_rectangle(x-w_radius,y-h_radius,x+w_radius,y+h_radius,obj_pengu,false,true) && InputPressed(INPUT_VERB.INTERACT)){
 			instance_destroy(obj_pengu);
-			controlled = true;
+			set_controlled();
 			state.change("standing");
 			
 			global.camera.follow = self

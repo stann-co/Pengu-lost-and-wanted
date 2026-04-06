@@ -1,4 +1,6 @@
 /// @description
+event_inherited();
+
 ps = part_system_create();
 
 colliding = false;

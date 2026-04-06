@@ -1,4 +1,4 @@
-/// @description draws only with global.show_collisions on
+/// @description
 if(global.show_collisions){
-	debug_draw_self(active);
+	debug_draw_self(ACTIVE_COLLISION);
 }

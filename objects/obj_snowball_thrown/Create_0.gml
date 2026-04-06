@@ -1,3 +1,5 @@
+event_inherited();
+
 trigger = function(){
 	global.camera.shake_screen(4,GAME_SPEED*0.5);
 	with(obj_pengu){

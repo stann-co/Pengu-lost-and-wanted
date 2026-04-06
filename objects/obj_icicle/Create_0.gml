@@ -1,3 +1,5 @@
+event_inherited();
+
 trigger = function(){
 	if(!destroyed){
 		state.change("destroy");
@@ -65,13 +67,3 @@ state
 	draw: function(){}
 
 })
-
-
-
-
-
-
-
-
-
-

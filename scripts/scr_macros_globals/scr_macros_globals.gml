@@ -14,8 +14,10 @@
 #macro CAN_MOVE_NOFREEZE (!PAUSING && !instance_exists(obj_level_editor)) 
 #macro CAN_MOVE   (CAN_MOVE_NOFREEZE && !FREEZE_FRAME)
 
-
 #macro ENTITY_COLLISION_LAYER [obj_collision,global.collision_layers[? collision_layer]]
+
+#macro ACTIVE_PLAYER_COLLISION_LAYER ()
+#macro CONTROLLED (global.controlled == self && global.in_control)
 
 #macro TEXT_HEIGHT 14
 
@@ -44,11 +46,6 @@
 #macro NORMAL_BLANK #8080F9
 
 //enums
-enum COLLISION_LAYERS {
-	A,
-	B,
-	C,
-}
 
 enum LANGUAGES {
 	ENGLISH,
@@ -133,14 +130,31 @@ global.persistent_objects = [
 
 global.sidescroller = true;
 
-global.depth_a = 300;
-global.depth_b = 400;
-global.depth_c = 500;
+#region collision and depth layers
+enum COLLISION_LAYERS {
+	A,
+	B,
+	C,
+}
+
+global.depths = ds_map_create();
+global.depths[? COLLISION_LAYERS.A] = 300;
+global.depths[? COLLISION_LAYERS.B] = 400;
+global.depths[? COLLISION_LAYERS.C] = 500;
+
+#macro DEPTH_A global.depths[? COLLISION_LAYERS.A]
+#macro DEPTH_B global.depths[? COLLISION_LAYERS.B]
+#macro DEPTH_C global.depths[? COLLISION_LAYERS.C]
 
 global.collision_layers = ds_map_create()
 global.collision_layers[? COLLISION_LAYERS.A] = undefined
 global.collision_layers[? COLLISION_LAYERS.B] = undefined
 global.collision_layers[? COLLISION_LAYERS.C] = undefined
+
+//if this instance's collision layer is the same as the controlled collision_layer
+#macro ACTIVE_COLLISION (collision_layer == global.controlled.collision_layer)
+
+#endregion
 
 global.level_step = function (){} //will run every step, override in each level, to have level specific step code happen
 
@@ -160,7 +174,16 @@ global.score_combo_t = 0;
 #macro SCORE_COMBO_T_MAX (GAME_SPEED * 3)
 global.coins = 20;
 
-global.control = true;
+#region control
+global.in_control = true; //wether the player has control or not, disable in cutscenes
+global.controlled = noone; //the object/instance that the player controls, switch to and from vehicles, or other chars
+
+//@desc set global.controlled to the active instance, or specific instance
+function set_controlled(_inst = self){
+	global.controlled = _inst;
+}
+
+#endregion
 
 //freeze frame is active when greater than 0, ticks down 1 each frame
 global.freeze_duration = 0;

@@ -1,3 +1,5 @@
+event_inherited();
+
 falling = false;
 shake_x = 0;
 shake_y = 0;

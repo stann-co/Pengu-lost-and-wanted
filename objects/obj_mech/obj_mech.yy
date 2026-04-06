@@ -13,12 +13,12 @@
   "name":"obj_mech",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"vehicles",
+    "path":"folders/Objects/vehicles.yy",
   },
   "parentObjectId":{
-    "name":"obj_depth_managed",
-    "path":"objects/obj_depth_managed/obj_depth_managed.yy",
+    "name":"obj_entity",
+    "path":"objects/obj_entity/obj_entity.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

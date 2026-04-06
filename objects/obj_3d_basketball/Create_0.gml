@@ -25,7 +25,7 @@ ball = new BBMOD_Model("3D/kat_smart.bbmod").freeze();
 /// Feather ignore once GM2017
 ball.Materials[@ 0] = new material()
 
-depth = global.depth_a;
+depth = DEPTH_A
 
 default_draw = function(){
     gpu_set_ztestenable(true);

@@ -15,8 +15,8 @@
     "path":"folders/Objects/vehicles.yy",
   },
   "parentObjectId":{
-    "name":"obj_entity",
-    "path":"objects/obj_entity/obj_entity.yy",
+    "name":"obj_character",
+    "path":"objects/obj_character/obj_character.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

@@ -1,10 +1,7 @@
 /// @description
 if(CAN_MOVE){
 
-	if(active){		
-		last_x = x;
-		last_y = y;
-		last_rot = rotation;
+	if(active){
 		
 		var global_time_ = (global.t + offset_duration);
 		var total_duration_ = duration + pause_duration
@@ -60,8 +57,8 @@ if(CAN_MOVE){
 		var val_ = animcurve_read(animcurve,animcurve_channel,clamp_t_/duration);
 		
 		if(info_target != -1){
-			x = round(lerp(start_x_,end_x_,val_));
-			y = round(lerp(start_y_,end_y_,val_));
+			set_x(round(lerp(start_x_,end_x_,val_)));
+			set_y(round(lerp(start_y_,end_y_,val_)));
 		}
 		
 		if(end_rotation != 0){

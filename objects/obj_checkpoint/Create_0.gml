@@ -1,3 +1,5 @@
+event_inherited();
+
 /// @description
 triggered = false;
 trigger = function(){

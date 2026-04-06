@@ -26,9 +26,9 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"depth_A","filters":[],"listItems":[],"multiselect":false,"name":"depth_A","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"400","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"depth_B","filters":[],"listItems":[],"multiselect":false,"name":"depth_B","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"500","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"depth_C","filters":[],"listItems":[],"multiselect":false,"name":"depth_C","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"600","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"depth_a","filters":[],"listItems":[],"multiselect":false,"name":"depth_a","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"400","varFriendlyName":"Depth A","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"depth_b","filters":[],"listItems":[],"multiselect":false,"name":"depth_b","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"500","varFriendlyName":"Depth B","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"depth_c","filters":[],"listItems":[],"multiselect":false,"name":"depth_c","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"600","varFriendlyName":"Depth C","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

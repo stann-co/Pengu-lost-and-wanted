@@ -1,3 +1,5 @@
+event_inherited();
+
 /// @description
 dir = 0;
 
@@ -14,6 +16,7 @@ ball_vec = new Vector2(0,0);
 trigger = function(){
 	if(!springing){
 		with(obj_pengu){
+			set_controlled();
 			state.change("spring_ball");
 			other.dir = point_direction(0,0,x_speed,y_speed);
 			

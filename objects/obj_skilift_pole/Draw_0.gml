@@ -11,21 +11,3 @@ if(main_pole){
 	draw_sprite(spr_skilift_pole,0,other_pole.x,other_pole.y);
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

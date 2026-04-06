@@ -19,7 +19,7 @@ if(CAN_MOVE){
     				var dir_ = point_direction(other.point1.x,other.point1.y,other.point2.x,other.point2.y);
     				x_speed = lengthdir_x(10,dir_);
     				y_speed = lengthdir_y(10,dir_);
-    				controlled = true;		
+    				set_controlled();
     				state.change("jump");
     			}
     		}

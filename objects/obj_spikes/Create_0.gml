@@ -1,5 +1,5 @@
 /// @description
-
+event_inherited();
 trigger = function(_side,_object){
 	
 	//hurt

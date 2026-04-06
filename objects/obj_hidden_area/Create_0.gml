@@ -1,3 +1,5 @@
+event_inherited();
+
 reveal = false;
 duration = GAME_SPEED * 0.5;
 t = 0;

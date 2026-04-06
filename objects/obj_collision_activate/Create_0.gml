@@ -1,4 +1,5 @@
-/// @description
+/// @description TODO might be not needed anymore with parenting/children system
+event_inherited();
 
 parent = noone;
 standing_on = false; //true as long as player stands on it

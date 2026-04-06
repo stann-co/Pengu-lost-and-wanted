@@ -1,3 +1,5 @@
+event_inherited();
+
 /// @description
 subimg = 0;
 

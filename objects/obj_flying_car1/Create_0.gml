@@ -1,12 +1,8 @@
 /// @description
 event_inherited();
 
-depth = global.depth_a;
-
 last_x = x;
 last_y = y;
-
-
 
 //make extra collision box
 //child = add_collision_child(-12,-17,30,14);

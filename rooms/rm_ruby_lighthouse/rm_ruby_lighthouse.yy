@@ -6,7 +6,6 @@
   "inheritCreationOrder":false,
   "inheritLayers":false,
   "instanceCreationOrder":[
-    {"name":"inst_41F88524_2","path":"rooms/rm_ruby_lighthouse/rm_ruby_lighthouse.yy",},
     {"name":"inst_68CD0B10_4","path":"rooms/rm_ruby_lighthouse/rm_ruby_lighthouse.yy",},
     {"name":"inst_64F25CE5","path":"rooms/rm_ruby_lighthouse/rm_ruby_lighthouse.yy",},
     {"name":"inst_7E5910AA","path":"rooms/rm_ruby_lighthouse/rm_ruby_lighthouse.yy",},
@@ -1142,10 +1141,6 @@
         {"$GMRInstance":"v4","%Name":"inst_6ED0DED0","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_6ED0DED0","objectId":{"name":"obj_loading_area","path":"objects/obj_loading_area/obj_loading_area.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":19.0,"scaleY":39.0,"x":3728.0,"y":9872.0,},
       ],"layers":[],"name":"loading_zones","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"Instances_A","depth":1000,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
-        {"$GMRInstance":"v4","%Name":"inst_41F88524_2","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_41F88524_2","objectId":{"name":"obj_depth_set","path":"objects/obj_depth_set/obj_depth_set.yy",},"properties":[
-            {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_depth_set","path":"objects/obj_depth_set/obj_depth_set.yy",},"propertyId":{"name":"depth_A","path":"objects/obj_depth_set/obj_depth_set.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"300",},
-            {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_depth_set","path":"objects/obj_depth_set/obj_depth_set.yy",},"propertyId":{"name":"depth_B","path":"objects/obj_depth_set/obj_depth_set.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"400",},
-          ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":304.0,"y":2016.0,},
         {"$GMRInstance":"v4","%Name":"inst_68CD0B10_4","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_68CD0B10_4","objectId":{"name":"obj_pengu","path":"objects/obj_pengu/obj_pengu.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":48.0,"y":13232.0,},
         {"$GMRInstance":"v4","%Name":"inst_64F25CE5","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_64F25CE5","objectId":{"name":"obj_skilift_pole","path":"objects/obj_skilift_pole/obj_skilift_pole.yy",},"properties":[
             {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_skilift_pole","path":"objects/obj_skilift_pole/obj_skilift_pole.yy",},"propertyId":{"name":"other_pole","path":"objects/obj_skilift_pole/obj_skilift_pole.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"inst_7E5910AA",},

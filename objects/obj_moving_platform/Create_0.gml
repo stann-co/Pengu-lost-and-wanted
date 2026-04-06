@@ -30,12 +30,3 @@ if(info_target != -1){
 }
 
 forward = true;
-
-last_x = x;
-last_y = y;
-last_rot = image_angle;
-
-trigger = function(_side,_object){
-	_object.x+= x - last_x;
-	return true;
-}

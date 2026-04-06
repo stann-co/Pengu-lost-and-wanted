@@ -1,5 +1,4 @@
 /// @description
-controlled = false;
 debug_draw = false;
 
 airborne = false;
@@ -239,7 +238,6 @@ state = new SnowState("idle")
     .add("idle",{
         enter: function(){
             legs_height = legs_height_crouching;
-            controlled = false;
         },
         step: function(){ 
             if (collision_rectangle(x-w_radius,y-h_radius,x+w_radius,y+h_radius,obj_pengu,false,true) && InputPressed(INPUT_VERB.INTERACT)){
@@ -261,7 +259,7 @@ state = new SnowState("idle")
 		enter: function(){
 			airborne = false;
             legs_height = legs_height_standing;
-            controlled = true;
+            set_controlled();
             global.camera.follow = self;
             global.camera.move(x,y,30);
 		},

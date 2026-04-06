@@ -1,20 +1,2 @@
 /// @description
 draw_self();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

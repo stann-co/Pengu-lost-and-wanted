@@ -15,4 +15,4 @@ rot_y = 0;
 mx = 0;
 my = 0;
 
-depth = global.depth_a;
+depth = DEPTH_A

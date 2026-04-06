@@ -38,10 +38,13 @@ kick_y = 6;
 
 attack_force = 6;
 
-attack_target = obj_pengu;
+//TODO maybe this could be improved, or just removed outright, and refer to controlled directly in code
+attack_target = function(){
+	return global.controlled;
+}
 
 target_dist = function(){
-    return point_distance(x,y,attack_target.x,attack_target.y);
+    return point_distance(x,y,attack_target().x,attack_target().y);
 }
 
 choose_state = function(){
@@ -132,7 +135,7 @@ state.add("punch_windup",{
         sprite_index = spr_combattest_punch_windup;
         subimg = 0;
         
-        facing = -sign(attack_target.x - x)
+        facing = -sign(attack_target().x - x)
         
         x_speed = facing * 1;
         t = windup_t;
@@ -160,7 +163,7 @@ state.add("kick_windup",{
         sprite_index = spr_combattest_kick_windup;
         subimg = 0;
         
-        facing = -sign(attack_target.x - x)
+        facing = -sign(attack_target().x - x)
         
         x_speed = facing * 1;
         t = windup_t;
@@ -209,7 +212,7 @@ state.add("punch",{
         
         // attack does damage
         if(t <= attack_duration){
-            var inst_ = collision_circle(x+(punch_x*facing),y+punch_y,8,attack_target,false,true);
+            var inst_ = collision_circle(x+(punch_x*facing),y+punch_y,8,attack_target(),false,true);
             if (inst_ != noone){
                 inst_.hurt(x_speed);
             }
@@ -245,7 +248,7 @@ state.add("kick",{
         
         // attack does damage
         if(t <= attack_duration){
-            var inst_ = collision_circle(x+(kick_x*facing),y+kick_y,8,attack_target,false,true);
+            var inst_ = collision_circle(x+(kick_x*facing),y+kick_y,8,attack_target(),false,true);
             if (inst_ != noone){
                 inst_.hurt(x_speed);
             }

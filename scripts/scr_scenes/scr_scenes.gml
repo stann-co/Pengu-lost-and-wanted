@@ -32,11 +32,11 @@ function s_wait_condition(_condition){
 
 
 ///@function s_control(_bool)
-///@description disables or enables control
+///@description disables or enables in_control
 ///@param boolean
 function s_control(_bool){
     with {_bool} array_push(global.scene.queue,function(){
-        global.control = _bool;    
+        global.in_control = _bool;    
     });
 }
 

@@ -7,7 +7,6 @@ saved_pengu = {
 }
 save_text = false;
 taken_points = [];
-active_collisions = -1;
 
 transition_in = false;
 transition_val = 0;
@@ -213,7 +212,7 @@ state.add("level_start",{
 		global.score = 0;
 		global.score_mult = 0;
 		global.score_combo_t = 0;
-        global.control = true;
+        global.in_control = true;
 		timer = 0;
 		
 		state.change("idle")	

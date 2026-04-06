@@ -1,4 +1,5 @@
 /// @description
+event_inherited();
 
 //when a sensor collides with this object,
 //return true if solid

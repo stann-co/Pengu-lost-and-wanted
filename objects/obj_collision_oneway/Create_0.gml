@@ -1,3 +1,4 @@
+event_inherited();
 /// @description
 
 trigger = function(_side,_object){

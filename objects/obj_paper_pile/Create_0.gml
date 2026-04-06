@@ -1,5 +1,6 @@
-/// @description
 event_inherited();
+
+/// @description
 ps = part_system_create();
 
 trigger = function(){

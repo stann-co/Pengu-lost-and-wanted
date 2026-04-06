@@ -74,16 +74,18 @@ if(CAN_MOVE){
         	var b_sensor_ = sensor(vec_b,snap_to_90(sensor_angle),sensor_length_base);
         	
         	if(b_sensor_ != noone && ( !airborne || (airborne && b_sensor_.y < 0) )){
-                x+= b_sensor_.x;
-        		y+= b_sensor_.y;
-                
-                ground_angle = b_sensor_.angle;
-                
-        		if(airborne){
-        			airborne = false;
-        			on_land = true;
-                    set_ground_spd_from_air_spd();
-        		}
+				if (sensor_trigger(b_sensor_)){
+	                x+= b_sensor_.x;
+	        		y+= b_sensor_.y;
+	                
+	                ground_angle = b_sensor_.angle;
+	                
+	        		if(airborne){
+	        			airborne = false;
+	        			on_land = true;
+	                    set_ground_spd_from_air_spd();
+	        		}
+				}
         	} else if(!airborne){
                 airborne = true;
         		on_no_floor = true;

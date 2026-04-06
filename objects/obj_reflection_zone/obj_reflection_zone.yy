@@ -9,15 +9,15 @@
   "managed":true,
   "name":"obj_reflection_zone",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_depth_managed","path":"objects/obj_depth_managed/obj_depth_managed.yy",},"propertyId":{"name":"depth_layer","path":"objects/obj_depth_managed/obj_depth_managed.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"\"above A\"",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_entity","path":"objects/obj_entity/obj_entity.yy",},"propertyId":{"name":"depth_layer","path":"objects/obj_entity/obj_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"\"above A\"",},
   ],
   "parent":{
     "name":"decorations",
     "path":"folders/Objects/decorations.yy",
   },
   "parentObjectId":{
-    "name":"obj_depth_managed",
-    "path":"objects/obj_depth_managed/obj_depth_managed.yy",
+    "name":"obj_entity",
+    "path":"objects/obj_entity/obj_entity.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
