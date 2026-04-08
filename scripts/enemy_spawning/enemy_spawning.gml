@@ -9,7 +9,7 @@ function EnemyWaveSpawn(_enemy,_x,_y,_target_x,_target_y,_state = "idle",_collis
 	collision_layer = _collision_layer;
 	
 	static spawn = function(){
-		var enemy_ = instance_create_depth(x,y,global.collision_layers[? collision_layer],enemy,{
+		var enemy_ = instance_create_depth(x,y,layer_get_depth(global.collision_layers[? collision_layer]),enemy,{
 			state: state,
 			target_x: target_x,
 			target_y: target_y

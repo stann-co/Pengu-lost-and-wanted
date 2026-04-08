@@ -14,7 +14,7 @@
 #macro CAN_MOVE_NOFREEZE (!PAUSING && !instance_exists(obj_level_editor)) 
 #macro CAN_MOVE   (CAN_MOVE_NOFREEZE && !FREEZE_FRAME)
 
-#macro ENTITY_COLLISION_LAYER [obj_collision,global.collision_layers[? collision_layer]]
+#macro ENTITY_COLLISION_LAYER [obj_collision,layer_tilemap_get_id(global.collision_layers[? collision_layer])]
 
 #macro ACTIVE_PLAYER_COLLISION_LAYER ()
 #macro CONTROLLED (global.controlled == self && global.in_control)

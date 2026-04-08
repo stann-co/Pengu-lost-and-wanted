@@ -4,19 +4,26 @@ event_inherited();
 var collision_layers_ = [];
 
 if(collision_a){
-	array_push(collision_layers_,global.collision_layers[? COLLISION_LAYERS.A]);
+	//array_push(collision_layers_,global.collision_layers[? COLLISION_LAYERS.A]);
+	array_push(collision_layers_,COLLISION_LAYERS.A);
 }
 
 if(collision_b){
-	array_push(collision_layers_,global.collision_layers[? COLLISION_LAYERS.B]);
+	//array_push(collision_layers_,global.collision_layers[? COLLISION_LAYERS.B]);
+	array_push(collision_layers_,COLLISION_LAYERS.B);
 }
 
 if(collision_c){
-	array_push(collision_layers_,global.collision_layers[? COLLISION_LAYERS.C]);
+	//array_push(collision_layers_,global.collision_layers[? COLLISION_LAYERS.C]);
+	array_push(collision_layers_,COLLISION_LAYERS.C);
 }
 
-for (var i_ = 0; i_ < count; i_++) {
-	var tilemap_ = global.collision_layers[? collision_layer];
+//TODO deal with decor tiles also, make surface on start and turn into sprite, draw at right depth!
+
+
+for (var i_ = 0; i_ < array_length(collision_layers_); i_++) {
+	var layer_   = global.collision_layers[? collision_layers_[i_]];
+	var tilemap_ = layer_tilemap_get_id(layer_);
 	
 	var tile_w_ = tilemap_get_tile_width(tilemap_);
 	var tile_h_ = tilemap_get_tile_height(tilemap_);
@@ -32,10 +39,10 @@ for (var i_ = 0; i_ < count; i_++) {
 			
 			if(!tile_get_empty(data_)){
 				//creates collision tile objects in place of each tile
-				var tile_ = instance_create_depth(x_,y_,depth,obj_collision_tile,{
+				var tile_ = instance_create_depth(x_,y_,0,obj_collision_tile,{
 					parent : id,
-					depth_layer : depth_layer,
 				})
+				tile_.collision_layer = collision_layers_[i_];
 				tile_.image_index = tile_get_index(data_);
 				
 				if(tile_get_rotate(data_)){

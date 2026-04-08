@@ -1,20 +1,20 @@
 {
   "$GMObject":"",
-  "%Name":"obj_collision",
+  "%Name":"obj_trigger_enter_leave",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_collision",
+  "name":"obj_trigger_enter_leave",
   "overriddenProperties":[],
   "parent":{
     "name":"Objects",
     "path":"folders/Objects.yy",
   },
   "parentObjectId":{
-    "name":"obj_entity",
-    "path":"objects/obj_entity/obj_entity.yy",
+    "name":"obj_trigger_hitbox",
+    "path":"objects/obj_trigger_hitbox/obj_trigger_hitbox.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -34,8 +34,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_collision",
-    "path":"sprites/spr_collision/spr_collision.yy",
+    "name":"spr_trigger_enter_leave",
+    "path":"sprites/spr_trigger_enter_leave/spr_trigger_enter_leave.yy",
   },
   "spriteMaskId":null,
   "visible":true,

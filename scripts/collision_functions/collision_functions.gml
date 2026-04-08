@@ -23,16 +23,21 @@ function collision(_x,_y,_col_type = COLLISION_TYPE.ALL){
 ///@function _tile_collision()
 ///@desc returns tile collision
 function _tile_collision(_x,_y){
-    var tile_layer_ = global.collision_layers[? collision_layer];
+    var tile_layer_ = layer_tilemap_get_id(global.collision_layers[? collision_layer]);
 	return collision_point(round(_x),round(_y),tile_layer_,true,true);
 }
 
 ///@function _inst_collision()
 ///@desc returns instance collision
 function _inst_collision(_x,_y){
-	var coll_ = collision_point(_x,_y,obj_collision,true,true);
-	if(coll_ != noone){
-		if(collision_layer == coll_.collision_layer) return coll_;
+	static coll_list_ = ds_list_create(); //TODO can i actually use static for this? i hope so
+	ds_list_clear(coll_list_);
+	var coll_count_ = collision_point_list(_x,_y,obj_collision,true,true,coll_list_,false);
+	for (var i_ = 0; i_ < coll_count_; i_++) {
+		var coll_ = coll_list_[| i_];
+		if(coll_.collision_layer == collision_layer){
+			return coll_;
+		}
 	}
 	return noone;
 }

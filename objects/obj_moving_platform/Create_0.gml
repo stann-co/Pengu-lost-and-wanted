@@ -30,3 +30,4 @@ if(info_target != -1){
 }
 
 forward = true;
+powered = false; // cycle is set to "powered" this makes the platform, go to it's target, or to default position

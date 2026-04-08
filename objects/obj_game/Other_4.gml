@@ -2,10 +2,14 @@
 global.t = 0;
 
 if(global.sidescroller){
-    
-    global.collision_layers[? COLLISION_LAYERS.A] = layer_tilemap_get_id("collision_A");
-    global.collision_layers[? COLLISION_LAYERS.B] = layer_tilemap_get_id("collision_B");
-    global.collision_layers[? COLLISION_LAYERS.C] = layer_tilemap_get_id("collision_C");
+    //global.collision_layers[? COLLISION_LAYERS.A] = layer_tilemap_get_id("collision_A");
+    //global.collision_layers[? COLLISION_LAYERS.B] = layer_tilemap_get_id("collision_B");
+    //global.collision_layers[? COLLISION_LAYERS.C] = layer_tilemap_get_id("collision_C");
+	
+	global.collision_layers[? COLLISION_LAYERS.A] = layer_get_id("collision_A");
+	global.collision_layers[? COLLISION_LAYERS.B] = layer_get_id("collision_B");
+	global.collision_layers[? COLLISION_LAYERS.C] = layer_get_id("collision_C");
+	
     set_active_collisions(COLLISION_LAYERS.A);
     
 	//error reminders

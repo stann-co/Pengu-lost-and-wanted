@@ -42,6 +42,7 @@
         "\"do once\"",
         "\"ping pong\"",
         "\"cycle rotation continue\"",
+        "\"powered\"",
       ],"multiselect":false,"name":"cycle","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"ping pong\"","varType":6,},
     {"$GMObjectProperty":"v2","%Name":"pause_duration_seconds","filters":[],"listItems":[],"multiselect":false,"name":"pause_duration_seconds","rangeEnabled":true,"rangeMax":4.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"offset_duration_seconds","filters":[],"listItems":[],"multiselect":false,"name":"offset_duration_seconds","rangeEnabled":true,"rangeMax":8.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
