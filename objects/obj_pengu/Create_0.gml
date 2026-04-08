@@ -248,6 +248,7 @@ state.add("airborne",{
         anim_speed = 1;
         image_to_ground_angle = false;
         airborne = true;
+		clear_parent();
         sliding = false;
     }
 })
@@ -448,7 +449,8 @@ state.add_child("airborne","jump", {
 		
         var up_down_ = (ground_angle > 90 && ground_angle < 270) ? -1 : 1;
         
-        y_speed = (-jump_force*up_down_) - gravity_force //subtracting gravity force cancels out gravity for one frame
+		//TODO set absolute jump force, so moving platforms don't let you jump into space
+        y_speed += (-jump_force*up_down_) - gravity_force //subtracting gravity force cancels out gravity for one frame
         x_speed -= jump_force *dsin(ground_angle) * 0.5;
         
         if(x_speed != 0) facing = sign(x_speed);
@@ -879,6 +881,7 @@ state.add_child("prone","dash_air", {
     enter: function() {  
         state.inherit();
         airborne = true;
+		clear_parent();
         image_to_ground_angle = false;
         
         sprite_index = spr_pengu_dash;

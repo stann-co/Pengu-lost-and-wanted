@@ -218,7 +218,6 @@ function sensor(_vec_start,_dir,_extention_dist,_regression_dist = _extention_di
 		}
 		rotation_ += info_.inst.image_angle;
 		info_.side = noone;
-		info_.inst = noone;
 		
 		
 	} else { //Instance collision

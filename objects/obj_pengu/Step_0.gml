@@ -288,6 +288,12 @@ if(CAN_MOVE){
                         if (sensor_trigger(updown_sensor_)){
 							set_x(x+updown_sensor_.x);
 							set_y(y+updown_sensor_.y);
+							
+							if instance_exists(updown_sensor_.inst){
+								set_parent(updown_sensor_.inst);
+							} else {
+								clear_parent();
+							}
                             
                             ground_angle = updown_sensor_.angle;	
                             
@@ -305,6 +311,7 @@ if(CAN_MOVE){
                         
                     } else if(!airborne){ //going off ledges
                         airborne = true;
+						clear_parent();
                         
                         if(sliding){ //when sliding off a surface, you are angled
                             if(ground_spd > 0){

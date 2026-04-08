@@ -1,4 +1,6 @@
 /// @description general base object, deals with which layer entity is on, and parent child relations
+x_speed = 0;
+y_speed = 0;
 
 #region collision layer and depth
 switch (depth_layer) {
@@ -61,6 +63,8 @@ set_parent = function(_entity){
 
 clear_parent = function(){
 	if(parent != noone){
+		x_speed+= parent.x_speed;
+		y_speed+= parent.y_speed;
 		parent.remove_child(id);
 	}
 }
@@ -72,11 +76,11 @@ set_x = function(_val){
 	var size_ = array_length(children);
 	if (size_ > 0){
 		var x_prev_ = x;
-		var delta_ = _val - x_prev_;
+		x_speed = _val - x_prev_;
 		x = _val;
 		for (var i_ = 0; i_ < array_length(children); i_++) {
 			var child_ = children[i_];
-			child_.set_x(child_.x+delta_);
+			child_.set_x(child_.x+x_speed);
 		}
 	} else {
 		x = _val;
@@ -88,11 +92,11 @@ set_y = function(_val){
 	var size_ = array_length(children);
 	if (size_ > 0){
 		var y_prev_ = y;
-		var delta_ = _val - y_prev_;
+		y_speed = _val - y_prev_;
 		y = _val;
 		for (var i_ = 0; i_ < array_length(children); i_++) {
 			var child_ = children[i_];
-			child_.set_y(child_.y+delta_);
+			child_.set_y(child_.y+y_speed);
 		}
 	} else {
 		y = _val;
