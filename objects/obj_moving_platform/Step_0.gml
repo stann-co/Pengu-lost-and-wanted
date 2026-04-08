@@ -71,8 +71,7 @@ if(CAN_MOVE){
 		
 		if(end_rotation != 0){
 			rotation = lerp(start_rot_,end_rot_,val_);
-			//TODO add set_angle from obj_entity
-			image_angle = rotation mod 360;
+			set_angle(rotation mod 360);
 		}
 	}
 }

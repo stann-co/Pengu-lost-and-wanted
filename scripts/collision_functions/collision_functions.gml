@@ -113,16 +113,16 @@ function sensor(_vec_start,_dir,_extention_dist,_regression_dist = _extention_di
 			var vec_rot_check_ = vec_sensor_.move_toward(_vec_start,delta_);
 			
 			coll_ = collision(x+vec_rot_check_.x,y+vec_rot_check_.y,col_type_);
-			angle = tile_rotation(x+vec_rot_check_.x,y+vec_rot_check_.y,coll_);
+			//angle = tile_rotation(x+vec_rot_check_.x,y+vec_rot_check_.y,coll_);
 			
 			info_ = {
 				inst : coll_,
-				angle : angle,
 				vec_sensor_ : vec_sensor_
+				//TODO should it include collision type? it easily could
 			}
 		} else 
 		return noone;
-	} else {			//extension - outside collision
+	} else { //extension - outside collision
 		
 		var vec_end_ = _vec_start.add(vec_ext_);
 		if(tile_collision_line( x+_vec_start.x , y+_vec_start.y , x+vec_end_.x , y+vec_end_.y ,col_type_, delta_ ) != noone){ //checks if there's filled space to extend towards
@@ -135,14 +135,13 @@ function sensor(_vec_start,_dir,_extention_dist,_regression_dist = _extention_di
 			coll_ = collision(x+vec_sensor_.x,y+vec_sensor_.y,col_type_);
 			
 			//TODO Should angle even be gotten here in the first place, and not just further down in code?
-			angle = tile_rotation(x+vec_sensor_.x,y+vec_sensor_.y,coll_);
+			//angle = tile_rotation(x+vec_sensor_.x,y+vec_sensor_.y,coll_);
 			
 			//when the solid space has been found it regresses back one unit to be next to it
 			vec_sensor_ = vec_sensor_.move_toward(_vec_start,delta_);
 			
 			info_ = {
 				inst : coll_,
-				angle : angle,
 				vec_sensor_ : vec_sensor_
 			}
 			
@@ -161,42 +160,136 @@ function sensor(_vec_start,_dir,_extention_dist,_regression_dist = _extention_di
 	info_.x_change = 0;	
 	info_.y_change = 0;
 	
+	#region figure out tile/instance rotations
+	var inst_ = info_.inst;
+	var x_ = x+vec_sensor_.x;
+	var y_ = y+vec_sensor_.y;
+	var rotation_ = 0;
 	
-	if(instance_exists(info_.inst) && info_.inst.object_index != obj_collision_tile){ 
-		//if colliding with a regular collision instance, this ensure we know which side was collided with, even with rotation
-		var x_ = round(x+_vec_start.x+info_.x);
-		var y_ = round(y+_vec_start.y+info_.y);
+	if(!instance_exists(inst_)){
+		//Tiles
+		var mx_ = tilemap_get_cell_x_at_pixel(inst_, round(x_), round(y_));
+		var my_ = tilemap_get_cell_y_at_pixel(inst_, round(x_), round(y_));
+		var tile_ = tilemap_get(inst_, mx_, my_);
+		var tile_index_ = tile_get_index(tile_);
 		
+		if(tile_index_ > array_length(global.tile_angles)-1 ) return 0;
+		
+		//Get's the tile_'s rotation_, which has been pre-set in global.tile_angles
+		rotation_ = (global.tile_angles[tile_index_])
+		
+		if(rotation_ != 360){ //360 is a special number for solid blocks, so it doesn't need to get rotated or flipped
+			//rotates and flips the rotation_ if the tile_ is flipped or rotated
+			if (tile_get_rotate(tile_)){
+				rotation_ = rotation_ - 90;
+				if (tile_get_mirror(tile_))	rotation_ = -(rotation_+180);	
+				if (tile_get_flip(tile_))	rotation_ = -rotation_;
+			} else {
+				if (tile_get_mirror(tile_))	rotation_ = -rotation_;
+				if (tile_get_flip(tile_))	rotation_ = -(rotation_+180);
+			}
+		} else {
+			rotation_ = snap_to_90(_dir);
+		}
+		info_.side = noone;
+		info_.inst = noone;
+		
+	} else if (info_.inst.object_index == obj_collision_tile){
+		//Instance Tiles (tiles that are turned into objects)
+		rotation_ = (global.tile_angles[inst_.image_index]);
+		if(rotation_ != 360){
+			if (inst_.image_xscale != 1) rotation_ = -rotation_;
+			if (inst_.image_yscale != 1) rotation_ = -(rotation_+180);
+		} else {
+			switch (find_side(x+_vec_start.x+info_.x,y+_vec_start.y+info_.y,info_.inst)) {
+				case SIDES.BOTTOM:
+					rotation_ = 180;
+					break
+				case SIDES.LEFT:
+					rotation_ = 90;
+					break
+				case SIDES.RIGHT:
+					rotation_ = 270;
+					break
+				case SIDES.TOP:
+					rotation_ = 0;
+					break
+			}
+		}
+		rotation_ += info_.inst.image_angle;
+		info_.side = noone;
+		info_.inst = noone;
+		
+		
+	} else { //Instance collision
 		//sensors origin is used to check which side of the instance that's collided with, left right top bottom
-		switch (find_side(x_,y_,info_.inst)) {
+		switch (find_side(x+_vec_start.x+info_.x,y+_vec_start.y+info_.y,info_.inst)) {
 			case SIDES.BOTTOM:
-				info_.angle = 180;
+				rotation_ = 180;
 				info_.side = SIDES.BOTTOM
 				break
 			case SIDES.LEFT:
-				info_.angle = 90;
+				rotation_ = 90;
 				info_.side = SIDES.LEFT
 				break
 			case SIDES.RIGHT:
-				info_.angle = 270;
+				rotation_ = 270;
 				info_.side = SIDES.RIGHT
 				break
 			case SIDES.TOP:
-				info_.angle = 0;
+				rotation_ = 0;
 				info_.side = SIDES.TOP
 				break
 		}
-		
-		if(info_.angle < 0) info_.angle+=360;
-		else if(info_.angle >= 360) info_.angle-=360;
-		
-	} else{
-		info_.inst = noone;
-		if(info_.angle == 360){
-			info_.angle = snap_to_90(_dir);
-		}
-		info_.side = noone;
-	}	
+		rotation_ += info_.inst.image_angle;
+	}
+	
+	//ensures the rotation_ is a positive number
+	if(rotation_ < 0) rotation_ += 360;
+	else if (rotation_ > 360) rotation_ -= 360;
+	info_.angle = rotation_;
+	
+	#endregion
+	
+	
+	//if(instance_exists(info_.inst) && info_.inst.object_index != obj_collision_tile){ 
+	//	//if colliding with a regular collision instance, this ensure we know which side was collided with, even with rotation
+	//	var x_ = round(x+_vec_start.x+info_.x);
+	//	var y_ = round(y+_vec_start.y+info_.y);
+	//	
+	//	//sensors origin is used to check which side of the instance that's collided with, left right top bottom
+	//	switch (find_side(x_,y_,info_.inst)) {
+	//		case SIDES.BOTTOM:
+	//			info_.angle = 180;
+	//			info_.side = SIDES.BOTTOM
+	//			break
+	//		case SIDES.LEFT:
+	//			info_.angle = 90;
+	//			info_.side = SIDES.LEFT
+	//			break
+	//		case SIDES.RIGHT:
+	//			info_.angle = 270;
+	//			info_.side = SIDES.RIGHT
+	//			break
+	//		case SIDES.TOP:
+	//			info_.angle = 0;
+	//			info_.side = SIDES.TOP
+	//			break
+	//	}
+	//	
+	//	info_.angle += info_.inst.image_angle;
+	//	
+	//	if(info_.angle < 0) info_.angle+=360;
+	//	else if(info_.angle >= 360) info_.angle-=360;
+	//	
+	//} else{
+	//	//info_.angle = tile_rotation(x+info_.vec_sensor_.x,y+info_.vec_sensor_.y,info_.inst);
+	//	info_.inst = noone;
+	//	if(info_.angle == 360){
+	//		info_.angle = snap_to_90(_dir);
+	//	} 
+	//	info_.side = noone;
+	//}  
 
 	return info_;	
 }
@@ -215,6 +308,7 @@ function draw_sensor(_x,_y,_vec_start,_dir,_distance){
 	draw_line(_x+_vec_start.x,_y+_vec_start.y,_x+vec_dist_.x,_y+vec_dist_.y);
 }
 
+//TODO remove tile_rotation function, doing it all within collision func instead
 ///@function tile_rotation()
 ///@desc gets rotation_ value from a tile_ using global.tile_angles
 function tile_rotation(_x,_y,_inst){

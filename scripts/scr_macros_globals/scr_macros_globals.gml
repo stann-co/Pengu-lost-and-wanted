@@ -137,6 +137,7 @@ enum COLLISION_LAYERS {
 	C,
 }
 
+//TODO consider just using simple array instead of ds_map?
 global.depths = ds_map_create();
 global.depths[? COLLISION_LAYERS.A] = 300;
 global.depths[? COLLISION_LAYERS.B] = 400;

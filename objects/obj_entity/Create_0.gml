@@ -99,6 +99,24 @@ set_y = function(_val){
 	}
 }
 
-//TODO add rotate function
+///@desc set image_angle, and move/rotate all children accordingly
+set_angle = function(_angle){
+	var size_ = array_length(children);
+	if (size_ > 0){
+		var angle_prev_ = image_angle;
+		var delta_ = _angle - angle_prev_;
+		image_angle = _angle;
+		for (var i_ = 0; i_ < array_length(children); i_++) {
+			var child_ = children[i_];
+			var vec_ = new Vector2(child_.x-x,child_.y-y);
+			vec_ = vec_.rotated(-delta_);
+			child_.set_x(x+vec_.x);
+			child_.set_y(y+vec_.y);
+			child_.set_angle(child_.image_angle+delta_);
+		}
+	} else {
+		image_angle = _angle;
+	}
+}
 
 #endregion
