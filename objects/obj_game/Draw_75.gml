@@ -1,12 +1,12 @@
 /// @description
 if(global.gui_draw){
+	draw_set_font(global.gui_font);
     state.draw();
     
     draw_set_halign(fa_left)
     
     if(save_text) draw_text(50,50,"saved position"); 
     
-    draw_set_font(global.gui_font);
     
     if(!MAIN_MENUS){	
     	var score_text_ = global.score	

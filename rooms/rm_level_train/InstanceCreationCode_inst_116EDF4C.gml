@@ -5,13 +5,7 @@ waves = [
 	[
 		new EnemyWaveSpawn(obj_combattest,left_side_.x,left_side_.y,left_side_.x+128,left_side_.y),
 		new EnemyWaveSpawn(obj_combattest,right_side_.x,right_side_.y,right_side_.x-128,right_side_.y),
-		1, //second delay
-		new EnemyWaveSpawn(obj_combattest,left_side_.x,left_side_.y,left_side_.x+128,left_side_.y),
-		new EnemyWaveSpawn(obj_combattest,right_side_.x,right_side_.y,right_side_.x-128,right_side_.y),
 	], [
-		new EnemyWaveSpawn(obj_combattest,left_side_.x,left_side_.y,left_side_.x+128,left_side_.y),
-		new EnemyWaveSpawn(obj_combattest,right_side_.x,right_side_.y,right_side_.x-128,right_side_.y),
-		1, //second delay
 		new EnemyWaveSpawn(obj_combattest,left_side_.x,left_side_.y,left_side_.x+128,left_side_.y),
 		new EnemyWaveSpawn(obj_combattest,right_side_.x,right_side_.y,right_side_.x-128,right_side_.y),
 	],

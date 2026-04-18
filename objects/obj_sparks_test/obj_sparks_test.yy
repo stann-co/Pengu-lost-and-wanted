@@ -14,8 +14,8 @@
     "path":"folders/Objects/tests.yy",
   },
   "parentObjectId":{
-    "name":"obj_moving_platform",
-    "path":"objects/obj_moving_platform/obj_moving_platform.yy",
+    "name":"obj_moving",
+    "path":"objects/obj_moving/obj_moving.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

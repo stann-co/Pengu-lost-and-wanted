@@ -31,6 +31,7 @@ air_horizontal_top_speed = 4;
 air_vertical_top_speed = 7;
 
 jump_force = 6.3;
+jump_absolute_force = 9;
 jump_release_force = 4;
 double_jump_force = 4;
 double_jump_count = 0;
@@ -451,6 +452,7 @@ state.add_child("airborne","jump", {
         
 		//TODO set absolute jump force, so moving platforms don't let you jump into space
         y_speed += (-jump_force*up_down_) - gravity_force //subtracting gravity force cancels out gravity for one frame
+		y_speed = max(-jump_absolute_force,y_speed);
         x_speed -= jump_force *dsin(ground_angle) * 0.5;
         
         if(x_speed != 0) facing = sign(x_speed);

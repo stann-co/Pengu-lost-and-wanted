@@ -166,17 +166,15 @@ function sensor(_vec_start,_dir,_extention_dist,_regression_dist = _extention_di
 	var y_ = y+vec_sensor_.y;
 	var rotation_ = 0;
 	
+	
+	
 	if(!instance_exists(inst_)){
 		//Tiles
-		var mx_ = tilemap_get_cell_x_at_pixel(inst_, round(x_), round(y_));
-		var my_ = tilemap_get_cell_y_at_pixel(inst_, round(x_), round(y_));
-		var tile_ = tilemap_get(inst_, mx_, my_);
+		var tile_ = tilemap_get_at_pixel(inst_,round(x_),round(y_)); //TODO for some reason, colliding with tile 1 always returns tile 0. I do not know why
 		var tile_index_ = tile_get_index(tile_);
 		
-		if(tile_index_ > array_length(global.tile_angles)-1 ) return 0;
-		
 		//Get's the tile_'s rotation_, which has been pre-set in global.tile_angles
-		rotation_ = (global.tile_angles[tile_index_])
+		rotation_ = (global.tile_angles[tile_index_]);
 		
 		if(rotation_ != 360){ //360 is a special number for solid blocks, so it doesn't need to get rotated or flipped
 			//rotates and flips the rotation_ if the tile_ is flipped or rotated
@@ -250,46 +248,6 @@ function sensor(_vec_start,_dir,_extention_dist,_regression_dist = _extention_di
 	
 	#endregion
 	
-	
-	//if(instance_exists(info_.inst) && info_.inst.object_index != obj_collision_tile){ 
-	//	//if colliding with a regular collision instance, this ensure we know which side was collided with, even with rotation
-	//	var x_ = round(x+_vec_start.x+info_.x);
-	//	var y_ = round(y+_vec_start.y+info_.y);
-	//	
-	//	//sensors origin is used to check which side of the instance that's collided with, left right top bottom
-	//	switch (find_side(x_,y_,info_.inst)) {
-	//		case SIDES.BOTTOM:
-	//			info_.angle = 180;
-	//			info_.side = SIDES.BOTTOM
-	//			break
-	//		case SIDES.LEFT:
-	//			info_.angle = 90;
-	//			info_.side = SIDES.LEFT
-	//			break
-	//		case SIDES.RIGHT:
-	//			info_.angle = 270;
-	//			info_.side = SIDES.RIGHT
-	//			break
-	//		case SIDES.TOP:
-	//			info_.angle = 0;
-	//			info_.side = SIDES.TOP
-	//			break
-	//	}
-	//	
-	//	info_.angle += info_.inst.image_angle;
-	//	
-	//	if(info_.angle < 0) info_.angle+=360;
-	//	else if(info_.angle >= 360) info_.angle-=360;
-	//	
-	//} else{
-	//	//info_.angle = tile_rotation(x+info_.vec_sensor_.x,y+info_.vec_sensor_.y,info_.inst);
-	//	info_.inst = noone;
-	//	if(info_.angle == 360){
-	//		info_.angle = snap_to_90(_dir);
-	//	} 
-	//	info_.side = noone;
-	//}  
-
 	return info_;	
 }
 

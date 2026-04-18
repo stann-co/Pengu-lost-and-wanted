@@ -102,7 +102,7 @@ global.t_always = 0; //global timer that keeps going even when there's a freeze 
 //The angles from each collision tile
 //360 is for filled blocks, which top angle could be any direction
 global.tile_angles = [
-  0,360,  0,  0,  0,  0,  0, 22, 22,
+  360,360,  0,  0,  0,  0,  0, 22, 22,
  22,  7, 15, 15,  7, 45, 45, 15, 30,
  30, 15, 45, 15, 45, 22,  7, 37, 22,
   7, 45, 30, 15,  7, 45, 37, 30, 15,
