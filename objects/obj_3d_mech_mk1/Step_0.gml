@@ -55,27 +55,9 @@ if (CONTROLLED){
 
 state.step()
 
-roty = lerp(roty,-y_rot_amount*facing,0.03);
+roty = lerp(roty,-y_rot_amount*facing,0.05);
 
 #region animation blend
-
-////Hatch
-////toggle hatch
-//if(keyboard_check_pressed(ord("Q"))){
-	//hatch_open = !hatch_open;
-	//show_debug_message("hatch toggle!");
-//}
-//
-//if(hatch_open){
-	//if(hatch_t < hatch_anim_length) hatch_t += 1/60;
-//} else{
-	//if(hatch_t > 0) hatch_t -= 1/60;
-//}
-
-//var anim_hatch_ = skinned_mesh.skin.animate(hatch_t, "hatch");
-
-
-
 
 t += (1/60);
 if(t > t_max) t = 0;
@@ -83,12 +65,47 @@ if(t > t_max) t = 0;
 var walking_  = skinned_mesh.skin.animate(t,"walk");
 var standing_ = skinned_mesh.skin.animate(t,"stand");
 
-walking_ = skinned_mesh.blendAnimation(standing_,walking_,abs(ground_spd)/top_speed);
+var pose_ = skinned_mesh.blendAnimation(standing_,walking_,abs(ground_spd)/top_speed);
 
 //var mask_ = ["DEF-hatch","DEF-ear.L","DEF-ear.R"];
 //anim_hatch_ = skinned_mesh.maskAnimation(anim_hatch_,mask_,true);
 //var blended_ = skinned_mesh.blendAnimation(walking_,anim_hatch_,test);
 
-skinned_mesh.animateBlended(walking_);
+//var bone_ = skinned_mesh.getBoneIndex("DEF-foot.R");
+
+
+skinned_mesh.animateBlended(pose_);
 
 #endregion
+
+#region legs IK
+
+//var foot_pos = skinned_mesh.getBoneWorldPosition(bone_);
+//
+//skinned_mesh.setBoneIk(pose_,"DEF-thigh.R","DEF-leg.R","DEF-foot.R",foot_pos);
+//
+//skinned_mesh.animateBlended(pose_);
+
+#endregion
+
+var root_ = skinned_mesh.getBoneIndex("root");
+
+var chest_ = skinned_mesh.getBoneIndex("DEF-chest");
+
+var thigh_ = skinned_mesh.getBoneIndex("DEF-thigh.R");
+var leg_ = skinned_mesh.getBoneIndex("DEF-leg.R");
+var foot_ = skinned_mesh.getBoneIndex("DEF-foot.R");
+
+//pose_ = skinned_mesh.offsetBoneEuler(pose_,thigh_,-rotate);
+//pose_ = skinned_mesh.offsetBoneEuler(pose_,leg_,rotate);
+
+//rotate foot to match slope
+//pose_ = skinned_mesh.offsetBoneWorldEuler(pose_,foot_,0,0,rotate);
+
+//pose_ = skinned_mesh.offsetBoneEuler(pose_,root_,rotate);
+
+skinned_mesh.animateBlended(pose_);
+
+
+
+

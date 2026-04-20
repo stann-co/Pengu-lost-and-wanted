@@ -175,7 +175,27 @@ function gltfSkinnedMesh(skinName) constructor {
 		}
 		
 		return self;
-	};
+	}; 
+	
+	static updateBone = function(_boneIndex, _bonePose, _out=poseMatrices){ 
+		var t = _bonePose.toMatrix();
+
+		array_copy(localTransform[_boneIndex], 0, t, 0, 16);
+		
+		var parentNode = data[_boneIndex][0];
+		if (is_undefined(parentNode)) {
+			array_copy(modelTransform[_boneIndex], 0, localTransform[_boneIndex], 0, 16);
+		}
+		else {
+			__gltfMulMatsResult(modelTransform[parentNode], localTransform[_boneIndex], tempResult);
+			array_copy(modelTransform[_boneIndex], 0, tempResult, 0, 16);
+		}
+		
+		__gltfMulMatsResult(modelTransform[_boneIndex], data[_boneIndex][2], tempResult);
+		array_copy(poseMatrices, _boneIndex*16, tempResult, 0, 16);
+		
+		return self;
+	}
 	
 	
 	/**
@@ -199,6 +219,14 @@ function gltfSkinnedMesh(skinName) constructor {
 		}
 		shader_reset();
 	};
+	
+	static drawBoneNames = function() {
+		for (var i = 0; i < skin.bones; i++) {
+			var p = getBoneWorldPosition(i);
+			draw_text_outline(p.x,p.y,skin.boneNames[i]);
+			//draw_text(p.x,p.y,skin.boneNames[i]);
+		}
+	}
 	
 	static setTexture = function(ind, tex, uvs=undefined) {
 		texture[ind] = tex;
@@ -237,12 +265,26 @@ function gltfSkinnedMesh(skinName) constructor {
 	};
 	
 	/**
+	 * poseTriple T,R,S Array of the default rest pose of all bones
+	 * @return {Array} of poseTriples
+	 */
+	static getRestPose = function(){
+		var n = skin.bones;
+		var result = array_create(n);
+		for (var i = 0; i < n; i++) {
+			result[i] = getBoneRestPose(i);
+		}
+		return result;
+	}
+	
+	/**
 	 * poseTriple T,R,S of the default rest pose of bone
 	 * @param {real} boneIndex
 	 * @return {Struct.gltfPoseTriple}
 	 */
 	static getBoneRestPose = function(boneIndex) {
-		return skin.restPoses[boneIndex];
+		var pose = skin.restPoses[boneIndex];
+		return new gltfPoseTriple(pose.T,pose.R,pose.S);
 	};
 	
 	/// local = animation * restpose
@@ -255,13 +297,145 @@ function gltfSkinnedMesh(skinName) constructor {
 		return modelTransform[boneIndex];
 	};
 	
+	/// gets position of bone in world space (relative to parent)
+	/// assumes update() has been called after changing (position, scale, rotation).(x, y, z)
+	static getBonePosition = function(boneIndex){
+		
+	}
+	
 	/// this gets the position of a bone in world space
 	/// assumes update() has been called after changing (position, scale, rotation).(x, y, z)
-	static getBonePosition = function(bName) {
-		var bInd = getBoneIndex(bName);
-		var m = modelTransform[bInd];
+	static getBoneWorldPosition = function(boneIndex) {
+		var m = modelTransform[boneIndex];
 		return new __gltfVec3(m[12], m[13], m[14]);
 	};
+	
+	///get bone quaternion angels in world space
+	/// assumes update() has been called after changing (position, scale, rotation).(x, y, z)
+	static getBoneWorldQuaternion = function(boneIndex) {
+		var m = modelTransform[boneIndex];
+		return __gltfMatrixToQuaternion(m);
+	}
+	
+	///get bone euler angles in world space
+	/// assumes update() has been called after changing (position, scale, rotation).(x, y, z)
+	static getBoneWorldEuler = function(boneIndex){
+		return __gltfQuaternionToAngle(getBoneWorldQuaternion(boneIndex));
+	}
+	
+	/// set bone euler angles in local space
+	/// must call call animateBlended with resulting pose
+	static setBoneEuler = function(pose,boneIndex,X = undefined, Y = undefined, Z = undefined){
+		var bone = pose[boneIndex];
+		var angles = __gltfQuaternionToAngle(bone.R);
+		angles[0] = X ?? angles[0];
+		angles[1] = Y ?? angles[1];
+		angles[2] = Z ?? angles[2];
+		__gltfAngleToQuaternion(angles[0],angles[1],angles[2],bone.R);
+		return pose;
+	}
+	
+	///set bone euler angels in world space
+	/// assumes update() has been called after changing (position, scale, rotation).(x, y, z)
+	/// must call call animateBlended with resulting pose
+	static offsetBoneWorldEuler = function(pose,boneIndex,X = 0, Y = 0, Z = 0){
+		var bone = pose[boneIndex];
+
+		var parent = getBoneParent(boneIndex);
+		var parent_world_quat = (parent != undefined) ? getBoneWorldQuaternion(parent) : [0,0,0,1]; 
+		
+		var world_quat_offset = __gltfAngleToQuaternion(X,Y,Z);
+		var old_world_quat = getBoneWorldQuaternion(boneIndex);
+		var new_world_quat = __gltfQuaternionMultiply(world_quat_offset,old_world_quat);
+		 
+		__gltfQuaternionMultiply(__gltfQuaternionInverse(parent_world_quat), new_world_quat, bone.R)
+		
+		return pose;
+	}
+	
+	///set bone euler angels in world space
+	/// must call call animateBlended with resulting pose
+	static offsetBoneEuler = function(pose,boneIndex,X = 0, Y = 0, Z = 0){
+		var bone = pose[boneIndex];
+		
+		var local_quat = bone.R;
+		var quat_offset = __gltfAngleToQuaternion(X,Y,Z);
+		
+		__gltfQuaternionMultiply(local_quat,quat_offset,bone.R);
+		
+		return pose;
+	}
+	
+	static setBoneIk = function(pose,boneA,boneB,boneC,targetVec,pole = new __gltfVec3(0,0,1)) {
+		var aIndex = getBoneIndex(boneA);
+		var bIndex = getBoneIndex(boneB);
+		var cIndex = getBoneIndex(boneC);
+		
+		//positions
+		var A = getBoneWorldPosition(aIndex);
+		var B = getBoneWorldPosition(bIndex);
+		var C = getBoneWorldPosition(cIndex);
+		
+		var L1 = __gltfVecSubtract(B,A).length();
+		var L2 = __gltfVecSubtract(C,B).length();
+		
+		//direction to target
+		var AT = __gltfVecSubtract(targetVec,A);
+		var dist = AT.length();
+		var dir = AT.normalise();
+		
+		//clamp distance
+		//do later
+		
+		//law of cosines
+	    var cosKnee = clamp((sqr(L1) + sqr(L2) - sqr(dist)) / (2.0 * L1 * L2), -1.0, 1.0);
+	    var kneeAngle = arccos(cosKnee);
+	
+	    var cosHip = clamp((sqr(dist) + sqr(L1) - sqr(L2)) / (2.0 * dist * L1), -1.0, 1.0);
+	    var hipAngle = arccos(cosHip);
+		
+		//build bend plane using pole
+		var poleDir = __gltfVecSubtract(pole,A).normalise();
+		
+		var axis = __gltfVecCross(dir,poleDir).normalise();
+		var bendDir = __gltfVecCross(axis,dir).normalise();
+		
+		var newB = __gltfVecAddSeries(
+			A,
+			__gltfVecScale(dir, cos(hipAngle) * L1),
+			__gltfVecScale(bendDir, sin(hipAngle) * L1)
+		);
+		
+		var newC = targetVec;
+		
+		//compute rotations
+		
+		// Current directions (in world space)
+	    var thighDirCurrent = __gltfVecSubtract(B, A).normalise();
+	    var calfDirCurrent  = __gltfVecSubtract(C, B).normalise();
+	
+	    // Desired directions
+	    var thighDirTarget = __gltfVecSubtract(newB, A).normalise();
+	    var calfDirTarget  = __gltfVecSubtract(newC, newB).normalise();
+		
+		// World rotations
+		var thighWorldRotDelta = __gltfQuaternionVectorAngle(thighDirCurrent,thighDirTarget);
+		//quat thighWorldRot = quaternion_mul(thighWorldRotDelta, thigh.worldRot);
+		//
+		//quat calfWorldRotDelta = quaternion_between_vectors(calfDirCurrent, calfDirTarget);
+	    //quat calfWorldRot = quaternion_mul(calfWorldRotDelta, knee.worldRot);
+	//
+	    //// --- Convert to local space ---
+	    //thigh.localRot = quaternion_mul(
+	        //quaternion_inverse(thigh.parentWorldRot),
+	        //thighWorldRot
+	    //);
+	//
+	    //knee.localRot = quaternion_mul(
+	        //quaternion_inverse(thighWorldRot),
+	        //cal
+		
+	}
 	
 	/// placeholder: does not currently draw "leaf" bones because it doesnt display the bones themselves,
 	/// it only draws lines from child to parent locations
@@ -438,6 +612,39 @@ function gltfPoseTriple(_t=undefined, _r=undefined, _s=undefined) constructor {
 	// u can get model rotations in euler from the skinnedMesh class
 	if (!is_undefined(R) && array_length(R) == 3) {
 		__gltfAngleToQuaternion(R[0], R[1], R[2], R);
+	}
+	
+	static worldPos = function(){
+		
+	}
+	
+	static modelPos = function(){
+		if (_fromAnimation) {
+			// animation data has all the information we need
+			array_copy(localTransform[_boneIndex], 0, t, 0, 16);
+		}
+		else {
+			// 
+			__gltfMulMatsResult(data[_boneIndex][1], t, tempResult);
+			array_copy(localTransform[_boneIndex], 0, tempResult, 0, 16);
+		}
+		
+		//TODO don't need to change this, when updating indvidual bone right?
+		// root node never has a parent
+		//array_copy(modelTransform[0], 0, localTransform[0], 0, 16);
+		
+		// make a new base model transform from its position, rotation etc
+		//var posTransform = matrix_build(position.x, position.y, position.z, rotation.x, rotation.y+180, rotation.z+180, scale.x, scale.y, scale.z);
+		//__gltfMulMatsResult(modelTransform[0], posTransform, modelTransform[0]);
+		
+		var parentNode = data[_boneIndex][0];
+		if (is_undefined(parentNode)) {
+			array_copy(modelTransform[_boneIndex], 0, localTransform[_boneIndex], 0, 16);
+		}
+		else {
+			__gltfMulMatsResult(modelTransform[parentNode], localTransform[_boneIndex], tempResult);
+			array_copy(modelTransform[_boneIndex], 0, tempResult, 0, 16);
+		}
 	}
 	
 	/// T0,R0,S0 inputs are fallback values if any of the pose properties are undefined,

@@ -114,6 +114,24 @@ function __gltfVecSubtract(a, b) {
 	return new __gltfVec4(a.x-b.x, a.y-b.y, a.z-b.z, a.w-b.w);
 }
 
+/// cross product of two vectors and return result as new vector
+function __gltfVecCross(a,b){
+	return new __gltfVec3(
+		a.y * b.z - a.z * b.y,
+		a.z * b.x - a.x * b.z,
+		a.x * b.y - a.y * b.x
+	)
+}
+
+function __gltfVecScale(v,scale){
+	return new __gltfVec4(
+		v.x*scale,
+		v.y*scale,
+		v.z*scale,
+		v.w*scale
+	);
+}
+
 /// returns lowest value of a vectors x,y,z,w
 function __gltfVecComponentMin(a, b) {
 	gml_pragma("forceinline");
@@ -168,7 +186,7 @@ function __gltfMatWrite(m, row, col, value) {
 /// return a column of a matrix as a vector
 function __gltfMatReadColumn(m, col) {
 	gml_pragma("forceinline");
-	return new __gltfVec4(gltfMatRead(m, 0, col), gltfMatRead(m, 1, col), gltfMatRead(m, 2, col), gltfMatRead(m, 3, col));
+	return new __gltfVec4(__gltfMatRead(m, 0, col), __gltfMatRead(m, 1, col), __gltfMatRead(m, 2, col), __gltfMatRead(m, 3, col));
 }
 
 /// write a column of a matrix with a vector, doing nothing if the vector is undefined
@@ -251,6 +269,76 @@ function __gltfMulScalarVec(s, v) {
 }
 
 #region https://github.com/callmeEthan/Gamemaker_quaternion/blob/main/scripts/Quaternion/Quaternion.gml
+
+/// @function					quaternion_vector_angle(v0, v1, array=array_create(4))
+/// @description				Returns the rotation unit between two directional vectors.
+/// @param	{Vector<Real>}	A	The first vector
+///	@param	{Vector<Real>}	B	The second vector
+/// @return	{Array<Real>}		The XYZW quaternion rotation from one of the vectors to the other.
+function __gltfQuaternionVectorAngle(A, B, array=array_create(4))
+{
+	
+	var a = A.normalise();
+	var b = B.normalise();
+	
+	var d = dot_product_3d(a.x, a.y, a.z, b.x, b.y, b.z);
+	
+	if (d > 0.9999)
+		array = [0,0,0,1];
+        return array;
+	
+    if (d < -0.9999)
+    {
+        var axis = __gltfVecCross(a, new __gltfVec3(1,0,0));
+        if (axis.length() < 0.0001){
+            axis = __gltfVecCross(a, new __gltfVec3(0,1,0));
+		}
+		
+        axis = axis.normalise();
+		array = [axis.x, axis.y, axis.z, 0]; 
+        return array;
+    }
+	
+    var c = __gltfVecCross(a, b).normalise();
+	
+	array = [
+		c.x,
+		c.y,
+		c.z,
+		1 + d
+	]; 
+	
+	return array;
+}
+
+/// @function		__gltfQuaternionInverse(qa, array)
+/// @description	Invert the quaternion
+/// @param	{Array<Real>}	qa	The quaternion to invert
+function __gltfQuaternionInverse(qa, array=array_create(4)){
+	array[@0] = -qa[0];
+	array[@1] = -qa[1];
+	array[@2] = -qa[2];
+	array[@3] = qa[3];
+	
+	return array;
+}
+
+/// @function		__gltfQuaternionMultiply(qa, qb, array)
+/// @description	multiply quaternions together
+/// @param	{Array<Real>}	qa		The quaternion to multiply
+/// @param	{Array<Real>}	qb		The quaternion to multiply
+/// @param	{Array<Real>}	[array]	Optional pass-by-reference output array
+function __gltfQuaternionMultiply(qa, qb, array=array_create(4)) {
+    var qxa = qa[0], qya = qa[1], qza = qa[2], qwa = qa[3];
+    var qxb = qb[0], qyb = qb[1], qzb = qb[2], qwb = qb[3];
+    
+    array[@0] = qwa*qxb + qxa*qwb + qya*qzb - qza*qyb;
+    array[@1] = qwa*qyb - qxa*qzb + qya*qwb + qza*qxb;
+    array[@2] = qwa*qzb + qxa*qyb - qya*qxb + qza*qwb;
+    array[@3] = qwa*qwb - qxa*qxb - qya*qyb - qza*qzb;
+    
+    return array;
+}
 
 /// @function		__gltfQuaternionSlerp(qa, qb, amount, array)
 /// @description	Lerp the quaternions using spherical linear interpolation. See comments for details.

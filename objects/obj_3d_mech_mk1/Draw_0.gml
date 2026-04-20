@@ -8,6 +8,9 @@ skinned_mesh.rotation.y = roty;
 skinned_mesh.setScale(SCALE_3D);
 skinned_mesh.draw();
 
+//skinned_mesh.ikTransform("")
+
+
 
 //gltfDrawTransformed3D(x,y,0,0,roty,0,SCALE_3D,function(){
 //	skinned_mesh.draw();	
@@ -16,6 +19,8 @@ skinned_mesh.draw();
 gpu_set_ztestenable(false);
 gpu_set_zwriteenable(false);
 
+draw_set_font(f_debug);
+skinned_mesh.drawBoneNames();
 
 //var world_ = gltfMatrixBuild(x,y,0,0,roty,0,SCALE_3D,SCALE_3D,SCALE_3D);
 //gltfDrawTransformedMat(world_,function(){

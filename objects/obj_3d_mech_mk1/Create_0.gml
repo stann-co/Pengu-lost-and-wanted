@@ -87,10 +87,9 @@ state = new SnowState("standby")
 
 #endregion
 
-//Inspectron()
-//    .Section("angle")
-//    .SliderInt("rotx",-180,180)
-//    .SliderInt("roty",-180,180)
-//    .SliderInt("rotz",-180,180)
-//	.Slider("test",0,1)
-//.render()
+rotate = 0;
+
+Inspectron()
+    .Section("angle")
+	.Slider("rotate",-90,90)
+.render()
