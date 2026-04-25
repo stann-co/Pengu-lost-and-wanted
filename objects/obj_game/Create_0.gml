@@ -41,6 +41,49 @@ draw_set_valign(fa_top);
 state = new SnowState("quick_start");
 //state = new SnowState("demo_start");
 
+#region Menu parent
+state.add("menu_parent",{
+	enter: function(){
+		selected = 0;
+		selected_max = 1;
+		action = false;
+	},
+	step: function(){
+		if(InputPressed(INPUT_VERB.DOWN) || InputPressed(INPUT_VERB.UP)){
+			audio_play_sound(snd_ui_hover,0,0);
+			if(InputPressed(INPUT_VERB.DOWN)) selected++;
+			else if(InputPressed(INPUT_VERB.UP)) selected--;
+			if(selected < 0) selected = selected_max;
+			if(selected > selected_max) selected = 0;
+		}
+		
+		var side_input_ = 0;
+		if(InputPressed(INPUT_VERB.LEFT) || InputPressed(INPUT_VERB.RIGHT)){
+			audio_play_sound(snd_ui_hover,0,0);
+			if(InputPressed(INPUT_VERB.LEFT)) side_input_ = -1;
+			if(InputPressed(INPUT_VERB.RIGHT)) side_input_ = 1;
+		}
+		
+		if(InputPressed(INPUT_VERB.ACCEPT)){
+			action = true
+			audio_play_sound(snd_ui_hover,0,0);
+		}
+		
+		if(InputPressed(INPUT_VERB.CANCEL)){
+			audio_play_sound(snd_ui_decline,0,0);
+			state.change(state.get_previous_state());	
+		}
+	},
+	draw: function(){		
+		draw_set_color(BLACK);
+		draw_set_alpha(0.5);
+		draw_rectangle(-10,-10,global.gui_w+10,global.gui_h+10,false);
+		draw_set_color(WHITE);
+		draw_set_alpha(1);
+	}
+});
+#endregion
+
 #region menu off
 state.add("idle", {
 	enter: function(){
@@ -344,6 +387,53 @@ state.add("demo_select", {
 	}
 });
 #endregion
+
+#region level select
+state.add_child("menu_parent","level_select",{
+	enter: function(){
+		selected_max = array_length(global.levels)-1;
+	},
+	
+	step: function(){
+		state.inherit();
+		if(action){
+			room_goto(global.levels[selected]);
+		}
+	},
+	draw: function(){		
+		state.inherit();
+		
+		var h_ = selected_max * TEXT_HEIGHT;
+		
+		var x_ = global.game_w/2;
+		var y_ = global.game_h/2 - h_/2;
+		
+		draw_set_halign(fa_middle);
+		draw_set_valign(fa_center);
+		draw_text(x_,y_-TEXT_HEIGHT*1.5,"-LEVELS-")
+		
+		for (var i_ = 0; i_ < selected_max; i_++) {
+			if(selected != i_) shader_set(sh_deselected);
+			
+			draw_set_halign(fa_middle);
+			draw_set_color(WHITE)
+			draw_text(x_,y_+TEXT_HEIGHT*i_,room_get_name(global.levels[i_]));
+			shader_reset()
+		}
+		
+		draw_set_halign(fa_left);
+		draw_set_valign(fa_top);
+		
+		draw_set_alpha(0.5);
+		draw_sprite(spr_gui_button_back,using_gamepad(),30,global.game_h-15);
+		draw_sprite(spr_gui_button_ok,using_gamepad(),global.game_w-30,global.game_h-15);
+		draw_set_alpha(1);
+	}
+});
+
+
+#endregion
+
 #region pause menu
 state.add("pause_menu",{
 	enter: function(){
@@ -369,10 +459,7 @@ state.add("pause_menu",{
 			} else if(selected == 1){
 				state.change("settings");
 			} else if(selected == 2 && !transition_in){ //level select
-				//transition(function(){
-				//	room_goto(rm_init)
-				//	state.change("demo_select")
-				//});
+				state.change("level_select");
 			} else if(selected == 3 && !transition_in){ // restart level
 				transition(function(){
 					room_restart();
@@ -563,7 +650,7 @@ state.add("settings",{
 });
 #endregion
 
-#region level_tally
+#region demo level_tally
 state.add("level_tally_start", {
 	enter: function(){
 		tallying = true;

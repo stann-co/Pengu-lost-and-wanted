@@ -95,6 +95,13 @@ global.sound_volume = 10;
 global.draw_shine = true;
 global.draw_reflections = true;
 
+global.levels = [
+	rm_level_devzone,
+	rm_level_train,
+	rm_level_nerdstore,
+	rm_level_futurecity
+]
+
 //globals
 global.t = 0; //a global timer for different objects to refer to stay in sync even after being deactivated
 global.t_always = 0; //global timer that keeps going even when there's a freeze frame
@@ -207,7 +214,7 @@ part_type_orientation(global.part_stars,0,360,2,1,false);
 global.gui_draw = true;
 
 //fonts
-global.gui_font = font_add_sprite_ext(spr_gui_font,"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]",false,0);
+global.gui_font = font_add_sprite_ext(spr_gui_font,"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxz",false,0);
 
 #region lexicon / languages
     lexicon_index_declare_from_json("local_en.json");

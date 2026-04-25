@@ -1133,8 +1133,8 @@
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
     {"roomId":{"name":"rm_init","path":"rooms/rm_init/rm_init.yy",},},
-    {"roomId":{"name":"rm_level_devzone","path":"rooms/rm_level_devzone/rm_level_devzone.yy",},},
     {"roomId":{"name":"rm_level_train","path":"rooms/rm_level_train/rm_level_train.yy",},},
+    {"roomId":{"name":"rm_level_devzone","path":"rooms/rm_level_devzone/rm_level_devzone.yy",},},
     {"roomId":{"name":"rm_level_nerdstore","path":"rooms/rm_level_nerdstore/rm_level_nerdstore.yy",},},
     {"roomId":{"name":"rm_level_futurecity","path":"rooms/rm_level_futurecity/rm_level_futurecity.yy",},},
     {"roomId":{"name":"rm_obelisk","path":"rooms/rm_obelisk/rm_obelisk.yy",},},
