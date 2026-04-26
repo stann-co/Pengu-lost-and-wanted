@@ -391,6 +391,7 @@ state.add("demo_select", {
 #region level select
 state.add_child("menu_parent","level_select",{
 	enter: function(){
+		state.inherit();
 		selected_max = array_length(global.levels)-1;
 	},
 	
@@ -398,6 +399,7 @@ state.add_child("menu_parent","level_select",{
 		state.inherit();
 		if(action){
 			room_goto(global.levels[selected]);
+			state.change("idle");
 		}
 	},
 	draw: function(){		
@@ -501,10 +503,7 @@ state.add("pause_menu",{
 		
 		for (var i_ = 0; i_ < array_length(options); ++i_) {
 			//if(selected == 4 && global.active_level.checkpoint == undefined) shader_set(sh_greyed);
-			if(selected != i_) shader_set(sh_deselected)
-            
-            //level select is off until we actually have levels
-            if(selected == i_ && i_ == 2) shader_set(sh_greyed);
+			if(selected != i_) shader_set(sh_deselected);
             
 		    draw_text(x_,y_ + h_ * i_,options[i_]);
 			
