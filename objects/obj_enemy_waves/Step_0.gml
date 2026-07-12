@@ -1,8 +1,16 @@
 /// @description
 if(active){
+	
+	//function between waves
 	var wave_ = waves[wave];
+	if (is_callable(wave_)){
+		method_call(wave_)
+		wave++;
+	}
+	
 	while (index < array_length(wave_)) {
 		var item_ = wave_[index];
+		
 		if(is_real(item_)){ //index is a delay timer
 			if(t < item_*GAME_SPEED){
 				t++;
@@ -11,8 +19,16 @@ if(active){
 				t = 0;
 				index++;
 			}
+		}
+		
+		//function between items
+		else if (is_callable(item_)){
+			method_call(item_)
+			index++;
+			break;
+		}
 			
-		} else { //index is EnemyWaveSpawn struct
+		else { //index is EnemyWaveSpawn struct
 			var enemy_ = item_.spawn();
 			array_push(enemies,enemy_);
 			index++;

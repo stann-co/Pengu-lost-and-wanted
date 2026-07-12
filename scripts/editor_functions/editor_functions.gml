@@ -1,3 +1,6 @@
+#macro IS_EDITOR false 
+#macro Editor:IS_EDITOR true
+
 #macro tile_blank -2147483648
 
 function draw_grid(_x,_y,_cell_w,_cell_h,_width,_height,_scale){

@@ -15,8 +15,8 @@ h_radius = 18;
 floor_friction = 0.91;
 
 //radius_spot = 200;
-//radius_loose = 240;
-radius_attack = 160;
+radius_loose = 240;
+radius_attack = 100;
 
 facing = 1;
 
@@ -50,10 +50,10 @@ target_dist = function(){
 choose_state = function(){
     if (player_dist() > radius_loose){
         state.change("idle");
-    } else if (player_dist() > radius_attack){
-        state.change("follow")
+    } else if (player_dist() < radius_attack){
+        state.change("punch_windup")
     } else {
-        state.change("punch_windup");
+        state.change("wander");
     }
 }
 
@@ -68,7 +68,7 @@ state.add_child("stunned_base","stunned",{
     }
 })
 
-.add_child("meteor_base","meteor",{
+state.add_child("meteor_base","meteor",{
     enter: function (){
         sprite_index = spr_combattest_hurt;    
     }    
@@ -128,6 +128,43 @@ state.add("wander",{
             else state.change("kick_windup");
         }
     }
+})
+
+state.add("target",{
+    enter: function (){
+        sprite_index = spr_combattest_move;
+        subimg = 0;
+		facing = sign(x-target_x);
+    },
+    
+    step: function (){
+        
+        ground_spd = top_speed * -facing
+        ground_spd-=slope_factor * dsin(ground_angle);
+        
+		// Calculate x and y_speed from ground_speed
+		x_speed = ground_spd * dcos(ground_angle)
+		y_speed = ground_spd * -dsin(ground_angle)
+        
+        if(airborne){
+            y_speed += gravity_force;
+        } else {
+		    x_speed *= floor_friction;
+        }
+		
+		if(point_distance(x,y,target_x,target_y) < 16) choose_state()
+    }
+})
+
+state.add_child("target","target_invulnerable",{
+	enter:function(){
+		state.inherit();
+		invulnerable = true;
+	},
+	leave:function(){
+		state.inherit();
+		invulnerable = false;
+	}
 })
 
 state.add("punch_windup",{

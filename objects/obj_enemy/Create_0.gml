@@ -26,6 +26,9 @@ jump_attackable = true; //if player can jump on it to attack
 
 invulnerable = 0;
 
+target_x = 0;
+target_y = 0;
+
 stun_duration = 20;
 stun_radius = 8;
 stun_x = 0;
@@ -103,6 +106,10 @@ hurt = function(_hurt_type = ATTACK_TYPES.ATTACK, _callback = function(){}){
     }
 }
 
+player_dist = function(){
+	return point_distance(x,y,global.controlled.x,global.controlled.y);
+}
+
 state = new SnowState("idle");
 
 state.event_set_default_function("draw",function(){
@@ -146,6 +153,27 @@ state.add("stunned_base",{
 })
 state.add_child("stunned_base","stunned",{
 
+})
+
+.add("target",{ //override with movement logic
+	step: function (){
+		x += sign(target_x - x);
+		y += sign(target_y - y);
+		if(point_distance(x,y,target_x,target_y) < 10){
+			state.change("idle");
+		};
+	}
+})
+
+.add_child("target","target_invulnerable",{
+	enter:function(){
+		state.inherit()
+		invulnerable = true;
+	},
+	leave:function(){
+		state.inherit()
+		invulnerable = false;
+	}
 })
 
 .add("launched_base",{

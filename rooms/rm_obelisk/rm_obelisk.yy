@@ -164,8 +164,8 @@
   ],
   "name":"rm_obelisk",
   "parent":{
-    "name":"Rooms",
-    "path":"folders/Rooms.yy",
+    "name":"test_folder",
+    "path":"folders/Rooms/test_folder.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

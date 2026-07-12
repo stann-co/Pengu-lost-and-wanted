@@ -1,4 +1,4 @@
-function EnemyWaveSpawn(_enemy,_x,_y,_target_x,_target_y,_state = "idle",_collision_layer = COLLISION_LAYERS.A) constructor {
+function EnemyWaveSpawn(_enemy,_x,_y,_target_x,_target_y,_state = "target_invulnerable",_collision_layer = COLLISION_LAYERS.A) constructor {
 	
 	enemy = _enemy;
 	x = _x;
@@ -9,11 +9,10 @@ function EnemyWaveSpawn(_enemy,_x,_y,_target_x,_target_y,_state = "idle",_collis
 	collision_layer = _collision_layer;
 	
 	static spawn = function(){
-		var enemy_ = instance_create_depth(x,y,layer_get_depth(global.collision_layers[? collision_layer]),enemy,{
-			state: state,
-			target_x: target_x,
-			target_y: target_y
-		})
-		return enemy_;	
+		var enemy_ = instance_create_depth(x,y,layer_get_depth(global.collision_layers[? collision_layer]),enemy);
+		enemy_.target_x = target_x;
+		enemy_.target_y = target_y;
+		enemy_.state.change(state);
+		return enemy_;
 	}
 }

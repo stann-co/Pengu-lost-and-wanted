@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"ddd_matrix_fix_projection_in_place",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ddd_matrix_fix_projection_in_place",
+  "parent":{
+    "name":"Matrix Builders",
+    "path":"folders/Extensions/DDD/Matrix Builders.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
