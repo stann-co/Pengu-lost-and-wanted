@@ -32,7 +32,7 @@ vec3 blendScreen(vec3 base, vec3 blend, float opacity) {
 
 void main()
 {
-    vec2 normal;
+    vec2 normal = vec2(0.0,0.0);
     if(u_texcoord_n.x != -1.0){
         normal = texture2D( gm_BaseTexture, v_vTexcoord - u_texcoord_n).rg;
     } else {
@@ -40,7 +40,7 @@ void main()
     }
     normal = (normal - 0.5) * 2.0 * u_normal_strength;
     
-    float roughness;
+    float roughness = 0.0;
     if(u_texcoord_r.x != -1.0){
         roughness = texture2D( gm_BaseTexture, v_vTexcoord - u_texcoord_r).r;
     } else {

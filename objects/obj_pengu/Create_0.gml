@@ -1,6 +1,8 @@
 /// @description
 event_inherited();
 
+var _len = array_length(view_camera);
+
 depth-=10; //by default pengu is above other entities
 
 #region variables
@@ -42,13 +44,13 @@ hurt_y_force = -5.4;
 hurt_gravity_force = 0.1875;
 
 dash_air_force = 5.4;
-dash_air_windup = GAME_SPEED*0.2;
+dash_air_windup = SECOND*0.2;
 dash_air_count = 0;
 
 dash_ground_force_min = 4;
 dash_ground_force_max = slide_top_speed;
 dash_ground_force = undefined;
-dash_ground_windup = GAME_SPEED*1; //you can hold it down longer, but after this it's hit max potential
+dash_ground_windup = SECOND*1; //you can hold it down longer, but after this it's hit max potential
 
 rotation_speed = 0.0215 * 2; //when going airborne how fast you rotate to be back upright
 
@@ -71,7 +73,7 @@ ground_slip_min_spd_ceiling = 5.6;
 
 force_slide_angle_ceiling = 170; //above this angle ground_slip_min_spd_ceiling is used
 
-slip_control_lock_time = GAME_SPEED * 0.2;
+slip_control_lock_time = SECOND * 0.2;
 
 w_radius_normal = 6;
 h_radius_normal = 9;
@@ -89,7 +91,7 @@ super_speed_trace_arr = [];
 super_speed_trace_count = 6;
 super_speed_trace_offset = 1;
 super_speed_fadeout = 0;
-super_speed_fadeout_time = GAME_SPEED * 1;
+super_speed_fadeout_time = SECOND * 1;
 super_speed_colors = [RED,RED,RED,RED,RED,RED,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE]//[WHITE,RED,WHITE,YELLOW,WHITE,GREEN,WHITE,blue,WHITE,PINK];
 
 super_speed_u_color = shader_get_uniform(sh_color,"u_color");
@@ -137,7 +139,7 @@ image_to_ground_angle = true;
 control_lock = 0; //When control lock is non-zero input is disabled, for when slipping down super steep slopes, or springs/speed ramps
 set_controlled();
 invulnerable = 0; //when over 0, pengu flashes and cannot take damage
-invulnerable_duration = GAME_SPEED * 1.6;
+invulnerable_duration = SECOND * 1.6;
 
 //sounds
 sound_slide = -1;
@@ -146,7 +148,7 @@ sound_slide = -1;
 
 ///@function set_control_lock()
 ///@param duration
-set_control_lock = function(_duration = GAME_SPEED*1){
+set_control_lock = function(_duration = SECOND*1){
 	control_lock = _duration;
 	input_h = 0;
 }
@@ -155,7 +157,7 @@ set_control_lock = function(_duration = GAME_SPEED*1){
 hurt = function(_x_side = 0){
 	//nothing happens if invulnerable
 	if(invulnerable == 0 && !godmode){
-		global.camera.shake_screen(4,GAME_SPEED*0.5);
+		global.camera.shake_screen(4,SECOND*0.5);
 		x_speed = hurt_x_force * _x_side;
 		state.change("hurt");
 	}
@@ -409,7 +411,7 @@ state.add_child("airborne","fall_up", {
         }
         if(y_speed > 0) state.change("begin_fall");
         if(on_land) {
-            squish(1.4,0.8,GAME_SPEED);
+            squish(1.4,0.8,SECOND);
             if(FORCE_SLIDE_FALSE) state.change("idle");
             else state.change("sliding");	
         }
@@ -436,7 +438,7 @@ state.add_child("airborne","fall", {
     },
     step: function(){
         if(on_land){
-            squish(1.4,0.8,GAME_SPEED);
+            squish(1.4,0.8,SECOND);
             if(FORCE_SLIDE_FALSE) state.change("idle");
             else state.change("sliding");	
         }
@@ -459,7 +461,7 @@ state.add_child("airborne","jump", {
         
         image_angle -= 90 * dsin(ground_angle);
         
-        squish(0.4,1.4,GAME_SPEED*0.4);
+        squish(0.4,1.4,SECOND*0.4);
         
         //when jumping from a slide you start rotated
         if(state.get_previous_state() == "sliding"){
@@ -556,7 +558,7 @@ state.add_child("jump","hurt", {
         gravity_force = hurt_gravity_force;			
         invulnerable = invulnerable_duration;
         
-        set_control_lock(GAME_SPEED*0.8);
+        set_control_lock(SECOND*0.8);
         
         y_speed = hurt_y_force;
     },
@@ -581,7 +583,7 @@ state.add_child("airborne","double_jump", {
         y_speed = -double_jump_force;	
         x_speed *= 0.6;
 		
-        squish(0.4,1.4,GAME_SPEED*0.4);
+        squish(0.4,1.4,SECOND*0.4);
         
         audio_play_sound_random(0,0,snd_wingflap1,snd_wingflap2);
     },
@@ -896,7 +898,7 @@ state.add_child("prone","dash_air", {
         
         facing = sign(x_speed);
         
-        squish(1.2,1.2,GAME_SPEED*0.2);
+        squish(1.2,1.2,SECOND*0.2);
         
         super_speed = true;
         super_speed_fadeout = super_speed_fadeout_time;
@@ -961,7 +963,7 @@ state.add_child("prone","dash_charge", {
         control_lock = 10;
         input_h = 0;
         
-        squish(0.8,1.2,GAME_SPEED*0.5);
+        squish(0.8,1.2,SECOND*0.5);
     },
     step: function(){
         
@@ -1001,13 +1003,13 @@ state.add_child("prone","dash_charge", {
 state.add_child("prone","dash", {
     enter: function() {
         
-        global.camera.shake_screen(2,GAME_SPEED*0.2);
+        global.camera.shake_screen(2,SECOND*0.2);
         
         state.inherit()
         sprite_index = spr_pengu_dash;
         ground_spd = dash_ground_force * facing
         
-        squish(1.2,1.2,GAME_SPEED*0.8);
+        squish(1.2,1.2,SECOND*0.8);
         
         t = 0;
         
@@ -1020,7 +1022,7 @@ state.add_child("prone","dash", {
     step: function() {
         
         t++;
-        if(t >= GAME_SPEED*1){
+        if(t >= SECOND*1){
             state.change("sliding");
         }
     },

@@ -35,11 +35,21 @@ draw_set_font(global.gui_font);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
+//level editor
+
+start_level_editor = function(){
+    /// @description level editor start
+    if(!instance_exists(obj_level_editor)){
+        instance_create_depth(0,0,0,obj_level_editor);
+    } else { //TODO let the actual editor handle exiting
+       // obj_level_editor.quit();
+    }
+}
+
 
 #region menu states
 
-state = new SnowState("quick_start");
-//state = new SnowState("demo_start");
+state = new SnowState("idle");
 
 #region Menu parent
 state.add("menu_parent",{
@@ -100,59 +110,22 @@ state.add("idle", {
 	}
 });
 #endregion
+
 #region quick start for debugging quickly
 state.add("quick_start", {
 	enter: function(){
 		call_later(1,time_source_units_frames,function(){
 			state.change("idle");	
-			
-			//for (var i_ = 0; i_ < array_length(global.levels); ++i_) {
-			    //if (room_next(room) == global.levels[i_].room_id) {
-					//global.active_level = global.levels[i_]
-					//break;	
-				//}
-			//}
-			
-			room_goto_next();
+            
+            /// TODO this needs refactoring after using external levels
 			
 		});
 	}
 });
 #endregion
 
-#region demo_start
-state.add("demo_start", {
-	enter: function(){
-		
-	},
-	step: function(){
-		if (InputPressed(INPUT_VERB.ACCEPT)){
-			state.change("main_menu");
-		}
-	},
-	draw: function(){
-		draw_set_halign(fa_middle);
-		draw_set_valign(fa_center);
-		var text_ =
-		@"THIS IS AN EARLY PROTOTYPE OF
-		
-		PENGU: LOST & WANTED
-		
-		EVERYTHING IS SUBJECT TO CHANGE
-		i_ APPRECIATE YOUR SUPPORT!!!
-		-STANN"
-		
-		draw_text(global.game_w/2,global.game_h/2,text_);
-		
-		draw_set_halign(fa_left);
-		draw_set_valign(fa_top);
-		
-		draw_sprite(spr_gui_button_ok,using_gamepad(),global.game_w-30,global.game_h-15);
-	}
-});
-#endregion
-
 #region credits
+///TODO: credits are for the prototype
 state.add("credits", {
 	enter: function(){
 		
@@ -200,7 +173,7 @@ state.add("main_menu", {
 		if(InputPressed(INPUT_VERB.ACCEPT)){
 			audio_play_sound(snd_ui_hover,0,0);
 			if(selected == 0){
-				state.change("demo_select")
+				state.change("level_select")
 			} else if(selected == 1){
 				state.change("settings");
 			} else if(selected == 2){
@@ -265,12 +238,12 @@ state.add("level_start",{
 //state.add("level_checkpoint_start",{
 	//enter: function(){
 		////resets to active checkpoint if there is any
-		//if(global.active_level != undefined && global.active_level.checkpoint != undefined){
-			//obj_pengu.x = global.active_level.checkpoint.x;
-			//obj_pengu.y = global.active_level.checkpoint.y;
+		//if(global.level != undefined && global.level.checkpoint != undefined){
+			//obj_pengu.x = global.level.checkpoint.x;
+			//obj_pengu.y = global.level.checkpoint.y;
 			//
-			//global.coins = global.active_level.checkpoint_coins;
-			//global.score = global.active_level.checkpoint_score;
+			//global.coins = global.level.checkpoint_coins;
+			//global.score = global.level.checkpoint_score;
 			//global.score_mult = 0;
 			//global.score_combo_t = 0;
 			//
@@ -293,99 +266,99 @@ state.add("level_checkpoint_start",{
 #endregion
 
 #region demo_select
-state.add("demo_select", {
-	enter: function(){
-		selected = 0;
-	},
-	step: function(){
-		if(!transition_in){
-			if(InputPressed(INPUT_VERB.ACCEPT)){
-				transition(function(){
-					state.change("level_start");
-					global.active_level = global.levels[selected];
-					var level = global.levels[selected];
-					level.checkpoint = undefined; //reset checkpoint				
-					room_goto(level.room_id);	
-				})
-			}
-			
-			if(InputPressed(INPUT_VERB.CANCEL)){
-				audio_play_sound(snd_ui_decline,0,0);
-				state.change("main_menu");
-			}
-			
-			var left_right_ = InputPressed(INPUT_VERB.RIGHT) - InputPressed(INPUT_VERB.LEFT);
-			if(left_right_ != 0){
-				selected += left_right_
-				audio_play_sound(snd_ui_hover,1,false);
-			}
-			
-			var lvl_max = array_length(global.levels)-1
-			if(selected < 0) selected = lvl_max;
-			if(selected > lvl_max) selected = 0;
-		}
-
-	},
-	draw: function(){		
-		var levels = global.levels;
-		
-		var width_ = 60;
-		var center_x = global.game_w/2;
-		var center_y = global.game_h/2;
-		var num = array_length(levels)
-		
-		draw_set_halign(fa_middle)
-		draw_set_valign(fa_center)
-		
-		for (var i_ = 0; i_ < num; ++i_) {
-			
-			var x_ = center_x - ((num-1)*width_/2) + (i_*width_);
-			var y_ = center_y;
-			
-			if(selected != i_) shader_set(sh_deselected)
-			else {
-				y_ += dsin(global.t*5*2);
-				x_ += dsin(global.t*5);
-			}
-			
-			draw_text(x_,y_,i_+1);
-			draw_sprite(spr_level_frame,0,x_,y_);
-			
-			shader_reset()
-		}
-		
-		draw_set_valign(fa_top)
-		
-		x_ = center_x;
-		y_ = center_y +34;
-		
-		var level = global.levels[selected];
-		draw_text(x_,y_,level.name_)
-		
-		y_+=20
-		var w_ = 100;		
-		var text_ = ["LEVEL SCORE","LEVEL TIME"]
-		var values = [level.level_score,timer_text(level.level_time)];		
-		
-		for (var i_ = 0; i_ < array_length(text_); ++i_) {
-		    draw_set_halign(fa_left);
-			draw_set_color(YELLOW)
-			draw_text(x_-w_,y_+TEXT_HEIGHT*i_,text_[i_]);
-			
-			draw_set_halign(fa_right);
-			draw_set_color(WHITE)
-			
-			draw_text(x_+w_,y_+TEXT_HEIGHT*i_,values[i_]);
-		}
-		
-		draw_set_halign(fa_left);
-		draw_set_valign(fa_top);
-		
-		draw_sprite(spr_gui_button_back,using_gamepad(),30,global.game_h-15);
-		draw_sprite(spr_gui_button_ok,using_gamepad(),global.game_w-30,global.game_h-15);
-		
-	}
-});
+//state.add("demo_select", {
+	//enter: function(){
+		//selected = 0;
+	//},
+	//step: function(){
+		//if(!transition_in){
+			//if(InputPressed(INPUT_VERB.ACCEPT)){
+				//transition(function(){
+					//state.change("level_start");
+					//global.level = global.levels[selected];
+					//var level = global.levels[selected];
+					//level.checkpoint = undefined; //reset checkpoint				
+					//room_goto(level.room_id);	
+				//})
+			//}
+			//
+			//if(InputPressed(INPUT_VERB.CANCEL)){
+				//audio_play_sound(snd_ui_decline,0,0);
+				//state.change("main_menu");
+			//}
+			//
+			//var left_right_ = InputPressed(INPUT_VERB.RIGHT) - InputPressed(INPUT_VERB.LEFT);
+			//if(left_right_ != 0){
+				//selected += left_right_
+				//audio_play_sound(snd_ui_hover,1,false);
+			//}
+			//
+			//var lvl_max = array_length(global.levels)-1
+			//if(selected < 0) selected = lvl_max;
+			//if(selected > lvl_max) selected = 0;
+		//}
+//
+	//},
+	//draw: function(){		
+		//var levels = global.levels;
+		//
+		//var width_ = 60;
+		//var center_x = global.game_w/2;
+		//var center_y = global.game_h/2;
+		//var num = array_length(levels)
+		//
+		//draw_set_halign(fa_middle)
+		//draw_set_valign(fa_center)
+		//
+		//for (var i_ = 0; i_ < num; ++i_) {
+			//
+			//var x_ = center_x - ((num-1)*width_/2) + (i_*width_);
+			//var y_ = center_y;
+			//
+			//if(selected != i_) shader_set(sh_deselected)
+			//else {
+				//y_ += dsin(global.t*5*2);
+				//x_ += dsin(global.t*5);
+			//}
+			//
+			//draw_text(x_,y_,i_+1);
+			//draw_sprite(spr_level_frame,0,x_,y_);
+			//
+			//shader_reset()
+		//}
+		//
+		//draw_set_valign(fa_top)
+		//
+		//x_ = center_x;
+		//y_ = center_y +34;
+		//
+		//var level = global.levels[selected];
+		//draw_text(x_,y_,level.name_)
+		//
+		//y_+=20
+		//var w_ = 100;		
+		//var text_ = ["LEVEL SCORE","LEVEL TIME"]
+		//var values = [level.level_score,timer_text(level.level_time)];		
+		//
+		//for (var i_ = 0; i_ < array_length(text_); ++i_) {
+		    //draw_set_halign(fa_left);
+			//draw_set_color(YELLOW)
+			//draw_text(x_-w_,y_+TEXT_HEIGHT*i_,text_[i_]);
+			//
+			//draw_set_halign(fa_right);
+			//draw_set_color(WHITE)
+			//
+			//draw_text(x_+w_,y_+TEXT_HEIGHT*i_,values[i_]);
+		//}
+		//
+		//draw_set_halign(fa_left);
+		//draw_set_valign(fa_top);
+		//
+		//draw_sprite(spr_gui_button_back,using_gamepad(),30,global.game_h-15);
+		//draw_sprite(spr_gui_button_ok,using_gamepad(),global.game_w-30,global.game_h-15);
+		//
+	//}
+//});
 #endregion
 
 #region level select
@@ -469,7 +442,7 @@ state.add("pause_menu",{
 				});
 			}
                 
-            //else if(selected == 4 && !transition_in && global.active_level.checkpoint != undefined){ //restart to checkpoint
+            //else if(selected == 4 && !transition_in && global.level.checkpoint != undefined){ //restart to checkpoint
 				//transition(function(){
 					//state.change("level_checkpoint_start");
 				//});
@@ -502,7 +475,7 @@ state.add("pause_menu",{
 		var options = ["CONTINUE","SETTINGS","LEVEL SELECT","RESTART LEVEL"];
 		
 		for (var i_ = 0; i_ < array_length(options); ++i_) {
-			//if(selected == 4 && global.active_level.checkpoint == undefined) shader_set(sh_greyed);
+			//if(selected == 4 && global.level.checkpoint == undefined) shader_set(sh_greyed);
 			if(selected != i_) shader_set(sh_deselected);
             
 		    draw_text(x_,y_ + h_ * i_,options[i_]);
@@ -649,117 +622,125 @@ state.add("settings",{
 });
 #endregion
 
-#region demo level_tally
-state.add("level_tally_start", {
-	enter: function(){
-		tallying = true;
-		tally_x = global.game_w;
-		tally_duration = GAME_SPEED * 1;
-		tally_t = 0;
-		tally_pause = false;
-		
-		tally_score = global.score;
-		tally_score_time = 18000 - timer;
-		tally_score_snacks = global.coins * 100;
-		tally_score_total = 0;
-	},
-	step: function(){
-		if (tally_t < tally_duration) tally_t++
-		else if(!tally_pause) {
-			tally_pause = true;
-			call_later(1,time_source_units_seconds,function(){
-				state.change("level_tally_scores");
-			})
-		}
-		var val_ = animcurve_read(ac_basic,"ease",tally_t/tally_duration)
-		tally_x = lerp(global.game_w,0,val_);
-	},
-	draw: function(){
-		
-		var tally_text   = ["SCORE","BONUS TIME","BONUS SNACKS","","LEVEL SCORE"];
-		var tally_scores = [tally_score,tally_score_time, tally_score_snacks,"",tally_score_total];
-		
-		var w_ = 100;
-		var h_ = array_length(tally_text)*TEXT_HEIGHT;
-		
-		var x_ = global.game_w/2+tally_x;
-		var y_ = (global.game_h/2)-(h_/2);
-		
-		draw_set_halign(fa_middle);
-		draw_set_valign(fa_center);
-		draw_text(x_,y_-TEXT_HEIGHT*1.5,$"{global.active_level.name_} COMPLETE!!!")
-		
-		for (var i_ = 0; i_ < array_length(tally_text); ++i_) {
-		    draw_set_halign(fa_left);
-			draw_set_color(YELLOW)
-			draw_text(x_-w_,y_+TEXT_HEIGHT*i_,tally_text[i_]);
-			
-			draw_set_halign(fa_right);
-			draw_set_color(WHITE)
-			
-			draw_text(x_+w_,y_+TEXT_HEIGHT*i_,tally_scores[i_]);
-		}
+//#region demo level_tally
+//state.add("level_tally_start", {
+	//enter: function(){
+		//tallying = true;
+		//tally_x = global.game_w;
+		//tally_duration = SECOND * 1;
+		//tally_t = 0;
+		//tally_pause = false;
+		//
+		//tally_score = global.score;
+		//tally_score_time = 18000 - timer;
+		//tally_score_snacks = global.coins * 100;
+		//tally_score_total = 0;
+	//},
+	//step: function(){
+		//if (tally_t < tally_duration) tally_t++
+		//else if(!tally_pause) {
+			//tally_pause = true;
+			//call_later(1,time_source_units_seconds,function(){
+				//state.change("level_tally_scores");
+			//})
+		//}
+		//var val_ = animcurve_read(ac_basic,"ease",tally_t/tally_duration)
+		//tally_x = lerp(global.game_w,0,val_);
+	//},
+	//draw: function(){
+		//
+		//var tally_text   = ["SCORE","BONUS TIME","BONUS SNACKS","","LEVEL SCORE"];
+		//var tally_scores = [tally_score,tally_score_time, tally_score_snacks,"",tally_score_total];
+		//
+		//var w_ = 100;
+		//var h_ = array_length(tally_text)*TEXT_HEIGHT;
+		//
+		//var x_ = global.game_w/2+tally_x;
+		//var y_ = (global.game_h/2)-(h_/2);
+		//
+		//draw_set_halign(fa_middle);
+		//draw_set_valign(fa_center);
+		//draw_text(x_,y_-TEXT_HEIGHT*1.5,$"{global.level.name_} COMPLETE!!!")
+		//
+		//for (var i_ = 0; i_ < array_length(tally_text); ++i_) {
+		    //draw_set_halign(fa_left);
+			//draw_set_color(YELLOW)
+			//draw_text(x_-w_,y_+TEXT_HEIGHT*i_,tally_text[i_]);
+			//
+			//draw_set_halign(fa_right);
+			//draw_set_color(WHITE)
+			//
+			//draw_text(x_+w_,y_+TEXT_HEIGHT*i_,tally_scores[i_]);
+		//}
+//
+		//draw_set_halign(fa_left);
+		//draw_set_valign(fa_top);
+//
+	//}
+//});
+//
+//state.add_child("level_tally_start","level_tally_scores", {
+	//enter: function(){
+		//tallying = true;
+		//tally_duration = SECOND * 0.5;
+		//tally_t = 0;
+		//tally_pause = false;
+		//
+		//tally_score_prev		= tally_score;
+		//tally_score_time_prev	= tally_score_time;
+		//tally_score_snacks_prev = tally_score_snacks;
+		//tally_score_total_new = tally_score + tally_score_time + tally_score_snacks;
+	//},
+	//step: function(){
+		//if (tally_t < tally_duration) tally_t++;
+		//else if(!tally_pause) {
+			//tally_pause = true;
+			//
+			////should be best time and score
+			//global.level.level_score = tally_score_total;
+			//global.level.level_time = timer;
+			//
+			//call_later(1,time_source_units_seconds,function(){
+				//state.change("level_tally_anykey")
+			//})
+		//}
+		//
+		//var val_ = tally_t / tally_duration;
+		//tally_score			= floor(lerp(tally_score_prev,0,val_))
+		//tally_score_time	= floor(lerp(tally_score_time_prev,0,val_))
+		//tally_score_snacks	= floor(lerp(tally_score_snacks_prev,0,val_))
+		//tally_score_total	= floor(lerp(0,tally_score_total_new,val_));
+	//},
+//});
+//
+//state.add_child("level_tally_start","level_tally_anykey", {
+	//enter: function(){
+	//},
+	//step: function(){
+		//if(!transition_in && InputCheck(INPUT_VERB.ACCEPT)){
+			//transition(function(){
+				//state.change("demo_select");
+				//room_goto(rm_game);
+				//tallying = false;
+			//})
+		//}
+	//},
+	//draw: function(){
+		//state.inherit()
+		//draw_sprite(spr_gui_button_ok,using_gamepad(),global.game_w-30,global.game_h-30);
+	//}
+//});
 
-		draw_set_halign(fa_left);
-		draw_set_valign(fa_top);
-
-	}
-});
-
-state.add_child("level_tally_start","level_tally_scores", {
-	enter: function(){
-		tallying = true;
-		tally_duration = GAME_SPEED * 0.5;
-		tally_t = 0;
-		tally_pause = false;
-		
-		tally_score_prev		= tally_score;
-		tally_score_time_prev	= tally_score_time;
-		tally_score_snacks_prev = tally_score_snacks;
-		tally_score_total_new = tally_score + tally_score_time + tally_score_snacks;
-	},
-	step: function(){
-		if (tally_t < tally_duration) tally_t++;
-		else if(!tally_pause) {
-			tally_pause = true;
-			
-			//should be best time and score
-			global.active_level.level_score = tally_score_total;
-			global.active_level.level_time = timer;
-			
-			call_later(1,time_source_units_seconds,function(){
-				state.change("level_tally_anykey")
-			})
-		}
-		
-		var val_ = tally_t / tally_duration;
-		tally_score			= floor(lerp(tally_score_prev,0,val_))
-		tally_score_time	= floor(lerp(tally_score_time_prev,0,val_))
-		tally_score_snacks	= floor(lerp(tally_score_snacks_prev,0,val_))
-		tally_score_total	= floor(lerp(0,tally_score_total_new,val_));
-	},
-});
-
-state.add_child("level_tally_start","level_tally_anykey", {
-	enter: function(){
-	},
-	step: function(){
-		if(!transition_in && InputCheck(INPUT_VERB.ACCEPT)){
-			transition(function(){
-				state.change("demo_select");
-				room_goto(rm_init);
-				tallying = false;
-			})
-		}
-	},
-	draw: function(){
-		state.inherit()
-		draw_sprite(spr_gui_button_ok,using_gamepad(),global.game_w-30,global.game_h-30);
-	}
-});
-
-
-#endregion
 
 #endregion
 
+#endregion
+
+//starting point
+if(START_POINT == "main menu"){
+    state.change("main_menu")
+} else
+
+if(START_POINT == "editor"){
+    start_level_editor()
+}

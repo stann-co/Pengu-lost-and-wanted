@@ -41,5 +41,8 @@
     "path":"sprites/spr_points/spr_points.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

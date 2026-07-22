@@ -24,11 +24,11 @@ t = 0;
 
 top_speed = 2;
 
-windup_t = GAME_SPEED*0.3;
-attack_pause = GAME_SPEED*1.4;
-attack_duration = GAME_SPEED*0.4;
+windup_t = SECOND*0.3;
+attack_pause = SECOND*1.4;
+attack_duration = SECOND*0.4;
 attack_cooldown = 0;
-attack_cooldown_max = GAME_SPEED * 2;
+attack_cooldown_max = SECOND * 2;
 
 punch_x = -28;
 punch_y = -6;
@@ -177,7 +177,7 @@ state.add("punch_windup",{
         x_speed = facing * 1;
         t = windup_t;
         
-        squish(1.2,0.8,GAME_SPEED*0.4);
+        squish(1.2,0.8,SECOND*0.4);
         
     },
     
@@ -205,7 +205,7 @@ state.add("kick_windup",{
         x_speed = facing * 1;
         t = windup_t;
         
-        squish(1.2,0.8,GAME_SPEED*0.4);
+        squish(1.2,0.8,SECOND*0.4);
         
     },
     
@@ -231,7 +231,7 @@ state.add("punch",{
         
         t = 0//attack_pause;
         attack_cooldown = attack_cooldown_max;
-        squish(1.8,0.8,GAME_SPEED*1.5);
+        squish(1.8,0.8,SECOND*1.5);
     },
     
     step: function (){
@@ -267,7 +267,7 @@ state.add("kick",{
         
         t = 0;//attack_pause;
         attack_cooldown = attack_cooldown_max;
-        squish(1.8,0.8,GAME_SPEED*1.5);
+        squish(1.8,0.8,SECOND*1.5);
     },
     
     step: function (){

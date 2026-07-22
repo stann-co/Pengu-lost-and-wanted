@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"mech",
-    "path":"folders/Sprites/mech.yy",
+    "name":"egg_mech",
+    "path":"folders/Sprites/mech/egg_mech.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

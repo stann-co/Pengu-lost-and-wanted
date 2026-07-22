@@ -39,5 +39,8 @@
     "path":"sprites/spr_collision/spr_collision.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

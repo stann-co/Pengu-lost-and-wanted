@@ -19,8 +19,8 @@ if(CAN_MOVE){
             input_v*=4;
         }
         
-		set_x(x+input_h*4);
-		set_y(y+input_v*4);
+		set_x(x+input_h*4*TIMESTEP);
+		set_y(y+input_v*4*TIMESTEP);
         
     } else {
         if(CONTROLLED){
@@ -63,7 +63,7 @@ if(CAN_MOVE){
                 vec_t = new Vector2(0,-h_radius-1);
                 if(sliding && sensor(vec_t,snap_to_90(sensor_angle)+180,sensor_length_base) != noone){
                     //if sliding it checks if you're under a block
-                    squish(0.8,1.2,GAME_SPEED*0.2);
+                    squish(0.8,1.2,SECOND*0.2);
                 } else {
                     if(!airborne) state.change("jump");
                     else if(double_jump_count == 0) state.change("double_jump");
@@ -180,8 +180,8 @@ if(CAN_MOVE){
             repeat(substeps_){
                 #region speed
                 
-				set_x(x+x_speed / substeps_);
-				set_y(y+y_speed / substeps_);
+				set_x(x+x_speed*TIMESTEP / substeps_);
+				set_y(y+y_speed*TIMESTEP / substeps_);
                 
                 //when airborne sensors aren't rotated at all
                 sensor_angle = (airborne) ? 0 : ground_angle;

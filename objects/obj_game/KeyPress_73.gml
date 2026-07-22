@@ -1,4 +1,4 @@
-/// @description
+/// @description debug overlay
 if(!is_debug_overlay_open()){
     
     debug = dbg_view("Debug",true);
@@ -49,7 +49,7 @@ if(!is_debug_overlay_open()){
 	
 	#region variables
 	dbg_section("variables")
-		dbg_slider_int(ref_create(self,"SCORE_COMBO_T_MAX"),1,GAME_SPEED * 3,"Score cooldown frames");
+		dbg_slider_int(ref_create(self,"SCORE_COMBO_T_MAX"),1,SECOND * 3,"Score cooldown frames");
 	#endregion
     
 } else {

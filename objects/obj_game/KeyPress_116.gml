@@ -1,4 +1,4 @@
-/// @description 
+/// @description quicksave
 saved_pengu = {
 	x: obj_pengu.x,
 	y: obj_pengu.y,

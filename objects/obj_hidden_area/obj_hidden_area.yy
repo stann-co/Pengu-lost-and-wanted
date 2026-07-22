@@ -40,5 +40,8 @@
     "path":"sprites/spr_hidden_area/spr_hidden_area.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

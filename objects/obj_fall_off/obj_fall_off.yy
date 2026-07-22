@@ -39,5 +39,8 @@
     "path":"sprites/spr_fall_off/spr_fall_off.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

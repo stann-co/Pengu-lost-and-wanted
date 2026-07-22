@@ -1,5 +1,5 @@
 
-room_instance_add(rm_init,0,0,obj_scene)
+room_instance_add(rm_game,0,0,obj_scene)
 global.scene = obj_scene
 
 ///@function s_wait(_seconds)
@@ -46,7 +46,7 @@ function s_control(_bool){
 function s_debug_message(_text){
     with {_text} array_push(global.scene.queue,function(){
         show_debug_message(_text);
-        global.scene.debug_text_t = GAME_SPEED*4;
+        global.scene.debug_text_t = SECOND*4;
         array_insert(global.scene.debug_text,0,_text);
         
     });

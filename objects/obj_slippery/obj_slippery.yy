@@ -34,5 +34,8 @@
     "path":"sprites/spr_slippery/spr_slippery.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

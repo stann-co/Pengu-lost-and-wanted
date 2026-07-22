@@ -1,4 +1,0 @@
-/// @description
-skin.animate(t);
-t += (1/60);
-if(t > t_max) t = 0;

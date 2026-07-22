@@ -22,8 +22,8 @@ writing = false;
 
 t = 0;
 fade = 1;
-pause_durtaion = GAME_SPEED;
-fade_duration = GAME_SPEED;
+pause_durtaion = SECOND;
+fade_duration = SECOND;
 
 text_array = [
     lexicon_text("intro.1"),

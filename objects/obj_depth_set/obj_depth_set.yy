@@ -38,5 +38,8 @@
     "path":"sprites/spr_depth_set/spr_depth_set.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":false,
 }

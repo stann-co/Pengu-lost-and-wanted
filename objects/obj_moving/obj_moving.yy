@@ -55,5 +55,8 @@
     "path":"sprites/spr_moving/spr_moving.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

@@ -41,7 +41,7 @@ hurt_shake = 0; //when not 0 there's shaking and flashing
 
 hurt_shake_start = function(_shake_radius){
     hurt_shake_radius = _shake_radius;
-    hurt_shake = GAME_SPEED * 0.5;
+    hurt_shake = SECOND * 0.5;
     
     var val_ = hurt_shake_radius * (hurt_shake / 30)
     hurt_shake_x = irandom_range(-val_,val_);
@@ -80,7 +80,7 @@ draw_sprite_entity = function(_sprite,_subimg,_x,_y,_xscale,_yscale,_rot,_color,
 ///@param _scale_x
 ///@param _scale_y
 ///@param _duration
-squish = function(_scale_x,_scale_y,_duration = GAME_SPEED*0.4){
+squish = function(_scale_x,_scale_y,_duration = SECOND*0.4){
 	squish_x_scale = _scale_x;
 	squish_y_scale = _scale_y;
     squish_x_origin = 0;

@@ -1,6 +1,6 @@
 /// @description
 
-//steamworks specific (when done with browser this if can be removed)
+//steamworks specific (when finished with browser this "if" can be removed)
 if(!IN_BROWSER){
 	steam_update()
 }
@@ -11,10 +11,10 @@ state.step();
 
 if(global.freeze_duration > 0) global.freeze_duration--;
 
-global.t_always++;
+global.t_always++; // A global timer that is not affected by freeze frames or pausing
 
 if(CAN_MOVE){
-	global.t++;
+	global.t++; // A global timer that is affected by freeze frames and pausing
 	
 	if(!tallying) timer++;
 	

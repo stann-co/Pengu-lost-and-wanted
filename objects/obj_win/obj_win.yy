@@ -35,5 +35,8 @@
     "path":"sprites/spr_win/spr_win.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

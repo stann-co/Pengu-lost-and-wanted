@@ -42,5 +42,8 @@
     "path":"sprites/spr_trigger/spr_trigger.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

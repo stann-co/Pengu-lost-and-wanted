@@ -43,5 +43,8 @@
     "path":"sprites/spr_layer_switch_AB/spr_layer_switch_AB.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

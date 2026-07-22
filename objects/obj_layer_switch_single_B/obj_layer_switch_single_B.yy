@@ -37,5 +37,8 @@
     "path":"sprites/spr_layer_switch_single_B/spr_layer_switch_single_B.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

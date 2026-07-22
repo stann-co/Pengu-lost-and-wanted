@@ -41,5 +41,8 @@
     "path":"sprites/spr_tiles_area/spr_tiles_area.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

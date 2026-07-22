@@ -24,5 +24,5 @@
 //
 //show_debug_message(room_info.layers[2].elements[0].tiles);
 
-data = room_get_info(rm_leveleditor_test,false,true,true,true,true);
-show_debug_message(data);
+//data = room_get_info(rm_leveleditor_test,false,true,true,true,true);
+//show_debug_message(data);

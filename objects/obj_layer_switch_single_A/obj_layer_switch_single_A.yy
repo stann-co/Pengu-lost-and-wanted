@@ -40,5 +40,8 @@
     "path":"sprites/spr_layer_switch_single_A/spr_layer_switch_single_A.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

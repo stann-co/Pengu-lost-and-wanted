@@ -1,9 +1,9 @@
 /// @description
 event_inherited();
 
-pause_duration = pause_duration_seconds * GAME_SPEED
-duration = duration_seconds * GAME_SPEED;
-offset_duration = offset_duration_seconds * GAME_SPEED;
+pause_duration = pause_duration_seconds * SECOND
+duration = duration_seconds * SECOND;
+offset_duration = offset_duration_seconds * SECOND;
 
 t = 0;
 

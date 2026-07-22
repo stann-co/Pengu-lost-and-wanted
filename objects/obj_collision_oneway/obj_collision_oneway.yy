@@ -38,5 +38,8 @@
     "path":"sprites/spr_collision_oneway/spr_collision_oneway.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

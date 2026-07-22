@@ -3,7 +3,7 @@ event_inherited();
 trigger = function(){
 	if(!destroyed){
 		state.change("destroy");
-		global.camera.shake_screen(4,GAME_SPEED*0.5);
+		global.camera.shake_screen(4,SECOND*0.5);
 		with(obj_pengu){
 			hurt(sign(x-other.x));
 		}

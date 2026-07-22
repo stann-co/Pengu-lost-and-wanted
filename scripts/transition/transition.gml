@@ -1,4 +1,4 @@
-function transition(_callback,_time = GAME_SPEED*0.5){
+function transition(_callback,_time = SECOND*0.5){
 	_time = round(_time);
 	obj_game.transition_in = true;
 	obj_game.transition_callback = _callback;

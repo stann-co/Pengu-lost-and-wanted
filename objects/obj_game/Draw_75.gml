@@ -48,8 +48,8 @@ if(global.gui_draw){
     		var val_ = global.score_combo_t / SCORE_COMBO_T_MAX
     		var x_ = dsin(global.t*10)   * 4 * val_;
     		var y_ = dsin(global.t*10*2) * 4 * val_;
-    		x_ += stanncam_shake(SCORE_COMBO_T_MAX - global.score_combo_t,4,GAME_SPEED*1)
-    		y_ += stanncam_shake(SCORE_COMBO_T_MAX - global.score_combo_t,4,GAME_SPEED*1)
+    		x_ += stanncam_shake(SCORE_COMBO_T_MAX - global.score_combo_t,4,SECOND*1)
+    		y_ += stanncam_shake(SCORE_COMBO_T_MAX - global.score_combo_t,4,SECOND*1)
     		
     		draw_text(5+x_,53+y_,$"X{global.score_mult}");
     		

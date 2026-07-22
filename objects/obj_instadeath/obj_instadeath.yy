@@ -37,5 +37,8 @@
     "path":"sprites/spr_death/spr_death.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

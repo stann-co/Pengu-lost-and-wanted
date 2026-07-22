@@ -2,8 +2,8 @@
 event_inherited();
 
 t=0;
-walk_duration = GAME_SPEED*0.2;
-wait_duration = GAME_SPEED*0.4;
+walk_duration = SECOND*0.2;
+wait_duration = SECOND*0.4;
 
 hurt = function(){
 	invulnerable = true;

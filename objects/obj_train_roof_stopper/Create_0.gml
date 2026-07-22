@@ -18,7 +18,7 @@ with(zone){
 hitpoint = instance_create_depth(x,y,depth,obj_train_roof_stopper_hitpoint);
 hitpoint.trigger = function(_side,_object){	
 	if(_object.super_speed){
-		global.camera.shake_screen(2,GAME_SPEED*0.5);
+		global.camera.shake_screen(2,SECOND*0.5);
 		
 		instance_destroy(zone)
 		instance_destroy(hitpoint);
@@ -79,7 +79,7 @@ state.add("appear",{
 		y = lerp(ystart,ydest,val_);
 		
 		if(t >= duration){
-			global.camera.shake_screen(2,GAME_SPEED*0.5);
+			global.camera.shake_screen(2,SECOND*0.5);
 			state.change("active")
 		}
 	}

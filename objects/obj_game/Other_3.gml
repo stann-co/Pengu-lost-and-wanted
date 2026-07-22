@@ -1,4 +1,4 @@
-/// @description - dont use game_restart
+/// @description
 if(!IN_BROWSER){
 	steam_shutdown();
 }

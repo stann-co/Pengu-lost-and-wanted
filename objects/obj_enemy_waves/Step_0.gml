@@ -12,7 +12,7 @@ if(active){
 		var item_ = wave_[index];
 		
 		if(is_real(item_)){ //index is a delay timer
-			if(t < item_*GAME_SPEED){
+			if(t < item_*SECOND){
 				t++;
 				break;
 			} else { //delay timer done
@@ -48,7 +48,7 @@ if(active){
 		}
 		
 		if(array_length(enemies) == 0){
-			if(t < wave_pause*GAME_SPEED) t++;
+			if(t < wave_pause*SECOND) t++;
 			else {
 				t = 0;
 				index = 0;

@@ -34,5 +34,8 @@
     "path":"sprites/spr_enemy_block/spr_enemy_block.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

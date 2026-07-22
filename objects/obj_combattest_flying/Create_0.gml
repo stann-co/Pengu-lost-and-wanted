@@ -27,9 +27,9 @@ attack_target = function(){
 radius_spot = 250;
 radius_loose = 360;
 
-stalk_attack_wait = GAME_SPEED*0.3;
-swoop_windup = GAME_SPEED*0.3;
-swoop_duration = GAME_SPEED*0.65;
+stalk_attack_wait = SECOND*0.3;
+swoop_windup = SECOND*0.3;
+swoop_duration = SECOND*0.65;
 
 //when stalking how far away to position itself before swooping
 stalk_dist_x = 145;
@@ -138,7 +138,7 @@ state.add("swoop_windup",{
         
         facing = sign(attack_target().x - x)
         
-        squish(1.2,0.8,GAME_SPEED*0.4);
+        squish(1.2,0.8,SECOND*0.4);
         
         t = 0;
         

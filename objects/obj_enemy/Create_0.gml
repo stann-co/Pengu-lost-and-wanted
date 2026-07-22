@@ -19,7 +19,7 @@ hp = hp_max;
 stamina_max = 4;
 stamina = stamina_max;
 
-stamina_regain_max = GAME_SPEED * 5;
+stamina_regain_max = SECOND * 5;
 stamina_regain_t = 0;
 
 jump_attackable = true; //if player can jump on it to attack
@@ -62,7 +62,7 @@ sensor_length_base = 8;
 hurt = function(_hurt_type = ATTACK_TYPES.ATTACK, _callback = function(){}){
     switch (_hurt_type) {
     	case ATTACK_TYPES.ATTACK:
-            global.camera.shake_screen(2,GAME_SPEED*0.2);
+            global.camera.shake_screen(2,SECOND*0.2);
             part_particles_create(global.particles,x,y,global.part_stars,4);
             set_freeze_frame(0.3);
             sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
@@ -73,7 +73,7 @@ hurt = function(_hurt_type = ATTACK_TYPES.ATTACK, _callback = function(){}){
             stamina--;
             break;
         case ATTACK_TYPES.KICK:
-            global.camera.shake_screen(2,GAME_SPEED*0.2);
+            global.camera.shake_screen(2,SECOND*0.2);
             part_particles_create(global.particles,x,y,global.part_stars,6);
             set_freeze_frame(0.45);
             sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
@@ -86,7 +86,7 @@ hurt = function(_hurt_type = ATTACK_TYPES.ATTACK, _callback = function(){}){
             break;
 		
         case ATTACK_TYPES.COLLIDE: //an enemy collides with another enemy
-            global.camera.shake_screen(2,GAME_SPEED*0.2);
+            global.camera.shake_screen(2,SECOND*0.2);
             part_particles_create(global.particles,x,y,global.part_stars,6);
             sound_play_random([snd_attack1,snd_attack2,snd_attack3],0.2)
             hurt_shake_start(2);
@@ -186,7 +186,7 @@ state.add_child("stunned_base","stunned",{
             y_speed = 0;
             invulnerable = false;
             state.change("idle");
-            squish(2,0.5,GAME_SPEED*1)
+            squish(2,0.5,SECOND*1)
         }
         
         image_angle += angle_difference(ground_angle,image_angle)*0.1;

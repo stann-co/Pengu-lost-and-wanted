@@ -4,7 +4,9 @@
 if(CAN_MOVE){
     
     //animate subimg
-    subimg+= (sprite_get_speed(sprite_index)*anim_speed);
+    if(sprite_index != -1){
+        subimg+= (sprite_get_speed(sprite_index)*anim_speed);
+    }
     
     //squish scale_x & scale_y    
     if(squishing){
@@ -22,3 +24,5 @@ if(CAN_MOVE){
         image_angle += angle_difference(ground_angle,image_angle)*0.5;
     }
 }
+
+if(hurt_shake != 0) hurt_shake--

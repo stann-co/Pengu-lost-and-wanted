@@ -6,7 +6,7 @@
   "name":"ImGui",
   "parent":{
     "name":"ImGui_GM",
-    "path":"folders/Extensions/ImGui_GM.yy",
+    "path":"folders/ImGui_GM.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -5,7 +5,7 @@ dir = 0;
 
 t = 0
 launch_speed = 0;
-duration = GAME_SPEED*2;
+duration = SECOND*2;
 
 grabbed_on = false;
 

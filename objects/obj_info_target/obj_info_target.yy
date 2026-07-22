@@ -34,5 +34,8 @@
     "path":"sprites/spr_info_target/spr_info_target.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

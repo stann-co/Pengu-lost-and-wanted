@@ -13,7 +13,7 @@ window_command_hook(window_command_close);
 ImGui.__Initialize();
 ImGui.ConfigFlagToggle(ImGuiConfigFlags.DockingEnable);
 
-font = ImGui.AddFontFromFile("fonts/AtkinsonHyperlegible.ttf",24);
+font = ImGui.AddFontFromFile("editor/AtkinsonHyperlegible.ttf",24);
 
 global.show_collisions = true;
 show_collisions(true);
@@ -98,258 +98,276 @@ grid_w = 4;
 grid_h = 4;
 
 //sprite asset list
-sprite_assets = asset_get_ids(asset_sprite);
+//sprite_assets = asset_get_ids(asset_sprite);
 
-#region prepares layers
-//gets relevant layers, and adds a type for ease of use
-var layers_ = layer_get_all();
-for (var i_ = 0; i_ < array_length(layers_); i_++) {
-    //only show tile and decor layers, and store a type on them for ease
-    var layer_ = {
-        id : layers_[i_],
-        name: string_lower(layer_get_name(layers_[i_])),
-    }
-    
-    var external_ = false;
-    var data_layers_ = struct_get_names(global.room_data.layers);
-    for (var l_ = 0; l_ < array_length(data_layers_); l_++) {
-    	if(layer_.name ==  data_layers_[l_]){
-            external_ = true;
-            break;
-        }
-    }
-    
-    if(external_ == false){ //internal layers do not need to be edited, and will be disabled
-        array_push(layers,layer_);
-    }
-    
-    else if(string_starts_with(layer_.name,"decor")){
-        layer_.type = LAYER_TYPE.TILEMAP
-        array_push(layers,layer_);
-    } else
-    
-    if(string_starts_with(layer_.name,"asset")){
-        layer_.type = LAYER_TYPE.ASSET
-        layer_.transforms = [];
-        array_push(layers,layer_);
-        
-		//adds asset editor instance, so they can be manipulated
-        var elements_ = layer_get_all_elements(layer_.id);
-		for (var e_ = 0; e_ < array_length(elements_); e_++) {
-			var element_ = elements_[e_];
-			array_push(layer_.transforms,instance_create_depth(0,0,0,obj_asset_transform,{
-				element_id : element_,
-                name : sprite_get_name(layer_sprite_get_sprite(element_)),
-				layer_id : layer_.id,
-			}));
-		}
-    }
+//Clear everything and reset parameters
+new_level = function(){
+    //clear everything
+    //setup the basic layers
 }
-#endregion
+
+//if you're not already in a level, when going to editor
+if(global.level == undefined){
+    //TODO it should load up the most recent level worked on, or prepare a new empty level
+    new_level()
+} else {
+    //TODO get the level data of the current level
+    //probably by clearing everything and reloading the file contents but as editor specific objects
+}
+
+
+
+//#region prepares layers
+////gets relevant layers, and adds a type for ease of use
+//var layers_ = layer_get_all();
+//for (var i_ = 0; i_ < array_length(layers_); i_++) {
+    ////only show tile and decor layers, and store a type on them for ease
+    //var layer_ = {
+        //id : layers_[i_],
+        //name: string_lower(layer_get_name(layers_[i_])),
+    //}
+    //
+    //var external_ = false;
+    //var data_layers_ = struct_get_names(global.room_data.layers);
+    //for (var l_ = 0; l_ < array_length(data_layers_); l_++) {
+    	//if(layer_.name ==  data_layers_[l_]){
+            //external_ = true;
+            //break;
+        //}
+    //}
+    //
+    //if(external_ == false){ //internal layers do not need to be edited, and will be disabled
+        //array_push(layers,layer_);
+    //}
+    //
+    //else if(string_starts_with(layer_.name,"decor")){
+        //layer_.type = LAYER_TYPE.TILEMAP
+        //array_push(layers,layer_);
+    //} else
+    //
+    //if(string_starts_with(layer_.name,"asset")){
+        //layer_.type = LAYER_TYPE.ASSET
+        //layer_.transforms = [];
+        //array_push(layers,layer_);
+        //
+		////adds asset editor instance, so they can be manipulated
+        //var elements_ = layer_get_all_elements(layer_.id);
+		//for (var e_ = 0; e_ < array_length(elements_); e_++) {
+			//var element_ = elements_[e_];
+			//array_push(layer_.transforms,instance_create_depth(0,0,0,obj_asset_transform,{
+				//element_id : element_,
+                //name : sprite_get_name(layer_sprite_get_sprite(element_)),
+				//layer_id : layer_.id,
+			//}));
+		//}
+    //}
+//}
+//#endregion
 
 //reorders layers based on their depth
-layers_depth_order = function (){
-    array_sort(layers,function(_current,_next){
-        return layer_get_depth(_current.id) - layer_get_depth(_next.id);
-    })
-    //sets layer index after sorting
-    for (var i_ = 0; i_ < array_length(layers); i_++) {
-    	if(layer_active == layers[i_]){
-            layer_index = i_;
-            break;
-        }
-    }
-    //sets new layer depth
-    with(obj_layer_draw){
-        depth = layer_get_depth(layer_id);
-    }
-}
+//layers_depth_order = function (){
+    //array_sort(layers,function(_current,_next){
+        //return layer_get_depth(_current.id) - layer_get_depth(_next.id);
+    //})
+    ////sets layer index after sorting
+    //for (var i_ = 0; i_ < array_length(layers); i_++) {
+    	//if(layer_active == layers[i_]){
+            //layer_index = i_;
+            //break;
+        //}
+    //}
+    ////sets new layer depth
+    //with(obj_layer_draw){
+        //depth = layer_get_depth(layer_id);
+    //}
+//}
 
-add_layer = function(_type){
-    var layer_ = {
-        type : _type,
-    }
-    var name_ = "";
-    switch (_type) {
-        case LAYER_TYPE.INSTANCE:
-            name_ = "inst_";
-            layer_.transforms = [];
-            break;
-        case LAYER_TYPE.ASSET:
-            name_ = "asset_";
-            layer_.transforms = [];
-            break;
-        case LAYER_TYPE.TILEMAP:
-            name_ = "decor_";
-            break;
-    }
-    
-    var count_ = 0;
-    //layer number for the name
-    for (var i_ = 0; i_ < array_length(layers); i_++) {
-    	if(string_starts_with(layers[i_].name,name_)) count_++;
-    }
-    name_+=string(count_);
-    
-    //sets depth to be under the lowest layer
-    var depth_ = layer_get_depth(layers[array_length(layers)-1].id) + 100;
-    
-    layer_.name = name_;
-    layer_.id = layer_create(depth_,name_);
-    
-    struct_set_chained(global.room_data,{
-        depth: depth_,
-        parralax_x: 0,
-        parralax_y: 0,
-        offset_x: 0,
-        offset_y: 0,
-    },"layers",name_);
-    
-    switch (_type) {
-        case LAYER_TYPE.TILEMAP:
-            
-            instance_create_depth(0,0,depth_,obj_layer_draw,{
-                layer_id : layer_.id,
-                type : LAYER_TYPE.TILEMAP,
-                name : name_
-            })
-            layer_set_visible(layer_.id,false);
-            break;
-            
-        case LAYER_TYPE.INSTANCE:
-            struct_set_chained(global.room_data,[],"layers",name_,"elements");
-        case LAYER_TYPE.ASSET:
-            struct_set_chained(global.room_data,[],"layers",name_,"elements");
-            
-            instance_create_depth(0,0,depth_,obj_layer_draw,{
-                layer_id : layer_.id,
-                type : LAYER_TYPE.ASSET,
-                name : name_
-            })
-            layer_set_visible(layer_.id,false);
-            break;
-    }
-    
-    array_push(layers,layer_);
-    set_layer(array_length(layers)-1);
-}
+///TODO this should be changed into an action system for undo & redo as soon as possible
+//add_layer = function(_type){
+    //var layer_ = {
+        //type : _type,
+    //}
+    //var name_ = "";
+    //switch (_type) {
+        //case LAYER_TYPE.INSTANCE:
+            //name_ = "inst_";
+            //layer_.transforms = [];
+            //break;
+        //case LAYER_TYPE.ASSET:
+            //name_ = "asset_";
+            //layer_.transforms = [];
+            //break;
+        //case LAYER_TYPE.TILEMAP:
+            //name_ = "decor_";
+            //break;
+    //}
+    //
+    //var count_ = 0;
+    ////layer number for the name
+    //for (var i_ = 0; i_ < array_length(layers); i_++) {
+    	//if(string_starts_with(layers[i_].name,name_)) count_++;
+    //}
+    //name_+=string(count_);
+    //
+    ////sets depth to be under the lowest layer
+    //var depth_ = layer_get_depth(layers[array_length(layers)-1].id) + 100;
+    //
+    //layer_.name = name_;
+    //layer_.id = layer_create(depth_,name_);
+    //
+    //struct_set_chained(global.room_data,{
+        //depth: depth_,
+        //parralax_x: 0,
+        //parralax_y: 0,
+        //offset_x: 0,
+        //offset_y: 0,
+    //},"layers",name_);
+    //
+    //switch (_type) {
+        //case LAYER_TYPE.TILEMAP:
+            //
+            //instance_create_depth(0,0,depth_,obj_layer_draw,{
+                //layer_id : layer_.id,
+                //type : LAYER_TYPE.TILEMAP,
+                //name : name_
+            //})
+            //layer_set_visible(layer_.id,false);
+            //break;
+            //
+        //case LAYER_TYPE.INSTANCE:
+            //struct_set_chained(global.room_data,[],"layers",name_,"elements");
+        //case LAYER_TYPE.ASSET:
+            //struct_set_chained(global.room_data,[],"layers",name_,"elements");
+            //
+            //instance_create_depth(0,0,depth_,obj_layer_draw,{
+                //layer_id : layer_.id,
+                //type : LAYER_TYPE.ASSET,
+                //name : name_
+            //})
+            //layer_set_visible(layer_.id,false);
+            //break;
+    //}
+    //
+    //array_push(layers,layer_);
+    //set_layer(array_length(layers)-1);
+//}
+//
+//delete_layer = function(_layer_index){
+    //struct_remove(global.room_data.layers,layers[_layer_index].name);
+    //array_delete(layers,_layer_index,1);
+    //layer_active = undefined;
+    //layer_index = 0;
+//}
+//
+//set_layer = function(_layer_index){
+    //layer_index = _layer_index;
+    //layer_active = layers[_layer_index];
+    //
+    //if(layer_active.type == LAYER_TYPE.TILEMAP){ 
+        //if(is_array(layer_active.elements)){
+            //element_active = layer_active.elements[0];
+            //
+            //tilemap = layer_tilemap_get_id(layer_active.id);
+            //tilemap_w = tilemap_get_width(tilemap)
+            //tilemap_h = tilemap_get_height(tilemap)
+            //tileset = tilemap_get_tileset(tilemap);
+            //tileset_info = tileset_get_info(tileset);
+            //
+            ////redraw tile data and instance
+            //tileset_data_update = true;
+            //tilebrush_data_update = true;
+			//
+            ////Grid overlay size
+			//grid_w = tilemap_w; 
+			//grid_h = tilemap_h;
+			//grid_cell_w = tileset_info.tile_width;
+			//grid_cell_h = tileset_info.tile_height;
+            //
+            //tileset_info.name = tileset_get_name(tileset);
+            //
+            //var brush_width_ = struct_get_chained(editor_data,tileset_info.name,"brush_width");
+            //var brush_height_ = struct_get_chained(editor_data,tileset_info.name,"brush_height");
+            //var brush_tiles_ = struct_get_chained(editor_data,tileset_info.name,"brush_tiles");
+            //
+            //tileset_brushes = ds_grid_create(brush_width_,brush_height_);
+            //ds_grid_populate(tileset_brushes,brush_tiles_);
+            //
+            //tileset_tiles = ds_grid_create(tileset_info.tile_columns,tileset_info.tile_count / tileset_info.tile_columns);
+            ////fils grid with indexes from
+            //ds_grid_populate(tileset_tiles,array_create_ext(tileset_info.tile_count,function(_i){
+                //return _i;
+            //}));
+            //
+            ////a brush is a ds_grid of tiledata
+            //brush = -1; //-1 is none selected
+            //
+            //tile_flipped = false;
+            //tile_mirrored = false;
+            //tile_rotated = false;
+            //
+            ////tile picker offset and zoom
+            //tiles_x = 0;
+            //tiles_y = 0;
+            //tiles_size = 512; //this should automatically be set to fit the window
+            //
+            ////tile brush pickers offset and zoom
+            //brushes_x = 0;
+            //brushes_y = 0;
+            //brushes_size = 512;
+        //} else {
+            //element_active = noone
+            //tilemap = undefined;
+            //tileset = undefined;
+        //}
+    //} 
+    //else if(layer_active.type == LAYER_TYPE.ASSET) { //asset layer
+		//element_active = noone;
+		//grid_cell_w = 16;
+		//grid_cell_h = 16;
+		//grid_w = room_width / grid_cell_w;
+		//grid_h = room_height / grid_cell_h;
+        //
+        //brush = -1;
+    //}
+    //
+    //parralax_x = struct_get_chained(global.room_data,"layers",layer_active.name,"parralax_x") ?? 0;
+    //parralax_y = struct_get_chained(global.room_data,"layers",layer_active.name,"parralax_y") ?? 0;
+    //offset_x = struct_get_chained(global.room_data,"layers",layer_active.name,"offset_x") ?? 0;
+    //offset_y = struct_get_chained(global.room_data,"layers",layer_active.name,"offset_y") ?? 0;
+//}
+//
+//add_sprite = function(_sprite){
+    //var x_ = global.camera.x + offset_x - global.camera.get_x() * parralax_x;
+    //var y_ = global.camera.y + offset_y - global.camera.get_y() * parralax_y;
+    //
+    //var element_ = layer_sprite_create(layer_active.id,x_,y_,_sprite); 
+    //var transform_ = instance_create_depth(0,0,0,obj_asset_transform,{
+        //element_id : element_,
+        //name :  sprite_get_name(_sprite),
+        //layer_id : layer_active.id,
+    //});
+    //element_active = transform_;
+    //array_push(layer_active.transforms,transform_);
+//}
+//
+//quit = function(){ //stops level editor
+    ////maybe make a warning or popup or something
+    //
+    //global.camera.follow = last_camera_follow;
+    //global.camera.zone_constrain = true;
+    //global.gui_draw = true;
+    //
+    //global.camera.zoom(1,0);
+    //
+    //instance_destroy();
+//}
 
-delete_layer = function(_layer_index){
-    struct_remove(global.room_data.layers,layers[_layer_index].name);
-    array_delete(layers,_layer_index,1);
-    layer_active = undefined;
-    layer_index = 0;
-}
-
-set_layer = function(_layer_index){
-    layer_index = _layer_index;
-    layer_active = layers[_layer_index];
-    
-    if(layer_active.type == LAYER_TYPE.TILEMAP){ 
-        if(is_array(layer_active.elements)){
-            element_active = layer_active.elements[0];
-            
-            tilemap = layer_tilemap_get_id(layer_active.id);
-            tilemap_w = tilemap_get_width(tilemap)
-            tilemap_h = tilemap_get_height(tilemap)
-            tileset = tilemap_get_tileset(tilemap);
-            tileset_info = tileset_get_info(tileset);
-            
-            //redraw tile data and instance
-            tileset_data_update = true;
-            tilebrush_data_update = true;
-			
-            //Grid overlay size
-			grid_w = tilemap_w; 
-			grid_h = tilemap_h;
-			grid_cell_w = tileset_info.tile_width;
-			grid_cell_h = tileset_info.tile_height;
-            
-            tileset_info.name = tileset_get_name(tileset);
-            
-            var brush_width_ = struct_get_chained(editor_data,tileset_info.name,"brush_width");
-            var brush_height_ = struct_get_chained(editor_data,tileset_info.name,"brush_height");
-            var brush_tiles_ = struct_get_chained(editor_data,tileset_info.name,"brush_tiles");
-            
-            tileset_brushes = ds_grid_create(brush_width_,brush_height_);
-            ds_grid_populate(tileset_brushes,brush_tiles_);
-            
-            tileset_tiles = ds_grid_create(tileset_info.tile_columns,tileset_info.tile_count / tileset_info.tile_columns);
-            //fils grid with indexes from
-            ds_grid_populate(tileset_tiles,array_create_ext(tileset_info.tile_count,function(_i){
-                return _i;
-            }));
-            
-            //a brush is a ds_grid of tiledata
-            brush = -1; //-1 is none selected
-            
-            tile_flipped = false;
-            tile_mirrored = false;
-            tile_rotated = false;
-            
-            //tile picker offset and zoom
-            tiles_x = 0;
-            tiles_y = 0;
-            tiles_size = 512; //this should automatically be set to fit the window
-            
-            //tile brush pickers offset and zoom
-            brushes_x = 0;
-            brushes_y = 0;
-            brushes_size = 512;
-        } else {
-            element_active = noone
-            tilemap = undefined;
-            tileset = undefined;
-        }
-    } 
-    else if(layer_active.type == LAYER_TYPE.ASSET) { //asset layer
-		element_active = noone;
-		grid_cell_w = 16;
-		grid_cell_h = 16;
-		grid_w = room_width / grid_cell_w;
-		grid_h = room_height / grid_cell_h;
-        
-        brush = -1;
-    }
-    
-    parralax_x = struct_get_chained(global.room_data,"layers",layer_active.name,"parralax_x") ?? 0;
-    parralax_y = struct_get_chained(global.room_data,"layers",layer_active.name,"parralax_y") ?? 0;
-    offset_x = struct_get_chained(global.room_data,"layers",layer_active.name,"offset_x") ?? 0;
-    offset_y = struct_get_chained(global.room_data,"layers",layer_active.name,"offset_y") ?? 0;
-}
-
-add_sprite = function(_sprite){
-    var x_ = global.camera.x + offset_x - global.camera.get_x() * parralax_x;
-    var y_ = global.camera.y + offset_y - global.camera.get_y() * parralax_y;
-    
-    var element_ = layer_sprite_create(layer_active.id,x_,y_,_sprite); 
-    var transform_ = instance_create_depth(0,0,0,obj_asset_transform,{
-        element_id : element_,
-        name :  sprite_get_name(_sprite),
-        layer_id : layer_active.id,
-    });
-    element_active = transform_;
-    array_push(layer_active.transforms,transform_);
-}
-
-quit = function(){ //stops level editor
-    //maybe make a warning or popup or something
-    
-    global.camera.follow = last_camera_follow;
-    global.camera.zone_constrain = true;
-    global.gui_draw = true;
-    
-    global.camera.zoom(1,0);
-    
-    instance_destroy();
-}
-
-save = function(){ 
-    var path_ = string_replace(GM_project_filename,"Pengu-lost-and-wanted.yyp","datafiles/room_data/"+room_get_name(room)+".json");
-    show_debug_message("saved to: "+path_);
-    show_debug_message(global.room_data);
-    json_save(path_,global.room_data);
-}
+//save = function(){ 
+    //var path_ = string_replace(GM_project_filename,"Pengu-lost-and-wanted.yyp","datafiles/room_data/"+room_get_name(room)+".json");
+    //show_debug_message("saved to: "+path_);
+    //show_debug_message(global.room_data);
+    //json_save(path_,global.room_data);
+//}
 
 //reorders layers
-layers_depth_order();
+//layers_depth_order();

@@ -35,5 +35,8 @@
     "path":"sprites/spr_loading_area/spr_loading_area.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

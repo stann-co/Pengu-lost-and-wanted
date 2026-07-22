@@ -1,5 +1,4 @@
-/// @description 
-
+/// @description quickload
 
 room_restart();
 

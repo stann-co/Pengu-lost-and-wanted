@@ -16,7 +16,7 @@ if(array_length(debug_text) > 0){
     if(debug_text_t != 0) debug_text_t--;
     else {
         array_pop(debug_text);
-        debug_text_t = GAME_SPEED * 4;
+        debug_text_t = SECOND * 4;
     }
 }
 

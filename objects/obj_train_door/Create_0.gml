@@ -5,7 +5,7 @@ event_inherited();
 
 open_for_time = function(_time = 1){
 	forced_active = true;
-	forced_active_t = _time * GAME_SPEED;
+	forced_active_t = _time * SECOND;
 }
 
 y_closed = y;

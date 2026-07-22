@@ -34,7 +34,7 @@ add_children = function(_array_entity){
 		for (var i_ = 0; i_ < array_length(_array_entity); i_++) {
 			add_child(_array_entity[i_])
 		}
-	} else show_error($"{_array_entity} not array}",true)
+	} else show_error($"{_array_entity} not array",true)
 }
 
 add_child = function(_entity){
@@ -43,9 +43,9 @@ add_child = function(_entity){
 			if (!array_contains(children,_entity)){
 				array_push(children,_entity)
 				_entity.parent = id
-			} else show_error($"{_entity} already a child of {self}",id)
-		} else show_error($"{_entity} not an entity}",true)
-	} else show_error($"{_entity} doesn't exist'}",true)
+			} else show_error($"{_entity} already a child of {self}",true)
+		} else show_error($"{_entity} not an entity",true)
+	} else show_error($"{_entity} doesn't exist",true)
 }
 
 remove_child = function(_entity){

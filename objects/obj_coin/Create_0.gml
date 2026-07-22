@@ -22,9 +22,9 @@ t_offset = irandom(60);
 
 y_offset_max = 2;
 rot_offset_max = 10;
-anim_duration = GAME_SPEED * 1.2;
+anim_duration = SECOND * 1.2;
 
-collect_duration = GAME_SPEED * 0.4;
+collect_duration = SECOND * 0.4;
 
 collect_t = 0;
 
@@ -43,10 +43,10 @@ vec_hor = new Vector2(sign(xspeed)*radius,0);
 vec_ver = new Vector2(0,sign(yspeed)*radius);
 
 pickup_t = 0;
-pickup_t_max = GAME_SPEED * 1;
+pickup_t_max = SECOND * 1;
 
 disappear = false;
-disappear_duration = GAME_SPEED * 4;
+disappear_duration = SECOND * 4;
 
 start_time = 0;
 

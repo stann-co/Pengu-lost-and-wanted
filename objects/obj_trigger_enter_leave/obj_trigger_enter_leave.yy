@@ -38,5 +38,8 @@
     "path":"sprites/spr_trigger_enter_leave/spr_trigger_enter_leave.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

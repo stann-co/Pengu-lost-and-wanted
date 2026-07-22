@@ -37,5 +37,8 @@
     "path":"sprites/spr_layer_switch_AC/spr_layer_switch_AC.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

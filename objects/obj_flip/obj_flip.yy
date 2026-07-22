@@ -39,5 +39,8 @@
     "path":"sprites/spr_flip/spr_flip.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

@@ -38,5 +38,8 @@
     "path":"sprites/spr_enemy_wave/spr_enemy_wave.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "tool",
+  ],
   "visible":true,
 }

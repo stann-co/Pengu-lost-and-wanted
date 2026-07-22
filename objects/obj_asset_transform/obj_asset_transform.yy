@@ -11,7 +11,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"editor",
-    "path":"folders/Objects/tool/editor.yy",
+    "path":"folders/Objects/editor.yy",
   },
   "parentObjectId":null,
   "persistent":false,

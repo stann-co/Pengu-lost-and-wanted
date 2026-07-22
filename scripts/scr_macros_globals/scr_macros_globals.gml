@@ -1,14 +1,18 @@
 #macro VERSION "0.1.5-alpha"
 
+#macro START_POINT "main menu"
+#macro Editor:START_POINT "editor"
+
 #macro IN_BROWSER (os_type != os_windows)
 
 //Where all macros are set
-#macro GAME_SPEED game_get_speed(gamespeed_fps)
+#macro SECOND game_get_speed(gamespeed_fps)
+#macro TIMESTEP (delta_time * SECOND / 1_000_000)
 
 #macro CAMERA_OUTER_MARGIN 200
 #macro CAMERA_INNER_MARGIN 100
 
-#macro MAIN_MENUS (room == rm_init)
+#macro MAIN_MENUS (room == rm_game)
 #macro PAUSING     (obj_game.state.state_is("pause_menu") || obj_game.state.state_is("settings"))
 #macro FREEZE_FRAME (global.freeze_duration != 0)
 #macro CAN_MOVE_NOFREEZE (!PAUSING && !instance_exists(obj_level_editor)) 
@@ -95,12 +99,13 @@ global.sound_volume = 10;
 global.draw_shine = true;
 global.draw_reflections = true;
 
-global.levels = [
-	rm_level_devzone,
-	rm_level_train,
-	rm_level_nerdstore,
-	rm_level_futurecity
-]
+//global.levels = [
+	//rm_level_devzone,
+	//rm_level_train,
+	//rm_level_nerdstore,
+	//rm_level_futurecity
+//]
+global.level = undefined
 
 //globals
 global.t = 0; //a global timer for different objects to refer to stay in sync even after being deactivated
@@ -166,8 +171,6 @@ global.collision_layers[? COLLISION_LAYERS.C] = undefined
 
 global.level_step = function (){} //will run every step, override in each level, to have level specific step code happen
 
-global.room_data = {}; //externally loaded json room data, parralax layers
-
 global.activation_list = [];
 
 global.debug = false;
@@ -179,7 +182,7 @@ global.checkpoint = -1;
 global.score = 0;
 global.score_mult = 1;
 global.score_combo_t = 0;
-#macro SCORE_COMBO_T_MAX (GAME_SPEED * 3)
+#macro SCORE_COMBO_T_MAX (SECOND * 3)
 global.coins = 20;
 
 #region control
@@ -227,6 +230,6 @@ gpu_set_tex_mip_bias(-1);
 
 //spawns persistent objects
 
-//room_instance_add(rm_init,0,0,obj_gmlive);
-room_instance_add(rm_init,0,0,obj_camera);
-room_instance_add(rm_init,0,0,obj_game);
+//room_instance_add(rm_game,0,0,obj_gmlive);
+room_instance_add(rm_game,0,0,obj_camera);
+room_instance_add(rm_game,0,0,obj_game);

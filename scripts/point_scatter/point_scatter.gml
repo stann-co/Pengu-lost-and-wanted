@@ -14,7 +14,7 @@ function point_scatter(_points,_auto_collect = true, _scoring = true){
 		point_.scoring = _scoring;
 		point_.state.change("physics");
 		if(_auto_collect){
-			point_.alarm[0] = GAME_SPEED*0.25;	
+			point_.alarm[0] = SECOND*0.25;	
 		}
 		
 		//flips around with every ring
