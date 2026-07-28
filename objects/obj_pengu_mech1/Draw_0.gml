@@ -40,7 +40,7 @@ inst.node_move_ik(foot_r,fpr[0],fpr[1],fpr[2],false,false)
 gpu_set_ztestenable(true);
 gpu_set_zwriteenable(true);
 
-shader_set(sh_3d_animated)
+shader_set(sh_3d_animated);
 matrix_set(matrix_world, mat);
 inst.draw()
 matrix_set(matrix_world, matrix_build_identity());

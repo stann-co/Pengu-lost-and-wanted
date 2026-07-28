@@ -247,6 +247,20 @@ function draw_line_selection(_x1,_y1,_x2,_y2,_width = 1){
 	shader_reset();
 }
 
+/// @desc Function draws a selection marker around a rectangular area (eg a
+/// single tile or a square of tiles), using draw_line_selection for each edge
+/// @param {float*} _x
+/// @param {float*} _y
+/// @param {float*} _w
+/// @param {float*} _h
+/// @param {float*} _width line width
+function draw_box_selection(_x,_y,_w,_h,_width = 1){
+	draw_line_selection(_x,    _y,    _x+_w, _y,    _width);
+	draw_line_selection(_x+_w, _y,    _x+_w, _y+_h, _width);
+	draw_line_selection(_x+_w, _y+_h, _x,    _y+_h, _width);
+	draw_line_selection(_x,    _y+_h, _x,    _y,    _width);
+}
+
 /**
  * Function Draw selection box around instance
  * @param {Instance.id*} _inst

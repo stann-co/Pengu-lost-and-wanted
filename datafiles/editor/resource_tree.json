@@ -1,0 +1,1813 @@
+{
+  "folders": [
+    {
+      "name": "Extensions",
+      "resources": [],
+      "folders": [
+        {
+          "name": "Input",
+          "resources": [],
+          "folders": [
+            {
+              "name": "(System)",
+              "resources": [
+                {
+                  "name": "__InputUpdateController",
+                  "type": "object"
+                }
+              ],
+              "folders": []
+            }
+          ]
+        },
+        {
+          "name": "Scribble",
+          "resources": [],
+          "folders": [
+            {
+              "name": "(System - don't call these functions)",
+              "resources": [
+                {
+                  "name": "scribble_fallback_bulletpoint",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            }
+          ]
+        },
+        {
+          "name": "STANNcam",
+          "resources": [
+            {
+              "name": "__obj_stanncam_manager",
+              "type": "object"
+            }
+          ],
+          "folders": [
+            {
+              "name": "Zones",
+              "resources": [
+                {
+                  "name": "obj_stanncam_zone_1side",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_stanncam_zone_2side",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_stanncam_zone_blank",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_stanncam_zone_corner",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_stanncam_zone_u",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_stanncam_zone",
+                  "type": "object"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "Miscellaneous",
+              "resources": [],
+              "folders": [
+                {
+                  "name": "Sprites",
+                  "resources": [
+                    {
+                      "name": "spr_stanncam_zone_1side",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone_2side",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone_connector",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone_corner",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone_u",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone",
+                      "type": "sprite"
+                    }
+                  ],
+                  "folders": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Objects",
+      "resources": [
+        {
+          "name": "obj_win",
+          "type": "object"
+        },
+        {
+          "name": "obj_trigger_hitbox",
+          "type": "object"
+        },
+        {
+          "name": "obj_flip",
+          "type": "object"
+        },
+        {
+          "name": "obj_instadeath",
+          "type": "object"
+        },
+        {
+          "name": "obj_loading_area",
+          "type": "object"
+        },
+        {
+          "name": "obj_coin",
+          "type": "object"
+        },
+        {
+          "name": "obj_enemy_block",
+          "type": "object"
+        },
+        {
+          "name": "obj_pengu",
+          "type": "object"
+        },
+        {
+          "name": "obj_layer_switch_AB",
+          "type": "object"
+        },
+        {
+          "name": "obj_layer_switch_single_A",
+          "type": "object"
+        },
+        {
+          "name": "obj_fall_off",
+          "type": "object"
+        },
+        {
+          "name": "obj_collision_activate",
+          "type": "object"
+        },
+        {
+          "name": "obj_collision_oneway",
+          "type": "object"
+        },
+        {
+          "name": "obj_hidden_area",
+          "type": "object"
+        },
+        {
+          "name": "obj_slippery",
+          "type": "object"
+        },
+        {
+          "name": "obj_layer_switch_single_B",
+          "type": "object"
+        },
+        {
+          "name": "obj_layer_switch_single_C",
+          "type": "object"
+        },
+        {
+          "name": "obj_layer_switch_AC",
+          "type": "object"
+        },
+        {
+          "name": "obj_layer_switch_BC",
+          "type": "object"
+        },
+        {
+          "name": "obj_checkpoint",
+          "type": "object"
+        },
+        {
+          "name": "obj_trigger",
+          "type": "object"
+        },
+        {
+          "name": "obj_info_target",
+          "type": "object"
+        },
+        {
+          "name": "obj_enemy_waves",
+          "type": "object"
+        },
+        {
+          "name": "obj_collision",
+          "type": "object"
+        },
+        {
+          "name": "obj_collision_tile",
+          "type": "object"
+        },
+        {
+          "name": "obj_tiles_area",
+          "type": "object"
+        },
+        {
+          "name": "obj_trigger_enter_leave",
+          "type": "object"
+        },
+        {
+          "name": "obj_moving",
+          "type": "object"
+        },
+        {
+          "name": "obj_game",
+          "type": "object"
+        },
+        {
+          "name": "obj_depth_set",
+          "type": "object"
+        }
+      ],
+      "folders": [
+        {
+          "name": "decorations",
+          "resources": [
+            {
+              "name": "obj_reflection_zone",
+              "type": "object"
+            },
+            {
+              "name": "obj_winter_crystal1",
+              "type": "object"
+            },
+            {
+              "name": "obj_paper_pile",
+              "type": "object"
+            },
+            {
+              "name": "obj_winter_tree1",
+              "type": "object"
+            },
+            {
+              "name": "obj_winter_waterfall",
+              "type": "object"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "enemies",
+          "resources": [
+            {
+              "name": "obj_enemy_seal",
+              "type": "object"
+            },
+            {
+              "name": "obj_enemy_flying",
+              "type": "object"
+            },
+            {
+              "name": "obj_test_dummy",
+              "type": "object"
+            },
+            {
+              "name": "obj_ball",
+              "type": "object"
+            },
+            {
+              "name": "obj_combattest",
+              "type": "object"
+            },
+            {
+              "name": "obj_combattest_flying",
+              "type": "object"
+            },
+            {
+              "name": "obj_enemy",
+              "type": "object"
+            },
+            {
+              "name": "obj_enemy_snowman",
+              "type": "object"
+            },
+            {
+              "name": "obj_enemy_toybot",
+              "type": "object"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "obstacles",
+          "resources": [
+            {
+              "name": "obj_spikes_original",
+              "type": "object"
+            },
+            {
+              "name": "obj_icicle",
+              "type": "object"
+            },
+            {
+              "name": "obj_snowball_thrown",
+              "type": "object"
+            },
+            {
+              "name": "obj_spikes",
+              "type": "object"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "tool",
+          "resources": [
+            {
+              "name": "obj_camera",
+              "type": "object"
+            },
+            {
+              "name": "obj_entity",
+              "type": "object"
+            },
+            {
+              "name": "obj_particle_host",
+              "type": "object"
+            },
+            {
+              "name": "obj_layer_draw",
+              "type": "object"
+            },
+            {
+              "name": "obj_enemy_encounter",
+              "type": "object"
+            },
+            {
+              "name": "obj_scene",
+              "type": "object"
+            },
+            {
+              "name": "obj_splash",
+              "type": "object"
+            },
+            {
+              "name": "obj_character",
+              "type": "object"
+            },
+            {
+              "name": "obj_tunnel_ride",
+              "type": "object"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "tests",
+          "resources": [
+            {
+              "name": "obj_rope_test",
+              "type": "object"
+            },
+            {
+              "name": "obj_verlet_test",
+              "type": "object"
+            },
+            {
+              "name": "obj_rod_test",
+              "type": "object"
+            },
+            {
+              "name": "obj_chrome_ball_test",
+              "type": "object"
+            },
+            {
+              "name": "obj_chrome_ball_test2",
+              "type": "object"
+            },
+            {
+              "name": "obj_cubemap_test",
+              "type": "object"
+            },
+            {
+              "name": "obj_heat_distortion_test",
+              "type": "object"
+            },
+            {
+              "name": "obj_cubemap_test_export",
+              "type": "object"
+            },
+            {
+              "name": "obj_find_side_test",
+              "type": "object"
+            },
+            {
+              "name": "obj_3d_basketball",
+              "type": "object"
+            },
+            {
+              "name": "obj_squash_stretch",
+              "type": "object"
+            },
+            {
+              "name": "obj_colliding_entity_test",
+              "type": "object"
+            },
+            {
+              "name": "obj_rain_test",
+              "type": "object"
+            },
+            {
+              "name": "obj_sparks_test",
+              "type": "object"
+            },
+            {
+              "name": "obj_3d_smf",
+              "type": "object"
+            },
+            {
+              "name": "obj_retangle_side_test",
+              "type": "object"
+            },
+            {
+              "name": "obj_retangle_side_test_cursor",
+              "type": "object"
+            },
+            {
+              "name": "obj_spring_test",
+              "type": "object"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "level element",
+          "resources": [
+            {
+              "name": "obj_skilift_pole",
+              "type": "object"
+            },
+            {
+              "name": "obj_skilift_seat",
+              "type": "object"
+            },
+            {
+              "name": "obj_speedbump",
+              "type": "object"
+            },
+            {
+              "name": "obj_spring",
+              "type": "object"
+            },
+            {
+              "name": "obj_spring_ball",
+              "type": "object"
+            },
+            {
+              "name": "obj_destructible_block",
+              "type": "object"
+            },
+            {
+              "name": "obj_falling_platform",
+              "type": "object"
+            },
+            {
+              "name": "obj_flying_car1",
+              "type": "object"
+            }
+          ],
+          "folders": [
+            {
+              "name": "platforms",
+              "resources": [
+                {
+                  "name": "obj_moving_platform_mid",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_rope_platform",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_moving_platform_original",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_moving_platform",
+                  "type": "object"
+                }
+              ],
+              "folders": []
+            }
+          ]
+        },
+        {
+          "name": "story",
+          "resources": [
+            {
+              "name": "obj_intro_sequence",
+              "type": "object"
+            },
+            {
+              "name": "obj_obelisq",
+              "type": "object"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "vehicles",
+          "resources": [
+            {
+              "name": "obj_egg_mech",
+              "type": "object"
+            },
+            {
+              "name": "obj_pengu_mech1",
+              "type": "object"
+            },
+            {
+              "name": "obj_3d_mech_old",
+              "type": "object"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "areas",
+          "resources": [],
+          "folders": [
+            {
+              "name": "snow_train",
+              "resources": [
+                {
+                  "name": "obj_train_roof_stopper_hitpoint",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_train_door",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_train_roof_stopper",
+                  "type": "object"
+                }
+              ],
+              "folders": []
+            }
+          ]
+        },
+        {
+          "name": "editor",
+          "resources": [
+            {
+              "name": "obj_asset_transform",
+              "type": "object"
+            },
+            {
+              "name": "obj_level_editor",
+              "type": "object"
+            }
+          ],
+          "folders": []
+        }
+      ]
+    },
+    {
+      "name": "Sounds",
+      "resources": [
+        {
+          "name": "snd_point",
+          "type": "sound"
+        },
+        {
+          "name": "snd_bouncepad",
+          "type": "sound"
+        },
+        {
+          "name": "snd_wingflap1",
+          "type": "sound"
+        },
+        {
+          "name": "snd_dashing",
+          "type": "sound"
+        },
+        {
+          "name": "snd_wingflap2",
+          "type": "sound"
+        },
+        {
+          "name": "snd_jump2",
+          "type": "sound"
+        },
+        {
+          "name": "snd_bouncepop",
+          "type": "sound"
+        },
+        {
+          "name": "snd_hurt",
+          "type": "sound"
+        },
+        {
+          "name": "snd_slide",
+          "type": "sound"
+        },
+        {
+          "name": "snd_seal_hurt",
+          "type": "sound"
+        },
+        {
+          "name": "snd_robot_hurt",
+          "type": "sound"
+        },
+        {
+          "name": "snd_ui_hover",
+          "type": "sound"
+        },
+        {
+          "name": "snd_ui_decline",
+          "type": "sound"
+        },
+        {
+          "name": "snd_attack1",
+          "type": "sound"
+        },
+        {
+          "name": "snd_attack2",
+          "type": "sound"
+        },
+        {
+          "name": "snd_attack3",
+          "type": "sound"
+        },
+        {
+          "name": "snd_text",
+          "type": "sound"
+        },
+        {
+          "name": "snd_jump1",
+          "type": "sound"
+        }
+      ],
+      "folders": [
+        {
+          "name": "mech",
+          "resources": [
+            {
+              "name": "snd_mech_stomp",
+              "type": "sound"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "effects",
+          "resources": [
+            {
+              "name": "snd_vine",
+              "type": "sound"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "key press",
+          "resources": [
+            {
+              "name": "snd_keypress2",
+              "type": "sound"
+            },
+            {
+              "name": "snd_keypress3",
+              "type": "sound"
+            },
+            {
+              "name": "snd_keypress4",
+              "type": "sound"
+            },
+            {
+              "name": "snd_keypress1",
+              "type": "sound"
+            }
+          ],
+          "folders": []
+        }
+      ]
+    },
+    {
+      "name": "Sprites",
+      "resources": [
+        {
+          "name": "spr_checkpoint",
+          "type": "sprite"
+        },
+        {
+          "name": "spr_level_frame",
+          "type": "sprite"
+        },
+        {
+          "name": "spr_cursor_rotate",
+          "type": "sprite"
+        },
+        {
+          "name": "spr_gamesize_guide",
+          "type": "sprite"
+        },
+        {
+          "name": "spr_gizmo",
+          "type": "sprite"
+        },
+        {
+          "name": "spr_points",
+          "type": "sprite"
+        }
+      ],
+      "folders": [
+        {
+          "name": "mech",
+          "resources": [],
+          "folders": [
+            {
+              "name": "egg_mech",
+              "resources": [
+                {
+                  "name": "spr_mech_ball",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_mech_body",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_mech_example",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_mech_foot",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_fuzzy_die",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            }
+          ]
+        },
+        {
+          "name": "UI",
+          "resources": [
+            {
+              "name": "spr_gui_button_back",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_gui_button_ok",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_gui_button_pause",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_gui_button_interact",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_gui_font",
+              "type": "sprite"
+            }
+          ],
+          "folders": [
+            {
+              "name": "portraits",
+              "resources": [
+                {
+                  "name": "spr_portrait_pengu",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "textbox",
+              "resources": [
+                {
+                  "name": "spr_textbox",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_textbox_bubble",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_textbox_bubble_tail",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            }
+          ]
+        },
+        {
+          "name": "splash",
+          "resources": [
+            {
+              "name": "spr_splash_pengu_shock",
+              "type": "sprite"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "story",
+          "resources": [
+            {
+              "name": "spr_intro_sequence",
+              "type": "sprite"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "beginning obelisq",
+          "resources": [
+            {
+              "name": "spr_beginning_obelisq",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_bg_beginning_obelisq",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_ground_beginning_obelisq",
+              "type": "sprite"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "areas",
+          "resources": [],
+          "folders": [
+            {
+              "name": "nerd_store",
+              "resources": [
+                {
+                  "name": "spr_nerd_store_bg",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "snow_train",
+              "resources": [
+                {
+                  "name": "spr_train_platform",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_train_door",
+                  "type": "sprite"
+                }
+              ],
+              "folders": [
+                {
+                  "name": "backgrounds",
+                  "resources": [
+                    {
+                      "name": "spr_bg_snow_back",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_bg_snow_floor",
+                      "type": "sprite"
+                    }
+                  ],
+                  "folders": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "backgrounds",
+          "resources": [
+            {
+              "name": "spr_bg_future_city",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_bg_grid_cyllinder",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_bg_checker_grid_small",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_bg_checker_grid",
+              "type": "sprite"
+            }
+          ],
+          "folders": [
+            {
+              "name": "original",
+              "resources": [
+                {
+                  "name": "spr_bg_ocean",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_bg_original",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            }
+          ]
+        },
+        {
+          "name": "decorations",
+          "resources": [
+            {
+              "name": "spr_tutorial_buttons",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_crystal_01",
+              "type": "sprite"
+            }
+          ],
+          "folders": [
+            {
+              "name": "demo tutorial sign",
+              "resources": [
+                {
+                  "name": "spr_tutorial_sign_1",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_tutorial_sign_2",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_tutorial_sign_3",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_tutorial_sign_4",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_tutorial_sign_5",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_tutorial_sign_6",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_tutorial_sign_stopslide",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_tutorial_sign",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "winter",
+              "resources": [
+                {
+                  "name": "spr_winter_crystal1",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_iceblock",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_iceblock_example",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_winter_tree_leaf",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_winter_tree1",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_winter_waterfall",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_winter_waterfall_foam",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_winter_waterfall_sides",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_winter_waterfall_top",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            }
+          ]
+        },
+        {
+          "name": "enemies",
+          "resources": [
+            {
+              "name": "spr_snowman_hurt",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_snowman_throw",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_ball",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_snowman_idle",
+              "type": "sprite"
+            }
+          ],
+          "folders": [
+            {
+              "name": "toybot",
+              "resources": [
+                {
+                  "name": "spr_toybot_1",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_toybot_2",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "seal",
+              "resources": [
+                {
+                  "name": "spr_seal_hurt",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_seal",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "tigerbara",
+              "resources": [
+                {
+                  "name": "spr_tigerbara_hurt",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_tigerbara_idle",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "test_dummy",
+              "resources": [
+                {
+                  "name": "spr_test_dummy_full",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_test_dummy",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "combat_test",
+              "resources": [
+                {
+                  "name": "spr_combattest_move",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_combattest_punch",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_combattest_kick",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_combattest_hurt",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_combattest_punch_windup",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_combattest_kick_windup",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_combattest_idle",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "combat_flying_test",
+              "resources": [
+                {
+                  "name": "spr_flying_test_swoop",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_flying_test_swoop_windup",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_flying_test_idle",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            }
+          ]
+        },
+        {
+          "name": "level elements",
+          "resources": [
+            {
+              "name": "spr_block",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_skilift_pole",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_skilift_seat",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_speedbump_back",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_speedbump_front",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_spring",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_spring_ball",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_spring_ball_example",
+              "type": "sprite"
+            }
+          ],
+          "folders": [
+            {
+              "name": "cars",
+              "resources": [
+                {
+                  "name": "spr_thruster",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_thruster_mask",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_car_1",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "platforms",
+              "resources": [
+                {
+                  "name": "spr_platform_snow",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_falling_platform_snow",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_platform_workshop",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_platform_workshop_mid",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            }
+          ]
+        },
+        {
+          "name": "obstacles",
+          "resources": [
+            {
+              "name": "spr_falling_icicle",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_snowball_thrown",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_spikes_ice_n",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_falling_icicle_n",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_glowing_hitpoint",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_spikes_ice",
+              "type": "sprite"
+            }
+          ],
+          "folders": [
+            {
+              "name": "train",
+              "resources": [
+                {
+                  "name": "spr_train_roof_stopper",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_train_roof_stopper_target",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            }
+          ]
+        },
+        {
+          "name": "particles",
+          "resources": [
+            {
+              "name": "spr_hit_stars",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_rain",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_particle_block_a",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_particle_icicle",
+              "type": "sprite"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "pengu",
+          "resources": [
+            {
+              "name": "spr_pengu_attack_2",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_attack_3",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_attack_kick",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_attack_4",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_attack_dunk",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_attack_1",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_begin_fall",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_begin_slide",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_dash",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_dash_charge",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_dash_charge_air",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_edge",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_fall",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_flap",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_grab_on",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_hitbox_attack",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_hitbox_prone",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_hitbox_tall",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_hurt",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_idle",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_jump",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_look_up",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_pushing",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_sitting",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_sliding",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_spinning",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_spinning_end",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_pengu_turn",
+              "type": "sprite"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "textures",
+          "resources": [
+            {
+              "name": "spr_donut",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_crt",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_dark_gradient",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_white",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_torus_n",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_torus",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_reflection_1",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_reflection_2",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_conic_gradient",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_matcap_bubble",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_noise",
+              "type": "sprite"
+            }
+          ],
+          "folders": [
+            {
+              "name": "3d",
+              "resources": [
+                {
+                  "name": "spr_3d_pixelart_diamond",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_3d_pixelart_diamond_editor",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_3d_policemech",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_basketball",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            }
+          ]
+        },
+        {
+          "name": "tiles",
+          "resources": [
+            {
+              "name": "spr_ts_collisions",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_tile_collisions",
+              "type": "sprite"
+            }
+          ],
+          "folders": [
+            {
+              "name": "test",
+              "resources": [
+                {
+                  "name": "spr_ts_test1_n",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_ts_test1_r",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_ts_test1",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "winter",
+              "resources": [
+                {
+                  "name": "spr_ts_winter_r",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_ts_winter_n",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_ts_winter",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "original",
+              "resources": [
+                {
+                  "name": "spr_ts_original_n",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_ts_original_r",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_ts_original_bg",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_ts_original",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "complex",
+              "resources": [
+                {
+                  "name": "spr_ts_complex",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_ts_complex_maps",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_complex_mockup",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "winter2",
+              "resources": [
+                {
+                  "name": "spr_ts_winter2_n",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_ts_winter2_r",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_ts_winter2",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            }
+          ]
+        },
+        {
+          "name": "tool",
+          "resources": [
+            {
+              "name": "spr_hidden_area",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_slippery",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_layer_switch_single_B",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_layer_switch_single_C",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_layer_switch_BC",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_layer_switch_AC",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_reflection_area",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_enemy_wave",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_tiles_area",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_trigger_enter_leave",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_moving",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_collision",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_collision_mid",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_collision_oneway",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_death",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_depth_set",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_enemy_block",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_enemy_blockade",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_fall_off",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_fill",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_flip",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_info_target",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_layer_switch_AB",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_layer_switch_single_A",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_loading_area",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_trigger",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_tunnel_ride",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_win",
+              "type": "sprite"
+            }
+          ],
+          "folders": []
+        }
+      ]
+    },
+    {
+      "name": "Tile Sets",
+      "resources": [
+        {
+          "name": "ts_collisions",
+          "type": "tileset"
+        }
+      ],
+      "folders": [
+        {
+          "name": "original",
+          "resources": [
+            {
+              "name": "ts_original_bg",
+              "type": "tileset"
+            },
+            {
+              "name": "ts_original_n",
+              "type": "tileset"
+            },
+            {
+              "name": "ts_original_r",
+              "type": "tileset"
+            },
+            {
+              "name": "ts_original",
+              "type": "tileset"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "complex",
+          "resources": [
+            {
+              "name": "ts_complex_maps",
+              "type": "tileset"
+            },
+            {
+              "name": "ts_complex",
+              "type": "tileset"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "winter",
+          "resources": [
+            {
+              "name": "ts_winter_n",
+              "type": "tileset"
+            },
+            {
+              "name": "ts_winter_r",
+              "type": "tileset"
+            },
+            {
+              "name": "ts_winter2",
+              "type": "tileset"
+            },
+            {
+              "name": "ts_winter2_n",
+              "type": "tileset"
+            },
+            {
+              "name": "ts_winter2_r",
+              "type": "tileset"
+            },
+            {
+              "name": "ts_winter",
+              "type": "tileset"
+            }
+          ],
+          "folders": []
+        }
+      ]
+    }
+  ]
+}

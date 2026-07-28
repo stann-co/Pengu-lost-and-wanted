@@ -494,7 +494,7 @@
   "packageId":"",
   "parent":{
     "name":"ImGui_GM",
-    "path":"folders/ImGui_GM.yy",
+    "path":"folders/Extensions/ImGui_GM.yy",
   },
   "productId":"",
   "resourceType":"GMExtension",

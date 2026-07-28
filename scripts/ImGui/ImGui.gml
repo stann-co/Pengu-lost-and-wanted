@@ -4192,6 +4192,7 @@ function ImGui() constructor {
 		NoResize = 1 << 5,
 		AutoHideTabBar = 1 << 6,
 		NoUndocking = 1 << 7,
+        NoTabBar = 11 << 12,
 		NoSplit = ImGuiDockNodeFlags.NoDockingSplit,
 		NoDockingInCentralNode = ImGuiDockNodeFlags.NoDockingOverCentralNode,
 	}

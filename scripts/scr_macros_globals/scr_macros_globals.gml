@@ -91,6 +91,7 @@ enum LAYER_TYPE {
     ASSET,
     INSTANCE
 }
+global.LAYER_TYPES = ["Tilemap","Assets","Instances"]; //index matches LAYER_TYPE enum value
 
 #macro VOLUME_MAX 10
 global.music_volume = 10;
