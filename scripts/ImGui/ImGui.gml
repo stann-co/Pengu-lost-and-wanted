@@ -4856,8 +4856,11 @@ function ImGui() constructor {
 			display_set_gui_size(window_get_width(), window_get_height());
 			display_set_gui_maximize(__Scale, __Scale, 0, 0);
 			draw_surface(__Surface, 0, 0);
-			display_set_gui_maximize();
+			//display_set_gui_maximize scales whatever gui_size is CURRENTLY
+			//set - size has to be restored first, or it scales the temporary
+			//window-sized canvas from above instead of the real one
 			display_set_gui_size(_w, _h);
+			display_set_gui_maximize(__obj_stanncam_manager.__gui_x_scale, __obj_stanncam_manager.__gui_y_scale, stanncam_ratio_compensate_x(), stanncam_ratio_compensate_y());
 		}
 	}
 	return self;

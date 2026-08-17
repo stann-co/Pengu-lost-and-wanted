@@ -37,5 +37,8 @@
     "path":"sprites/spr_stanncam_zone_corner/spr_stanncam_zone_corner.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "editor_exclude",
+  ],
   "visible":true,
 }

@@ -39,5 +39,8 @@
     "path":"sprites/spr_tunnel_ride/spr_tunnel_ride.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "editor_exclude",
+  ],
   "visible":false,
 }

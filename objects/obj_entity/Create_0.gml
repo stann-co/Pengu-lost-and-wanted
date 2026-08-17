@@ -6,7 +6,7 @@ y_speed = 0;
 switch (depth_layer) {
 	case "above A":
         collision_layer = COLLISION_LAYERS.A
-		depth = DEPTH_A-100;
+		depth = DEPTH_A-10;
         break;
     case "A":
         collision_layer = COLLISION_LAYERS.A
@@ -22,7 +22,7 @@ switch (depth_layer) {
         break;
 	case "below C":
         collision_layer = COLLISION_LAYERS.C
-		depth = DEPTH_C+100;
+		depth = DEPTH_C+10;
         break;
 }
 #endregion

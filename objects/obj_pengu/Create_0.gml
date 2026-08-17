@@ -1,9 +1,11 @@
 /// @description
 event_inherited();
 
-var _len = array_length(view_camera);
-
 depth-=10; //by default pengu is above other entities
+
+global.camera.follow = self;
+global.camera.move(x,y,0);
+global.camera.zoom(1,0);
 
 #region variables
 godmode = false;

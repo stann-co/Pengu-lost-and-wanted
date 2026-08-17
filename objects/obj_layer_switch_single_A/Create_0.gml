@@ -1,2 +1,4 @@
 /// @description
-switch_layer = COLLISION_LAYERS.A
+event_inherited();
+
+switch_layer = COLLISION_LAYERS.A;

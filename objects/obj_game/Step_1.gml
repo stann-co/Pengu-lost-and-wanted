@@ -20,6 +20,7 @@ if(CAN_MOVE){
 	
 	if(transition_t == 0){
 		//deactivates objects out of view
+		//TODO is the process of deactivating and activating more expensive for some objects?
 		
 		var margin_ = CAMERA_OUTER_MARGIN;
 		

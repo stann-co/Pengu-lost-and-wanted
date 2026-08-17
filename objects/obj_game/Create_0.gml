@@ -19,9 +19,6 @@ tallying = false;
 
 debug = noone  //for debug view
 
-//loads settings or initializes the default ones
-settings_load();
-
 #region music
 audio_group_load(audiogroup_music);
 #endregion
@@ -36,14 +33,13 @@ draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
 //level editor
-
+level_editor_active = false;
 start_level_editor = function(){
     /// @description level editor start
-    if(!instance_exists(obj_level_editor)){
+    if(!instance_exists(obj_level_editor) && !level_editor_active){
         instance_create_depth(0,0,0,obj_level_editor);
-    } else { //TODO let the actual editor handle exiting
-       // obj_level_editor.quit();
     }
+	level_editor_active = true;
 }
 
 
@@ -734,13 +730,12 @@ state.add("settings",{
 
 #endregion
 
-#endregion
-
-//starting point
-if(START_POINT == "main menu"){
-    state.change("main_menu")
-} else
-
-if(START_POINT == "editor"){
+if(IS_EDITOR){
     start_level_editor()
+} else {
+	load_level("levels/level.json");
+    //starting point
+    if(START_POINT == "main menu"){
+        //state.change("main_menu")
+    }
 }

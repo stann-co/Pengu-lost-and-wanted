@@ -37,5 +37,8 @@
     "path":"sprites/spr_stanncam_zone_connector/spr_stanncam_zone_connector.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "editor_exclude",
+  ],
   "visible":true,
 }

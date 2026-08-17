@@ -1,6 +1,7 @@
 /// @description
 if(global.debug){
 	draw_set_halign(fa_right)
+	draw_set_font(global.gui_font)
 	var text_ = [
 		$"{airborne} : AIRBORNE",
 		$"{ground_spd} : GROUND SPEED",

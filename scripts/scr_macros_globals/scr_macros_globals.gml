@@ -1,7 +1,6 @@
 #macro VERSION "0.1.5-alpha"
 
 #macro START_POINT "main menu"
-#macro Editor:START_POINT "editor"
 
 #macro IN_BROWSER (os_type != os_windows)
 
@@ -18,14 +17,10 @@
 #macro CAN_MOVE_NOFREEZE (!PAUSING && !instance_exists(obj_level_editor)) 
 #macro CAN_MOVE   (CAN_MOVE_NOFREEZE && !FREEZE_FRAME)
 
-#macro ENTITY_COLLISION_LAYER [obj_collision,layer_tilemap_get_id(global.collision_layers[? collision_layer])]
-
-#macro ACTIVE_PLAYER_COLLISION_LAYER ()
-#macro CONTROLLED (global.controlled == self && global.in_control)
-
 #macro TEXT_HEIGHT 14
 
 #macro SCALE_3D 32 //meter in blender = 32 pixels
+#macro TILE_SIZE 16 //base tile size is 16 pixels
 
 //colors
 #macro RED #ff0000
@@ -45,6 +40,7 @@
 #macro LIGHT_GRAY #BCBCBC
 #macro GRAY c_gray
 #macro DARK_GRAY #373737
+#macro DARKER_GRAY #272727
 #macro BLACK c_black
 
 #macro NORMAL_BLANK #8080F9
@@ -100,17 +96,13 @@ global.sound_volume = 10;
 global.draw_shine = true;
 global.draw_reflections = true;
 
-//global.levels = [
-	//rm_level_devzone,
-	//rm_level_train,
-	//rm_level_nerdstore,
-	//rm_level_futurecity
-//]
 global.level = undefined
 
 //globals
 global.t = 0; //a global timer for different objects to refer to stay in sync even after being deactivated
 global.t_always = 0; //global timer that keeps going even when there's a freeze frame
+
+global.parralax = 1; //parralax scale, from 0-2 (0 off, 1 default, 2 doubled)
 
 //The angles from each collision tile
 //360 is for filled blocks, which top angle could be any direction
@@ -136,7 +128,7 @@ global.persistent_objects = [
     obj_game,
     obj_pengu, 
     obj_depth_set,
-    obj_layer_draw,
+    obj_tilemap,
     obj_splash,
 ]
 //Feather enable GM2017
@@ -152,9 +144,9 @@ enum COLLISION_LAYERS {
 
 //TODO consider just using simple array instead of ds_map?
 global.depths = ds_map_create();
-global.depths[? COLLISION_LAYERS.A] = 300;
-global.depths[? COLLISION_LAYERS.B] = 400;
-global.depths[? COLLISION_LAYERS.C] = 500;
+global.depths[? COLLISION_LAYERS.A] = 10;
+global.depths[? COLLISION_LAYERS.B] = 20;
+global.depths[? COLLISION_LAYERS.C] = 30;
 
 #macro DEPTH_A global.depths[? COLLISION_LAYERS.A]
 #macro DEPTH_B global.depths[? COLLISION_LAYERS.B]
@@ -167,6 +159,11 @@ global.collision_layers[? COLLISION_LAYERS.C] = undefined
 
 //if this instance's collision layer is the same as the controlled collision_layer
 #macro ACTIVE_COLLISION (collision_layer == global.controlled.collision_layer)
+
+#macro ENTITY_COLLISION_LAYER [obj_collision,layer_tilemap_get_id(global.collision_layers[? collision_layer])]
+
+#macro ACTIVE_PLAYER_COLLISION_LAYER (global.controlled != noone ? global.controlled.collision_layer : -1)
+#macro CONTROLLED (global.controlled == self && global.in_control)
 
 #endregion
 
@@ -229,7 +226,9 @@ global.gui_font = font_add_sprite_ext(spr_gui_font,"!\"#$%&'()*+,-./0123456789:;
 gpu_set_tex_max_mip(5);
 gpu_set_tex_mip_bias(-1);
 
-//spawns persistent objects
+//ImGui
+ImGui.__Initialize();
+ImGui.ConfigFlagToggle(ImGuiConfigFlags.DockingEnable);
 
 //room_instance_add(rm_game,0,0,obj_gmlive);
 room_instance_add(rm_game,0,0,obj_camera);

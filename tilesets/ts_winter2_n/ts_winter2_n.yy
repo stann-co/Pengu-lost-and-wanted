@@ -71,6 +71,9 @@
     "path":"sprites/spr_ts_winter2/spr_ts_winter2.yy",
   },
   "spriteNoExport":true,
+  "tags":[
+    "editor_exclude",
+  ],
   "textureGroupId":{
     "name":"Default",
     "path":"texturegroups/Default",

@@ -19,6 +19,7 @@ function collision_layer_switch(_inst,_collision_layer,_change_depth = false){
 ///@desc show collision layers
 ///@param show
 function show_collisions(_show){
+	//TODO should be changed so it affects obj_tilemap and not the layer visibility itself probably
     if(_show){
         layer_set_visible("collision_A",true);
         layer_set_visible("collision_B",true);

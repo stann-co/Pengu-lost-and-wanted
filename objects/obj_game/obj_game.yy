@@ -22,8 +22,8 @@
   "name":"obj_game",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"tool",
+    "path":"folders/Objects/tool.yy",
   },
   "parentObjectId":null,
   "persistent":true,

@@ -32,6 +32,9 @@
     "path":"sprites/spr_ts_original_r/spr_ts_original_r.yy",
   },
   "spriteNoExport":true,
+  "tags":[
+    "editor_exclude",
+  ],
   "textureGroupId":{
     "name":"Default",
     "path":"texturegroups/Default",

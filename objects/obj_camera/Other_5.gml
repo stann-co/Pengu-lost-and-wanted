@@ -1,2 +1,2 @@
 /// @description reset background
-global.background = function(){}
+//global.background = function(){}

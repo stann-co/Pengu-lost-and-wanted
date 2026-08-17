@@ -36,6 +36,9 @@
     "path":"sprites/spr_ts_complex_maps/spr_ts_complex_maps.yy",
   },
   "spriteNoExport":true,
+  "tags":[
+    "editor_exclude",
+  ],
   "textureGroupId":{
     "name":"Default",
     "path":"texturegroups/Default",

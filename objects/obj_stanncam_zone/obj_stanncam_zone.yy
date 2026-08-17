@@ -42,5 +42,8 @@
     "path":"sprites/spr_stanncam_zone/spr_stanncam_zone.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "editor_exclude",
+  ],
   "visible":true,
 }

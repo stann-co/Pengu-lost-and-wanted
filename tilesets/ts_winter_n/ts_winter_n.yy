@@ -39,6 +39,9 @@
     "path":"sprites/spr_ts_winter_n/spr_ts_winter_n.yy",
   },
   "spriteNoExport":true,
+  "tags":[
+    "editor_exclude",
+  ],
   "textureGroupId":{
     "name":"Default",
     "path":"texturegroups/Default",

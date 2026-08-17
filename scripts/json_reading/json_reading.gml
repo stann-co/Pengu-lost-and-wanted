@@ -33,8 +33,9 @@ function json_load(_filename) {
 	
 	try {
 		return json_parse(json_content_);
-	} catch (_) {
+	} catch (_exception) {
 		// if the file content isn't a valid JSON, prevent crash and return undefined instead
+		show_debug_message(_exception);
 		return undefined;
 	}
 }

@@ -8,8 +8,8 @@
   "name":"obj_layer_switch_AC",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"layer_switch",
+    "path":"folders/Objects/layer_switch.yy",
   },
   "parentObjectId":{
     "name":"obj_layer_switch_AB",

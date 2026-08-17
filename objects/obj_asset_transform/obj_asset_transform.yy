@@ -35,7 +35,13 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_instance_sprite",
+    "path":"sprites/spr_instance_sprite/spr_instance_sprite.yy",
+  },
   "spriteMaskId":null,
+  "tags":[
+    "editor_exclude",
+  ],
   "visible":true,
 }

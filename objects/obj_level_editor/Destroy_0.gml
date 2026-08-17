@@ -12,3 +12,6 @@ if (surface_exists(tileset_surface)) surface_free(tileset_surface);
 
 if (smf != undefined) smf.destroy();
 if (surface_exists(smf_preview_surface)) surface_free(smf_preview_surface);
+
+surface_free(tileset_surface);
+surface_free(tilebrush_surface);

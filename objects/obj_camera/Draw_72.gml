@@ -1,2 +1,3 @@
 /// @description draw background
-global.background();
+//global.background();
+draw_clear(WHITE);

@@ -7,9 +7,7 @@
   "inheritLayers":false,
   "instanceCreationOrder":[],
   "isDnd":false,
-  "layers":[
-    {"$GMRInstanceLayer":"","%Name":"Instances","depth":0,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
-  ],
+  "layers":[],
   "name":"rm_game",
   "parent":{
     "name":"Rooms",
@@ -26,10 +24,10 @@
   "resourceType":"GMRoom",
   "resourceVersion":"2.0",
   "roomSettings":{
-    "Height":100,
+    "Height":32,
     "inheritRoomSettings":false,
     "persistent":false,
-    "Width":100,
+    "Width":32,
   },
   "sequenceId":null,
   "views":[
