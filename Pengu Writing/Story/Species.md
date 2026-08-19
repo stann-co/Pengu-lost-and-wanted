@@ -1,0 +1,2 @@
+The game basically takes place in a zootopia cyberpunk world,
+all furry characters, *BUT* i have definetely made an abundance of bunny girl characters. Im gonna attempt to remedy that a bit in the different direction. But also it could just be that bunnies is a big species in the main city, they do love multiplying

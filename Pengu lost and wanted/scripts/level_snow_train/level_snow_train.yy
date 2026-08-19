@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"level_snow_train",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"level_snow_train",
+  "parent":{
+    "name":"areas",
+    "path":"folders/Scripts/areas.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

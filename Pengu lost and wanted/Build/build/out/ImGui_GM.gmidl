@@ -1,0 +1,1111 @@
+[gml_api, extension, injection_folder = ImGui_GM_injections]
+module ImGui_GM;
+
+
+[file = imgui_gm.dll, libs = { macos: { default: libimgui_gm.dylib }, linux: { default: libimgui_gm.so }, windows: { x64: imgui_gm.dll }, xbox: { x64: imgui_gm.dll } }]
+group {
+    [global] const IMGUI_GM_VERSION : string = "1.0.17";
+
+    [global, bind = gmval, overwrite]
+    function __imgui_initialize() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_update() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_render() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_mouse() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_key() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_mouse_wheel() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_mouse_cursor() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_create_context() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_destroy_context() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_current_context() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_current_context() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_show_demo_window() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_show_metrics_window() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_show_debug_log_window() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_show_stack_tool_window() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_show_about_window() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_show_style_editor() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_show_style_selector() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_show_font_selector() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_show_user_guide() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_version() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_push_id() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_pop_id() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_id() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_disabled() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_disabled() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_item_hovered() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_item_active() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_item_focused() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_item_clicked() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_item_visible() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_item_edited() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_item_activated() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_item_deactivated() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_item_deactivated_after_edit() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_item_toggled_open() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_any_item_hovered() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_any_item_active() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_any_item_focused() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_item_id() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_item_rect_min_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_item_rect_min_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_item_rect_max_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_item_rect_max_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_item_rect_size_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_item_rect_size_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_item_allow_overlap() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_rect_visible() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_time() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_frame_count() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_calc_text_width() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_calc_text_height() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_push_allow_keyboard_focus() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_pop_allow_keyboard_focus() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_keyboard_focus_here() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_push_button_repeat() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_pop_button_repeat() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_item_default_focus() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_config_flags_get() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_config_flags_set() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_config_flag_toggle() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_main_viewport() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_log_text() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_want_keyboard_capture() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_want_mouse_capture() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_want_text_input() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_want_mouse_unless_popup_close() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_color_edit3() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_color_picker3() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_color_edit4() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_color_picker4() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_color_button() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_color_edit_options() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_combo() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_combo() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_combo() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dock_space() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dock_space_over_viewport() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_next_window_dock_id() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_next_window_class() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_window_dock_id() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_window_docked() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dockbuilder_dock_window() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dockbuilder_get_node() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dockbuilder_get_central_node() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dockbuilder_add_node() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dockbuilder_remove_node() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dockbuilder_remove_node_docked_windows() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dockbuilder_remove_node_child_nodes() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dockbuilder_set_node_pos() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dockbuilder_set_node_size() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dockbuilder_split_node() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dockbuilder_copy_dock_space() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dockbuilder_copy_node() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dockbuilder_copy_window_settings() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dockbuilder_finish() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drag_float() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drag_float2() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drag_float3() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drag_float4() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drag_floatn() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drag_float_range2() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drag_int() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drag_int2() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drag_int3() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drag_int4() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drag_intn() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drag_int_range2() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_background_drawlist() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_foreground_drawlist() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_window_drawlist() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_line() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_rect() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_rect_filled() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_rect_filled_multicolor() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_quad() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_quad_filled() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_triangle() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_triangle_filled() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_circle() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_circle_filled() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_ngon() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_ngon_filled() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_text() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_text_font() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_polyline() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_convex_poly_filled() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_bezier_cubic() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_bezier_quadratic() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_path_fill_convex() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_path_stroke() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_path_clear() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_path_line_to() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_path_line_to_merge_duplicate() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_path_arc_to() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_path_arc_to_fast() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_path_bezier_cubic_curve_to() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_path_bezier_quadratic_curve_to() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_path_rect() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_image() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_add_image_rounded() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_push_clip_rect() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_push_clip_rect_fullscreen() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_pop_clip_rect() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_push_textureid() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_pop_textureid() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_flags_get() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_flags_set() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_drawlist_flag_toggle() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_memory_editor_window() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_memory_editor_contents() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_font() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_font_size() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_push_font() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_pop_font() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_add_font_from_file() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_add_font_default() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imguigm_native() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imguigm_command_buffer() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imguigm_font_buffer() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imguigm_keepalive() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input_text() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input_textmultiline() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input_textwithhint() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input_float() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input_float2() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input_float3() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input_float4() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input_floatn() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input_int() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input_int2() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input_int3() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input_int4() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input_intn() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_input_double() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_spacing() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_dummy() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_newline() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_align_text_to_frame_padding() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_separator() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_indent() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_unindent() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_sameline() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_group() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_group() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_cursor_pos_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_cursor_pos_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_cursor_start_pos_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_cursor_start_pos_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_cursor_screen_pos_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_cursor_screen_pos_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_cursor_screen_pos() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_cursor_pos() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_cursor_pos_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_cursor_pos_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_text_line_height() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_text_line_height_with_spacing() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_frame_height() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_frame_height_with_spacing() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_content_region_avail_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_content_region_avail_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_content_region_max_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_content_region_max_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_window_content_region_min_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_window_content_region_min_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_window_content_region_max_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_window_content_region_max_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_push_item_width() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_pop_item_width() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_next_item_width() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_calc_item_width() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_push_text_wrap_pos() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_pop_text_wrap_pos() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_push_clip_rect() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_pop_clip_rect() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_listbox() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_listbox() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_listbox() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_menubar() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_menubar() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_mainmenubar() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_mainmenubar() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_menu() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_menu() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_menu_item() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_drag_drop_source() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_drag_drop_source() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_drag_drop_target() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_drag_drop_target() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_drag_drop_payload() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_accept_drag_drop_payload() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_drag_drop_payload() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_payload_type() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_plot_lines() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_plot_histogram() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_popup() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_popup_modal() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_popup() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_open_popup() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_open_popup_on_item_click() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_close_current_popup() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_popup_context_item() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_popup_context_window() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_popup_context_void() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_popup_open() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_selectable() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_slider_float() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_slider_float2() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_slider_float3() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_slider_float4() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_slider_floatn() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_slider_int() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_slider_int2() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_slider_int3() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_slider_int4() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_slider_intn() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_vslider_float() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_vslider_int() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_slider_angle() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_style_colors_dark() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_style_colors_light() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_style_colors_classic() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_push_style_color() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_pop_style_color() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_push_style_var() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_pop_style_var() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_style_color() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_style_color_name() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_table() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_table() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_table_next_row() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_table_next_column() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_table_set_column_index() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_table_setup_column() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_table_setup_scroll_freeze() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_table_headers_row() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_table_header() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_table_get_column_count() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_table_get_column_index() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_table_get_column_name() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_table_get_column_flags() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_table_get_row_index() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_table_set_column_enabled() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_table_set_bg_color() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_columns() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_next_column() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_column_index() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_column_width() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_column_width() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_column_offset() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_column_offset() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_columns_count() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_tab_bar() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_tab_bar() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_tab_item() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_tab_item() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_tab_item_button() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_tab_item_closed() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_text_unformatted() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_text() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_text_colored() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_text_disabled() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_text_wrapped() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_label_text() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_bullet_text() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_value() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_tooltip() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_tooltip() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_tooltip() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_tree_node() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_tree_node_ex() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_tree_push() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_tree_pop() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_tree_node_to_label_spacing() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_next_item_open() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_collapsing_header() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_button() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_small_button() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_invisible_button() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_arrow_button() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_image() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_image_button() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_surface() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_checkbox() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_checkbox_flags() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_radio_button() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_progressbar() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_bullet() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_endframe() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_child() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_child() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_begin_child_frame() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_end_child_frame() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_window_appearing() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_window_collapsed() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_window_focused() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_is_window_hovered() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_window_dpi_scale() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_window_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_window_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_window_width() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_window_height() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_next_window_pos() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_next_window_size() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_next_window_size_constraints() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_next_window_content_size() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_next_window_collapsed() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_next_window_focus() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_next_window_scroll() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_next_window_bgalpha() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_scroll_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_scroll_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_scroll_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_scroll_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_scroll_max_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_get_scroll_max_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_scroll_here_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_scroll_here_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_scroll_from_pos_x() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_scroll_from_pos_y() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_window_pos() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_window_size() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_window_collapsed() : cstring;
+
+    [global, bind = gmval, overwrite]
+    function __imgui_set_window_focus() : cstring;
+
+}
+

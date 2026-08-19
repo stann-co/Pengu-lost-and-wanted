@@ -1,0 +1,1 @@
+//TODO handle it in a way that lets the editor go into standby. Also add an actual button in gui to close it for real, ask if you want to save before it

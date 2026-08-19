@@ -8,7 +8,29 @@
 *.pur
 *.zpr
 *.clip
+*.psd
 # If all of your sprite sources are in this repo you can stick a "!" in front of this to track this file. Otherwise this file is machine-specific and should be ignored.
 sprites.import.json
 # This is a cache file for speeding up subsequent pipeline operations. It should not be tracked in git.
 sprites.info.json
+
+# Non-runtime heavy content - kept on the home server instead of git history
+/conceptart/
+/gamedev/
+/ng release/
+/steam store/
+/storyboard/
+/trailer/
+/build/
+
+# Loose non-essential heavy files at repo root
+/2025-02-24 18-04-36.mp4
+/CLIPStudioPaint_EChViG6Prh.png
+/library_logo_transparent.png
+/normal map ref.png
+/pengu in eva.gif
+/Pengu-lost-and-wanted.zip
+/PenguBanner.png
+/PenguBannerText.png
+/PenguBannerTextOverlay.png
+/PenguBannerThumbnail.png

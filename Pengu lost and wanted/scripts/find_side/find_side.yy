@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"find_side",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"find_side",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,1 @@
+[[Pengu]] originally comes from the past, deep in the snowy arctic. It is simple neverending sightline of snow and cold rocks. And very desolate and calm. Pengu is there with his family and fellow Penguins, but they're all pretty dull in comparison to him.

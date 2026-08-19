@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"point_scatter",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"point_scatter",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"set_ground_spd_from_air_spd",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"set_ground_spd_from_air_spd",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

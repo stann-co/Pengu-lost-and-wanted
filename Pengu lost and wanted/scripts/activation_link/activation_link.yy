@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"activation_link",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"activation_link",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

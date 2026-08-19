@@ -1,0 +1,104 @@
+{
+	"nodes":[
+		{"id":"21ec8497f1b9faa1","type":"text","text":"","x":-380,"y":-360,"width":1140,"height":680},
+		{"id":"bf43c49bfadb3321","type":"text","text":"","x":-380,"y":-420,"width":1140,"height":120},
+		{"id":"b95f5a4fad74db43","type":"text","text":"\n\n\n\n\n\n\n","x":-380,"y":-300,"width":240,"height":620},
+		{"id":"b86c4f80bdb698f7","type":"text","text":"","x":520,"y":-300,"width":240,"height":620},
+		{"id":"162959d97b9a1901","type":"text","text":"","x":-140,"y":-300,"width":660,"height":620,"color":"#000000"},
+		{"id":"2a10da0cd4f49e58","type":"text","text":"floating buttons","x":-120,"y":-280,"width":160,"height":50},
+		{"id":"7a50e043ad6706bf","type":"text","text":"floating buttons","x":60,"y":-280,"width":160,"height":50},
+		{"id":"309232772a185a57","type":"text","text":"","x":-210,"y":-280,"width":50,"height":140},
+		{"id":"21ca066587255c79","type":"text","text":"","x":-210,"y":-280,"width":50,"height":50},
+		{"id":"4e40ea18f2e1f2ec","type":"text","text":"**Layers:**\n👁️🔒 Layer1\n👁️🔒Layer2\n👁️🔒Layer3","x":-370,"y":-280,"width":160,"height":140},
+		{"id":"529ad21f2fcb36bb","type":"text","text":"File","x":-380,"y":-410,"width":120,"height":50},
+		{"id":"511f6f1028872867","type":"text","text":"💾 ","x":-370,"y":-360,"width":50,"height":50},
+		{"id":"f2e59557cb458f9d","type":"text","text":"📁","x":-310,"y":-360,"width":50,"height":50},
+		{"id":"613569eccb1239a9","type":"file","file":"images/GameMaker-LTS2026_IeYbZwJ3ia.png","x":528,"y":-300,"width":225,"height":400},
+		{"id":"d49f40c8cc1b1cdd","type":"text","text":"windows","x":-245,"y":-410,"width":120,"height":50},
+		{"id":"42665d04631a89fb","type":"text","text":"Layer Options:\nButtons and sliders and stuff","x":-370,"y":-80,"width":210,"height":180},
+		{"id":"66f989c4155f8b2a","type":"text","text":"the side windows should be dockspaces, containing windows that can be resized, and reorganized","x":-740,"y":-130,"width":340,"height":110},
+		{
+			"id":"008899175a785fdf",
+			"type":"text",
+			"text":"It should be possible to hide and unhide these specific side windows, and save the layout to be automatically reloaded on start",
+			"styleAttributes":{},
+			"x":-545,
+			"y":-610,
+			"width":260,
+			"height":150
+		},
+		{
+			"id":"a7e7dcc88790c0db",
+			"type":"text",
+			"text":"should be possible to add floating buttons to the top side of the editor window",
+			"styleAttributes":{},
+			"x":10,
+			"y":-560,
+			"width":260,
+			"height":100
+		},
+		{
+			"id":"61830ab0d4f1a440",
+			"type":"text",
+			"text":"the middle of the screen should be empty, it's where the actual level is shown",
+			"styleAttributes":{},
+			"x":-170,
+			"y":360,
+			"width":260,
+			"height":120
+		},
+		{
+			"id":"31f337bb3e763899",
+			"type":"text",
+			"text":"i'll load the resource tree to get folders and the sprites/objects, possibly as a struct or big array. I need to be able to go through that as folders and items.\n\nAnd be able to drag in an item into the editor window (to place an instance or a sprite in an asset layer)",
+			"styleAttributes":{},
+			"x":820,
+			"y":-200,
+			"width":280,
+			"height":300
+		}
+	],
+	"edges":[
+		{"id":"7ff4674edbf6748b","fromNode":"21ca066587255c79","fromSide":"bottom","toNode":"162959d97b9a1901","toSide":"left"},
+		{
+			"id":"06a3ce69979e6985",
+			"fromFloating":false,
+			"styleAttributes":{"pathfindingMethod":"square"},
+			"fromNode":"66f989c4155f8b2a",
+			"fromSide":"top",
+			"toNode":"d49f40c8cc1b1cdd",
+			"toSide":"top"
+		},
+		{
+			"id":"246e5f0a47350ee5",
+			"styleAttributes":{},
+			"toFloating":false,
+			"fromNode":"61830ab0d4f1a440",
+			"fromSide":"right",
+			"toNode":"162959d97b9a1901",
+			"toSide":"bottom"
+		},
+		{
+			"id":"637a08571f9f6231",
+			"styleAttributes":{},
+			"toFloating":false,
+			"fromNode":"a7e7dcc88790c0db",
+			"fromSide":"bottom",
+			"toNode":"7a50e043ad6706bf",
+			"toSide":"top"
+		},
+		{
+			"id":"3ecbd4aed032ea34",
+			"styleAttributes":{},
+			"toFloating":false,
+			"fromNode":"31f337bb3e763899",
+			"fromSide":"left",
+			"toNode":"613569eccb1239a9",
+			"toSide":"right"
+		}
+	],
+	"metadata":{
+		"version":"1.0-1.0",
+		"frontmatter":{}
+	}
+}

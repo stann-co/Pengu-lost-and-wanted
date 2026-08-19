@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"sh_tilemap_fx",
+  "name":"sh_tilemap_fx",
+  "parent":{
+    "name":"Shaders",
+    "path":"folders/Shaders.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}
