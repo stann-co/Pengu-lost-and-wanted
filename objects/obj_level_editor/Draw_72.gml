@@ -1,1 +1,0 @@
-draw_clear(dark_mode ? LIGHT_GRAY : GRAY);

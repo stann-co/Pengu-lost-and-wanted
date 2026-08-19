@@ -1,6 +1,0 @@
-{
-  "type": "module",
-  "dependencies": {
-    "@bscotch/yy": "^2.6.1"
-  }
-}

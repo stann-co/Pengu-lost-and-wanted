@@ -1,1 +1,0 @@
-node "%~dp0\pre_build_step.js" %*
