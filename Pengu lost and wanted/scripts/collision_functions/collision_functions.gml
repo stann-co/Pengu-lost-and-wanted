@@ -171,6 +171,8 @@ function sensor(_vec_start,_dir,_extention_dist,_regression_dist = _extention_di
 	if(!instance_exists(inst_)){
 		//Tiles
 		var tile_ = tilemap_get_at_pixel(inst_,round(x_),round(y_)); //TODO for some reason, colliding with tile 1 always returns tile 0. I do not know why
+		if (tile_ == -1) return noone; //if out of bounds or any other error retun noone;
+		
 		var tile_index_ = tile_get_index(tile_);
 		
 		//Get's the tile_'s rotation_, which has been pre-set in global.tile_angles

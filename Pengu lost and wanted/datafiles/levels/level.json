@@ -8,9 +8,9 @@
       "locked":false,
       "elements":[
         {
-          "object_name":"obj_pengu_mech1",
-          "x":1440.0,
-          "y":832.0,
+          "object_name":"obj_tile_check_test",
+          "x":77.0,
+          "y":16.0,
           "image_xscale":1.0,
           "image_yscale":1.0,
           "image_angle":0.0,
@@ -18,12 +18,12 @@
           }
         },
         {
-          "object_name":"obj_pengu",
-          "x":1029.0,
-          "y":378.0,
-          "image_xscale":0.96969687938690186,
-          "image_yscale":0.96969693899154663,
-          "image_angle":360.0,
+          "object_name":"obj_layer_switch_AB",
+          "x":1936.0,
+          "y":816.0,
+          "image_xscale":2.0,
+          "image_yscale":7.0,
+          "image_angle":180.39915466308594,
           "vars":{
           }
         },
@@ -38,12 +38,22 @@
           }
         },
         {
-          "object_name":"obj_layer_switch_AB",
-          "x":1936.0,
-          "y":816.0,
-          "image_xscale":2.0,
-          "image_yscale":7.0,
-          "image_angle":180.39915466308594,
+          "object_name":"obj_pengu",
+          "x":35.0,
+          "y":-19.0,
+          "image_xscale":0.96969687938690186,
+          "image_yscale":0.96969693899154663,
+          "image_angle":360.0,
+          "vars":{
+          }
+        },
+        {
+          "object_name":"obj_pengu_mech1",
+          "x":1440.0,
+          "y":832.0,
+          "image_xscale":1.0,
+          "image_yscale":1.0,
+          "image_angle":0.0,
           "vars":{
           }
         }
@@ -65,7 +75,7 @@
       "tileset":"ts_collisions",
       "tiles":[
         [
-          0.0,
+          9.0,
           0.0,
           0.0,
           0.0,
@@ -254,9 +264,9 @@
         ],
         [
           0.0,
-          0.0,
-          0.0,
-          0.0,
+          1.0,
+          8.0,
+          9.0,
           0.0,
           0.0,
           0.0,
@@ -4829,11 +4839,11 @@
           0.0,
           0.0,
           0.0,
+          8.0,
           0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
+          9.0,
+          1.0,
+          15.0,
           0.0,
           0.0,
           0.0,
@@ -61058,8 +61068,8 @@
       "elements":[
         {
           "object_name":"obj_coin",
-          "x":274.0,
-          "y":206.0,
+          "x":428.0,
+          "y":207.0,
           "image_xscale":1.0,
           "image_yscale":1.0,
           "image_angle":0.0,
@@ -61068,8 +61078,8 @@
         },
         {
           "object_name":"obj_coin",
-          "x":428.0,
-          "y":207.0,
+          "x":274.0,
+          "y":206.0,
           "image_xscale":1.0,
           "image_yscale":1.0,
           "image_angle":0.0,
