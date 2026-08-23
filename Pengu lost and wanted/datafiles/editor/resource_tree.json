@@ -35,83 +35,6 @@
               "folders": []
             }
           ]
-        },
-        {
-          "name": "STANNcam",
-          "resources": [
-            {
-              "name": "__obj_stanncam_manager",
-              "type": "object"
-            }
-          ],
-          "folders": [
-            {
-              "name": "Zones",
-              "resources": [
-                {
-                  "name": "obj_stanncam_zone_1side",
-                  "type": "object"
-                },
-                {
-                  "name": "obj_stanncam_zone_2side",
-                  "type": "object"
-                },
-                {
-                  "name": "obj_stanncam_zone_blank",
-                  "type": "object"
-                },
-                {
-                  "name": "obj_stanncam_zone_corner",
-                  "type": "object"
-                },
-                {
-                  "name": "obj_stanncam_zone_u",
-                  "type": "object"
-                },
-                {
-                  "name": "obj_stanncam_zone",
-                  "type": "object"
-                }
-              ],
-              "folders": []
-            },
-            {
-              "name": "Miscellaneous",
-              "resources": [],
-              "folders": [
-                {
-                  "name": "Sprites",
-                  "resources": [
-                    {
-                      "name": "spr_stanncam_zone_1side",
-                      "type": "sprite"
-                    },
-                    {
-                      "name": "spr_stanncam_zone_2side",
-                      "type": "sprite"
-                    },
-                    {
-                      "name": "spr_stanncam_zone_connector",
-                      "type": "sprite"
-                    },
-                    {
-                      "name": "spr_stanncam_zone_corner",
-                      "type": "sprite"
-                    },
-                    {
-                      "name": "spr_stanncam_zone_u",
-                      "type": "sprite"
-                    },
-                    {
-                      "name": "spr_stanncam_zone",
-                      "type": "sprite"
-                    }
-                  ],
-                  "folders": []
-                }
-              ]
-            }
-          ]
         }
       ]
     },
@@ -416,7 +339,7 @@
               "type": "object"
             },
             {
-              "name": "obj_tile_check_test",
+              "name": "obj_create_event_test",
               "type": "object"
             },
             {
@@ -602,6 +525,83 @@
             }
           ],
           "folders": []
+        },
+        {
+          "name": "STANNcam",
+          "resources": [
+            {
+              "name": "__obj_stanncam_manager",
+              "type": "object"
+            }
+          ],
+          "folders": [
+            {
+              "name": "Miscellaneous",
+              "resources": [],
+              "folders": [
+                {
+                  "name": "Sprites",
+                  "resources": [
+                    {
+                      "name": "spr_stanncam_zone_1side",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone_2side",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone_connector",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone_corner",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone_u",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone",
+                      "type": "sprite"
+                    }
+                  ],
+                  "folders": []
+                }
+              ]
+            },
+            {
+              "name": "Zones",
+              "resources": [
+                {
+                  "name": "obj_stanncam_zone_1side",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_stanncam_zone_2side",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_stanncam_zone_blank",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_stanncam_zone_corner",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_stanncam_zone_u",
+                  "type": "object"
+                },
+                {
+                  "name": "obj_stanncam_zone",
+                  "type": "object"
+                }
+              ],
+              "folders": []
+            }
+          ]
         }
       ]
     },

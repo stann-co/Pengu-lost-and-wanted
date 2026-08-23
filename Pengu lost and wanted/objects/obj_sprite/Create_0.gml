@@ -1,2 +1,2 @@
 mask_index = sprite_index;
-parralax = 16; //overridden per-layer by load_level_place_element
+if (!variable_instance_exists(id, "parralax")) parralax = 16;

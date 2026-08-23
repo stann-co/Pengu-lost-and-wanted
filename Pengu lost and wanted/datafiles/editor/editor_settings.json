@@ -1,7 +1,12 @@
 {
   "dark_mode":true,
   "recent_levels":[
-    "D:\/projects\/Game Dev\/Pengu Lost and Wanted\/Pengu lost and wanted\/datafiles\/levels\/level.json",
-    "D:\/projects\/Game Dev\/Pengu Lost and Wanted\/Pengu lost and wanted\/datafiles\/levels\/gym.json"
-  ]
+    "D:\/projects\/Game Dev\/Pengu Lost and Wanted\/Pengu lost and wanted\/datafiles\/levels\/gym.json",
+    "D:\/projects\/Game Dev\/Pengu Lost and Wanted\/Pengu lost and wanted\/datafiles\/levels\/intro.json",
+    "D:\/projects\/Game Dev\/Pengu Lost and Wanted\/Pengu lost and wanted\/datafiles\/levels\/level.json"
+  ],
+  "show_grid":true,
+  "snap_degrees":15.0,
+  "grid_opacity":0.10000000000000001,
+  "grid_size":16.0
 }

@@ -15,7 +15,7 @@ imgui_ini_runtime_path = working_directory + "/imgui.ini";
 //exe (working_directory) - GM_project_filename is baked in at compile time
 //and points at the dev machine's source tree, so it's only usable in the
 //IDE, where it still points at the source project's own datafiles folder
-var root_path = (GM_build_type == "exe") ? working_directory : filename_path(GM_project_filename) + "datafiles/";
+root_path = (GM_build_type == "exe") ? working_directory : filename_path(GM_project_filename) + "datafiles/";
 
 imgui_ini_backup_path  = root_path + "editor/imgui_layout.ini";
 editor_settings_path   = root_path + "editor/editor_settings.json";
@@ -171,6 +171,13 @@ element_active = noone; //the primary selection - drives move/rotate/scale (see 
 elements_selected = []; //rest of the multi-selection - dragged/rotated/scaled together with element_active
 clipboard = []; //captured by action_copy_selected, placed by action_paste_clipboard
 
+//REFERENCE field eyedropper (see Inspector's Custom Variables section) -
+//armed by clicking the eyedropper button, resolved/cancelled in Step_1
+picking_reference_owner = noone; //element_uid of the instance the field belongs to
+picking_reference_var = ""; //that instance's instance_variables key being set
+picking_reference_accepted = []; //accepted_objects for the field, cached at arm time
+picking_hover_uid = noone; //valid pick target under the mouse this frame, if any
+
 //click-drag on empty viewport space, see the "element placement" region of Step_1.gml
 box_select_active = false;
 box_select_start_x = 0;
@@ -260,8 +267,8 @@ selection_mask = noone;
 selection_tilemap = noone;
 
 //grid, either size of tilemap or a default value
-show_grid = true;
-grid_opacity = 0.1;
+show_grid = editor_settings_[$ "show_grid"] ?? true;
+grid_opacity = editor_settings_[$ "grid_opacity"] ?? 0.1;
 grid_cell_w = 16;
 grid_cell_h = 16;
 grid_w = 4;
@@ -276,8 +283,8 @@ brush_grid_visible = true;
 //tileset's own tile size instead - see grid_cell_w/h) and how many degrees a
 //rotate drag snaps to when snapping is active - see the grid settings
 //dropdown next to the grid toggle button, and obj_asset_transform's Step event
-grid_size = 32;
-snap_degrees = 15;
+grid_size = editor_settings_[$ "grid_size"] ?? 32;
+snap_degrees = editor_settings_[$ "snap_degrees"] ?? 15;
 snap_enabled = false; //toggled by the magnet button - holding ctrl also enables it temporarily
 
 //sprite asset list
@@ -316,7 +323,14 @@ smf_preview_surface = -1;
     //writes every persisted editor setting (not window/dock geometry - that's
     //imgui.ini) to editor_settings_path - called whenever any of them change
     save_editor_settings = function(){
-        json_save(editor_settings_path, {dark_mode : dark_mode, recent_levels : recent_levels});
+        json_save(editor_settings_path, {
+            dark_mode : dark_mode,
+            recent_levels : recent_levels,
+            show_grid : show_grid,
+            grid_opacity : grid_opacity,
+            grid_size : grid_size,
+            snap_degrees : snap_degrees,
+        });
     }
 
     //destroys every current layer (and, via layer_destroy, everything placed on them)
@@ -403,12 +417,16 @@ smf_preview_surface = -1;
 
         //temporarily points layer_active at the layer being loaded, since
         //that's what action_place_instance/_sprite always place onto
-        var place_element_ = function(_layer, _name, _x, _y, _is_instance){
+        var place_element_ = function(_layer, _name, _ed, _is_instance){
             var prev_layer_active_ = layer_active;
             layer_active = _layer;
-            if (_is_instance) action_place_instance(_name, _x, _y, false);
-            else action_place_sprite(_name, _x, _y, false);
+            if (_is_instance) action_place_instance(_name, _ed.x, _ed.y, false, _ed.vars, _ed.element_name);
+            else action_place_sprite(_name, _ed.x, _ed.y, false);
             layer_active = prev_layer_active_;
+
+            element_active.image_xscale = _ed.image_xscale;
+            element_active.image_yscale = _ed.image_yscale;
+            element_active.image_angle = _ed.image_angle;
             return element_active;
         }
 
@@ -501,6 +519,7 @@ smf_preview_surface = -1;
 		}
 
         elements_selected = []; //the element list (ASSET/INSTANCE layers) is per-layer too
+        element_active = noone;
     }
 
     ///@desc rebuilds tileset/tileset_tiles/grid_cell_w/grid_cell_h for the active layer's tileset
@@ -940,26 +959,63 @@ smf_preview_surface = -1;
     #endregion
 
     #region instance actions
+    ///@desc true if some other placed instance (any _exclude_uid) already
+    ///uses _name as its element_name
+    element_name_taken = function(_name, _exclude_uid = noone){
+        var taken_ = false;
+        with (obj_editor_instance) {
+            if (element_uid != _exclude_uid && element_name == _name) taken_ = true;
+        }
+        return taken_;
+    }
+
+    ///@desc first free "_base_name_N" - the default element_name a freshly
+    ///placed instance gets
+    generate_element_name = function(_base_name){
+        var n_ = 1;
+        var name_ = _base_name + "_" + string(n_);
+        while (element_name_taken(name_)) {
+            n_ += 1;
+            name_ = _base_name + "_" + string(n_);
+        }
+        return name_;
+    }
+
     ///@desc spawns an obj_editor_instance at room position (_x,_y) on
     ///layer_active, representing _object_name (an object's asset name, as
     ///found in resource_tree) - shows that object's own sprite when it has
-    ///one, else the generic marker sprite. Self-inverting: its own inverse
-    ///removes it again (action_remove_instance)
-    action_place_instance = function(_object_name,_x,_y,_record=true){
+    ///one, else the generic marker sprite. _custom_variables (var_name :
+    ///value), if given, overrides the instance_variables defaults Create_0
+    ///populates. _element_name, if given, is used as-is (loading a saved
+    ///level) - otherwise a fresh unique one is generated. Self-inverting:
+    ///its own inverse removes it again (action_remove_instance)
+    action_place_instance = function(_object_name,_x,_y,_record=true,_custom_variables=undefined,_element_name=undefined){
 		var obj_ = asset_get_index(_object_name)
-        var inst_ = instance_create_layer(_x, _y, layer_active.layer, obj_editor_instance);
-        inst_.object_name = _object_name;
-        inst_.parralax = layer_active.parralax;
 
 		var obj_sprite_ = object_get_sprite(obj_);
 		var obj_mask_ = object_get_mask(obj_);
-		if(obj_sprite_ != undefined && obj_sprite_ != -1){
-			inst_.sprite_index = obj_sprite_;
-			inst_.mask_index = obj_mask_;
-		} else {
-			inst_.sprite_index = spr_instance_sprite;
-			inst_.mask_index = spr_instance_sprite;
-		}
+		var has_sprite_ = obj_sprite_ != undefined && obj_sprite_ != -1;
+
+        //object_name/element_name go through the creation struct (not set
+        //afterward) so Create_0 already has object_name when it runs the
+        //object's User Event 0
+        var inst_ = instance_create_layer(_x, _y, layer_active.layer, obj_editor_instance, {
+            object_name : _object_name,
+            element_name : _element_name != undefined ? _element_name : generate_element_name(_object_name),
+            parralax : layer_active.parralax,
+            sprite_index : has_sprite_ ? obj_sprite_ : spr_instance_sprite,
+            mask_index : has_sprite_ ? obj_mask_ : spr_instance_sprite,
+        });
+
+        if (_custom_variables != undefined) {
+            var var_names_ = variable_struct_get_names(_custom_variables);
+            for (var i_ = 0; i_ < array_length(var_names_); i_++) {
+                var var_name_ = var_names_[i_];
+                if (variable_struct_exists(inst_.instance_variables, var_name_)) {
+                    inst_.instance_variables[$ var_name_].value = _custom_variables[$ var_name_];
+                }
+            }
+        }
 
         element_active = inst_; //selected immediately, so it can be repositioned right away
 
@@ -1008,6 +1064,7 @@ smf_preview_surface = -1;
             object_index: inst_.object_index,
             object_name: variable_instance_exists(inst_,"object_name") ? inst_.object_name : "",
             sprite_name: variable_instance_exists(inst_,"sprite_name") ? inst_.sprite_name : "",
+            element_name: variable_instance_exists(inst_,"element_name") ? inst_.element_name : "",
             element_uid: inst_.element_uid,
             layer: inst_.layer,
             x: inst_.x, y: inst_.y,
@@ -1016,7 +1073,15 @@ smf_preview_surface = -1;
             sprite_index: inst_.sprite_index,
             mask_index: inst_.mask_index,
             parralax: inst_.parralax,
+            instance_variables: {},
         };
+        if (variable_instance_exists(inst_,"instance_variables")) {
+            var var_names_ = variable_struct_get_names(inst_.instance_variables);
+            for (var i_ = 0; i_ < array_length(var_names_); i_++) {
+                var var_name_ = var_names_[i_];
+                variable_struct_set(data_.instance_variables, var_name_, inst_.instance_variables[$ var_name_].value);
+            }
+        }
 
         if (element_active == inst_) element_active = noone;
         var sel_index_ = array_get_index(elements_selected, inst_);
@@ -1035,15 +1100,33 @@ smf_preview_surface = -1;
     ///@desc recreates an instance from _data (captured by
     ///action_remove_instance). Its inverse is action_remove_instance again
     action_restore_instance = function(_data,_record=true){
-        var inst_ = instance_create_layer(_data.x, _data.y, _data.layer, _data.object_index);
-        inst_.sprite_index = _data.sprite_index;
-        inst_.mask_index = _data.mask_index;
-        inst_.image_xscale = _data.image_xscale;
-        inst_.image_yscale = _data.image_yscale;
-        inst_.image_angle = _data.image_angle;
-        inst_.parralax = _data.parralax;
-        if (_data.object_name != "") inst_.object_name = _data.object_name;
-        if (_data.sprite_name != "") inst_.sprite_name = _data.sprite_name;
+        //object_name/sprite_name go through the creation struct (not set
+        //afterward) so Create_0 already has object_name when it runs the
+        //object's User Event 0 to (re)populate instance_variables
+        var vars_ = {
+            sprite_index : _data.sprite_index,
+            mask_index : _data.mask_index,
+            image_xscale : _data.image_xscale,
+            image_yscale : _data.image_yscale,
+            image_angle : _data.image_angle,
+            parralax : _data.parralax,
+        };
+        if (_data.object_name != "") vars_.object_name = _data.object_name;
+        if (_data.sprite_name != "") vars_.sprite_name = _data.sprite_name;
+        if (_data.element_name != "") vars_.element_name = _data.element_name;
+
+        var inst_ = instance_create_layer(_data.x, _data.y, _data.layer, _data.object_index, vars_);
+
+        if (variable_instance_exists(inst_,"instance_variables") && variable_struct_exists(_data,"instance_variables")) {
+            var var_names_ = variable_struct_get_names(_data.instance_variables);
+            for (var i_ = 0; i_ < array_length(var_names_); i_++) {
+                var var_name_ = var_names_[i_];
+                if (variable_struct_exists(inst_.instance_variables, var_name_)) {
+                    inst_.instance_variables[$ var_name_].value = _data.instance_variables[$ var_name_];
+                }
+            }
+        }
+
         //restores the original element_uid over the fresh one Create_0 just
         //assigned it, so anything still referring to this element by uid
         //(eg a transform entry elsewhere in the undo/redo stacks) still finds it
@@ -1068,6 +1151,43 @@ smf_preview_surface = -1;
         return noone;
     }
 
+    ///@desc finds the live obj_editor_instance with element_name == _name -
+    ///noone if there isn't one. See editor_variable_ref/REFERENCE fields
+    find_element_by_name = function(_name){
+        with (obj_editor_instance) {
+            if (element_name == _name) return id;
+        }
+        return noone;
+    }
+
+    ///@desc the layers[] entry whose raw layer id is _raw_layer - undefined
+    ///if none matches
+    find_layer_by_layer_id = function(_raw_layer){
+        for (var i_ = 0; i_ < array_length(layers); i_++) {
+            if (layers[i_].layer == _raw_layer) return layers[i_];
+        }
+        return undefined;
+    }
+
+    ///@desc true if _accepted_objects is empty (anything goes) or
+    ///_object_index is/descends from one of them
+    element_reference_object_accepted = function(_object_index, _accepted_objects){
+        if (array_length(_accepted_objects) == 0) return true;
+        for (var i_ = 0; i_ < array_length(_accepted_objects); i_++) {
+            var accepted_ = _accepted_objects[i_];
+            if (_object_index == accepted_ || object_is_ancestor(_object_index, accepted_)) return true;
+        }
+        return false;
+    }
+
+    ///@desc true if _name names a real, non-self element whose object type
+    ///passes _accepted_objects (see editor_variable_ref)
+    element_reference_valid = function(_name, _accepted_objects, _self_uid){
+        var target_ = find_element_by_name(_name);
+        if (target_ == noone || target_.element_uid == _self_uid) return false;
+        return element_reference_object_accepted(asset_get_index(target_.object_name), _accepted_objects);
+    }
+
     ///@desc applies _after's x/y/image_xscale/image_yscale/image_angle to the
     ///element identified by _uid (see find_element_by_uid/element_uid - not a
     ///raw instance id, since that wouldn't survive the element's placement
@@ -1085,6 +1205,52 @@ smf_preview_surface = -1;
         inst_.image_angle = _after.image_angle;
 
         var inverse_ = {fn: action_transform_instance, args: [_uid, _after, _before, false]};
+        if (_record) {
+            array_push(undo_stack, inverse_)
+            redo_stack = []
+        }
+        return inverse_;
+    }
+
+    ///@desc sets one instance_variables entry's value (Inspector's Custom
+    ///Variables section) on the element identified by _uid. Self-inverting:
+    ///its own inverse restores the old value
+    action_set_variable = function(_uid,_var_name,_value,_record=true){
+        var inst_ = find_element_by_uid(_uid);
+        if (inst_ == noone) return undefined;
+        if (!variable_struct_exists(inst_.instance_variables, _var_name)) return undefined;
+
+        var old_value_ = inst_.instance_variables[$ _var_name].value;
+        if (old_value_ == _value) return undefined;
+
+        inst_.instance_variables[$ _var_name].value = _value;
+        level_dirty = true;
+
+        var inverse_ = {fn: action_set_variable, args: [_uid, _var_name, old_value_, false]};
+        if (_record) {
+            array_push(undo_stack, inverse_)
+            redo_stack = []
+        }
+        return inverse_;
+    }
+
+    ///@desc renames the element identified by _uid (Inspector's Name field) -
+    ///no-ops on blank/unchanged/already-taken names (rejects rather than
+    ///auto-suffixing, same as layer rename). Self-inverting: its own inverse
+    ///restores the old name
+    action_set_element_name = function(_uid,_name,_record=true){
+        var inst_ = find_element_by_uid(_uid);
+        if (inst_ == noone) return undefined;
+
+        var trimmed_ = string_trim(_name);
+        if (trimmed_ == "" || trimmed_ == inst_.element_name) return undefined;
+        if (element_name_taken(trimmed_, _uid)) return undefined;
+
+        var old_name_ = inst_.element_name;
+        inst_.element_name = trimmed_;
+        level_dirty = true;
+
+        var inverse_ = {fn: action_set_element_name, args: [_uid, old_name_, false]};
         if (_record) {
             array_push(undo_stack, inverse_)
             redo_stack = []
@@ -1298,7 +1464,7 @@ smf_preview_surface = -1;
         //give node time to finish rewriting resource_tree.json before we read it
         execute_shell_simple(resource_tree_bat_path);
         call_later(2, time_source_units_seconds, function(){
-            resource_tree = json_load("editor/resource_tree.json").folders;
+            resource_tree = json_load(root_path + "editor/resource_tree.json").folders;
         });
     }
 
@@ -1344,21 +1510,24 @@ smf_preview_surface = -1;
     
         for (var i_ = 0; i_ < array_length(_resources); i_++) {
             var res_ = _resources[i_];
+			
             if (res_.type != _type) continue;
             if (asset_has_tags(res_.name, "editor_exclude")) continue;
+			var index_ = asset_get_index(res_.name);
+			if(index_ == -1) continue;
 
             //objects/sprites show a tiny preview image instead of a bullet
             var flags_ = ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen;
             var icon_size_, sprite_;
             if (_type == "object") {
                 icon_size_ = ImGui.GetFrameHeight();
-                sprite_ = object_get_sprite(asset_get_index(res_.name));
+                sprite_ = object_get_sprite(index_);
                 if (sprite_ == -1) sprite_ = spr_instance_sprite;
                 ImGui.Image(sprite_, 0, c_white, 1, icon_size_, icon_size_);
                 ImGui.SameLine();
             } else if (_type == "sprite") {
                 icon_size_ = ImGui.GetFrameHeight();
-                sprite_ = asset_get_index(res_.name);
+                sprite_ = index_;
                 ImGui.Image(sprite_, 0, c_white, 1, icon_size_, icon_size_);
                 ImGui.SameLine();
             } else {
@@ -2022,7 +2191,7 @@ smf_files = scan_smf_files("3D");
 //loads whatever resource_tree.json currently exists - regenerating it is
 //slow enough (and rarely needed) that it's left to the "Regenerate Resource
 //Tree" menu item instead of running on every launch
-resource_tree = json_load("editor/resource_tree.json").folders;
+resource_tree = json_load(root_path + "editor/resource_tree.json").folders;
 
 //restore last session's window positions/dock layout, if any - windows are
 //otherwise just Begin()'d plain (see Step_1.gml) and pick this up automatically

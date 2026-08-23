@@ -62,7 +62,7 @@ set_parent = function(_entity){
 }
 
 clear_parent = function(){
-	if(parent != noone){
+	if(parent != noone && instance_exists(parent)){
 		x_speed+= parent.x_speed;
 		y_speed+= parent.y_speed;
 		parent.remove_child(id);
@@ -76,11 +76,11 @@ set_x = function(_val){
 	var size_ = array_length(children);
 	if (size_ > 0){
 		var x_prev_ = x;
-		x_speed = _val - x_prev_;
+		var x_speed_ = _val - x_prev_;
 		x = _val;
 		for (var i_ = 0; i_ < array_length(children); i_++) {
 			var child_ = children[i_];
-			child_.set_x(child_.x+x_speed);
+			child_.set_x(child_.x+x_speed_);
 		}
 	} else {
 		x = _val;
@@ -92,11 +92,11 @@ set_y = function(_val){
 	var size_ = array_length(children);
 	if (size_ > 0){
 		var y_prev_ = y;
-		y_speed = _val - y_prev_;
+		var y_speed_ = _val - y_prev_;
 		y = _val;
 		for (var i_ = 0; i_ < array_length(children); i_++) {
 			var child_ = children[i_];
-			child_.set_y(child_.y+y_speed);
+			child_.set_y(child_.y+y_speed_);
 		}
 	} else {
 		y = _val;

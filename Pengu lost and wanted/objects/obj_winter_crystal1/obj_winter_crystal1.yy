@@ -7,9 +7,7 @@
   ],
   "managed":true,
   "name":"obj_winter_crystal1",
-  "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"obj_entity","path":"objects/obj_entity/obj_entity.yy",},"propertyId":{"name":"depth_layer","path":"objects/obj_entity/obj_entity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"\"above A\"",},
-  ],
+  "overriddenProperties":[],
   "parent":{
     "name":"decorations",
     "path":"folders/Objects/decorations.yy",

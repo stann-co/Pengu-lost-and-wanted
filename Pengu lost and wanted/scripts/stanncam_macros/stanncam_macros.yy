@@ -6,7 +6,7 @@
   "name":"stanncam_macros",
   "parent":{
     "name":"Miscellaneous",
-    "path":"folders/Extensions/STANNcam/Miscellaneous.yy",
+    "path":"folders/Objects/STANNcam/Miscellaneous.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

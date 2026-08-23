@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"stanncam",
+  "%Name":"editor_variable_functions",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"stanncam",
+  "name":"editor_variable_functions",
   "parent":{
-    "name":"STANNcam",
-    "path":"folders/Objects/STANNcam.yy",
+    "name":"editor",
+    "path":"folders/Scripts/editor.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

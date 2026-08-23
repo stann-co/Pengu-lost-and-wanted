@@ -9,7 +9,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"Zones",
-    "path":"folders/Extensions/STANNcam/Zones.yy",
+    "path":"folders/Objects/STANNcam/Zones.yy",
   },
   "parentObjectId":{
     "name":"obj_stanncam_zone",
@@ -37,8 +37,5 @@
     "path":"sprites/spr_stanncam_zone_2side/spr_stanncam_zone_2side.yy",
   },
   "spriteMaskId":null,
-  "tags":[
-    "editor_exclude",
-  ],
   "visible":true,
 }

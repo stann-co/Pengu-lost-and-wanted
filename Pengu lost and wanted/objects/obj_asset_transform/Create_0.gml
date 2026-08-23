@@ -78,3 +78,25 @@ scale_icon = function(_dir = 0, _angle = image_angle){
 	else if (sector_ == 1) window_set_cursor(cr_size_nesw)
 	else window_set_cursor(cr_size_nwse)
 }
+
+editor_only = false;
+disable_moving = false;
+disable_scaling = false;
+disable_rotation = false;
+
+//runs when moved, can be overridden by other objects if neccesary
+on_moved = function(){
+		
+}
+
+on_scaled = function(){
+	
+}
+
+on_rotated = function(){
+	
+}
+
+//on_delete = function(){
+//	
+//}

@@ -59,6 +59,9 @@
   "resourceVersion":"2.0",
   "sourcedir":"",
   "supportedTargets":113497714299118,
+  "tags":[
+    "editor_exclude",
+  ],
   "tvosclassname":"",
   "tvosCocoaPodDependencies":"",
   "tvosCocoaPods":"",

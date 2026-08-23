@@ -23,6 +23,46 @@ var my_ = window_mouse_get_y();
 var rmx_ = global.camera.get_mouse_x(); //room mouse
 var rmy_ = global.camera.get_mouse_y();
 
+//captured before reference picking resolves below, so the same click that
+//resolves/cancels a pick doesn't also fall through to the normal
+//select/box-select handling in "element placement" further down
+var was_picking_reference_ = picking_reference_owner != noone;
+
+#endregion
+
+#region reference picking
+//eyedropper for a REFERENCE custom variable (see Inspector's Custom
+//Variables section) - armed by that field's eyedropper button. Left click
+//accepts whatever valid target is under the mouse (any unlocked layer,
+//"always" layers included); right click, or clicking empty/invalid space,
+//cancels without changing the field. Cursor/hover-name feedback for this
+//is its own section further down, after ImGui.__Update()
+picking_hover_uid = noone;
+if (was_picking_reference_ && !ImGui.IsWindowHovered(ImGuiHoveredFlags.AnyWindow)) {
+    with (obj_editor_instance) {
+        if (element_uid == other.picking_reference_owner) continue;
+        var pick_layer_ = other.find_layer_by_layer_id(layer);
+        if (pick_layer_ == undefined || pick_layer_.locked) continue;
+        if (!other.element_reference_object_accepted(asset_get_index(object_name), other.picking_reference_accepted)) continue;
+
+        var pick_pm_ = parralax_offset(rmx_, rmy_, (TILE_SIZE*TILE_SIZE) / parralax_effective(parralax));
+        if (instance_position(pick_pm_.x, pick_pm_.y, id) == id) {
+            other.picking_hover_uid = id;
+            break;
+        }
+    }
+
+    if (mouse_check_button_pressed(mb_right)) {
+        picking_reference_owner = noone;
+    } else if (mouse_check_button_pressed(mb_left)) {
+        if (picking_hover_uid != noone) {
+            action_set_variable(picking_reference_owner, picking_reference_var, picking_hover_uid.element_name);
+        }
+        picking_reference_owner = noone; //also cancels on an empty/invalid click
+    }
+} else if (was_picking_reference_ && mouse_check_button_pressed(mb_right)) {
+    picking_reference_owner = noone; //right click cancels even over an ImGui window
+}
 #endregion
 
 #region camera
@@ -149,7 +189,7 @@ if (layer_active != undefined && (layer_active.type == LAYER_TYPE.INSTANCE || la
     //matching the Layers window's element list) so obj_asset_transform's own
     //Step event can drag/rotate/scale it - empty space instead starts a box
     //selection, or just clears the selection if released without dragging
-    if (mouse_check_button_pressed(mb_left) && !ImGui.IsWindowHovered(ImGuiHoveredFlags.AnyWindow)) {
+    if (mouse_check_button_pressed(mb_left) && !ImGui.IsWindowHovered(ImGuiHoveredFlags.AnyWindow) && !was_picking_reference_) {
         var clicked_inst_ = instance_position(pmx_, pmy_, obj_asset_transform);
         if (clicked_inst_ != noone && clicked_inst_.layer != layer_active.layer) clicked_inst_ = noone;
 
@@ -253,7 +293,19 @@ if (layer_active != undefined && (layer_active.type == LAYER_TYPE.INSTANCE || la
 
 #region imgui -----------------------------------------------------
      ImGui.__Update();
-     
+
+    #region reference picking cursor
+    //window_set_cursor calls made before ImGui.__Update() get overwritten by
+    //its own cursor handling, so this has to run after it - same for
+    //SetTooltip, which needs an active ImGui frame
+    if (was_picking_reference_) {
+        window_set_cursor(picking_hover_uid != noone ? cr_handpoint : cr_cross);
+        if (picking_hover_uid != noone) {
+            ImGui.SetTooltip(picking_hover_uid.object_name + " [" + picking_hover_uid.element_name + "]");
+        }
+    }
+    #endregion
+
     #region imgui styling
     if (dark_mode) ImGui.StyleColorsDark() else ImGui.StyleColorsLight()
     
@@ -287,7 +339,7 @@ if (layer_active != undefined && (layer_active.type == LAYER_TYPE.INSTANCE || la
     ImGui.PushStyleColor(ImGuiCol.FrameBg, c_ltgray, 0.3)
     ImGui.PushStyleColor(ImGuiCol.FrameBgHovered, c_ltgray, 0.5)
     ImGui.PushStyleColor(ImGuiCol.FrameBgActive, c_gray, 0.6)
-    ImGui.PushStyleColor(ImGuiCol.CheckMark, c_dkgray, 1)
+    ImGui.PushStyleColor(ImGuiCol.CheckMark, dark_mode ? c_white : c_dkgray, 1)
     ImGui.PushStyleColor(ImGuiCol.CheckboxSelectedBg, c_gray, 0.4)
     ImGui.PushStyleColor(ImGuiCol.SliderGrab, c_gray, 0.8)
     ImGui.PushStyleColor(ImGuiCol.SliderGrabActive, c_dkgray, 1)
@@ -453,7 +505,6 @@ if (layer_active != undefined && (layer_active.type == LAYER_TYPE.INSTANCE || la
 			save_brush_tilemap();
 
             if (current_level_path != undefined) {
-                global.parralax = 0;
                 destroyed = true;
 				call_later(10,time_source_units_frames,function(){ //so pressing home doesn't immedietly start it up again
 					obj_game.level_editor_active = false;
@@ -939,7 +990,9 @@ if (layer_active != undefined && (layer_active.type == LAYER_TYPE.INSTANCE || la
                         with (obj_asset_transform) {
                             if (layer != elem_layer_) continue;
 
-                            var label_ = (variable_instance_exists(id,"object_name") ? object_name : object_get_name(object_index)) + " (" + string(id) + ")";
+                            var label_ = variable_instance_exists(id,"element_name")
+                                ? object_name + " [" + element_name + "]"
+                                : (variable_instance_exists(id,"object_name") ? object_name : object_get_name(object_index)) + " (" + string(id) + ")";
                             var in_selection_ = array_get_index(other.elements_selected, id) != -1;
                             var selected_ = other.element_active == id || in_selection_;
 
@@ -1317,7 +1370,183 @@ if (layer_active != undefined && (layer_active.type == LAYER_TYPE.INSTANCE || la
             ImGui.End();
         }
         #endregion
-        
+
+        #region inspector
+        //x/y/scale/angle for the selected element - only meaningful on
+        //ASSET/INSTANCE layers, since tilemaps have no single selected element
+        var inspector_active_ = layer_active != undefined && (layer_active.type == LAYER_TYPE.ASSET || layer_active.type == LAYER_TYPE.INSTANCE);
+        if (inspector_active_) {
+            if (ImGui.Begin("Inspector", undefined, ImGuiWindowFlags.None)) {
+                if (element_active != noone && instance_exists(element_active)) {
+                    var label_ = variable_instance_exists(element_active, "object_name") ? element_active.object_name
+                        : (variable_instance_exists(element_active, "sprite_name") ? element_active.sprite_name : object_get_name(element_active.object_index));
+                    ImGui.Text(label_);
+                    ImGui.Separator();
+
+                    var can_edit_ = !layer_active.locked;
+                    if (!can_edit_) ImGui.BeginDisabled();
+
+                    var field_width_ = 140;
+
+                    if (layer_active.type == LAYER_TYPE.INSTANCE) {
+                        ImGui.Text("Name");
+                        ImGui.SameLine();
+                        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + max(0, ImGui.GetContentRegionAvailX() - field_width_));
+                        ImGui.SetNextItemWidth(field_width_);
+                        var new_name_ = ImGui.InputText("##inspector_name", element_active.element_name, ImGuiInputTextFlags.EnterReturnsTrue | ImGuiInputTextFlags.AutoSelectAll);
+                        if (ImGui.IsItemDeactivated()) {
+                            action_set_element_name(element_active.element_uid, new_name_);
+                        }
+                    }
+
+                    //commits the full x/y/scale/angle set as one undo step, same as a
+                    //completed drag in obj_asset_transform (see action_transform_instance) -
+                    //element_active is an instance var so it's readable here, but locals
+                    //from the enclosing script (eg a "var uid_") aren't, so it's re-read
+                    //from element_active instead of being captured
+                    var apply_transform_ = function(_x, _y, _xscale, _yscale, _angle){
+                        var before_ = {
+                            x : element_active.x, y : element_active.y,
+                            image_xscale : element_active.image_xscale,
+                            image_yscale : element_active.image_yscale,
+                            image_angle : element_active.image_angle,
+                        };
+                        var after_ = {x : _x, y : _y, image_xscale : _xscale, image_yscale : _yscale, image_angle : _angle};
+                        action_transform_instance(element_active.element_uid, before_, after_);
+                    }
+
+                    ImGui.Text("X");
+                    ImGui.SameLine();
+                    ImGui.SetCursorPosX(ImGui.GetCursorPosX() + max(0, ImGui.GetContentRegionAvailX() - field_width_));
+                    ImGui.SetNextItemWidth(field_width_);
+                    var new_x_ = ImGui.InputFloat("##inspector_x", element_active.x, 1, 8);
+                    if (new_x_ != element_active.x) {
+                        apply_transform_(new_x_, element_active.y, element_active.image_xscale, element_active.image_yscale, element_active.image_angle);
+                    }
+
+                    ImGui.Text("Y");
+                    ImGui.SameLine();
+                    ImGui.SetCursorPosX(ImGui.GetCursorPosX() + max(0, ImGui.GetContentRegionAvailX() - field_width_));
+                    ImGui.SetNextItemWidth(field_width_);
+                    var new_y_ = ImGui.InputFloat("##inspector_y", element_active.y, 1, 8);
+                    if (new_y_ != element_active.y) {
+                        apply_transform_(element_active.x, new_y_, element_active.image_xscale, element_active.image_yscale, element_active.image_angle);
+                    }
+
+                    ImGui.Text("Angle");
+                    ImGui.SameLine();
+                    ImGui.SetCursorPosX(ImGui.GetCursorPosX() + max(0, ImGui.GetContentRegionAvailX() - field_width_));
+                    ImGui.SetNextItemWidth(field_width_);
+                    var new_angle_ = ImGui.InputFloat("##inspector_angle", element_active.image_angle, 1, 15);
+                    if (new_angle_ != element_active.image_angle) {
+                        apply_transform_(element_active.x, element_active.y, element_active.image_xscale, element_active.image_yscale, new_angle_);
+                    }
+
+                    ImGui.Text("Scale X");
+                    ImGui.SameLine();
+                    ImGui.SetCursorPosX(ImGui.GetCursorPosX() + max(0, ImGui.GetContentRegionAvailX() - field_width_));
+                    ImGui.SetNextItemWidth(field_width_);
+                    var new_xscale_ = ImGui.InputFloat("##inspector_xscale", element_active.image_xscale, 0.05, 0.25);
+                    if (new_xscale_ != element_active.image_xscale) {
+                        apply_transform_(element_active.x, element_active.y, new_xscale_, element_active.image_yscale, element_active.image_angle);
+                    }
+
+                    ImGui.Text("Scale Y");
+                    ImGui.SameLine();
+                    ImGui.SetCursorPosX(ImGui.GetCursorPosX() + max(0, ImGui.GetContentRegionAvailX() - field_width_));
+                    ImGui.SetNextItemWidth(field_width_);
+                    var new_yscale_ = ImGui.InputFloat("##inspector_yscale", element_active.image_yscale, 0.05, 0.25);
+                    if (new_yscale_ != element_active.image_yscale) {
+                        apply_transform_(element_active.x, element_active.y, element_active.image_xscale, new_yscale_, element_active.image_angle);
+                    }
+
+                    if (layer_active.type == LAYER_TYPE.INSTANCE) {
+                        ImGui.Separator();
+                        ImGui.Text("Custom Variables");
+
+                        var var_names_ = variable_struct_get_names(element_active.instance_variables);
+                        for (var i_ = 0; i_ < array_length(var_names_); i_++) {
+                            var def_ = element_active.instance_variables[$ var_names_[i_]];
+                            if (def_.hidden) continue;
+
+                            ImGui.Text(variable_string_name(def_.var_name));
+                            ImGui.SameLine();
+                            ImGui.SetCursorPosX(ImGui.GetCursorPosX() + max(0, ImGui.GetContentRegionAvailX() - field_width_));
+                            ImGui.SetNextItemWidth(field_width_);
+
+                            switch (def_.type) {
+                                case EDITOR_VARIABLE_TYPES.FLOAT:
+                                    var new_value_ = ImGui.InputFloat("##var_" + def_.var_name, def_.value);
+                                    if (def_.minimum != undefined) new_value_ = max(new_value_, def_.minimum);
+                                    if (def_.maximum != undefined) new_value_ = min(new_value_, def_.maximum);
+                                    if (new_value_ != def_.value) {
+                                        action_set_variable(element_active.element_uid, def_.var_name, new_value_);
+                                    }
+                                    break;
+                                case EDITOR_VARIABLE_TYPES.BOOL:
+                                    var new_bool_ = ImGui.Checkbox("##var_" + def_.var_name, def_.value);
+                                    if (new_bool_ != def_.value) {
+                                        action_set_variable(element_active.element_uid, def_.var_name, new_bool_);
+                                    }
+                                    break;
+                                case EDITOR_VARIABLE_TYPES.STRING:
+                                    var new_string_ = ImGui.InputText("##var_" + def_.var_name, def_.value);
+                                    if (new_string_ != def_.value) {
+                                        action_set_variable(element_active.element_uid, def_.var_name, new_string_);
+                                    }
+                                    break;
+                                case EDITOR_VARIABLE_TYPES.LIST:
+                                    if (ImGui.BeginCombo("##var_" + def_.var_name, def_.value, ImGuiComboFlags.None)) {
+                                        for (var oi_ = 0; oi_ < array_length(def_.options); oi_++) {
+                                            var option_ = def_.options[oi_];
+                                            if (ImGui.Selectable(option_, option_ == def_.value)) {
+                                                action_set_variable(element_active.element_uid, def_.var_name, option_);
+                                            }
+                                        }
+                                        ImGui.EndCombo();
+                                    }
+                                    break;
+                                case EDITOR_VARIABLE_TYPES.REFERENCE:
+                                    var ref_button_size_ = ImGui.GetFrameHeight();
+                                    var ref_picking_ = picking_reference_owner == element_active.element_uid && picking_reference_var == def_.var_name;
+                                    var ref_text_ = ref_picking_ ? "picking ref" : (is_string(def_.value) ? def_.value : "");
+                                    ImGui.SetNextItemWidth(field_width_ - ref_button_size_ - 4);
+                                    if (ref_picking_) ImGui.BeginDisabled();
+                                    var new_ref_ = ImGui.InputText("##var_" + def_.var_name, ref_text_);
+                                    if (!ref_picking_ && ImGui.IsItemDeactivated()) {
+                                        var ref_trimmed_ = string_trim(new_ref_);
+                                        if (ref_trimmed_ == "") {
+                                            action_set_variable(element_active.element_uid, def_.var_name, noone);
+                                        } else if (element_reference_valid(ref_trimmed_, def_.accepted_objects, element_active.element_uid)) {
+                                            action_set_variable(element_active.element_uid, def_.var_name, ref_trimmed_);
+                                        }
+                                        //invalid: silently rejected, field reverts to the last accepted value
+                                    }
+                                    if (ref_picking_) ImGui.EndDisabled();
+                                    ImGui.SameLine();
+                                    if (icon_button(ICON.EYEDROPPER, "ref_pick_" + def_.var_name, ref_button_size_)) {
+                                        picking_reference_owner = element_active.element_uid;
+                                        picking_reference_var = def_.var_name;
+                                        picking_reference_accepted = def_.accepted_objects;
+                                    }
+                                    if (ImGui.IsItemHovered()) ImGui.SetTooltip("Pick a reference by clicking an instance");
+                                    break;
+                                default:
+                                    ImGui.TextDisabled("(unsupported type)");
+                                    break;
+                            }
+                        }
+                    }
+
+                    if (!can_edit_) ImGui.EndDisabled();
+                } else {
+                    ImGui.TextDisabled("No element selected");
+                }
+            }
+            ImGui.End();
+        }
+        #endregion
+
         #region icon grid
         if (window_icons_visible) {
             if (ImGui.Begin("Icon Reference", undefined, ImGuiWindowFlags.None)) {

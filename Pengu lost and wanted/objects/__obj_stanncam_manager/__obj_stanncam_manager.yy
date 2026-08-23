@@ -13,7 +13,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"STANNcam",
-    "path":"folders/Extensions/STANNcam.yy",
+    "path":"folders/Objects/STANNcam.yy",
   },
   "parentObjectId":null,
   "persistent":true,

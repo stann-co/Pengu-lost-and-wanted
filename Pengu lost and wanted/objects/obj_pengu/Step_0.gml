@@ -274,13 +274,23 @@ if(CAN_MOVE){
                     //sensors check which is closest to the ground
                     var updown_sensor_ = noone;
                     
-                        if(bl_sensor_ != noone && br_sensor_ != noone){
-                            //if both sensors collide, the one with the shortest distance wins
-                            if(bl_sensor_.distance < br_sensor_.distance) updown_sensor_ = bl_sensor_;
-                            else updown_sensor_ = br_sensor_;	
-                        }
-                        else if(bl_sensor_ != noone) updown_sensor_ = bl_sensor_;
-                        else if(br_sensor_ != noone) updown_sensor_ = br_sensor_;
+                    if(bl_sensor_ != noone && br_sensor_ != noone){
+                        //if both sensors collide, the one with the shortest distance wins
+						//TODO figure out a way to blend between two active sensors angle, without it stopping momentum
+						//var other_sensor_ = noone;
+						
+                        if(bl_sensor_.distance < br_sensor_.distance){
+							updown_sensor_ = bl_sensor_;
+							//other_sensor_ = br_sensor_;
+						} else {
+							updown_sensor_ = br_sensor_;
+							//other_sensor_ = bl_sensor_;
+						}
+						
+						//updown_sensor_.angle -= angle_difference(updown_sensor_.angle,other_sensor_.angle) * 0.5;
+                    }
+                    else if(bl_sensor_ != noone) updown_sensor_ = bl_sensor_;
+                    else if(br_sensor_ != noone) updown_sensor_ = br_sensor_;
                     
                     //if airborne, you only get snapped to the ground, when sensor is inside the ground
                     if(updown_sensor_ != noone && ( !airborne || (airborne && updown_sensor_.y < 0) )){

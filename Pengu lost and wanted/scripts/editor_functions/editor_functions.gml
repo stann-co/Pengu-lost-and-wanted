@@ -600,11 +600,13 @@ function level_serialize(_layers, _room_width, _room_height){
 			}
 			ld_.tiles = tiles_;
 		} else {
-			//vars is a placeholder for each element's extra instance
-			//variables - always empty for now, that system doesn't exist yet
+			//vars holds each INSTANCE element's custom variable values (see
+			//editor_variable_float/instance_variables) - always empty on ASSET
+			//layers, since sprite elements aren't tied to an object
 			var elements_ = [];
 			with (obj_asset_transform) {
 				if (layer != layer_.layer) continue;
+				if (editor_only) continue;
 				var ed_ = {
 					x : x, y : y,
 					image_xscale : image_xscale, image_yscale : image_yscale, image_angle : image_angle,
@@ -612,6 +614,17 @@ function level_serialize(_layers, _room_width, _room_height){
 				};
 				if (layer_.type == LAYER_TYPE.INSTANCE) {
 					ed_.object_name = variable_instance_exists(id,"object_name") ? object_name : "";
+					ed_.element_name = variable_instance_exists(id,"element_name") ? element_name : "";
+					ed_.ref_vars = [];
+					if (variable_instance_exists(id,"instance_variables")) {
+						var var_names_ = variable_struct_get_names(instance_variables);
+						for (var vi_ = 0; vi_ < array_length(var_names_); vi_++) {
+							var var_name_ = var_names_[vi_];
+							var var_def_ = instance_variables[$ var_name_];
+							variable_struct_set(ed_.vars, var_name_, var_def_.value);
+							if (var_def_.type == EDITOR_VARIABLE_TYPES.REFERENCE) array_push(ed_.ref_vars, var_name_);
+						}
+					}
 				} else {
 					ed_.sprite_name = variable_instance_exists(id,"sprite_name") ? sprite_name : "";
 				}

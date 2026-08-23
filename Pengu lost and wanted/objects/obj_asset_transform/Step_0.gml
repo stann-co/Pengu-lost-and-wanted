@@ -104,7 +104,7 @@ if(obj_level_editor.element_active == id){
 		//drag below, so they stay reachable even where a multi-selection's
 		//combined bounds also cover this element's own handle area
 		//top left corner
-		if(point_in_circle(raw_mx_,raw_my_,c_.tl.x,c_.tl.y,rad_)){
+		if(!disable_scaling && point_in_circle(raw_mx_,raw_my_,c_.tl.x,c_.tl.y,rad_)){
 			scale_icon(315, hover_is_group_ ? 0 : image_angle);
 			if(pressed_){
 				dragging = TRANSFORM_OPTIONS.SCALE;
@@ -113,7 +113,7 @@ if(obj_level_editor.element_active == id){
 			}
 		}
 		//top right corner
-		else if(point_in_circle(raw_mx_,raw_my_,c_.tr.x,c_.tr.y,rad_)){
+		else if(!disable_scaling && point_in_circle(raw_mx_,raw_my_,c_.tr.x,c_.tr.y,rad_)){
 			scale_icon(45, hover_is_group_ ? 0 : image_angle);
 			if(pressed_){
 				dragging = TRANSFORM_OPTIONS.SCALE;
@@ -122,7 +122,7 @@ if(obj_level_editor.element_active == id){
 			}
 		}
 		//bottom left corner
-		else if(point_in_circle(raw_mx_,raw_my_,c_.bl.x,c_.bl.y,rad_)){
+		else if(!disable_scaling && point_in_circle(raw_mx_,raw_my_,c_.bl.x,c_.bl.y,rad_)){
 			scale_icon(225, hover_is_group_ ? 0 : image_angle);
 			if(pressed_){
 				dragging = TRANSFORM_OPTIONS.SCALE;
@@ -131,7 +131,7 @@ if(obj_level_editor.element_active == id){
 			}
 		}
 		//bottom right corner
-		else if(point_in_circle(raw_mx_,raw_my_,c_.br.x,c_.br.y,rad_)){
+		else if(!disable_scaling && point_in_circle(raw_mx_,raw_my_,c_.br.x,c_.br.y,rad_)){
 			scale_icon(135, hover_is_group_ ? 0 : image_angle);
 			if(pressed_){
 				dragging = TRANSFORM_OPTIONS.SCALE;
@@ -140,7 +140,7 @@ if(obj_level_editor.element_active == id){
 			}
 		}
 		//top
-		else if(point_in_line(raw_mx_,raw_my_,c_.tl.x,c_.tl.y,c_.tr.x,c_.tr.y,rad_)){
+		else if(!disable_scaling && point_in_line(raw_mx_,raw_my_,c_.tl.x,c_.tl.y,c_.tr.x,c_.tr.y,rad_)){
 			scale_icon(0, hover_is_group_ ? 0 : image_angle);
 			if(pressed_){
 				dragging = TRANSFORM_OPTIONS.SCALE;
@@ -148,7 +148,7 @@ if(obj_level_editor.element_active == id){
 			}
 		}
 		//right
-		else if(point_in_line(raw_mx_,raw_my_,c_.tr.x,c_.tr.y,c_.br.x,c_.br.y,rad_)){
+		else if(!disable_scaling && point_in_line(raw_mx_,raw_my_,c_.tr.x,c_.tr.y,c_.br.x,c_.br.y,rad_)){
 			scale_icon(90, hover_is_group_ ? 0 : image_angle);
 			if(pressed_){
 				dragging = TRANSFORM_OPTIONS.SCALE;
@@ -156,7 +156,7 @@ if(obj_level_editor.element_active == id){
 			}
 		}
 		//bottom
-		else if(point_in_line(raw_mx_,raw_my_,c_.br.x,c_.br.y,c_.bl.x,c_.bl.y,rad_)){
+		else if(!disable_scaling && point_in_line(raw_mx_,raw_my_,c_.br.x,c_.br.y,c_.bl.x,c_.bl.y,rad_)){
 			scale_icon(180, hover_is_group_ ? 0 : image_angle);
 			if(pressed_){
 				dragging = TRANSFORM_OPTIONS.SCALE;
@@ -164,7 +164,7 @@ if(obj_level_editor.element_active == id){
 			}
 		}
 		//left
-		else if(point_in_line(raw_mx_,raw_my_,c_.bl.x,c_.bl.y,c_.tl.x,c_.tl.y,rad_)){
+		else if(!disable_scaling && point_in_line(raw_mx_,raw_my_,c_.bl.x,c_.bl.y,c_.tl.x,c_.tl.y,rad_)){
 			scale_icon(270, hover_is_group_ ? 0 : image_angle);
 			if(pressed_){
 				dragging = TRANSFORM_OPTIONS.SCALE;
@@ -173,10 +173,12 @@ if(obj_level_editor.element_active == id){
 		}
 		//rotate
 		else if(
-			point_in_circle(raw_mx_,raw_my_,c_.tl.x,c_.tl.y,rad_*2) ||
-			point_in_circle(raw_mx_,raw_my_,c_.tr.x,c_.tr.y,rad_*2) ||
-			point_in_circle(raw_mx_,raw_my_,c_.bl.x,c_.bl.y,rad_*2) ||
-			point_in_circle(raw_mx_,raw_my_,c_.br.x,c_.br.y,rad_*2)
+			!disable_rotation && (
+				point_in_circle(raw_mx_,raw_my_,c_.tl.x,c_.tl.y,rad_*2) ||
+				point_in_circle(raw_mx_,raw_my_,c_.tr.x,c_.tr.y,rad_*2) ||
+				point_in_circle(raw_mx_,raw_my_,c_.bl.x,c_.bl.y,rad_*2) ||
+				point_in_circle(raw_mx_,raw_my_,c_.br.x,c_.br.y,rad_*2)
+			)
 		){
 			window_set_cursor(cr_none);
 			cursor_sprite = spr_cursor_rotate;
@@ -187,7 +189,7 @@ if(obj_level_editor.element_active == id){
 		//middle - the combined bounds of the whole selection (not just this
 		//element), so the group can be dragged from anywhere inside it
 		else {
-			if (bounds_ != undefined && point_in_box(raw_mx_,raw_my_, bounds_.min_x,bounds_.min_y, bounds_.max_x,bounds_.min_y, bounds_.min_x,bounds_.max_y, bounds_.max_x,bounds_.max_y)) {
+			if (!disable_moving && bounds_ != undefined && point_in_box(raw_mx_,raw_my_, bounds_.min_x,bounds_.min_y, bounds_.max_x,bounds_.min_y, bounds_.min_x,bounds_.max_y, bounds_.max_x,bounds_.max_y)) {
 				window_set_cursor(cr_size_all);
 				if(pressed_){
 					dragging = TRANSFORM_OPTIONS.MOVE;
@@ -212,9 +214,14 @@ if(obj_level_editor.element_active == id){
             var move_dx_ = x - transform_start.x;
             var move_dy_ = y - transform_start.y;
             for (var mi_ = 0; mi_ < array_length(group_targets); mi_++) {
-                if (group_targets[mi_] == id) continue;
+                if (group_targets[mi_] == id) {
+                    on_moved();
+                    continue;
+                }
+                if (group_targets[mi_].disable_moving) continue;
                 group_targets[mi_].x = group_starts[mi_].x + move_dx_;
                 group_targets[mi_].y = group_starts[mi_].y + move_dy_;
+                group_targets[mi_].on_moved();
             }
 		break
 
@@ -236,12 +243,14 @@ if(obj_level_editor.element_active == id){
 		var rot_cos_ = dcos(rot_delta_);
 		var rot_sin_ = dsin(rot_delta_);
 		for (var ri_ = 0; ri_ < array_length(group_targets); ri_++) {
+			if (group_targets[ri_].disable_rotation) continue;
 			var rs_ = group_starts[ri_];
 			var rox_ = rs_.x - transform_pivot_x;
 			var roy_ = rs_.y - transform_pivot_y;
 			group_targets[ri_].x = transform_pivot_x + (rox_*rot_cos_ + roy_*rot_sin_);
 			group_targets[ri_].y = transform_pivot_y + (roy_*rot_cos_ - rox_*rot_sin_);
 			group_targets[ri_].image_angle = rs_.image_angle + rot_delta_;
+			group_targets[ri_].on_rotated();
 		}
 		break
 
@@ -285,6 +294,7 @@ if(obj_level_editor.element_active == id){
 			}
 
 			for (var si_ = 0; si_ < array_length(group_targets); si_++) {
+				if (group_targets[si_].disable_scaling) continue;
 				var ss_ = group_starts[si_];
 				group_targets[si_].x = scale_anchor_x_ + (ss_.x - scale_anchor_x_) * scale_ratio_x_;
 				group_targets[si_].y = scale_anchor_y_ + (ss_.y - scale_anchor_y_) * scale_ratio_y_;
@@ -292,6 +302,7 @@ if(obj_level_editor.element_active == id){
 					group_targets[si_].image_xscale = ss_.image_xscale * scale_ratio_x_;
 					group_targets[si_].image_yscale = ss_.image_yscale * scale_ratio_y_;
 				}
+				group_targets[si_].on_scaled();
 			}
 		} else {
 			//scale_h/scale_v below can both be active at once (dragging a corner,
@@ -365,6 +376,7 @@ if(obj_level_editor.element_active == id){
 			var anchor_new_ = parralax_offset(anchor_start_.x + accum_dx_, anchor_start_.y + accum_dy_, (TILE_SIZE*TILE_SIZE) / effective_parralax_);
 			x = anchor_new_.x;
 			y = anchor_new_.y;
+			on_scaled();
 		}
 		break
 	}

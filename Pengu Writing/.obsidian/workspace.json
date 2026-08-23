@@ -11,14 +11,12 @@
             "id": "25bf8d8436ab0bd4",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "Characters/Basquette.md",
-                "mode": "source",
-                "source": false
+                "file": "images/seeing the obelisq concept.png"
               },
-              "icon": "lucide-file",
-              "title": "Basquette"
+              "icon": "lucide-image",
+              "title": "seeing the obelisq concept"
             }
           }
         ]
@@ -185,7 +183,19 @@
   },
   "active": "25bf8d8436ab0bd4",
   "lastOpenFiles": [
+    "images/story progression idea.png",
+    "images/seeing the obelisq concept.png",
+    "images/Gyaannopierc.png",
+    "images/GameMaker-LTS2026_IeYbZwJ3ia.png",
+    "images/cartrip.png",
+    "images/basquette ref.png",
     "Gameplay and levels/Set pieces.canvas",
+    "Editor/Unavngivet.canvas",
+    "Editor/Editor requirements.md",
+    "Characters/Gyaan.md",
+    "Characters/Guard Captain.md",
+    "Characters/Pengu.md",
+    "Characters/Basquette.md",
     "Gameplay and levels/Unavngivet.base",
     "Story/Story elements/The past.md",
     "Gameplay and levels",
@@ -193,27 +203,15 @@
     "Story/Species.md",
     "Story/Themes, what's the story about, why.md",
     "Story/Story chart.canvas",
-    "Editor/Editor requirements.md",
-    "Editor/Unavngivet.canvas",
-    "images/Gyaannopierc.png",
-    "images/seeing the obelisq concept.png",
-    "images/story progression idea.png",
     "Story/Story elements/The obelisk.md",
-    "images/GameMaker-LTS2026_IeYbZwJ3ia.png",
-    "Characters/Guard Captain.md",
-    "images/cartrip.png",
-    "images/basquette ref.png",
     "Video scripts/Shorts/How Loops are made.md",
     "Editor",
     "Characters/Aten (god like character).md",
-    "Characters/Gyaan.md",
-    "Characters/Basquette.md",
     "images",
     "Unavngivet.canvas",
     "Story",
     "2026-06-02.md",
     "Unavngivet.base",
-    "Characters/Pengu.md",
     "Unavngivet 1.base",
     "Unavngivet 1.canvas",
     "Characters",
