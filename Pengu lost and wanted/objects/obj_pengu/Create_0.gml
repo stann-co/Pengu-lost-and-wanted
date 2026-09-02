@@ -1,7 +1,7 @@
 /// @description
 event_inherited();
 
-depth-=10; //by default pengu is above other entities
+//depth-=10; //by default pengu is above other entities
 
 global.camera.follow = self;
 global.camera.move(x,y,0);
@@ -253,6 +253,10 @@ state.add("airborne",{
         anim_speed = 1;
         image_to_ground_angle = false;
         airborne = true;
+		if(parent != noone){ //TODO is this safe?
+			x_speed += parent.x_speed;	
+			y_speed += parent.y_speed;
+		}
 		clear_parent();
         sliding = false;
     }

@@ -11,10 +11,8 @@ enum TOOL_MODE {
 #region constants
 imgui_ini_runtime_path = working_directory + "/imgui.ini";
 
-//when exported, everything from datafiles/ is flattened right next to the
-//exe (working_directory) - GM_project_filename is baked in at compile time
-//and points at the dev machine's source tree, so it's only usable in the
-//IDE, where it still points at the source project's own datafiles folder
+//when exported, datafiles/ flattens next to the exe (working_directory);
+//GM_project_filename only points at the IDE's own source datafiles folder
 root_path = (GM_build_type == "exe") ? working_directory : filename_path(GM_project_filename) + "datafiles/";
 
 imgui_ini_backup_path  = root_path + "editor/imgui_layout.ini";
@@ -39,11 +37,10 @@ icon_codes = [
 ]
 
 //indexed by LAYER_TYPE enum value
-layer_type_icons = [ICON.TILEMAP, ICON.TRANSFORM, ICON.SHAPES];
+layer_type_icons = [ICON.TILEMAP, ICON.TRANSFORM, ICON.SHAPES, ICON.FRAME];
 
-//indexed by LAYER_TYPE enum value - which resource_tree "type" is relevant
-//to each kind of layer (tileset layers show tilesets, asset layers show
-//sprites, instance layers show objects)
+//indexed by LAYER_TYPE - which resource_tree "type" each layer kind shows
+//(tileset layers show tilesets, asset layers sprites, instance layers objects)
 layer_type_resource_types = ["tileset", "sprite", "object"];
 
 //regenerates datafiles/editor/resource_tree.json
@@ -56,10 +53,10 @@ right_panel_width     = 300;
 panel_toggle_width    = 20; //width of the slim show/hide strip next to each panel
 toolbar_height        = 36;
 viewport_toolbar_height = 36; //fixed strip of editor buttons over the viewport, between the side panels
+status_bar_height = 24; //thin strip along the bottom showing the room-space mouse position
 
-//stable dockspace ids for the two side panels - fixed constants rather than
-//ImGui.GetID(), since GetID needs an active ImGui frame/window and this runs
-//in Create before ImGui.__Update() has executed for the first time
+//stable dockspace ids for the side panels - fixed constants since GetID()
+//needs an active ImGui frame, which Create runs before __Update() has
 dock_id_left  = 0x100001;
 dock_id_right = 0x100002;
 
@@ -106,9 +103,8 @@ for (var i_ = 0; i_ < array_length(loaded_recent_levels_); i_++) {
 //Save As (or the very first Save with nothing open yet) prompts for it
 current_level_path = undefined;
 
-//dirty tracking for the "*" suffix - compares undo_stack's depth against
-//its depth at the last save/load; level_dirty covers edits that skip
-//undo_stack entirely (layer visible/locked/name/parralax)
+//dirty tracking for the "*" suffix - compares undo_stack depth against the
+//last save/load; level_dirty covers edits that skip undo_stack entirely
 level_dirty = false;
 saved_undo_depth = 0;
 
@@ -125,8 +121,7 @@ window_resource_tree_visible = false; //debug: unfiltered resource_tree, all typ
 initialized = false;
 
 //forces Layers/Resources back into their dockspaces once, the first frame
-//after this instance's ImGui context exists - a fresh __Initialize() doesn't
-//reliably reapply their docked position from imgui.ini on its own
+//after this ImGui context exists - a fresh __Initialize() won't reapply it
 global.editor_docked_default_windows = false;
 
 last_camera_follow = global.camera.follow;
@@ -167,28 +162,44 @@ camera_y = global.camera.y;
 
 add_layer_type = LAYER_TYPE.ASSET;
 
+//Layer Properties' parallax X/Y sliders move together while this is on
+parallax_linked = true;
+
 element_active = noone; //the primary selection - drives move/rotate/scale (see obj_asset_transform)
 elements_selected = []; //rest of the multi-selection - dragged/rotated/scaled together with element_active
 clipboard = []; //captured by action_copy_selected, placed by action_paste_clipboard
 
-//REFERENCE field eyedropper (see Inspector's Custom Variables section) -
-//armed by clicking the eyedropper button, resolved/cancelled in Step_1
-picking_reference_owner = noone; //element_uid of the instance the field belongs to
-picking_reference_var = ""; //that instance's instance_variables key being set
+//entity eyedropper (REFERENCE fields, Outputs window's Target Entity) -
+//armed by clicking an eyedropper button, resolved/cancelled in Step_1
+picking_reference_owner = noone; //element_uid of the instance the pick belongs to
 picking_reference_accepted = []; //accepted_objects for the field, cached at arm time
 picking_hover_uid = noone; //valid pick target under the mouse this frame, if any
+picking_reference_on_pick = function(_target_name){}; //called with the picked element_name once a pick resolves
+picking_reference_context = undefined; //arm-site-defined key, lets a field tell if IT is the one being picked
+
+//Outputs window (Inspector's I/O section) - see the "inspector" region of Step_1.gml
+io_window_uid = noone; //element_uid the window is currently open for
+io_window_row_index = -1; //index into that element's io_connections loaded for editing, -1 = new row
+io_window_edit_row = undefined; //working copy of the row being edited
+io_window_clipboard = undefined; //last row copied via the window's Copy button
+//bumped whenever io_window_edit_row is replaced wholesale (not a single field
+//edit) - suffixed onto each field's widget id, since ImGui widgets otherwise
+//keep showing their own cached text after the struct backing them is swapped
+io_window_edit_generation = 0;
+//My Output/Via this Input render as a plain toggled list rather than an
+//ImGui combo - a combo's own popup closes the whole Outputs window when
+//dismissed in this ImGui build, since it's nested inside another popup
+io_output_dropdown_open = false;
+io_input_dropdown_open = false;
+io_window_hidden_for_pick = false; //true while the eyedropper temporarily hides the window
 
 //click-drag on empty viewport space, see the "element placement" region of Step_1.gml
 box_select_active = false;
 box_select_start_x = 0;
 box_select_start_y = 0;
 
-//hands out a unique element_uid to every obj_asset_transform instance as it's
-//created (see that object's Create event) - a raw instance id isn't stable
-//across undo/redo of that element's own placement (action_restore_instance
-//recreates it under a brand new id), so anything that needs to keep
-//referring to "the same" element later (eg action_transform_instance) uses
-//this instead, restored to match by action_restore_instance
+//hands out a unique element_uid per obj_asset_transform - a raw instance id
+//isn't stable across undo/redo, since action_restore_instance recreates it
 next_element_uid = 0;
 
 tilemap = undefined;
@@ -216,10 +227,8 @@ tiles_switched = false; //set on layer selection (and the center button), so the
 tile_picker_selected_x = -1; //selected cell in tileset_tiles, -1 = none
 tile_picker_selected_y = -1;
 
-//tracks in-progress paint/erase strokes in the room, so holding the mouse
-//down only re-applies the brush once it's moved a brush-width/height away
-//from the last spot, instead of every single frame - see the "tile placing"
-//region in Step_1.gml
+//tracks in-progress paint/erase strokes so holding the mouse only re-applies
+//the brush once it moves a brush-width away, not every frame (see Step_1.gml)
 tile_paint_active = false;
 tile_paint_last_x = 0;
 tile_paint_last_y = 0;
@@ -232,9 +241,8 @@ brushes_x = 0;
 brushes_y = 0;
 brushes_size = 512;
 
-//the tile brush canvas currently being edited - only one is ever alive at a
-//time (see refresh_tileset_brush); brush_tilemap is what tilemap_expand
-//checks to tell a brush write apart from a level one
+//the tile brush canvas being edited - only one is alive at a time (see
+//refresh_tileset_brush); tilemap_expand uses brush_tilemap to detect it
 brush_tileset = undefined;
 brush_tilemap = noone;
 brush_switched = false; //set by refresh_tileset_brush when it rebuilds, so the view can re-fit next time it's drawn
@@ -279,10 +287,8 @@ grid_h = 4;
 tileset_grid_visible = true;
 brush_grid_visible = true;
 
-//grid overlay size for asset/instance layers (tilemap layers always use the
-//tileset's own tile size instead - see grid_cell_w/h) and how many degrees a
-//rotate drag snaps to when snapping is active - see the grid settings
-//dropdown next to the grid toggle button, and obj_asset_transform's Step event
+//grid size for asset/instance layers (tilemaps use grid_cell_w/h instead)
+//and rotate-snap degrees - see the grid dropdown and obj_asset_transform Step
 grid_size = editor_settings_[$ "grid_size"] ?? 32;
 snap_degrees = editor_settings_[$ "snap_degrees"] ?? 15;
 snap_enabled = false; //toggled by the magnet button - holding ctrl also enables it temporarily
@@ -335,8 +341,17 @@ smf_preview_surface = -1;
 
     //destroys every current layer (and, via layer_destroy, everything placed on them)
     clear_level = function(){
+        instance_activate_all();
         with(all){
             if(!persistent) instance_destroy();
+        }
+        var culled_objects_ = [obj_entity, obj_tilemap];
+        for (var o_ = 0; o_ < array_length(culled_objects_); o_++) {
+            var obj_ = culled_objects_[o_];
+            for (var i_ = instance_number(obj_) - 1; i_ >= 0; i_--) {
+                var inst_ = instance_find(obj_, i_);
+                if (!inst_.persistent) instance_destroy(inst_);
+            }
         }
         for (var i_ = 0; i_ < array_length(layers); i_++) {
             layer_destroy(layers[i_].layer);
@@ -378,13 +393,11 @@ smf_preview_surface = -1;
     #endregion
 
     #region level save/load
-    //read/write logic (level_serialize/level_deserialize) lives in
-    //editor_functions.gml - this is the stateful half: which file is open,
-    //undo/redo, and spawning elements through action_place_instance/_sprite
+    //read/write logic lives in editor_functions.gml - this is the stateful half:
+    //which file is open, undo/redo, and spawning elements to place them
 
-    //writes the current level to _path and makes it "the open level" - further
-    //Save Level calls go straight back to this same file until Save As
-    //(or Open/New Level) points current_level_path elsewhere
+    //writes to _path and makes it "the open level" - further Save calls go
+    //back to this file until Save As (or Open/New Level) points elsewhere
     save_level = function(_path){
         if (global.level == undefined) global.level = filename_change_ext(filename_name(_path), "");
         json_save(_path, level_serialize(layers, room_width, room_height));
@@ -404,9 +417,8 @@ smf_preview_surface = -1;
         save_level(path_);
     }
 
-    //replaces the current level with the one stored at _path (see
-    //level_serialize for the shape) - clears undo/redo, since none of it
-    //applies to the newly loaded level
+    //replaces the current level with the one at _path (see level_serialize) -
+    //clears undo/redo, since none of it applies to the newly loaded level
     open_level = function(_path){
         var data_ = json_load(_path);
         if (data_ == undefined) return false;
@@ -420,13 +432,18 @@ smf_preview_surface = -1;
         var place_element_ = function(_layer, _name, _ed, _is_instance){
             var prev_layer_active_ = layer_active;
             layer_active = _layer;
-            if (_is_instance) action_place_instance(_name, _ed.x, _ed.y, false, _ed.vars, _ed.element_name);
+            if (_is_instance) action_place_instance(_name, _ed.x, _ed.y, false, _ed.vars, _ed.element_name, _ed[$ "io_connections"] ?? []);
             else action_place_sprite(_name, _ed.x, _ed.y, false);
             layer_active = prev_layer_active_;
 
             element_active.image_xscale = _ed.image_xscale;
             element_active.image_yscale = _ed.image_yscale;
             element_active.image_angle = _ed.image_angle;
+
+            //Other_10 already ran (via action_place_instance) and may have synced
+            //a linked widget off the sprite-default scale/angle set above
+            if (variable_instance_exists(element_active, "on_scaled")) element_active.on_scaled();
+            if (variable_instance_exists(element_active, "on_rotated")) element_active.on_rotated();
             return element_active;
         }
 
@@ -454,9 +471,8 @@ smf_preview_surface = -1;
     //moves _path to the front of recent_levels (deduplicating), caps the list
     //at 10, and persists it - so it survives to the next editor session
     add_recent_level = function(_path){
-        //normalized so the same file doesn't end up listed twice just
-        //because it was reached via a backslash path one time (eg from the
-        //native save dialog) and a forward-slash one another (eg levels_dir)
+        //normalized so the same file isn't listed twice just for using backslash
+        //paths (eg the native dialog) vs forward-slash ones (eg levels_dir)
         _path = string_replace_all(_path, "\\", "/");
 
         var idx_ = array_get_index(recent_levels, _path);
@@ -591,8 +607,8 @@ smf_preview_surface = -1;
         return true;
     }
 
-    ///@desc writes brush_tilemap (if any) to its own
-    ///datafiles/editor/tileset_brushes/<tileset name>.json - called whenever editor data is saved
+    ///@desc writes brush_tilemap to tileset_brushes/<name>.json, called
+    ///whenever editor data is saved
     save_brush_tilemap = function(){
         if (brush_tilemap == noone || brush_tileset == undefined) return;
 
@@ -612,9 +628,8 @@ smf_preview_surface = -1;
         json_save(tileset_brushes_dir + tileset_get_name(brush_tileset) + ".json", {width: w_, height: h_, tiles: tiles_});
     }
 
-    ///@desc check if a new placed tile is out of bounds and if so expand -
-    ///room bounds and every tile layer together if _tilemap is one of them,
-    ///otherwise (eg the tile brush canvas) just _tilemap on its own
+    ///@desc expands room bounds and every tile layer if a placed tile is out
+    ///of bounds - just _tilemap alone if it's the brush canvas instead
     tilemap_expand = function(_tilemap,_x,_y){
         var w_ = tilemap_get_tile_width(_tilemap)
         var h_ = tilemap_get_tile_height(_tilemap)
@@ -652,9 +667,8 @@ smf_preview_surface = -1;
         }
     }
 
-    ///@desc loops through all tile layers to see if room size can be shrunk -
-    ///room bounds and every tile layer together if _tilemap is one of them,
-    ///otherwise (eg the tile brush canvas) just _tilemap on its own
+    ///@desc shrinks room bounds (or just _tilemap if it's the brush canvas)
+    ///to fit the tiles actually painted, across every tile layer together
     tilemap_shrink = function(_tilemap){
         if (_tilemap == brush_tilemap){
             var tile_w_ = tilemap_get_tile_width(_tilemap);
@@ -711,11 +725,8 @@ smf_preview_surface = -1;
     #endregion
 
     #region tools
-    ///@desc dispatches to the Line/Square/Selection/Fill tool handlers for a
-    ///paintable tilemap (the level or the tile brush canvas) at the given
-    ///hover cell - called once per frame while that tilemap's view is
-    ///hovered. Draw mode is handled inline where it's called from (unchanged
-    ///from before tools existed), since only these needed sharing
+    ///@desc dispatches to the Line/Square/Selection/Fill handlers for a hovered
+    ///paintable tilemap; Draw mode stays handled inline at each call site
     tool_interact = function(_tilemap,_hover_x,_hover_y){
         switch (tool_mode) {
             case TOOL_MODE.LINE:
@@ -731,12 +742,8 @@ smf_preview_surface = -1;
         }
     }
 
-    ///@desc Line/Square tool: drag then release to commit a stamp built from
-    ///the current brush (line: brush's top-left tile traced along the path;
-    ///square: brush pattern tiled to fill the dragged rect). Dragging with
-    ///the right mouse button erases the same shape instead. State-only (see
-    ///tool_draw_preview for the drag preview) since this runs from a Step
-    ///event and painting straight to a surface-less tilemap needs a Draw one
+    ///@desc Line/Square tool: drag then release to stamp the current brush
+    ///(right mouse erases instead); state-only, see tool_draw_preview for the drag
     tool_interact_shape = function(_tilemap,_hover_x,_hover_y){
         if (mouse_check_button_pressed(mb_left) || mouse_check_button_pressed(mb_right)) {
             tool_drag_active = true;
@@ -791,11 +798,8 @@ smf_preview_surface = -1;
         ds_grid_destroy(stamp_);
     }
 
-    ///@desc Selection tool: drag to mark cells in selection_mask - a fresh
-    ///drag (no modifier) replaces it, shift extends it, ctrl erases from it.
-    ///Ctrl+C (see tool_copy_selection) copies the selected cells into a new
-    ///brush, same as picking one, and switches back to Draw mode. State-only,
-    ///see tool_draw_preview for drawing the drag rect/selection envelope
+    ///@desc Selection tool: drag marks cells in selection_mask (shift extends,
+    ///ctrl erases); Ctrl+C copies them to a new brush, see tool_draw_preview
     tool_interact_selection = function(_tilemap,_hover_x,_hover_y){
         if (mouse_check_button_pressed(mb_left)) {
             tool_drag_active = true;
@@ -828,10 +832,8 @@ smf_preview_surface = -1;
         }
     }
 
-    ///@desc Fill tool: click flood-fills the region 4-connected to the
-    ///hovered cell (matching its tile value) with the brush's own top-left
-    ///tile; right click clears that same region back to empty instead. Each
-    ///click is its own single undo step (see action_fill_tiles)
+    ///@desc Fill tool: click flood-fills the hovered region with the brush's
+    ///top-left tile; right click clears it instead (see action_fill_tiles)
     tool_interact_fill = function(_tilemap,_hover_x,_hover_y){
         if (mouse_check_button_pressed(mb_left)) {
             if (!ds_exists(brush,ds_type_grid)) return;
@@ -841,10 +843,8 @@ smf_preview_surface = -1;
         }
     }
 
-    ///@desc draws the active tool's live drag preview and/or the committed
-    ///selection envelope for _tilemap at the given hover cell - call every
-    ///frame from wherever _tilemap is actually rendered (a Draw event for
-    ///the level, or the tile brush canvas's own surface in Step_1.gml)
+    ///@desc draws the active tool's drag preview/selection envelope for
+    ///_tilemap - call every frame from wherever it's actually rendered
     tool_draw_preview = function(_tilemap,_hover_x,_hover_y){
         var dragging_here_ = tool_drag_active && tool_drag_tilemap == _tilemap;
 
@@ -883,12 +883,8 @@ smf_preview_surface = -1;
         }
     }
 
-    ///@desc copies selection_mask's selected cells out of selection_tilemap
-    ///into a new brush (cells outside the selection stay empty within the
-    ///bounding box), positions brush_picked_x/y the same way a ds_grid_pick
-    ///result does, then switches back to Draw mode. _destroy_mask=false
-    ///leaves selection_mask/selection_tilemap alone instead of clearing them
-    ///(see tool_cut_selection, which still needs the mask afterward to erase)
+    ///@desc copies selection_mask's cells into a new brush and switches back
+    ///to Draw mode; _destroy_mask=false keeps the mask (see tool_cut_selection)
     tool_copy_selection = function(_destroy_mask = true){
         if (selection_mask == noone) return;
 
@@ -914,9 +910,8 @@ smf_preview_surface = -1;
                 }
             }
             brush = out_;
-            //unlike a ds_grid_pick, a copied/cut selection doesn't leave its
-            //envelope showing - the selection outline itself already gave
-            //feedback on what got copied, and it's about to be cleared below
+            //unlike a ds_grid_pick, a copied/cut selection doesn't leave its envelope
+            //showing - the selection outline itself already gave that feedback
             brush_picked_x = -1;
             brush_picked_y = -1;
             tile_picker_selected_x = -1;
@@ -981,41 +976,28 @@ smf_preview_surface = -1;
         return name_;
     }
 
-    ///@desc spawns an obj_editor_instance at room position (_x,_y) on
-    ///layer_active, representing _object_name (an object's asset name, as
-    ///found in resource_tree) - shows that object's own sprite when it has
-    ///one, else the generic marker sprite. _custom_variables (var_name :
-    ///value), if given, overrides the instance_variables defaults Create_0
-    ///populates. _element_name, if given, is used as-is (loading a saved
-    ///level) - otherwise a fresh unique one is generated. Self-inverting:
-    ///its own inverse removes it again (action_remove_instance)
-    action_place_instance = function(_object_name,_x,_y,_record=true,_custom_variables=undefined,_element_name=undefined){
+    ///@desc spawns an obj_editor_instance for _object_name at (_x,_y) on
+    ///layer_active; _custom_variables overrides its instance_variables defaults
+    action_place_instance = function(_object_name,_x,_y,_record=true,_custom_variables=undefined,_element_name=undefined,_custom_connections=undefined){
 		var obj_ = asset_get_index(_object_name)
 
 		var obj_sprite_ = object_get_sprite(obj_);
 		var obj_mask_ = object_get_mask(obj_);
 		var has_sprite_ = obj_sprite_ != undefined && obj_sprite_ != -1;
 
-        //object_name/element_name go through the creation struct (not set
-        //afterward) so Create_0 already has object_name when it runs the
-        //object's User Event 0
+        //object_name/element_name/pending_variable_values go through the
+        //creation struct, so editor_variable_* sees a saved value right away
         var inst_ = instance_create_layer(_x, _y, layer_active.layer, obj_editor_instance, {
             object_name : _object_name,
             element_name : _element_name != undefined ? _element_name : generate_element_name(_object_name),
-            parralax : layer_active.parralax,
+            parralax_x : layer_active.parralax_x,
+            parralax_y : layer_active.parralax_y,
             sprite_index : has_sprite_ ? obj_sprite_ : spr_instance_sprite,
             mask_index : has_sprite_ ? obj_mask_ : spr_instance_sprite,
+            pending_variable_values : _custom_variables != undefined ? _custom_variables : {},
+            pending_io_connections : _custom_connections != undefined ? _custom_connections : [],
+            sort_index : next_sort_index(layer_active.layer),
         });
-
-        if (_custom_variables != undefined) {
-            var var_names_ = variable_struct_get_names(_custom_variables);
-            for (var i_ = 0; i_ < array_length(var_names_); i_++) {
-                var var_name_ = var_names_[i_];
-                if (variable_struct_exists(inst_.instance_variables, var_name_)) {
-                    inst_.instance_variables[$ var_name_].value = _custom_variables[$ var_name_];
-                }
-            }
-        }
 
         element_active = inst_; //selected immediately, so it can be repositioned right away
 
@@ -1027,17 +1009,17 @@ smf_preview_surface = -1;
         return inverse_;
     }
 
-    ///@desc spawns an obj_editor_sprite at room position (_x,_y) on
-    ///layer_active, displaying _sprite_name (a sprite's asset name, as found
-    ///in resource_tree) directly. Self-inverting: its own inverse removes it
-    ///again (action_remove_instance)
+    ///@desc spawns an obj_editor_sprite for _sprite_name at (_x,_y) on
+    ///layer_active; self-inverting via action_remove_instance
     action_place_sprite = function(_sprite_name,_x,_y,_record=true){
         var sprite_ = asset_get_index(_sprite_name)
         var inst_ = instance_create_layer(_x, _y, layer_active.layer, obj_editor_sprite);
         inst_.sprite_name = _sprite_name;
         inst_.sprite_index = sprite_;
         inst_.mask_index = sprite_;
-        inst_.parralax = layer_active.parralax;
+        inst_.parralax_x = layer_active.parralax_x;
+        inst_.parralax_y = layer_active.parralax_y;
+        inst_.sort_index = next_sort_index(layer_active.layer);
 
         element_active = inst_; //selected immediately, so it can be repositioned right away
 
@@ -1049,16 +1031,15 @@ smf_preview_surface = -1;
         return inverse_;
     }
 
-    ///@desc removes the element identified by _uid (see find_element_by_uid/
-    ///element_uid - not a raw instance id, since an entry describing this
-    ///removal can sit unconsumed in undo_stack/redo_stack while some OTHER
-    ///action destroys/recreates the same element in the meantime, which
-    ///would leave a raw id stale - same reasoning as action_transform_instance).
-    ///No-ops if the element no longer exists. Captures its full state first;
-    ///its inverse is action_restore_instance, which recreates it from that state
+    ///@desc removes the element identified by _uid (element_uid, not a raw
+    ///id - see action_transform_instance); inverse is action_restore_instance
     action_remove_instance = function(_uid,_record=true){
         var inst_ = find_element_by_uid(_uid);
         if (inst_ == noone) return undefined;
+
+        if (inst_.editor_only && variable_instance_exists(inst_,"linked_uid") && inst_.linked_uid != noone) {
+            return action_remove_instance(inst_.linked_uid, _record);
+        }
 
         var data_ = {
             object_index: inst_.object_index,
@@ -1072,8 +1053,11 @@ smf_preview_surface = -1;
             image_angle: inst_.image_angle,
             sprite_index: inst_.sprite_index,
             mask_index: inst_.mask_index,
-            parralax: inst_.parralax,
+            parralax_x: inst_.parralax_x,
+            parralax_y: inst_.parralax_y,
+            sort_index: variable_instance_exists(inst_,"sort_index") ? inst_.sort_index : 0,
             instance_variables: {},
+            io_connections: variable_instance_exists(inst_,"io_connections") ? inst_.io_connections : [],
         };
         if (variable_instance_exists(inst_,"instance_variables")) {
             var var_names_ = variable_struct_get_names(inst_.instance_variables);
@@ -1100,16 +1084,19 @@ smf_preview_surface = -1;
     ///@desc recreates an instance from _data (captured by
     ///action_remove_instance). Its inverse is action_remove_instance again
     action_restore_instance = function(_data,_record=true){
-        //object_name/sprite_name go through the creation struct (not set
-        //afterward) so Create_0 already has object_name when it runs the
-        //object's User Event 0 to (re)populate instance_variables
+        //object_name/sprite_name/pending_variable_values go through the
+        //creation struct, so editor_variable_* sees a restored value right away
         var vars_ = {
             sprite_index : _data.sprite_index,
             mask_index : _data.mask_index,
             image_xscale : _data.image_xscale,
             image_yscale : _data.image_yscale,
             image_angle : _data.image_angle,
-            parralax : _data.parralax,
+            parralax_x : _data.parralax_x,
+            parralax_y : _data.parralax_y,
+            sort_index : _data.sort_index,
+            pending_variable_values : _data.instance_variables,
+            pending_io_connections : _data.io_connections,
         };
         if (_data.object_name != "") vars_.object_name = _data.object_name;
         if (_data.sprite_name != "") vars_.sprite_name = _data.sprite_name;
@@ -1117,19 +1104,8 @@ smf_preview_surface = -1;
 
         var inst_ = instance_create_layer(_data.x, _data.y, _data.layer, _data.object_index, vars_);
 
-        if (variable_instance_exists(inst_,"instance_variables") && variable_struct_exists(_data,"instance_variables")) {
-            var var_names_ = variable_struct_get_names(_data.instance_variables);
-            for (var i_ = 0; i_ < array_length(var_names_); i_++) {
-                var var_name_ = var_names_[i_];
-                if (variable_struct_exists(inst_.instance_variables, var_name_)) {
-                    inst_.instance_variables[$ var_name_].value = _data.instance_variables[$ var_name_];
-                }
-            }
-        }
-
-        //restores the original element_uid over the fresh one Create_0 just
-        //assigned it, so anything still referring to this element by uid
-        //(eg a transform entry elsewhere in the undo/redo stacks) still finds it
+        //restores the original element_uid over the fresh one Create_0 assigned,
+        //so anything still referring to this element by uid still finds it
         inst_.element_uid = _data.element_uid;
         element_active = inst_;
 
@@ -1141,9 +1117,8 @@ smf_preview_surface = -1;
         return inverse_;
     }
 
-    ///@desc finds the live obj_asset_transform-descendant instance with
-    ///element_uid == _uid - noone if it doesn't currently exist (eg its
-    ///placement has been undone). See action_transform_instance
+    ///@desc finds the live obj_asset_transform-descendant with element_uid ==
+    ///_uid, or noone if it doesn't currently exist (eg its placement was undone)
     find_element_by_uid = function(_uid){
         with (obj_asset_transform) {
             if (element_uid == _uid) return id;
@@ -1169,6 +1144,86 @@ smf_preview_surface = -1;
         return undefined;
     }
 
+    ///@desc a single comparable number for _inst's real-game placement order
+    ///(layer index, then sort_index within it) - lower means placed earlier.
+    ///REFERENCE fields only resolve against instances placed earlier than
+    ///the one holding the reference (see load_level.gml)
+    element_placement_rank = function(_inst){
+        var layer_ = find_layer_by_layer_id(_inst.layer);
+        var layer_index_ = layer_ != undefined ? array_get_index(layers, layer_) : 0;
+        var sort_index_ = variable_instance_exists(_inst,"sort_index") ? _inst.sort_index : 0;
+        return layer_index_ * 1000000 + sort_index_;
+    }
+
+    ///@desc every obj_asset_transform on _raw_layer, sorted by sort_index -
+    ///the Elements list and level_serialize (real-game creation order) read this
+    sorted_layer_elements = function(_raw_layer){
+        var arr_ = [];
+        with (obj_asset_transform) {
+            if (layer == _raw_layer) array_push(arr_, id);
+        }
+        array_sort(arr_, function(_a, _b){ return _a.sort_index - _b.sort_index; });
+        return arr_;
+    }
+
+    ///@desc one past the highest sort_index currently on _raw_layer (0 if
+    ///none) - appends a freshly placed element to the end of its layer's order
+    next_sort_index = function(_raw_layer){
+        var max_ = -1;
+        with (obj_asset_transform) {
+            if (layer == _raw_layer && sort_index > max_) max_ = sort_index;
+        }
+        return max_ + 1;
+    }
+
+    ///@desc swaps sort_index between two elements (Elements list reordering) -
+    ///self-inverting: calling it again with the same pair undoes it
+    action_swap_sort_index = function(_uid_a, _uid_b, _record=true){
+        var a_ = find_element_by_uid(_uid_a);
+        var b_ = find_element_by_uid(_uid_b);
+        if (a_ == noone || b_ == noone) return undefined;
+
+        var tmp_ = a_.sort_index;
+        a_.sort_index = b_.sort_index;
+        b_.sort_index = tmp_;
+        level_dirty = true;
+
+        var inverse_ = {fn: action_swap_sort_index, args: [_uid_a, _uid_b, false]};
+        if (_record) {
+            array_push(undo_stack, inverse_)
+            redo_stack = []
+        }
+        return inverse_;
+    }
+
+    ///@desc sets one element's sort_index directly (Elements list's "move to
+    ///top"/"move to bottom") - self-inverting
+    action_set_sort_index = function(_uid, _value, _record=true){
+        var inst_ = find_element_by_uid(_uid);
+        if (inst_ == noone) return undefined;
+        if (inst_.sort_index == _value) return undefined;
+
+        var old_value_ = inst_.sort_index;
+        inst_.sort_index = _value;
+        level_dirty = true;
+
+        var inverse_ = {fn: action_set_sort_index, args: [_uid, old_value_, false]};
+        if (_record) {
+            array_push(undo_stack, inverse_)
+            redo_stack = []
+        }
+        return inverse_;
+    }
+
+    ///@desc pans the camera to the current selection, no-op with nothing
+    ///selected - updates camera_x/camera_y too, since Step_1's pan reads those
+    goto_selected = function(){
+        if (element_active == noone) return;
+        camera_x = element_active.x;
+        camera_y = element_active.y;
+        global.camera.move(camera_x, camera_y, SECOND*0.5);
+    }
+
     ///@desc true if _accepted_objects is empty (anything goes) or
     ///_object_index is/descends from one of them
     element_reference_object_accepted = function(_object_index, _accepted_objects){
@@ -1188,12 +1243,8 @@ smf_preview_surface = -1;
         return element_reference_object_accepted(asset_get_index(target_.object_name), _accepted_objects);
     }
 
-    ///@desc applies _after's x/y/image_xscale/image_yscale/image_angle to the
-    ///element identified by _uid (see find_element_by_uid/element_uid - not a
-    ///raw instance id, since that wouldn't survive the element's placement
-    ///being separately undone/redone) - used to commit a completed move/
-    ///rotate/scale drag (see obj_asset_transform) as a single undo step once
-    ///the mouse is released. Self-inverting: its own inverse restores _before
+    ///@desc applies _after's transform to the element identified by _uid -
+    ///commits a completed move/rotate/scale drag; self-inverting via _before
     action_transform_instance = function(_uid,_before,_after,_record=true){
         var inst_ = find_element_by_uid(_uid);
         if (inst_ == noone) return undefined;
@@ -1213,8 +1264,7 @@ smf_preview_surface = -1;
     }
 
     ///@desc sets one instance_variables entry's value (Inspector's Custom
-    ///Variables section) on the element identified by _uid. Self-inverting:
-    ///its own inverse restores the old value
+    ///Variables section) on the element identified by _uid; self-inverting
     action_set_variable = function(_uid,_var_name,_value,_record=true){
         var inst_ = find_element_by_uid(_uid);
         if (inst_ == noone) return undefined;
@@ -1234,10 +1284,115 @@ smf_preview_surface = -1;
         return inverse_;
     }
 
+    ///@desc sets _var_name to _value on every currently selected element that
+    ///has a matching instance_variables entry for it, as one combined undo
+    ///step - degrades to a plain single-element action_set_variable when
+    ///only one element is selected (see get_selected_elements)
+    action_set_variable_selected = function(_var_name, _value){
+        var targets_ = get_selected_elements();
+        var entries_ = [];
+        for (var i_ = 0; i_ < array_length(targets_); i_++) {
+            var inst_ = targets_[i_];
+            if (!variable_instance_exists(inst_,"instance_variables")) continue;
+            if (!variable_struct_exists(inst_.instance_variables, _var_name)) continue;
+            array_push(entries_, {fn: action_set_variable, args: [inst_.element_uid, _var_name, _value, false]});
+        }
+
+        var inverse_ = action_run_many(entries_);
+        if (inverse_ != undefined) {
+            array_push(undo_stack, inverse_)
+            redo_stack = []
+        }
+        return inverse_;
+    }
+
+    ///@desc true if every element in _targets has an instance_variables entry
+    ///named _var_name of the same _type - drives which fields the Inspector
+    ///shows when multiple elements with different variables are selected
+    variable_shared_across_selection = function(_var_name, _type, _targets){
+        for (var i_ = 0; i_ < array_length(_targets); i_++) {
+            var inst_ = _targets[i_];
+            if (!variable_instance_exists(inst_,"instance_variables")) return false;
+            if (!variable_struct_exists(inst_.instance_variables, _var_name)) return false;
+            if (inst_.instance_variables[$ _var_name].type != _type) return false;
+        }
+        return true;
+    }
+
+    ///@desc appends one io_connections entry to the element identified by
+    ///_uid (Outputs window's Add/Apply); self-inverting via action_remove_connection
+    action_add_connection = function(_uid,_connection,_record=true){
+        var inst_ = find_element_by_uid(_uid);
+        if (inst_ == noone) return undefined;
+
+        array_push(inst_.io_connections, _connection);
+        level_dirty = true;
+
+        var inverse_ = {fn: action_remove_connection, args: [_uid, array_length(inst_.io_connections)-1, false]};
+        if (_record) {
+            array_push(undo_stack, inverse_)
+            redo_stack = []
+        }
+        return inverse_;
+    }
+
+    ///@desc removes the io_connections entry at _index on the element
+    ///identified by _uid; self-inverting via action_insert_connection
+    action_remove_connection = function(_uid,_index,_record=true){
+        var inst_ = find_element_by_uid(_uid);
+        if (inst_ == noone) return undefined;
+        if (_index < 0 || _index >= array_length(inst_.io_connections)) return undefined;
+
+        var removed_ = inst_.io_connections[_index];
+        array_delete(inst_.io_connections, _index, 1);
+        level_dirty = true;
+
+        var inverse_ = {fn: action_insert_connection, args: [_uid, _index, removed_, false]};
+        if (_record) {
+            array_push(undo_stack, inverse_)
+            redo_stack = []
+        }
+        return inverse_;
+    }
+
+    ///@desc re-inserts _connection at _index - the undo half of
+    ///action_remove_connection; self-inverting via action_remove_connection
+    action_insert_connection = function(_uid,_index,_connection,_record=true){
+        var inst_ = find_element_by_uid(_uid);
+        if (inst_ == noone) return undefined;
+
+        array_insert(inst_.io_connections, _index, _connection);
+        level_dirty = true;
+
+        var inverse_ = {fn: action_remove_connection, args: [_uid, _index, false]};
+        if (_record) {
+            array_push(undo_stack, inverse_)
+            redo_stack = []
+        }
+        return inverse_;
+    }
+
+    ///@desc replaces one io_connections row wholesale (Outputs window's
+    ///Apply commits a whole edited row at once); self-inverting
+    action_set_connection = function(_uid,_index,_connection,_record=true){
+        var inst_ = find_element_by_uid(_uid);
+        if (inst_ == noone) return undefined;
+        if (_index < 0 || _index >= array_length(inst_.io_connections)) return undefined;
+
+        var old_connection_ = inst_.io_connections[_index];
+        inst_.io_connections[_index] = _connection;
+        level_dirty = true;
+
+        var inverse_ = {fn: action_set_connection, args: [_uid, _index, old_connection_, false]};
+        if (_record) {
+            array_push(undo_stack, inverse_)
+            redo_stack = []
+        }
+        return inverse_;
+    }
+
     ///@desc renames the element identified by _uid (Inspector's Name field) -
-    ///no-ops on blank/unchanged/already-taken names (rejects rather than
-    ///auto-suffixing, same as layer rename). Self-inverting: its own inverse
-    ///restores the old name
+    ///rejects blank/unchanged/taken names rather than auto-suffixing
     action_set_element_name = function(_uid,_name,_record=true){
         var inst_ = find_element_by_uid(_uid);
         if (inst_ == noone) return undefined;
@@ -1259,8 +1414,7 @@ smf_preview_surface = -1;
     }
 
     ///@desc returns the currently selected elements (elements_selected plus
-    ///element_active, deduplicated, filtered to those that still exist) -
-    ///shared by action_transform_selected/action_delete_selected/action_copy_selected
+    ///element_active, deduplicated, filtered to those still existing)
     get_selected_elements = function(){
         var targets_ = [];
         for (var i_ = 0; i_ < array_length(elements_selected); i_++) {
@@ -1272,12 +1426,8 @@ smf_preview_surface = -1;
         return targets_;
     }
 
-    ///@desc applies _mutate_fn(_inst) (a function that directly mutates one
-    ///instance's x/y/image_xscale/image_yscale/image_angle) to every
-    ///currently selected element (see get_selected_elements) - used by the
-    ///Mirror/Flip/Rotate 90 toolbar buttons so they also affect selected
-    ///instances, not just the tile brush. Combined into a single undo step
-    ///via action_run_many, same as a multi-cell tile paste
+    ///@desc applies _mutate_fn(_inst) to every selected element (Mirror/Flip/
+    ///Rotate 90 toolbar buttons), combined into one undo step via action_run_many
     action_transform_selected = function(_mutate_fn){
         var targets_ = get_selected_elements();
 
@@ -1291,8 +1441,7 @@ smf_preview_surface = -1;
         }
 
         //action_run_many only returns the combined inverse, it doesn't push it
-        //itself (same as action_paste_tile_grid/action_erase_tile_grid, which
-        //this mirrors) - has to happen here or the whole batch goes unrecorded
+        //itself (same as action_paste_tile_grid) - has to happen here to record it
         var inverse_ = action_run_many(entries_);
         if (inverse_ != undefined) {
             array_push(undo_stack, inverse_)
@@ -1301,9 +1450,8 @@ smf_preview_surface = -1;
         return inverse_;
     }
 
-    ///@desc deletes every currently selected element (see get_selected_elements)
-    ///as a single undo step (DEL key) - same action_run_many pattern as
-    ///action_transform_selected
+    ///@desc deletes every selected element as a single undo step (DEL key) -
+    ///same action_run_many pattern as action_transform_selected
     action_delete_selected = function(){
         var targets_ = get_selected_elements();
         if (array_length(targets_) == 0) return undefined;
@@ -1321,16 +1469,21 @@ smf_preview_surface = -1;
         return inverse_;
     }
 
-    ///@desc captures the currently selected elements (see get_selected_elements)
-    ///into clipboard, for action_paste_clipboard (Ctrl+C) - not itself an undo
-    ///step, since copying doesn't change room state
+    ///@desc Ctrl+X: copies then deletes the selection - the delete is the
+    ///undo step (see action_delete_selected), copying isn't tracked on its own
+    action_cut_selected = function(){
+        action_copy_selected();
+        return action_delete_selected();
+    }
+
+    ///@desc captures the currently selected elements into clipboard for
+    ///action_paste_clipboard (Ctrl+C) - not an undo step, copying changes nothing
     action_copy_selected = function(){
         var targets_ = get_selected_elements();
         if (array_length(targets_) == 0) return;
 
-        //anchor is the group's average position, so pasting centers the
-        //whole group on the mouse instead of on whichever element happened
-        //to be copied first
+        //anchor is the group's average position, so pasting centers the whole
+        //group on the mouse instead of whichever element was copied first
         var anchor_x_ = 0, anchor_y_ = 0;
         for (var i_ = 0; i_ < array_length(targets_); i_++) {
             anchor_x_ += targets_[i_].x;
@@ -1342,6 +1495,27 @@ smf_preview_surface = -1;
         clipboard = [];
         for (var i_ = 0; i_ < array_length(targets_); i_++) {
             var inst_ = targets_[i_];
+
+            //custom variable values, keyed by name - action_place_instance
+            //feeds this straight into pending_variable_values on paste
+            var vars_ = {};
+            if (variable_instance_exists(inst_,"instance_variables")) {
+                var var_names_ = variable_struct_get_names(inst_.instance_variables);
+                for (var vi_ = 0; vi_ < array_length(var_names_); vi_++) {
+                    var var_name_ = var_names_[vi_];
+                    variable_struct_set(vars_, var_name_, inst_.instance_variables[$ var_name_].value);
+                }
+            }
+
+            //each row cloned individually - inst_.io_connections stays live
+            //on the original, so pasting must not end up sharing its structs
+            var connections_ = [];
+            if (variable_instance_exists(inst_,"io_connections")) {
+                for (var ci_ = 0; ci_ < array_length(inst_.io_connections); ci_++) {
+                    array_push(connections_, variable_clone(inst_.io_connections[ci_]));
+                }
+            }
+
             array_push(clipboard, {
                 object_index: inst_.object_index,
                 object_name: variable_instance_exists(inst_,"object_name") ? inst_.object_name : "",
@@ -1351,6 +1525,8 @@ smf_preview_surface = -1;
                 image_xscale: inst_.image_xscale,
                 image_yscale: inst_.image_yscale,
                 image_angle: inst_.image_angle,
+                vars: vars_,
+                io_connections: connections_,
             });
         }
     }
@@ -1372,13 +1548,11 @@ smf_preview_surface = -1;
             var px_ = _x + data_.offset_x;
             var py_ = _y + data_.offset_y;
             var place_inverse_ = is_instance_
-                ? action_place_instance(data_.object_name, px_, py_, false)
+                ? action_place_instance(data_.object_name, px_, py_, false, data_.vars, undefined, data_.io_connections)
                 : action_place_sprite(data_.sprite_name, px_, py_, false);
 
-            //action_place_instance/action_place_sprite's inverse now carries an
-            //element_uid (not a raw instance - see action_remove_instance), so
-            //grab the instance they just created via element_active instead,
-            //which they set synchronously before returning
+            //action_place_instance/_sprite's inverse carries an element_uid, not a
+            //raw instance - grab it via element_active, already set before returning
             var inst_ = element_active;
             inst_.image_xscale = data_.image_xscale;
             inst_.image_yscale = data_.image_yscale;
@@ -1459,19 +1633,16 @@ smf_preview_surface = -1;
     ///@desc re-runs the pre-build step (reads the .yyp fresh and rewrites
     ///datafiles/editor/resource_tree.json), then reloads resource_tree from it
     regenerate_resource_tree = function(){
-        //execute_shell_simple (ShellExecuteW under the hood) launches async with no
-        //way to wait for completion, so the reload is deferred a couple seconds to
-        //give node time to finish rewriting resource_tree.json before we read it
+        //execute_shell_simple launches async with no way to wait for completion,
+        //so the reload is deferred to give node time to finish rewriting the file
         execute_shell_simple(resource_tree_bat_path);
         call_later(2, time_source_units_seconds, function(){
             resource_tree = json_load(root_path + "editor/resource_tree.json").folders;
         });
     }
 
-    ///@desc finds a top-level folder in resource_tree by name (eg "Objects",
-    ///"Sprites") - undefined if not found. Used to jump straight into it
-    ///instead of requiring a click to open it, for layer types where it's
-    ///the only folder that matters
+    ///@desc finds a top-level folder in resource_tree by name (eg "Objects") -
+    ///undefined if not found; jumps straight into it for single-folder layer types
     resource_tree_find_folder = function(_name){
         for (var i_ = 0; i_ < array_length(resource_tree); i_++) {
             if (resource_tree[i_].name == _name) return resource_tree[i_];
@@ -1493,10 +1664,7 @@ smf_preview_surface = -1;
     }
     
     ///@desc recursively draws _folders/_resources as a tree, showing only
-    ///resources matching _type and folders that contain at least one (nested
-    ///or not) - used for the Resources window, filtered by the active layer's
-    ///type. _selected_name highlights a matching leaf (optional). _on_click, if
-    ///given, is called with a resource's name when that leaf is clicked
+    ///resources matching _type; _on_click(name) fires when a leaf is clicked
     resource_tree_draw = function(_folders, _resources, _type, _selected_name = undefined, _on_click = undefined){
         for (var i_ = 0; i_ < array_length(_folders); i_++) {
             var folder_ = _folders[i_];
@@ -1540,9 +1708,8 @@ smf_preview_surface = -1;
                 _on_click(res_.name);
             }
 
-            //objects/sprites can be dragged into the viewport to place one -
-            //see action_place_instance/action_place_sprite, called once the
-            //drag is dropped there (see the "element placement" region in Step_1.gml)
+            //objects/sprites can be dragged into the viewport to place one, via
+            //action_place_instance/_sprite once dropped (see Step_1.gml)
             var payload_type_ = _type == "object" ? "object_drag" : (_type == "sprite" ? "sprite_drag" : "");
             if (payload_type_ != "" && ImGui.BeginDragDropSource()) {
                 ImGui.SetDragDropPayload(payload_type_, res_.name);
@@ -1554,9 +1721,8 @@ smf_preview_surface = -1;
         }
     }
     
-    ///@desc recursively draws every folder/resource in _folders/_resources with
-    ///no type filtering, labeling each resource with its type - debug window,
-    ///for eyeballing that resource_tree matches the actual project
+    ///@desc debug window: draws every folder/resource unfiltered, labeled with
+    ///its type, for eyeballing that resource_tree matches the actual project
     resource_tree_draw_debug = function(_folders, _resources){
         for (var i_ = 0; i_ < array_length(_folders); i_++) {
             var folder_ = _folders[i_];
@@ -1576,9 +1742,8 @@ smf_preview_surface = -1;
     #endregion
 
     #region imgui helpers
-        ///@desc draws a button showing an icon from ICON - square, sized to match
-        ///the current frame height (so it lines up with adjacent text/widgets)
-        ///unless _size is given explicitly
+        ///@desc draws a square icon button from ICON, sized to the current frame
+        ///height (matching adjacent widgets) unless _size is given explicitly
         icon_button = function(_icon, _id_suffix = "", _size = 0){
             if (_size <= 0) _size = ImGui.GetFrameHeight();
         
@@ -1624,11 +1789,8 @@ smf_preview_surface = -1;
             return pressed_;
         }
 
-        ///@desc thin drag strip along the current window's right edge (or
-        ///left, if _right_edge is false) - returns the raw mouse dx while
-        ///being dragged, or 0. Only sets the resize cursor, never resets it
-        ///(the caller resets once per frame - each handle unconditionally
-        ///resetting would let whichever runs last stomp on the other's cursor)
+        ///@desc thin drag strip on the window's right (or left) edge - returns raw
+        ///mouse dx while dragged, or 0; only sets the resize cursor, never resets it
         panel_resize_handle = function(_right_edge){
             var handle_w_ = 4;
             var x_ = ImGui.GetWindowPosX() + (_right_edge ? ImGui.GetWindowWidth()-handle_w_ : 0);
@@ -1669,6 +1831,41 @@ smf_preview_surface = -1;
             return _value;
         }
 
+        ///@desc draws the widget matching _type (FLOAT/BOOL/STRING/LIST) for
+        ///_value and returns the edited value - shared by the Custom Variables
+        ///switch and the Outputs window's parameter field, so both render a
+        ///typed value the same way without duplicating each widget's code
+        draw_typed_value_field = function(_id, _type, _value, _minimum=undefined, _maximum=undefined, _options=undefined){
+            switch (_type) {
+                case EDITOR_VARIABLE_TYPES.FLOAT:
+                    var new_value_ = ImGui.InputFloat(_id, _value);
+                    if (_minimum != undefined) new_value_ = max(new_value_, _minimum);
+                    if (_maximum != undefined) new_value_ = min(new_value_, _maximum);
+                    return new_value_;
+                case EDITOR_VARIABLE_TYPES.INT:
+                    var new_int_ = ImGui.InputInt(_id, _value);
+                    if (_minimum != undefined) new_int_ = max(new_int_, _minimum);
+                    if (_maximum != undefined) new_int_ = min(new_int_, _maximum);
+                    return new_int_;
+                case EDITOR_VARIABLE_TYPES.BOOL:
+                    return ImGui.Checkbox(_id, _value);
+                case EDITOR_VARIABLE_TYPES.STRING:
+                    return ImGui.InputText(_id, _value);
+                case EDITOR_VARIABLE_TYPES.LIST:
+                    //_value is the selected option's index, not the string itself
+                    var new_index_ = _value;
+                    var preview_ = (_value >= 0 && _value < array_length(_options)) ? _options[_value] : "";
+                    if (ImGui.BeginCombo(_id, preview_, ImGuiComboFlags.None)) {
+                        for (var oi_ = 0; oi_ < array_length(_options); oi_++) {
+                            if (ImGui.Selectable(_options[oi_], oi_ == _value)) new_index_ = oi_;
+                        }
+                        ImGui.EndCombo();
+                    }
+                    return new_index_;
+            }
+            return _value;
+        }
+
     #endregion
 
     #region action funcs
@@ -1693,9 +1890,8 @@ smf_preview_surface = -1;
             if (inverse_ != undefined) array_push(undo_stack, inverse_);
         }
 
-        ///@desc returns _base, or _base with a number suffix if _base is
-        ///already used by an existing layer - duplicate names cause GameMaker's
-        ///own by-name layer lookups to resolve to the wrong layer
+        ///@desc returns _base, or _base with a number suffix if already taken -
+        ///duplicate names break GameMaker's own by-name layer lookups
         unique_layer_name = function(_base){
             var name_ = _base;
             var n_ = 1;
@@ -1716,7 +1912,8 @@ smf_preview_surface = -1;
         action_add_layer = function(_name,_depth,_type,_always=false,_color=BLACK,_collision=false,_record=true){
             var layer_ = {
                 name : _name,
-                parralax : 16,
+                parralax_x : 16,
+                parralax_y : 16,
                 type : _type,
                 layer : layer_create(_depth, _name),
                 always : _always,
@@ -1724,6 +1921,8 @@ smf_preview_surface = -1;
                 locked : false,
                 color : _color,
                 collision : _collision,
+                fx_index : 0,
+                fx_params : [],
             }
 
             if(_type == LAYER_TYPE.TILEMAP){
@@ -1735,9 +1934,18 @@ smf_preview_surface = -1;
                 layer_.tilemap = layer_tilemap_create(layer_.layer,0,0,layer_.tileset,w_, h_);
 				layer_.obj_tilemap = instance_create_depth(0,0,_depth,obj_tilemap,{
 					layer_name: layer_.name,
-					parralax: layer_.parralax,
+					parralax_x: layer_.parralax_x,
+					parralax_y: layer_.parralax_y,
 				});
 				layer_.obj_tilemap.visible = layer_.visible;
+            }
+
+            if(_type == LAYER_TYPE.BACKGROUND){
+                layer_.obj_background = instance_create_layer(0,0,layer_.layer,obj_background,{
+                    sprite_index: -1,
+                    parralax_x: layer_.parralax_x,
+                    parralax_y: layer_.parralax_y,
+                });
             }
 
             array_push(layers,layer_)
@@ -1761,9 +1969,8 @@ smf_preview_surface = -1;
 
             var depth_ = layer_get_depth(_layer.layer)
 
-            //captures every placed element on this layer so restoring it (undo)
-            //can recreate them too - layer_destroy below also destroys any
-            //instances on an instance layer, so they'd otherwise be lost for good
+            //captures every placed element so restoring it (undo) can recreate them -
+            //layer_destroy below also destroys any instances on an instance layer
             var elements_ = [];
             with (obj_asset_transform) {
                 if (layer != _layer.layer) continue;
@@ -1780,6 +1987,20 @@ smf_preview_surface = -1;
 				instance_destroy(obj_tilemap_);
 			}
 
+            //captured before layer_destroy - obj_background lives on _layer.layer
+            //itself, so layer_destroy below takes it out along with the layer
+            var background_data_ = undefined;
+            if (_layer.type == LAYER_TYPE.BACKGROUND && instance_exists(_layer.obj_background)) {
+                background_data_ = {
+                    sprite_index: _layer.obj_background.sprite_index,
+                    background_mode: _layer.obj_background.background_mode,
+                    x: _layer.obj_background.x,
+                    y: _layer.obj_background.y,
+                };
+            }
+
+            layer_fx_clear(_layer.layer)
+
             layer_destroy(_layer.layer)
             array_delete(layers,index_,1)
 
@@ -1794,7 +2015,7 @@ smf_preview_surface = -1;
                 }
             }
 
-            var inverse_ = {fn: action_restore_layer, args: [_layer, depth_, elements_, false]};
+            var inverse_ = {fn: action_restore_layer, args: [_layer, depth_, elements_, background_data_, false]};
             if (_record) {
                 array_push(undo_stack, inverse_)
                 redo_stack = []
@@ -1802,11 +2023,9 @@ smf_preview_surface = -1;
             return inverse_;
         }
 
-        ///@desc re-creates a previously-removed _layer (same struct - the
-        ///underlying room layer/tilemap are gone for good, so fresh ones are
-        ///made) along with every element that was placed on it (_elements,
-        ///captured by action_remove_layer). Its inverse is removing it again
-        action_restore_layer = function(_layer,_depth,_elements=[],_record=true){
+        ///@desc re-creates a previously-removed _layer (fresh room layer/tilemap)
+        ///plus its _elements (captured by action_remove_layer); inverse removes it
+        action_restore_layer = function(_layer,_depth,_elements=[],_background_data=undefined,_record=true){
             _layer.layer = layer_create(_depth,_layer.name)
             layer_set_visible(_layer.layer,_layer.visible)
 
@@ -1817,9 +2036,22 @@ smf_preview_surface = -1;
                 _layer.tilemap = layer_tilemap_create(_layer.layer,0,0,_layer.tileset,w_,h_);
 				_layer.obj_tilemap = instance_create_depth(0,0,_depth,obj_tilemap,{
 					layer_name: _layer.name,
-					parralax: _layer.parralax,
+					parralax_x: _layer.parralax_x,
+					parralax_y: _layer.parralax_y,
 				});
 				_layer.obj_tilemap.visible = _layer.visible;
+            }
+
+            if (_layer.type == LAYER_TYPE.BACKGROUND) {
+                _layer.obj_background = instance_create_layer(
+                    _background_data != undefined ? _background_data.x : 0,
+                    _background_data != undefined ? _background_data.y : 0,
+                    _layer.layer, obj_background, {
+                        sprite_index: _background_data != undefined ? _background_data.sprite_index : -1,
+                        background_mode: _background_data != undefined ? _background_data.background_mode : BACKGROUND_MODE.NONE,
+                        parralax_x: _layer.parralax_x,
+                        parralax_y: _layer.parralax_y,
+                    });
             }
 
             for (var i_ = 0; i_ < array_length(_elements); i_++) {
@@ -1830,6 +2062,8 @@ smf_preview_surface = -1;
                 inst_.image_angle = e_.image_angle;
                 if (e_.object_name != "") inst_.object_name = e_.object_name;
             }
+
+            if (_layer.fx_index != 0) layer_fx_apply(_layer.layer, _layer.fx_index, _layer.fx_params);
 
             array_push(layers,_layer)
             layers_depth_order()
@@ -1865,22 +2099,67 @@ smf_preview_surface = -1;
             return inverse_;
         }
 
-        ///@desc sets a layer's parallax. Self-inverting
-        action_set_parralax = function(_layer,_parralax,_record=true){
-            var old_parralax_ = _layer.parralax
-            if (_parralax == old_parralax_) return undefined;
+        ///@desc sets a layer's parallax X and Y together (always both, even
+        ///when only one axis changed - callers pass the other axis's current
+        ///value), so one slider edit is always one undo step. Self-inverting
+        action_set_parralax = function(_layer,_parralax_x,_parralax_y,_record=true){
+            var old_x_ = _layer.parralax_x
+            var old_y_ = _layer.parralax_y
+            if (_parralax_x == old_x_ && _parralax_y == old_y_) return undefined;
 
-            _layer.parralax = _parralax
+            _layer.parralax_x = _parralax_x
+            _layer.parralax_y = _parralax_y
             if (_layer.type == LAYER_TYPE.TILEMAP){
-                _layer.obj_tilemap.parralax = _parralax;
+                _layer.obj_tilemap.parralax_x = _parralax_x;
+                _layer.obj_tilemap.parralax_y = _parralax_y;
+            } else if (_layer.type == LAYER_TYPE.BACKGROUND){
+                if (instance_exists(_layer.obj_background)) {
+                    _layer.obj_background.parralax_x = _parralax_x;
+                    _layer.obj_background.parralax_y = _parralax_y;
+                }
             } else {
                 //ASSET/INSTANCE layers - every obj_editor_instance/obj_editor_sprite already on it
                 with (obj_asset_transform) {
-                    if (layer == _layer.layer) parralax = _parralax;
+                    if (layer == _layer.layer) { parralax_x = _parralax_x; parralax_y = _parralax_y; }
                 }
             }
 
-            var inverse_ = {fn: action_set_parralax, args: [_layer, old_parralax_, false]};
+            var inverse_ = {fn: action_set_parralax, args: [_layer, old_x_, old_y_, false]};
+            if (_record) {
+                array_push(undo_stack, inverse_)
+                redo_stack = []
+            }
+            return inverse_;
+        }
+
+        ///@desc switches a layer's fx (index into global.LAYER_FX) and its
+        ///param values together, re-registering the hook immediately. Self-inverting
+        action_set_layer_fx = function(_layer,_fx_index,_params,_record=true){
+            var old_fx_index_ = _layer.fx_index;
+            var old_params_ = _layer.fx_params;
+
+            _layer.fx_index = _fx_index;
+            _layer.fx_params = _params;
+            layer_fx_apply(_layer.layer, _fx_index, _params);
+
+            var inverse_ = {fn: action_set_layer_fx, args: [_layer, old_fx_index_, old_params_, false]};
+            if (_record) {
+                array_push(undo_stack, inverse_)
+                redo_stack = []
+            }
+            return inverse_;
+        }
+
+        ///@desc updates a layer's fx param values in place - the already
+        ///running hook reads them live, so no clear/setup cycle needed. Self-inverting
+        action_set_layer_fx_params = function(_layer,_params,_record=true){
+            var old_params_ = _layer.fx_params;
+            _layer.fx_params = _params;
+
+            var entry_ = layer_fx_find(_layer.layer);
+            if (entry_ != noone) entry_.params = _params;
+
+            var inverse_ = {fn: action_set_layer_fx_params, args: [_layer, old_params_, false]};
             if (_record) {
                 array_push(undo_stack, inverse_)
                 redo_stack = []
@@ -1906,11 +2185,63 @@ smf_preview_surface = -1;
             return inverse_;
         }
 
-        ///@desc writes a single tile (_tile:0 = empty) at (_x,_y) in
-        ///_tilemap - does NOT expand/shrink the tilemap itself (see
-        ///action_run_many, which does that once for a whole batch instead of
-        ///once per cell). Self-inverting: its own inverse is action_set_tiles
-        ///again with the old value
+        ///@desc sets a background layer's sprite (by resource_tree name, "" for
+        ///none). Self-inverting
+        action_set_background_sprite = function(_layer,_sprite_name,_record=true){
+            if (!instance_exists(_layer.obj_background)) return undefined;
+            var new_sprite_ = _sprite_name != "" ? asset_get_index(_sprite_name) : -1;
+            var old_sprite_ = _layer.obj_background.sprite_index;
+            if (new_sprite_ == old_sprite_) return undefined;
+
+            _layer.obj_background.sprite_index = new_sprite_;
+            _layer.obj_background.mask_index = new_sprite_;
+
+            var old_name_ = old_sprite_ != -1 ? sprite_get_name(old_sprite_) : "";
+            var inverse_ = {fn: action_set_background_sprite, args: [_layer, old_name_, false]};
+            if (_record) {
+                array_push(undo_stack, inverse_)
+                redo_stack = []
+            }
+            return inverse_;
+        }
+
+        ///@desc sets a background layer's draw mode (None/Tiled/Fill - mutually
+        ///exclusive, see BACKGROUND_MODE). Self-inverting
+        action_set_background_mode = function(_layer,_mode,_record=true){
+            if (!instance_exists(_layer.obj_background)) return undefined;
+            var old_mode_ = _layer.obj_background.background_mode;
+            if (_mode == old_mode_) return undefined;
+
+            _layer.obj_background.background_mode = _mode;
+
+            var inverse_ = {fn: action_set_background_mode, args: [_layer, old_mode_, false]};
+            if (_record) {
+                array_push(undo_stack, inverse_)
+                redo_stack = []
+            }
+            return inverse_;
+        }
+
+        ///@desc moves a background layer's sprite. Self-inverting
+        action_set_background_position = function(_layer,_x,_y,_record=true){
+            if (!instance_exists(_layer.obj_background)) return undefined;
+            var old_x_ = _layer.obj_background.x;
+            var old_y_ = _layer.obj_background.y;
+            if (_x == old_x_ && _y == old_y_) return undefined;
+
+            _layer.obj_background.x = _x;
+            _layer.obj_background.y = _y;
+
+            var inverse_ = {fn: action_set_background_position, args: [_layer, old_x_, old_y_, false]};
+            if (_record) {
+                array_push(undo_stack, inverse_)
+                redo_stack = []
+            }
+            return inverse_;
+        }
+
+        ///@desc writes a single tile (_tile:0 = empty) at (_x,_y) in _tilemap,
+        ///without expanding/shrinking it (see action_run_many); self-inverting
         action_set_tiles = function(_tilemap,_x,_y,_tile,_record=true){
             var old_tile_ = tilemap_get(_tilemap,_x,_y);
             if (old_tile_ == _tile) return undefined;
@@ -1925,23 +2256,13 @@ smf_preview_surface = -1;
             return inverse_;
         }
 
-        ///@desc replays each {fn,args} in _entries (eg several action_set_tiles
-        ///calls made with _record=false), returning ONE combined inverse
-        ///entry (or undefined if none of them changed anything) - lets a
-        ///multi-cell paste/erase be undone/redone in a single step. Also
-        ///expands/shrinks the tilemap once for the whole batch, rather than
-        ///once per cell (which was a major lag spike on big brushes) -
-        ///assumes every entry targets the same tilemap, as
-        ///[_tilemap,_x,_y,...] args, true of every current use (tile
-        ///paste/erase and their undo/redo replay)
+        ///@desc replays each {fn,args} in _entries as one combined undo step;
+        ///also expands/shrinks the tilemap once per batch instead of once per cell
         action_run_many = function(_entries){
             if (array_length(_entries) <= 0) return undefined;
 
-            //tile edit batches (paste/erase, and their undo/redo replay) are
-            //always action_set_tiles entries, and need one expand/shrink for
-            //the whole batch instead of once per cell - other batches (eg
-            //action_transform_instance, for multi-select mirror/flip/rotate)
-            //don't use tile coordinates at all, so this must not run for them
+            //tile edit batches are always action_set_tiles entries needing one batch
+            //expand/shrink - other batches (eg mirror/flip/rotate) don't use tile coords
             var is_tile_batch_ = _entries[0].fn == action_set_tiles;
             var tilemap_;
 
@@ -1968,13 +2289,8 @@ smf_preview_surface = -1;
             return {fn: action_run_many, args: [inverses_]};
         }
 
-        ///@desc self-inverting: shifts the whole level - every tilemap's tile
-        ///data, every ASSET/INSTANCE element, room bounds and the camera -
-        ///by (_shift_x,_shift_y) pixels. Positive grows room space on the
-        ///left/top and moves everything over to make room for it; its own
-        ///inverse (negated shift) removes that margin again. Each tilemap's
-        ///shift is rounded to its own tile size, so mixed tile sizes across
-        ///layers are expected to share a common alignment
+        ///@desc shifts the whole level (tiles, elements, room bounds, camera) by
+        ///(_shift_x,_shift_y) px; self-inverting via the negated shift
         action_shift_room = function(_shift_x, _shift_y, _record=true){
             if (_shift_x == 0 && _shift_y == 0) return undefined;
 
@@ -1995,9 +2311,8 @@ smf_preview_surface = -1;
                 var new_h_ = old_h_ + sy_;
 
                 if (sx_ >= 0 && sy_ >= 0) {
-                    //growing - extend first, then move existing data to the
-                    //shifted position back-to-front so writes never clobber
-                    //a cell before it's been read
+                    //growing - extend first, then move data to the shifted position
+                    //back-to-front so writes never clobber a cell before it's read
                     tilemap_set_width(tilemap_, new_w_);
                     tilemap_set_height(tilemap_, new_h_);
                     for (var x_ = new_w_-1; x_ >= 0; x_--) {
@@ -2054,10 +2369,8 @@ smf_preview_surface = -1;
             var width_ = ds_grid_width(_tilegrid);
             var height_ = ds_grid_height(_tilegrid);
 
-            //a paste that would land left/above the room shifts the whole
-            //level over first (its own undo step) so nothing goes negative
-            //and gets silently dropped - brush_tilemap (the tile-brush
-            //canvas) isn't part of a room and never needs this
+            //a paste landing left/above the room shifts the whole level first (its
+            //own undo step) so nothing goes negative - brush_tilemap never needs this
             if (_tilemap != brush_tilemap) {
                 var min_x_ = 0, min_y_ = 0;
                 for (var w_ = 0; w_ < width_; w_++) {
@@ -2124,9 +2437,8 @@ smf_preview_surface = -1;
             return inverse_;
         }
 
-        ///@desc flood-fills every tile 4-connected to (_x,_y) that shares its
-        ///value with _fill_value (0 = erase) - bundled through action_run_many
-        ///into a single undo step, same as a brush paste/erase
+        ///@desc flood-fills every tile 4-connected to (_x,_y) sharing its value
+        ///with _fill_value (0 = erase); bundled through action_run_many
         action_fill_tiles = function(_tilemap,_x,_y,_fill_value,_record=true){
             var w_ = tilemap_get_width(_tilemap);
             var h_ = tilemap_get_height(_tilemap);
@@ -2189,8 +2501,7 @@ window_command_hook(window_command_close);
 smf_files = scan_smf_files("3D");
 
 //loads whatever resource_tree.json currently exists - regenerating it is
-//slow enough (and rarely needed) that it's left to the "Regenerate Resource
-//Tree" menu item instead of running on every launch
+//slow enough to leave to the "Regenerate Resource Tree" menu item instead
 resource_tree = json_load(root_path + "editor/resource_tree.json").folders;
 
 //restore last session's window positions/dock layout, if any - windows are
@@ -2221,9 +2532,8 @@ global.gui_draw = false;
 
 //if you're not already in a level, when going to editor
 if(global.level == undefined){
-    //continue from wherever the last session left off (most recently saved/
-    //opened level) - falls back to a fresh level if there isn't one yet, or
-    //if that file's gone missing since (open_level returns false)
+    //continue from wherever the last session left off (most recently saved or
+    //opened), falling back to a fresh level if that file's gone missing
 	
 	var success_ = false;
 	if (array_length(recent_levels) > 0) {
@@ -2237,242 +2547,3 @@ if(global.level == undefined){
     open_level(levels_dir + global.level + ".json")
 }
 #endregion
-
-
-
-//#region prepares layers
-////gets relevant layers, and adds a type for ease of use
-//var layers_ = layer_get_all();
-//for (var i_ = 0; i_ < array_length(layers_); i_++) {
-    ////only show tile and decor layers, and store a type on them for ease
-    //var layer_ = {
-        //id : layers_[i_],
-        //name: string_lower(layer_get_name(layers_[i_])),
-    //}
-    //
-    //var external_ = false;
-    //var data_layers_ = struct_get_names(global.room_data.layers);
-    //for (var l_ = 0; l_ < array_length(data_layers_); l_++) {
-    	//if(layer_.name ==  data_layers_[l_]){
-            //external_ = true;
-            //break;
-        //}
-    //}
-    //
-    //if(external_ == false){ //internal layers do not need to be edited, and will be disabled
-        //array_push(layers,layer_);
-    //}
-    //
-    //else if(string_starts_with(layer_.name,"decor")){
-        //layer_.type = LAYER_TYPE.TILEMAP
-        //array_push(layers,layer_);
-    //} else
-    //
-    //if(string_starts_with(layer_.name,"asset")){
-        //layer_.type = LAYER_TYPE.ASSET
-        //layer_.transforms = [];
-        //array_push(layers,layer_);
-        //
-		////adds asset editor instance, so they can be manipulated
-        //var elements_ = layer_get_all_elements(layer_.id);
-		//for (var e_ = 0; e_ < array_length(elements_); e_++) {
-			//var element_ = elements_[e_];
-			//array_push(layer_.transforms,instance_create_depth(0,0,0,obj_asset_transform,{
-				//element_id : element_,
-                //name : sprite_get_name(layer_sprite_get_sprite(element_)),
-				//layer_id : layer_.id,
-			//}));
-		//}
-    //}
-//}
-//#endregion
-
-///TODO this should be changed into an action system for undo & redo as soon as possible
-//add_layer = function(_type){
-    //var layer_ = {
-        //type : _type,
-    //}
-    //var name_ = "";
-    //switch (_type) {
-        //case LAYER_TYPE.INSTANCE:
-            //name_ = "inst_";
-            //layer_.transforms = [];
-            //break;
-        //case LAYER_TYPE.ASSET:
-            //name_ = "asset_";
-            //layer_.transforms = [];
-            //break;
-        //case LAYER_TYPE.TILEMAP:
-            //name_ = "decor_";
-            //break;
-    //}
-    //
-    //var count_ = 0;
-    ////layer number for the name
-    //for (var i_ = 0; i_ < array_length(layers); i_++) {
-    	//if(string_starts_with(layers[i_].name,name_)) count_++;
-    //}
-    //name_+=string(count_);
-    //
-    ////sets depth to be under the lowest layer
-    //var depth_ = layer_get_depth(layers[array_length(layers)-1].id) + 100;
-    //
-    //layer_.name = name_;
-    //layer_.id = layer_create(depth_,name_);
-    //
-    //struct_set_chained(global.room_data,{
-        //depth: depth_,
-        //parralax_x: 0,
-        //parralax_y: 0,
-        //offset_x: 0,
-        //offset_y: 0,
-    //},"layers",name_);
-    //
-    //switch (_type) {
-        //case LAYER_TYPE.TILEMAP:
-            //
-            //instance_create_depth(0,0,depth_,obj_layer_draw,{
-                //layer_id : layer_.id,
-                //type : LAYER_TYPE.TILEMAP,
-                //name : name_
-            //})
-            //layer_set_visible(layer_.id,false);
-            //break;
-            //
-        //case LAYER_TYPE.INSTANCE:
-            //struct_set_chained(global.room_data,[],"layers",name_,"elements");
-        //case LAYER_TYPE.ASSET:
-            //struct_set_chained(global.room_data,[],"layers",name_,"elements");
-            //
-            //instance_create_depth(0,0,depth_,obj_layer_draw,{
-                //layer_id : layer_.id,
-                //type : LAYER_TYPE.ASSET,
-                //name : name_
-            //})
-            //layer_set_visible(layer_.id,false);
-            //break;
-    //}
-    //
-    //array_push(layers,layer_);
-    //set_layer(array_length(layers)-1);
-//}
-//
-//delete_layer = function(_layer_index){
-    //struct_remove(global.room_data.layers,layers[_layer_index].name);
-    //array_delete(layers,_layer_index,1);
-    //layer_active = undefined;
-    //layer_index = 0;
-//}
-//
-//set_layer = function(_layer_index){
-    //layer_index = _layer_index;
-    //layer_active = layers[_layer_index];
-    //
-    //if(layer_active.type == LAYER_TYPE.TILEMAP){
-        //if(is_array(layer_active.elements)){
-            //element_active = layer_active.elements[0];
-            //
-            //tilemap = layer_tilemap_get_id(layer_active.id);
-            //tilemap_w = tilemap_get_width(tilemap)
-            //tilemap_h = tilemap_get_height(tilemap)
-            //tileset = tilemap_get_tileset(tilemap);
-            //tileset_info = tileset_get_info(tileset);
-            //
-            ////redraw tile data and instance
-            //tileset_data_update = true;
-            //tilebrush_data_update = true;
-			//
-            ////Grid overlay size
-			//grid_w = tilemap_w;
-			//grid_h = tilemap_h;
-			//grid_cell_w = tileset_info.tile_width;
-			//grid_cell_h = tileset_info.tile_height;
-            //
-            //tileset_info.name = tileset_get_name(tileset);
-            //
-            //var brush_width_ = struct_get_chained(editor_data,tileset_info.name,"brush_width");
-            //var brush_height_ = struct_get_chained(editor_data,tileset_info.name,"brush_height");
-            //var brush_tiles_ = struct_get_chained(editor_data,tileset_info.name,"brush_tiles");
-            //
-            //tileset_brushes = ds_grid_create(brush_width_,brush_height_);
-            //ds_grid_populate(tileset_brushes,brush_tiles_);
-            //
-            //tileset_tiles = ds_grid_create(tileset_info.tile_columns,tileset_info.tile_count / tileset_info.tile_columns);
-            ////fils grid with indexes from
-            //ds_grid_populate(tileset_tiles,array_create_ext(tileset_info.tile_count,function(_i){
-                //return _i;
-            //}));
-            //
-            ////a brush is a ds_grid of tiledata
-            //brush = -1; //-1 is none selected
-            //
-            //tile_flipped = false;
-            //tile_mirrored = false;
-            //tile_rotated = false;
-            //
-            ////tile picker offset and zoom
-            //tiles_x = 0;
-            //tiles_y = 0;
-            //tiles_size = 512; //this should automatically be set to fit the window
-            //
-            ////tile brush pickers offset and zoom
-            //brushes_x = 0;
-            //brushes_y = 0;
-            //brushes_size = 512;
-        //} else {
-            //element_active = noone
-            //tilemap = undefined;
-            //tileset = undefined;
-        //}
-    //}
-    //else if(layer_active.type == LAYER_TYPE.ASSET) { //asset layer
-		//element_active = noone;
-		//grid_cell_w = 16;
-		//grid_cell_h = 16;
-		//grid_w = room_width / grid_cell_w;
-		//grid_h = room_height / grid_cell_h;
-        //
-        //brush = -1;
-    //}
-    //
-    //parralax_x = struct_get_chained(global.room_data,"layers",layer_active.name,"parralax_x") ?? 0;
-    //parralax_y = struct_get_chained(global.room_data,"layers",layer_active.name,"parralax_y") ?? 0;
-    //offset_x = struct_get_chained(global.room_data,"layers",layer_active.name,"offset_x") ?? 0;
-    //offset_y = struct_get_chained(global.room_data,"layers",layer_active.name,"offset_y") ?? 0;
-//}
-//
-//add_sprite = function(_sprite){
-    //var x_ = global.camera.x + offset_x - global.camera.get_x() * parralax_x;
-    //var y_ = global.camera.y + offset_y - global.camera.get_y() * parralax_y;
-    //
-    //var element_ = layer_sprite_create(layer_active.id,x_,y_,_sprite);
-    //var transform_ = instance_create_depth(0,0,0,obj_asset_transform,{
-        //element_id : element_,
-        //name :  sprite_get_name(_sprite),
-        //layer_id : layer_active.id,
-    //});
-    //element_active = transform_;
-    //array_push(layer_active.transforms,transform_);
-//}
-//
-//quit = function(){ //stops level editor
-    ////maybe make a warning or popup or something
-    //
-    //global.camera.follow = last_camera_follow;
-    //global.camera.zone_constrain = true;
-    //global.gui_draw = true;
-    //
-    //global.camera.zoom(1,0);
-    //
-    //instance_destroy();
-//}
-
-//save = function(){
-    //var path_ = string_replace(GM_project_filename,"Pengu-lost-and-wanted.yyp","datafiles/room_data/"+room_get_name(room)+".json");
-    //show_debug_message("saved to: "+path_);
-    //show_debug_message(global.room_data);
-    //json_save(path_,global.room_data);
-//}
-
-//reorders layers
-//layers_depth_order();

@@ -120,7 +120,7 @@ function sensor(_vec_start,_dir,_extention_dist,_regression_dist = _extention_di
 				//TODO should it include collision type? it easily could
 			}
 			
-			_tile_rotation(info_,x+vec_rot_check_.x,y+vec_rot_check_.y,coll_,_dir);
+			_tile_rotation(info_,x+vec_rot_check_.x,y+vec_rot_check_.y,x+_vec_start.x,y+_vec_start.y,coll_,_dir);
 			
 
 		} else 
@@ -141,7 +141,7 @@ function sensor(_vec_start,_dir,_extention_dist,_regression_dist = _extention_di
 				vec_sensor_ : vec_sensor_.move_toward(_vec_start,delta_), //when the solid space has been found it regresses back one unit to be next to it
 			}
 			
-			_tile_rotation(info_,x+vec_sensor_.x,y+vec_sensor_.y,coll_,_dir);
+			_tile_rotation(info_,x+vec_sensor_.x,y+vec_sensor_.y,x+_vec_start.x,y+_vec_start.y,coll_,_dir);
 			
 		} else 
 		return noone;
@@ -177,22 +177,29 @@ function draw_sensor(_x,_y,_vec_start,_dir,_distance){
 
 ///@function _tile_rotation()
 ///@desc gets rotation_ value from a tile_ using global.tile_angles, and finds side when dealing with objects and adds to _info
-function _tile_rotation(_info,_x,_y,_inst,_dir){
+function _tile_rotation(_info,_x,_y,_x_origin,_y_origin,_inst,_dir){
 	var rotation_ = 0;
 	
 	if(!instance_exists(_inst)){ //Tiles
 		var tile_ = tilemap_get_at_pixel(_inst,round(_x),round(_y));
-		
+
 		var tile_index_ = tile_get_index(tile_);
-		
+
+		if(tile_index_ > array_length(global.tile_angles)-1){
+			_info.angle = 0;
+			_info.side = noone;
+			_info.inst = noone;
+			return;
+		}
+
 		//Get's the tile_'s rotation_, which has been pre-set in global.tile_angles
 		rotation_ = (global.tile_angles[tile_index_]);
-		
+
 		if(rotation_ != 360){ //360 is a special number for solid blocks, so it doesn't need to get rotated or flipped
 			//rotates and flips the rotation_ if the tile_ is flipped or rotated
 			if (tile_get_rotate(tile_)){
 				rotation_ = rotation_ - 90;
-				if (tile_get_mirror(tile_))	rotation_ = -(rotation_+180);	
+				if (tile_get_mirror(tile_))	rotation_ = -(rotation_+180);
 				if (tile_get_flip(tile_))	rotation_ = -rotation_;
 			} else {
 				if (tile_get_mirror(tile_))	rotation_ = -rotation_;
@@ -203,34 +210,35 @@ function _tile_rotation(_info,_x,_y,_inst,_dir){
 		}
 		_info.side = noone;
 		_info.inst = noone;
-		
+
 	} else if (_inst.object_index == obj_collision_tile){ //Instance Tiles (tiles that are turned into objects)
 		rotation_ = (global.tile_angles[_inst.image_index]);
 		if(rotation_ != 360){
-			if (_inst.image_xscale != 1) rotation_ = -rotation_;
-			if (_inst.image_yscale != 1) rotation_ = -(rotation_+180);
-		} else {
-			switch (find_side(_x,_y,_inst)) {
-				case SIDES.BOTTOM:
-					rotation_ = 180;
-					break
-				case SIDES.LEFT:
-					rotation_ = 90;
-					break
-				case SIDES.RIGHT:
-					rotation_ = 270;
-					break
-				case SIDES.TOP:
-					rotation_ = 0;
-					break
+			//image_angle is 0 or -90 (see obj_tiles_area's Create_0), flagging
+			//whether the source tile was rotated - same role as tile_get_rotate above
+			if (_inst.image_angle != 0){
+				rotation_ = rotation_ - 90;
+				if (_inst.image_xscale != 1) rotation_ = -(rotation_+180);
+				if (_inst.image_yscale != 1) rotation_ = -rotation_;
+			} else {
+				if (_inst.image_xscale != 1) rotation_ = -rotation_;
+				if (_inst.image_yscale != 1) rotation_ = -(rotation_+180);
 			}
+		} else {
+			rotation_ = snap_to_90(_dir);
 		}
-		rotation_ += _inst.image_angle;
 		_info.side = noone;
-		
+
 	} else { //Instance collision
-		//sensors origin is used to check which side of the instance that's collided with, left right top bottom
-		switch (find_side(_x,_y,_inst)) {
+		//uses the final backed-off sensor position (_info.vec_sensor_), not the
+		//touching point passed in as _x/_y - right at/inside the boundary is
+		//ambiguous for find_side near corners
+		var side_x_ = x + _info.vec_sensor_.x;
+		var side_y_ = y + _info.vec_sensor_.y;
+		//unrounded - find_side compares against a bbox center that's often
+		//fractional too (odd sprite dimensions), rounding first only adds
+		//error right at the corner boundary where this is already close
+		switch (find_side(side_x_,side_y_,_inst)) {
 			case SIDES.BOTTOM:
 				rotation_ = 180;
 				_info.side = SIDES.BOTTOM

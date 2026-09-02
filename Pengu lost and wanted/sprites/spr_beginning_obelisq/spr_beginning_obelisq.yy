@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":7,
   "parent":{
-    "name":"beginning obelisq",
-    "path":"folders/Sprites/beginning obelisq.yy",
+    "name":"beginning",
+    "path":"folders/Sprites/areas/beginning.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

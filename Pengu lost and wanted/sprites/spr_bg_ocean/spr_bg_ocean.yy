@@ -45,7 +45,7 @@
   "origin":0,
   "parent":{
     "name":"original",
-    "path":"folders/Sprites/backgrounds/original.yy",
+    "path":"folders/Sprites/areas/original.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

@@ -8,8 +8,8 @@
   "name":"obj_stanncam_zone_corner",
   "overriddenProperties":[],
   "parent":{
-    "name":"Zones",
-    "path":"folders/Objects/STANNcam/Zones.yy",
+    "name":"camera zone",
+    "path":"folders/Objects/camera zone.yy",
   },
   "parentObjectId":{
     "name":"obj_stanncam_zone",

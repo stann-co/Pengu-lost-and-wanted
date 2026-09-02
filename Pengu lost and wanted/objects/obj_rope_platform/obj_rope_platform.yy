@@ -39,5 +39,8 @@
     "path":"sprites/spr_platform_workshop_mid/spr_platform_workshop_mid.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "editor_exclude",
+  ],
   "visible":true,
 }

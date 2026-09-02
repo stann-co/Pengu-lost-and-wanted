@@ -11,7 +11,8 @@
       "visible": true,
       "name": "instances",
       "depth": -10,
-      "parralax": 16,
+      "parralax_x": 16,
+      "parralax_y": 16,
       "collision": false,
       "color": 16777215
     },
@@ -737,7 +738,8 @@
           0
         ]
       ],
-      "parralax": 16,
+      "parralax_x": 16,
+      "parralax_y": 16,
       "collision": true,
       "visible": true,
       "depth": 0,
@@ -1465,7 +1467,8 @@
           0
         ]
       ],
-      "parralax": 16,
+      "parralax_x": 16,
+      "parralax_y": 16,
       "collision": true,
       "visible": true,
       "depth": 0,
@@ -2193,7 +2196,8 @@
           0
         ]
       ],
-      "parralax": 16,
+      "parralax_x": 16,
+      "parralax_y": 16,
       "collision": true,
       "visible": true,
       "depth": 0,
@@ -2921,7 +2925,8 @@
           0
         ]
       ],
-      "parralax": 16,
+      "parralax_x": 16,
+      "parralax_y": 16,
       "collision": false,
       "visible": true,
       "depth": 20,
@@ -3649,7 +3654,8 @@
           0
         ]
       ],
-      "parralax": 16,
+      "parralax_x": 16,
+      "parralax_y": 16,
       "collision": false,
       "visible": true,
       "depth": 30,
@@ -4377,7 +4383,8 @@
           0
         ]
       ],
-      "parralax": 16,
+      "parralax_x": 16,
+      "parralax_y": 16,
       "collision": false,
       "visible": true,
       "depth": 40,

@@ -10,14 +10,6 @@ trigger = function(_inst){ //dont override this one
 	has_left = false;
 	if(!has_entered){
 		has_entered = true;
-		on_enter();
+		fire_output("enter");
 	}
-}
-
-on_enter = function(){
-	show_debug_message("ENTERED!")
-}
-
-on_leave = function(){
-	show_debug_message("LEFT!")
 }

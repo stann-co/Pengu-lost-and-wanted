@@ -11,12 +11,17 @@
             "id": "25bf8d8436ab0bd4",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "canvas",
               "state": {
-                "file": "images/seeing the obelisq concept.png"
+                "file": "Story/Story chart.canvas",
+                "viewState": {
+                  "x": 1096.9594122176682,
+                  "y": 361.0507358953013,
+                  "zoom": -0.9999999999999998
+                }
               },
-              "icon": "lucide-image",
-              "title": "seeing the obelisq concept"
+              "icon": "lucide-layout-dashboard",
+              "title": "Story chart"
             }
           }
         ]
@@ -183,6 +188,14 @@
   },
   "active": "25bf8d8436ab0bd4",
   "lastOpenFiles": [
+    "Story/Story elements/The weirdness.md",
+    "Story/Story elements/The past.md",
+    "Story/Story chart.canvas",
+    "Story/Themes, what's the story about, why.md",
+    "Story/Species.md",
+    "Video scripts/Shorts/How Loops are made.md",
+    "Editor/Editor requirements.md",
+    "Editor/Unavngivet.canvas",
     "images/story progression idea.png",
     "images/seeing the obelisq concept.png",
     "images/Gyaannopierc.png",
@@ -190,21 +203,13 @@
     "images/cartrip.png",
     "images/basquette ref.png",
     "Gameplay and levels/Set pieces.canvas",
-    "Editor/Unavngivet.canvas",
-    "Editor/Editor requirements.md",
     "Characters/Gyaan.md",
     "Characters/Guard Captain.md",
     "Characters/Pengu.md",
     "Characters/Basquette.md",
     "Gameplay and levels/Unavngivet.base",
-    "Story/Story elements/The past.md",
     "Gameplay and levels",
-    "Story/Story elements/The weirdness.md",
-    "Story/Species.md",
-    "Story/Themes, what's the story about, why.md",
-    "Story/Story chart.canvas",
     "Story/Story elements/The obelisk.md",
-    "Video scripts/Shorts/How Loops are made.md",
     "Editor",
     "Characters/Aten (god like character).md",
     "images",

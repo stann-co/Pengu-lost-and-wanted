@@ -4,32 +4,25 @@ Have you ever seen a loop in a game?
 
 Just like Sonic, My game has plenty of them. But how do they actually work? 
 
-  
 
 If its a 3d game its of course just a question of the character moving back and forth so it can go over or under.
 
   
-
 But this is a 2d pixelart game, so how do we do it?
 
   
-
 In my game, this is actually handled with extra collision layers,  
 And toggled with trigger zones! 
 
   
-
 You can see I have 3 unique layers that get switched when you enter any one of these trigger zones.
 
   
-
 And then I also made these special dual trigger zones, that change depending on which side of it that you're on.
 
   
-
 With this I can make a layer switch just as you go through a loop, and switch it back on the way out as well!
 
-  
 
 That last part is pretty important,  because if I don't do it carefully, it’s possible for the player to jump out from the loop while still being on the second collision layer.
 

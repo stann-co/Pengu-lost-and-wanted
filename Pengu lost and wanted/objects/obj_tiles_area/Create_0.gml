@@ -1,3 +1,4 @@
+// Inherit the parent event
 event_inherited();
 
 /// @description
@@ -38,9 +39,12 @@ for (var i_ = 0; i_ < array_length(collision_layers_); i_++) {
 			var data_ = tilemap_get_at_pixel(tilemap_,x_,y_);
 			
 			if(!tile_get_empty(data_)){
-				//creates collision tile objects in place of each tile
+				//creates collision tile objects in place of each tile - depth_layer
+				//is obj_entity's own switch, driving collision_layer/depth on Create
+				var depth_layer_ = ["A","B","C"];
 				var tile_ = instance_create_depth(x_,y_,0,obj_collision_tile,{
 					parent : id,
+					depth_layer : depth_layer_[collision_layers_[i_]],
 				})
 				tile_.collision_layer = collision_layers_[i_];
 				tile_.image_index = tile_get_index(data_);

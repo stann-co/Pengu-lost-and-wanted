@@ -1,17 +1,19 @@
 /// @description
 if(obj_level_editor.element_active == id){
-	//dragging updates x/y via the mouse's inverse parralax offset (raw
-	//space) - hover/handle detection instead forward-transforms the
-	//corners with Draw_0's own call, so it can't drift from what's drawn
-	var effective_parralax_ = parralax_effective(parralax);
-	var mouse_ = parralax_offset(global.camera.get_mouse_x(), global.camera.get_mouse_y(), (TILE_SIZE*TILE_SIZE) / effective_parralax_);
+	//dragging moves x/y via the mouse's inverse parralax offset; hover/handle
+	//detection forward-transforms corners the same way Draw_0 does
+	var effective_parralax_x_ = parralax_effective(parralax_x);
+	var effective_parralax_y_ = parralax_effective(parralax_y);
+	var mouse_ = parralax_offset(global.camera.get_mouse_x(), global.camera.get_mouse_y(), (TILE_SIZE*TILE_SIZE) / effective_parralax_x_, (TILE_SIZE*TILE_SIZE) / effective_parralax_y_);
 	var x_ = mouse_.x;
 	var y_ = mouse_.y;
 
 	var raw_mx_ = global.camera.get_mouse_x();
 	var raw_my_ = global.camera.get_mouse_y();
 
-	var rad_ = 3;
+	//room-space handle radius, divided by res_scale for real screen pixels,
+	//floored to 1 game pixel since nothing renders at finer precision
+	var rad_ = max(2, 2 / stanncam_get_res_scale_x());
 
 	window_set_cursor(cr_default);
 	cursor_sprite = -1;
@@ -31,9 +33,8 @@ if(obj_level_editor.element_active == id){
 			//gesture can be committed as one undo step on release
 			transform_start = {x:x, y:y, image_xscale:image_xscale, image_yscale:image_yscale, image_angle:image_angle};
 
-			//rest of the current multi-selection, snapshotted the same way,
-			//so this drag carries them along too (see the MOVE/ROTATE/SCALE
-			//cases below, and the batched commit on release)
+			//rest of the multi-selection, snapshotted the same way so this drag
+			//carries them too (see MOVE/ROTATE/SCALE cases and the commit below)
 			group_targets = obj_level_editor.get_selected_elements();
 			group_starts = [];
 			for (var gi_ = 0; gi_ < array_length(group_targets); gi_++) {
@@ -65,32 +66,32 @@ if(obj_level_editor.element_active == id){
 	//touching anyone's own image_xscale/image_yscale (see the SCALE case)
 	var keep_size_ = keyboard_check(vk_shift);
 
-	//hover/handle detection uses the whole selection's envelope when more
-	//than one element is selected, or this element's own rotated corners
-	//otherwise - bounds_ is also reused for the "middle" move test below
+	//hover detection uses the selection's envelope when multiple are selected,
+	//else this element's own rotated corners; bounds_ also feeds the move test
 	var hover_is_group_ = array_length(obj_level_editor.get_selected_elements()) > 1;
 	var bounds_ = selection_bounds();
 	var c_;
+	//nudged opposite draw_instance_selection's rasterization offset, so hit
+	//corners line back up with what's actually drawn on screen
 	if (hover_is_group_) {
 		c_ = {
-			tl: { x: bounds_.min_x, y: bounds_.min_y },
-			tr: { x: bounds_.max_x, y: bounds_.min_y },
-			bl: { x: bounds_.min_x, y: bounds_.max_y },
-			br: { x: bounds_.max_x, y: bounds_.max_y },
+			tl: { x: bounds_.min_x-1, y: bounds_.min_y-1 },
+			tr: { x: bounds_.max_x,   y: bounds_.min_y-1 },
+			bl: { x: bounds_.min_x-1, y: bounds_.max_y },
+			br: { x: bounds_.max_x,   y: bounds_.max_y },
 		};
 	} else {
-		//Draw_0 only shifts the sprite's anchor (x,y) and draws the sprite
-		//itself unscaled - so the corners need that same shared translation,
-		//not a fresh parralax_offset scale of each corner independently
-		var anchor_ = parralax_offset(x, y, effective_parralax_);
+		//Draw_0 shifts just the sprite anchor and draws it unscaled, so corners
+		//need that same shared translation, not their own parralax_offset scale
+		var anchor_ = parralax_offset(x, y, effective_parralax_x_, effective_parralax_y_);
 		var dx_ = anchor_.x - x;
 		var dy_ = anchor_.y - y;
 		var c_raw_ = instance_corners(id);
 		c_ = {
-			tl: { x: c_raw_.tl.x + dx_, y: c_raw_.tl.y + dy_ },
-			tr: { x: c_raw_.tr.x + dx_, y: c_raw_.tr.y + dy_ },
-			bl: { x: c_raw_.bl.x + dx_, y: c_raw_.bl.y + dy_ },
-			br: { x: c_raw_.br.x + dx_, y: c_raw_.br.y + dy_ },
+			tl: { x: c_raw_.tl.x + dx_ - 1, y: c_raw_.tl.y + dy_ - 1 },
+			tr: { x: c_raw_.tr.x + dx_,     y: c_raw_.tr.y + dy_ - 1 },
+			bl: { x: c_raw_.bl.x + dx_ - 1, y: c_raw_.bl.y + dy_ },
+			br: { x: c_raw_.br.x + dx_,     y: c_raw_.br.y + dy_ },
 		};
 	}
 
@@ -100,9 +101,8 @@ if(obj_level_editor.element_active == id){
 
 	switch (dragging) {
 		case TRANSFORM_OPTIONS.NONE:
-		//corner/edge/rotate handles take priority over the move/selection-box
-		//drag below, so they stay reachable even where a multi-selection's
-		//combined bounds also cover this element's own handle area
+		//corner/edge/rotate handles take priority over the move drag below, so
+		//they stay reachable inside a multi-selection's combined bounds
 		//top left corner
 		if(!disable_scaling && point_in_circle(raw_mx_,raw_my_,c_.tl.x,c_.tl.y,rad_)){
 			scale_icon(315, hover_is_group_ ? 0 : image_angle);
@@ -226,9 +226,8 @@ if(obj_level_editor.element_active == id){
 		break
 
 		case TRANSFORM_OPTIONS.ROTATE:
-		//recomputed from the drag's starting angle each frame (not
-		//accumulated frame-to-frame) so snapping can't round away small
-		//mouse movements before they add up - see rotate_start_dir
+		//recomputed from the drag's starting angle each frame, not accumulated,
+		//so snapping can't round away small mouse movements before they add up
 		var current_dir_ = point_direction(transform_pivot_x, transform_pivot_y, x_, y_);
 		var rotated_angle_ = transform_start.image_angle + (current_dir_ - rotate_start_dir);
 		if (snap_active_) {
@@ -236,9 +235,8 @@ if(obj_level_editor.element_active == id){
 			rotated_angle_ = round(rotated_angle_ / sd_) * sd_;
 		}
 
-		//every selected element (self included) spins by the same delta,
-		//revolving around the shared pivot - this element's own position
-		//for a single selection, or the group's envelope center otherwise
+		//every selected element spins by the same delta around the shared pivot -
+		//this element's own position alone, or the group's envelope center
 		var rot_delta_ = rotated_angle_ - transform_start.image_angle;
 		var rot_cos_ = dcos(rot_delta_);
 		var rot_sin_ = dsin(rot_delta_);
@@ -255,16 +253,14 @@ if(obj_level_editor.element_active == id){
 		break
 
 		case TRANSFORM_OPTIONS.SCALE:
-		//total movement since the drag started (avoids snapping fighting
-		//small per-frame deltas). Raw mouse, not x_/y_ - size renders at
-		//native scale regardless of parralax, so screen maps 1:1 to it
+		//total movement since drag start, avoiding snap fighting small per-frame
+		//deltas; raw mouse since size renders 1:1 regardless of parralax
 		var total_dx_ = raw_mx_ - drag_start_mouse_x;
 		var total_dy_ = raw_my_ - drag_start_mouse_y;
 
 		if (is_group) {
-			//envelope is axis-aligned, so no rotation projection - each
-			//member's own size still scales in ITS OWN local axes by the
-			//same ratio (exact only if everyone shares the same rotation)
+			//envelope is axis-aligned, no rotation projection - each member scales
+			//in its own local axes by the same ratio (exact only if rotations match)
 			var scale_ratio_x_ = 1;
 			var scale_ratio_y_ = 1;
 			var scale_anchor_x_ = (scale_h > 0) ? group_bounds_start.min_x : group_bounds_start.max_x;
@@ -305,9 +301,8 @@ if(obj_level_editor.element_active == id){
 				group_targets[si_].on_scaled();
 			}
 		} else {
-			//scale_h/scale_v below can both be active at once (dragging a corner,
-			//not just an edge) - their position offsets are combined here and
-			//applied once, instead of each overwriting the other
+			//scale_h/scale_v can both be active (a corner drag) - their position
+			//offsets are combined and applied once instead of overwriting each other
 			var accum_dx_ = 0;
 			var accum_dy_ = 0;
 
@@ -317,9 +312,8 @@ if(obj_level_editor.element_active == id){
 				var start_w_ = transform_start.image_xscale * width_;
 
 				if (snap_active_) {
-					//snaps the dragged edge to the grid, measured along the
-					//sprite's own (possibly rotated) local x axis from the world
-					//origin, not from the mouse - avoids snap depending on grab point
+					//snaps the dragged edge along the sprite's own local x axis from
+					//the world origin, not the mouse, so snap ignores grab point
 					var gs_ = obj_level_editor.grid_size;
 					var xoff_ = sprite_get_xoffset(sprite_index);
 					var pivot_axis_ = dcos(image_angle)*transform_start.x + -dsin(image_angle)*transform_start.y;
@@ -369,11 +363,10 @@ if(obj_level_editor.element_active == id){
 				}
 			}
 
-			//accum_dx_/accum_dy_ are render-space, so add to the anchor's render
-			//position (not raw), or the opposite corner drifts whenever parralax
-			//isn't 1 - then convert the result back to raw x/y to store
-			var anchor_start_ = parralax_offset(transform_start.x, transform_start.y, effective_parralax_);
-			var anchor_new_ = parralax_offset(anchor_start_.x + accum_dx_, anchor_start_.y + accum_dy_, (TILE_SIZE*TILE_SIZE) / effective_parralax_);
+			//accum_dx_/accum_dy_ are render-space; added to the anchor's render pos
+			//(not raw, or the opposite corner drifts under parralax), then reconverted
+			var anchor_start_ = parralax_offset(transform_start.x, transform_start.y, effective_parralax_x_, effective_parralax_y_);
+			var anchor_new_ = parralax_offset(anchor_start_.x + accum_dx_, anchor_start_.y + accum_dy_, (TILE_SIZE*TILE_SIZE) / effective_parralax_x_, (TILE_SIZE*TILE_SIZE) / effective_parralax_y_);
 			x = anchor_new_.x;
 			y = anchor_new_.y;
 			on_scaled();
@@ -382,9 +375,8 @@ if(obj_level_editor.element_active == id){
 	}
 
 	if(dragging != TRANSFORM_OPTIONS.NONE && mouse_check_button_released(mb_left)){
-		//every changed member of the group (self included) commits together
-		//as one undo step, via the same action_run_many batching the tile
-		//brush and Mirror/Flip/Rotate90 already use for multi-selects
+		//every changed group member commits together as one undo step, via the
+		//same action_run_many batching tile brush/Mirror/Flip/Rotate90 use
 		var commit_entries_ = [];
 		for (var comi_ = 0; comi_ < array_length(group_targets); comi_++) {
 			var comt_ = group_targets[comi_];

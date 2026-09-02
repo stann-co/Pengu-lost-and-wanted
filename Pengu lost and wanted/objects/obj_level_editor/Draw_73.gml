@@ -1,18 +1,19 @@
 /// @description
 if(tileset != undefined && brush != -1 && layer_active != undefined && layer_active.type == LAYER_TYPE.TILEMAP){
-    var tile_scale_ = parralax_effective(layer_active.parralax, grid_cell_w) / grid_cell_w;
+    var tile_scale_x_ = parralax_effective(layer_active.parralax_x, grid_cell_w) / grid_cell_w;
+    var tile_scale_y_ = parralax_effective(layer_active.parralax_y, grid_cell_w) / grid_cell_w;
 
     //undoes obj_tilemap's own scaling to find the raw tile cell under the
     //cursor, so the ghost/preview appears at the cursor and paints exactly
     //where it's shown (see Step_1.gml)
     var center_x_ = global.camera.get_x() + global.camera.width * 0.5;
     var center_y_ = global.camera.get_y() + global.camera.height * 0.5;
-    var inv_ = parralax_offset(global.camera.get_mouse_x(), global.camera.get_mouse_y(), TILE_SIZE / tile_scale_);
+    var inv_ = parralax_offset(global.camera.get_mouse_x(), global.camera.get_mouse_y(), TILE_SIZE / tile_scale_x_, TILE_SIZE / tile_scale_y_);
 
     //everything below is drawn in raw tile space, then scaled through the
     //same transform obj_tilemap uses, so it lines up with the real tiles
     var world_ = matrix_get(matrix_world);
-    matrix_set(matrix_world, matrix_build(center_x_*(1-tile_scale_), center_y_*(1-tile_scale_), 0, 0,0,0, tile_scale_,tile_scale_,1));
+    matrix_set(matrix_world, matrix_build(center_x_*(1-tile_scale_x_), center_y_*(1-tile_scale_y_), 0, 0,0,0, tile_scale_x_,tile_scale_y_,1));
 
     if (tool_mode == TOOL_MODE.DRAW) {
         var brush_offset_x_ = ds_grid_width( brush)*grid_cell_w / 2;
@@ -37,15 +38,13 @@ if(tileset != undefined && brush != -1 && layer_active != undefined && layer_act
 }
 
 if (box_select_active && layer_active != undefined) {
-    //box_select_start_x/y are stored in raw world space (see Step_1.gml) -
-    //shift forward through parralax_offset to the same render position the
-    //elements themselves draw at; the mouse is already in that render space
-    var start_ = parralax_offset(box_select_start_x, box_select_start_y, parralax_effective(layer_active.parralax));
+    //box_select_start_x/y are already raw mouse/render space (see Step_1.gml),
+    //same space the current mouse position is in - no parralax_offset needed
     var mx_ = global.camera.get_mouse_x();
     var my_ = global.camera.get_mouse_y();
-    var box_x1_ = min(start_.x, mx_);
-    var box_y1_ = min(start_.y, my_);
-    var box_x2_ = max(start_.x, mx_);
-    var box_y2_ = max(start_.y, my_);
+    var box_x1_ = min(box_select_start_x, mx_);
+    var box_y1_ = min(box_select_start_y, my_);
+    var box_x2_ = max(box_select_start_x, mx_);
+    var box_y2_ = max(box_select_start_y, my_);
     draw_box_selection(box_x1_, box_y1_, box_x2_-box_x1_, box_y2_-box_y1_);
 }

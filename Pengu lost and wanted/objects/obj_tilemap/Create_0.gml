@@ -6,11 +6,11 @@ layer_set_visible(layer_name,false);
 shader_function = undefined;
 
 
-if (string_starts_with(layer_name,"collision_") ){
-	if	   (layer_name == "collision_A") collision_layer = COLLISION_LAYERS.A;
-	else if(layer_name == "collision_B") collision_layer = COLLISION_LAYERS.B;
-	else if(layer_name == "collision_C") collision_layer = COLLISION_LAYERS.C;
-	
+if	   (layer_name == "collision_A") collision_layer = COLLISION_LAYERS.A;
+else if(layer_name == "collision_B") collision_layer = COLLISION_LAYERS.B;
+else if(layer_name == "collision_C") collision_layer = COLLISION_LAYERS.C;
+
+if (variable_instance_exists(id,"collision_layer")){
 	shader_function = function(){
 		var u_layer = shader_get_uniform(sh_collision,"u_layer");
 		var u_active = shader_get_uniform(sh_collision,"u_active");

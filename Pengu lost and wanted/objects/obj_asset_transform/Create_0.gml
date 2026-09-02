@@ -11,8 +11,11 @@ enum TRANSFORM_OPTIONS {
 
 mask_index = sprite_index;
 
+image_speed = 0;
+
 //base parralax depth is the same as base tile size
-parralax = TILE_SIZE;
+parralax_x = TILE_SIZE;
+parralax_y = TILE_SIZE;
 
 //stable identity that survives this instance being destroyed/recreated by
 //undo/redo of its own placement (action_restore_instance overwrites this
@@ -20,6 +23,12 @@ parralax = TILE_SIZE;
 //see obj_level_editor.next_element_uid/find_element_by_uid
 element_uid = obj_level_editor.next_element_uid;
 obj_level_editor.next_element_uid += 1;
+
+//position within its layer's element list - controls save/load order (and
+//so real-game creation order) and same-depth draw order. action_place_instance/
+//action_place_sprite append new elements to the end; action_restore_instance
+//puts a restored one back where it was
+if (!variable_instance_exists(id, "sort_index")) sort_index = 0;
 
 dragging = TRANSFORM_OPTIONS.NONE; //what state it's in
 
@@ -84,19 +93,28 @@ disable_moving = false;
 disable_scaling = false;
 disable_rotation = false;
 
+//another element this one comes and goes together with (eg a widget spawned
+//by its owner) - action_remove_instance/action_restore_instance cascade
+//through this so deleting/undoing either side takes both
+if (!variable_instance_exists(id, "linked_uid")) linked_uid = noone;
+
 //runs when moved, can be overridden by other objects if neccesary
 on_moved = function(){
-		
+
 }
 
 on_scaled = function(){
-	
+
 }
 
 on_rotated = function(){
-	
+
 }
 
-//on_delete = function(){
-//	
-//}
+on_delete = function(){
+
+}
+
+editor_draw = function(){
+	draw_sprite_ext(sprite_index,image_index,px,py,image_xscale,image_yscale,image_angle,image_blend,image_alpha);
+}

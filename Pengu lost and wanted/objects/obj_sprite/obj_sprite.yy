@@ -27,7 +27,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"parralax","filters":[],"listItems":[],"multiselect":false,"name":"parralax","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"16","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"parralax_x","filters":[],"listItems":[],"multiselect":false,"name":"parralax_x","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"16","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"parralax_y","filters":[],"listItems":[],"multiselect":false,"name":"parralax_y","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"16","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

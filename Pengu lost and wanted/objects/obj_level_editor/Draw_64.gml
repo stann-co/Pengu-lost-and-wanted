@@ -23,17 +23,19 @@ if(show_grid){
         //matches obj_tilemap's own view-matrix scaling exactly (scales
         //around the camera's view CENTER, using tile WIDTH for both axes,
         //same as obj_tilemap does)
-        var tile_scale_ = parralax_effective(layer_active.parralax, grid_cell_w) / grid_cell_w;
-        var origin_ = parralax_offset(0, 0, tile_scale_ * TILE_SIZE);
+        var tile_scale_x_ = parralax_effective(layer_active.parralax_x, grid_cell_w) / grid_cell_w;
+        var tile_scale_y_ = parralax_effective(layer_active.parralax_y, grid_cell_w) / grid_cell_w;
+        var origin_ = parralax_offset(0, 0, tile_scale_x_ * TILE_SIZE, tile_scale_y_ * TILE_SIZE);
         offset_x_ = round(origin_.x);
         offset_y_ = round(origin_.y);
-        gw_ *= tile_scale_;
-        gh_ *= tile_scale_;
+        gw_ *= tile_scale_x_;
+        gh_ *= tile_scale_y_;
     } else {
         //ASSET/INSTANCE elements offset (not scale) away from the camera
         //center instead - see parralax_offset
-        var grid_parralax_ = (layer_active != undefined) ? parralax_effective(layer_active.parralax) : TILE_SIZE;
-        var origin_ = parralax_offset(0, 0, grid_parralax_);
+        var grid_parralax_x_ = (layer_active != undefined) ? parralax_effective(layer_active.parralax_x) : TILE_SIZE;
+        var grid_parralax_y_ = (layer_active != undefined) ? parralax_effective(layer_active.parralax_y) : TILE_SIZE;
+        var origin_ = parralax_offset(0, 0, grid_parralax_x_, grid_parralax_y_);
         offset_x_ = round(origin_.x);
         offset_y_ = round(origin_.y);
     }

@@ -6,7 +6,7 @@
   "name":"stanncam_config",
   "parent":{
     "name":"STANNcam",
-    "path":"folders/Objects/STANNcam.yy",
+    "path":"folders/Extensions/STANNcam.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

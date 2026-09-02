@@ -2,6 +2,7 @@
 ///@desc changes active collision layer
 ///@param Instance
 ///@param COLLISION_LAYERS
+///@param change_depth
 function collision_layer_switch(_inst,_collision_layer,_change_depth = false){
 	
     if(_change_depth){

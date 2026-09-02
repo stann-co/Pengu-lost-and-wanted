@@ -31,12 +31,7 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[
-    {"$GMObjectProperty":"v2","%Name":"animcurve","filters":[],"listItems":[],"multiselect":false,"name":"animcurve","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"ac_basic","path":"animcurves/ac_basic/ac_basic.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"ac_basic","varType":5,},
-    {"$GMObjectProperty":"v2","%Name":"animcurve_channel","filters":[],"listItems":[],"multiselect":false,"name":"animcurve_channel","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
-    {"$GMObjectProperty":"v2","%Name":"info_target","filters":[],"listItems":[],"multiselect":false,"name":"info_target","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"-1","varType":4,},
-    {"$GMObjectProperty":"v2","%Name":"end_rotation","filters":[],"listItems":[],"multiselect":false,"name":"end_rotation","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-  ],
+  "properties":[],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,

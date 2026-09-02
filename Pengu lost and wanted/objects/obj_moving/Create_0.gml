@@ -1,9 +1,9 @@
 /// @description
 event_inherited();
 
-pause_duration = pause_duration_seconds * SECOND
-duration = duration_seconds * SECOND;
-offset_duration = offset_duration_seconds * SECOND;
+pause_duration *= SECOND
+duration *= SECOND;
+offset_duration *= SECOND;
 
 t = 0;
 
@@ -17,21 +17,28 @@ end_rot_ = end_rotation;
 start_x_ = x;
 start_y_ = y;
 
-if(info_target != -1){
-	end_x_ = info_target.x;
-	end_y_ = info_target.y;
+end_x_ = target_x;
+end_y_ = target_y;
 	
-	//a target gets places at start, so even if the platform is out of view
-	//it's active as long as start or end pos is in view
-	var start_target_ = instance_create_depth(x,y,depth,obj_info_target);
+var start_target_ = instance_create_depth(x,y,depth,obj_info_target);
+//a target gets places at start, so even if the platform is out of view
+//it's active as long as start or end pos is in view
+end_target = instance_create_depth(target_x,target_y,depth,obj_info_target);
 	
-	//if either self or target is in view, the platform will move
-	activation_link(self,info_target,start_target_);
-}
+//if either self or target is in view, the platform will move
+activation_link(self,start_target_,end_target);
 
 forward = true;
 powered = false; // cycle is set to "powered" this makes the platform, go to it's target, or to default position
 
 trigger = function(){
 	return false; //not solid
+}
+
+SetActive = function(_active){
+	active = _active;
+}
+
+SetPowered = function(_powered){
+	powered = _powered;
 }

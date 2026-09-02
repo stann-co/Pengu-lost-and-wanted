@@ -1,19 +1,13 @@
 //should be used in a one tile space,
 //to flip pengu from sliding on the floor to the ceiling or vice versa
+event_inherited();
 
 triggered = false;
 
 trigger = function(){
-	var on_layer = false
-	if(depth_layer == "A"){
-		on_layer = (global.tile_collisions == layer_tilemap_get_id(obj_game.collision_A))
-	} else {
-		on_layer = (global.tile_collisions == layer_tilemap_get_id(obj_game.collision_B))
-	}
-	
-	if(!triggered && on_layer){
+	if(!triggered && active){
 		triggered = true;
-		with(obj_pengu){
+		with(obj_pengu){ //TODO maybe this should be changed to work with other entities also
 			if(state.state_is("prone")){
 				
 				facing = -facing;
@@ -28,3 +22,6 @@ trigger = function(){
 	}
 }
 
+setActive = function(_active){
+	active = _active;
+}

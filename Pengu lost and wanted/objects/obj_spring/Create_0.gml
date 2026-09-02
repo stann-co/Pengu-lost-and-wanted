@@ -1,5 +1,7 @@
 event_inherited();
 
+control_lock_time *= SECOND;
+
 /// @description
 animate = false;
 subimg = 0;

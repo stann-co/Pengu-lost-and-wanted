@@ -7,7 +7,10 @@ inst.step(TIMESTEP);
 
 if (CONTROLLED){
 	if (InputPressed(INPUT_VERB.INTERACT)){
-		instance_create_layer(x,y,"Instances",obj_pengu);
+		instance_create_layer(x,y,"Instances",obj_pengu,{
+			depth_layer: depth_layer,
+			parent: noone
+		});
 		global.camera.follow = obj_pengu;
 		global.camera.zoom(base_zoom_level,SECOND*0.5);
 		state.change("standby_start");

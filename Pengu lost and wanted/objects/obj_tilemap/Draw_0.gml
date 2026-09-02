@@ -1,10 +1,11 @@
 /// @description
 
-var scale_ = parralax_effective(parralax, tile_size) / tile_size;
+var scale_x_ = parralax_effective(parralax_x, tile_size) / tile_size;
+var scale_y_ = parralax_effective(parralax_y, tile_size) / tile_size;
 
 var view_ = matrix_get(matrix_view);
 
-var new_view_ = matrix_multiply(view_,matrix_build(0,0,0,0,0,0,scale_,scale_,1));
+var new_view_ = matrix_multiply(view_,matrix_build(0,0,0,0,0,0,scale_x_,scale_y_,1));
 
 //pixel-snap the resulting offset - to reduce shimmer
 new_view_[12] = round(new_view_[12]);
@@ -12,9 +13,8 @@ new_view_[13] = round(new_view_[13]);
 
 //on top of the snap above - nudges sampling off exact texel-atlas edges,
 //where floating point rounding can flip inconsistently frame to frame.
-var pixel_bias_ = 0.1 / scale_;
-new_view_[12] += pixel_bias_;
-new_view_[13] += pixel_bias_;
+new_view_[12] += 0.1 / scale_x_;
+new_view_[13] += 0.1 / scale_y_;
 
 matrix_set(matrix_view,new_view_);
 

@@ -37,7 +37,10 @@ level_editor_active = false;
 start_level_editor = function(){
     /// @description level editor start
     if(!instance_exists(obj_level_editor) && !level_editor_active){
-        instance_create_depth(0,0,0,obj_level_editor);
+        instance_activate_all();
+        call_later(1,time_source_units_frames,function(){
+            instance_create_depth(0,0,0,obj_level_editor);
+        });
     }
 	level_editor_active = true;
 }

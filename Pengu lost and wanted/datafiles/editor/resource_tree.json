@@ -35,6 +35,53 @@
               "folders": []
             }
           ]
+        },
+        {
+          "name": "STANNcam",
+          "resources": [
+            {
+              "name": "__obj_stanncam_manager",
+              "type": "object"
+            }
+          ],
+          "folders": [
+            {
+              "name": "Miscellaneous",
+              "resources": [],
+              "folders": [
+                {
+                  "name": "Sprites",
+                  "resources": [
+                    {
+                      "name": "spr_stanncam_zone_1side",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone_2side",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone_connector",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone_corner",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone_u",
+                      "type": "sprite"
+                    },
+                    {
+                      "name": "spr_stanncam_zone",
+                      "type": "sprite"
+                    }
+                  ],
+                  "folders": []
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -127,10 +174,6 @@
         },
         {
           "name": "obj_moving",
-          "type": "object"
-        },
-        {
-          "name": "obj_depth_set",
           "type": "object"
         }
       ],
@@ -269,6 +312,10 @@
               "type": "object"
             },
             {
+              "name": "obj_background",
+              "type": "object"
+            },
+            {
               "name": "obj_tunnel_ride",
               "type": "object"
             }
@@ -340,6 +387,10 @@
             },
             {
               "name": "obj_create_event_test",
+              "type": "object"
+            },
+            {
+              "name": "obj_layer_shader_test",
               "type": "object"
             },
             {
@@ -497,7 +548,7 @@
           "folders": []
         },
         {
-          "name": "layer_switch",
+          "name": "layer switch",
           "resources": [
             {
               "name": "obj_layer_switch_AC",
@@ -527,81 +578,34 @@
           "folders": []
         },
         {
-          "name": "STANNcam",
+          "name": "camera zone",
           "resources": [
             {
-              "name": "__obj_stanncam_manager",
+              "name": "obj_stanncam_zone_1side",
+              "type": "object"
+            },
+            {
+              "name": "obj_stanncam_zone_2side",
+              "type": "object"
+            },
+            {
+              "name": "obj_stanncam_zone_blank",
+              "type": "object"
+            },
+            {
+              "name": "obj_stanncam_zone_corner",
+              "type": "object"
+            },
+            {
+              "name": "obj_stanncam_zone_u",
+              "type": "object"
+            },
+            {
+              "name": "obj_stanncam_zone",
               "type": "object"
             }
           ],
-          "folders": [
-            {
-              "name": "Miscellaneous",
-              "resources": [],
-              "folders": [
-                {
-                  "name": "Sprites",
-                  "resources": [
-                    {
-                      "name": "spr_stanncam_zone_1side",
-                      "type": "sprite"
-                    },
-                    {
-                      "name": "spr_stanncam_zone_2side",
-                      "type": "sprite"
-                    },
-                    {
-                      "name": "spr_stanncam_zone_connector",
-                      "type": "sprite"
-                    },
-                    {
-                      "name": "spr_stanncam_zone_corner",
-                      "type": "sprite"
-                    },
-                    {
-                      "name": "spr_stanncam_zone_u",
-                      "type": "sprite"
-                    },
-                    {
-                      "name": "spr_stanncam_zone",
-                      "type": "sprite"
-                    }
-                  ],
-                  "folders": []
-                }
-              ]
-            },
-            {
-              "name": "Zones",
-              "resources": [
-                {
-                  "name": "obj_stanncam_zone_1side",
-                  "type": "object"
-                },
-                {
-                  "name": "obj_stanncam_zone_2side",
-                  "type": "object"
-                },
-                {
-                  "name": "obj_stanncam_zone_blank",
-                  "type": "object"
-                },
-                {
-                  "name": "obj_stanncam_zone_corner",
-                  "type": "object"
-                },
-                {
-                  "name": "obj_stanncam_zone_u",
-                  "type": "object"
-                },
-                {
-                  "name": "obj_stanncam_zone",
-                  "type": "object"
-                }
-              ],
-              "folders": []
-            }
-          ]
+          "folders": []
         }
       ]
     },
@@ -867,24 +871,6 @@
           "folders": []
         },
         {
-          "name": "beginning obelisq",
-          "resources": [
-            {
-              "name": "spr_beginning_obelisq",
-              "type": "sprite"
-            },
-            {
-              "name": "spr_bg_beginning_obelisq",
-              "type": "sprite"
-            },
-            {
-              "name": "spr_ground_beginning_obelisq",
-              "type": "sprite"
-            }
-          ],
-          "folders": []
-        },
-        {
           "name": "areas",
           "resources": [],
           "folders": [
@@ -893,6 +879,60 @@
               "resources": [
                 {
                   "name": "spr_nerd_store_bg",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "future city",
+              "resources": [
+                {
+                  "name": "spr_bg_card_01",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_bg_card_02",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_future_city",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_bg_future_city",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "beginning",
+              "resources": [
+                {
+                  "name": "spr_bg_beginning_obelisq",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_ground_beginning_obelisq",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_beginning_obelisq",
+                  "type": "sprite"
+                }
+              ],
+              "folders": []
+            },
+            {
+              "name": "original",
+              "resources": [
+                {
+                  "name": "spr_bg_ocean",
+                  "type": "sprite"
+                },
+                {
+                  "name": "spr_bg_original",
                   "type": "sprite"
                 }
               ],
@@ -930,12 +970,30 @@
           ]
         },
         {
-          "name": "backgrounds",
+          "name": "cards",
           "resources": [
             {
-              "name": "spr_bg_future_city",
+              "name": "spr_card_blur_02",
               "type": "sprite"
             },
+            {
+              "name": "spr_card_blur_03",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_card_blur_04",
+              "type": "sprite"
+            },
+            {
+              "name": "spr_card_blur_01",
+              "type": "sprite"
+            }
+          ],
+          "folders": []
+        },
+        {
+          "name": "backgrounds",
+          "resources": [
             {
               "name": "spr_bg_grid_cyllinder",
               "type": "sprite"
@@ -949,22 +1007,7 @@
               "type": "sprite"
             }
           ],
-          "folders": [
-            {
-              "name": "original",
-              "resources": [
-                {
-                  "name": "spr_bg_ocean",
-                  "type": "sprite"
-                },
-                {
-                  "name": "spr_bg_original",
-                  "type": "sprite"
-                }
-              ],
-              "folders": []
-            }
-          ]
+          "folders": []
         },
         {
           "name": "decorations",

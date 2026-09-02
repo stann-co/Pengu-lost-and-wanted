@@ -1,3 +1,5 @@
 /// @description Toggle debug mode
-global.debug = !global.debug
+if(!level_editor_active){
+	global.debug = !global.debug
+}
 

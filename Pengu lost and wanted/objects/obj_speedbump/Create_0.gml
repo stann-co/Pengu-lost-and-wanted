@@ -1,5 +1,7 @@
 event_inherited();
 
+control_lock_time *= SECOND;
+
 /// @description
 subimg = 0;
 
@@ -14,8 +16,8 @@ trigger = function(){
 		
 		with(obj_pengu){
 			if(!airborne){				
-				if(other.change_layer != noone){
-					collision_layer_switch(other.change_layer == "A",true);
+				if(other.change_layer != 0){
+					collision_layer_switch(other.change_layer-1,true);
 				}
 				set_control_lock(other.control_lock_time);
 				ground_spd = other.force * other.image_xscale;

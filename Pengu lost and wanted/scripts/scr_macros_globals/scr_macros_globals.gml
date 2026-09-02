@@ -85,9 +85,37 @@ enum ATTACK_TYPES {
 enum LAYER_TYPE {
     TILEMAP,
     ASSET,
-    INSTANCE
+    INSTANCE,
+    BACKGROUND
 }
-global.LAYER_TYPES = ["Tilemap","Assets","Instances"]; //index matches LAYER_TYPE enum value
+global.LAYER_TYPES = ["Tilemap","Assets","Instances","Background"]; //index matches LAYER_TYPE enum value
+
+enum BACKGROUND_MODE {
+    NONE,
+    TILED,
+    FILL
+}
+global.BACKGROUND_MODES = ["None","Tiled","Fill"]; //index matches BACKGROUND_MODE enum value
+
+//premade per-layer post-fx - index matches a layer's own fx_index. Each
+//entry's setup/clear (see layer_fx_functions.gml) fully own their runtime
+//state; params only lists the sliders shown in the Inspector and their defaults
+global.LAYER_FX = [
+	{ name: "None", setup: undefined, clear: undefined, params: [] },
+	{ name: "Color Tint", setup: fx_setup_color, clear: fx_clear_color, params: [
+		{name:"Red", min:0, max:1, default_value:1},
+		{name:"Green", min:0, max:1, default_value:1},
+		{name:"Blue", min:0, max:1, default_value:1},
+		{name:"Intensity", min:0, max:1, default_value:0.5},
+	]},
+	{ name: "Blur", setup: fx_setup_blur, clear: fx_clear_blur, params: [
+		{name:"Radius", min:0, max:32, default_value:6},
+	]},
+];
+
+//one entry per layer currently running an fx: {layer_id, fx_index, params}.
+//applying "None" (or removing the layer) deletes the entry again
+global.layer_fx_list = ds_list_create();
 
 #macro VOLUME_MAX 10
 global.music_volume = 10;
@@ -127,9 +155,9 @@ global.persistent_objects = [
     obj_scene,
     obj_game,
     obj_pengu, 
-    obj_depth_set,
     obj_tilemap,
     obj_splash,
+	obj_background
 ]
 //Feather enable GM2017
 
@@ -140,6 +168,7 @@ enum COLLISION_LAYERS {
 	A,
 	B,
 	C,
+	None,
 }
 
 //TODO consider just using simple array instead of ds_map?
@@ -225,6 +254,8 @@ global.gui_font = font_add_sprite_ext(spr_gui_font,"!\"#$%&'()*+,-./0123456789:;
 //GPU/Texture settings
 gpu_set_tex_max_mip(5);
 gpu_set_tex_mip_bias(-1);
+gpu_set_blendmode_ext_sepalpha(bm_src_alpha, bm_inv_src_alpha, bm_one, bm_inv_src_alpha)
+//gpu_set_ztestenable(true);
 
 //ImGui
 ImGui.__Initialize();
@@ -233,3 +264,7 @@ ImGui.ConfigFlagToggle(ImGuiConfigFlags.DockingEnable);
 //room_instance_add(rm_game,0,0,obj_gmlive);
 room_instance_add(rm_game,0,0,obj_camera);
 room_instance_add(rm_game,0,0,obj_game);
+
+//catspeak
+//TODO: maybe do safer expose later, and or ban specific function calls, if not careful could be bad
+Catspeak.interface.exposeEverythingIDontCareIfModdersCanEditUsersSaveFilesJustLetMeDoThis = true;

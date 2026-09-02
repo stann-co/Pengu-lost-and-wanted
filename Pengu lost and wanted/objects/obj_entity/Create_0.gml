@@ -3,26 +3,24 @@ x_speed = 0;
 y_speed = 0;
 
 #region collision layer and depth
-switch (depth_layer) {
-	case "above A":
-        collision_layer = COLLISION_LAYERS.A
-		depth = DEPTH_A-10;
+//depth_layer indices match the options list in obj_entity's Other_10:
+//0 "None", 1 "A", 2 "B", 3 "C", 4 "below C"
+switch (depth_layer) { //TODO Maybe only have 4 options, forth being layer controlled
+	case 0:
+        collision_layer = COLLISION_LAYERS.None
+		//Depth remains the same as the layer its on
         break;
-    case "A":
+    case 1:
         collision_layer = COLLISION_LAYERS.A
 		depth = DEPTH_A;
         break;
-	case "B":
-        collision_layer = COLLISION_LAYERS.B 
+	case 2:
+        collision_layer = COLLISION_LAYERS.B
 		depth = DEPTH_B;
         break;
-	case "C":
+	case 3:
         collision_layer = COLLISION_LAYERS.C
 		depth = DEPTH_C;
-        break;
-	case "below C":
-        collision_layer = COLLISION_LAYERS.C
-		depth = DEPTH_C+10;
         break;
 }
 #endregion
@@ -49,9 +47,8 @@ add_child = function(_entity){
 }
 
 remove_child = function(_entity){
-	children = array_filter(children,function(el_,i_){
-		return !array_contains(children,el_);
-	})
+	var index_ = array_get_index(children,_entity);
+	if (index_ != -1) array_delete(children,index_,1);
 	_entity.parent = noone;
 }
 

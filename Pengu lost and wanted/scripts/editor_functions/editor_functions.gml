@@ -436,10 +436,16 @@ function draw_grid_selection(_grid,_x,_y,_cell_w,_cell_h,_width = 1){
  */
 function draw_instance_selection(_inst,_x = 0,_y = 0,_width = 1){
 	var c_ = instance_corners(_inst);
-	draw_line_selection(c_.tl.x+_x,c_.tl.y+_y,c_.tr.x+_x,c_.tr.y+_y,_width);
-	draw_line_selection(c_.tr.x+_x,c_.tr.y+_y,c_.br.x+_x,c_.br.y+_y,_width);
-	draw_line_selection(c_.br.x+_x,c_.br.y+_y,c_.bl.x+_x,c_.bl.y+_y,_width);
-	draw_line_selection(c_.bl.x+_x,c_.bl.y+_y,c_.tl.x+_x,c_.tl.y+_y,_width);
+	//left/top edges rasterize a pixel further out than right/bottom, so tl
+	//is nudged on both axes here and tr/bl each on their one affected axis
+	var tlx_ = c_.tl.x+1, tly_ = c_.tl.y+1;
+	var trx_ = c_.tr.x,   try_ = c_.tr.y+1;
+	var blx_ = c_.bl.x+1, bly_ = c_.bl.y;
+	var brx_ = c_.br.x,   bry_ = c_.br.y;
+	draw_line_selection(tlx_+_x,tly_+_y,trx_+_x,try_+_y,_width);
+	draw_line_selection(trx_+_x,try_+_y,brx_+_x,bry_+_y,_width);
+	draw_line_selection(brx_+_x,bry_+_y,blx_+_x,bly_+_y,_width);
+	draw_line_selection(blx_+_x,bly_+_y,tlx_+_x,tly_+_y,_width);
 }
 
 /**
@@ -501,7 +507,7 @@ function selection_bounds(){
 	var min_x_, min_y_, max_x_, max_y_;
 	for (var i_ = 0; i_ < array_length(targets_); i_++) {
 		var t_ = targets_[i_];
-		var anchor_ = parralax_offset(t_.x, t_.y, parralax_effective(t_.parralax));
+		var anchor_ = parralax_offset(t_.x, t_.y, parralax_effective(t_.parralax_x), parralax_effective(t_.parralax_y));
 		var dx_ = anchor_.x - t_.x;
 		var dy_ = anchor_.y - t_.y;
 		var c_ = instance_corners(t_);
@@ -562,85 +568,4 @@ function point_in_line(_x,_y,_lx1,_ly1,_lx2,_ly2,_threshold){
 		return true;
 	}
 	return false;
-}
-
-/// @desc builds a plain-data struct describing a level from a live _layers
-/// array, ready for json_save - read back by level_deserialize
-/// @param _layers
-/// @param {real} _room_width
-/// @param {real} _room_height
-function level_serialize(_layers, _room_width, _room_height){
-	var layers_data_ = [];
-	for (var i_ = 0; i_ < array_length(_layers); i_++) {
-		var layer_ = _layers[i_];
-		var ld_ = {
-			name : layer_.name,
-			depth : layer_get_depth(layer_.layer),
-			type : layer_.type,
-			always : layer_.always,
-			visible : layer_.visible,
-			locked : layer_.locked,
-			color : layer_.color,
-			parralax : layer_.parralax,
-			collision : layer_.collision,
-		};
-
-		if (layer_.type == LAYER_TYPE.TILEMAP) {
-			ld_.tileset = layer_.tileset != undefined ? tileset_get_name(layer_.tileset) : undefined;
-
-			var w_ = tilemap_get_width(layer_.tilemap);
-			var h_ = tilemap_get_height(layer_.tilemap);
-			var tiles_ = array_create(h_);
-			for (var yy_ = 0; yy_ < h_; yy_++) {
-				var row_ = array_create(w_);
-				for (var xx_ = 0; xx_ < w_; xx_++) {
-					row_[xx_] = tilemap_get(layer_.tilemap, xx_, yy_);
-				}
-				tiles_[yy_] = row_;
-			}
-			ld_.tiles = tiles_;
-		} else {
-			//vars holds each INSTANCE element's custom variable values (see
-			//editor_variable_float/instance_variables) - always empty on ASSET
-			//layers, since sprite elements aren't tied to an object
-			var elements_ = [];
-			with (obj_asset_transform) {
-				if (layer != layer_.layer) continue;
-				if (editor_only) continue;
-				var ed_ = {
-					x : x, y : y,
-					image_xscale : image_xscale, image_yscale : image_yscale, image_angle : image_angle,
-					vars : {},
-				};
-				if (layer_.type == LAYER_TYPE.INSTANCE) {
-					ed_.object_name = variable_instance_exists(id,"object_name") ? object_name : "";
-					ed_.element_name = variable_instance_exists(id,"element_name") ? element_name : "";
-					ed_.ref_vars = [];
-					if (variable_instance_exists(id,"instance_variables")) {
-						var var_names_ = variable_struct_get_names(instance_variables);
-						for (var vi_ = 0; vi_ < array_length(var_names_); vi_++) {
-							var var_name_ = var_names_[vi_];
-							var var_def_ = instance_variables[$ var_name_];
-							variable_struct_set(ed_.vars, var_name_, var_def_.value);
-							if (var_def_.type == EDITOR_VARIABLE_TYPES.REFERENCE) array_push(ed_.ref_vars, var_name_);
-						}
-					}
-				} else {
-					ed_.sprite_name = variable_instance_exists(id,"sprite_name") ? sprite_name : "";
-				}
-				array_push(elements_, ed_);
-			}
-			ld_.elements = elements_;
-		}
-
-		array_push(layers_data_, ld_);
-	}
-
-	return {
-		name : global.level,
-		version : 1,
-		room_width : _room_width,
-		room_height : _room_height,
-		layers : layers_data_,
-	};
 }

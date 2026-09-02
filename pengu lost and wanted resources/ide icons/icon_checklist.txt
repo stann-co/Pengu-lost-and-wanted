@@ -1,0 +1,12 @@
+Icons missing from datafiles/editor/icons.ttf (the ICON enum in editor_functions.gml),
+found while building level editor features. Check general_icon_font.svg /
+General_IDE_Icons.svg / Canvas-Icon-Font.svg for a matching glyph to add.
+
+[ ] Cut / scissors - Cut button in the viewport toolbar currently reuses
+    ICON.ERASER as a stand-in, which reads as "erase" not "cut"
+
+Not hit yet, but likely worth having:
+[ ] Duplicate (distinct from copy+paste - a single "clone in place" action)
+[ ] Link / unlink (for widget<->owner pairs, eg obj_moving's target widget)
+[ ] Info (only WARNING/HELP exist right now, no plain "i" info glyph)
+[ ] Refresh / reload (Regenerate Resource Tree currently has no icon)

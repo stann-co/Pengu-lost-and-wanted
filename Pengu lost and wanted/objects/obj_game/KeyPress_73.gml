@@ -1,5 +1,5 @@
 /// @description debug overlay
-if(!is_debug_overlay_open()){
+if(!is_debug_overlay_open() && !level_editor_active){
     
     debug = dbg_view("Debug",true);
     dbg_set_view(debug)

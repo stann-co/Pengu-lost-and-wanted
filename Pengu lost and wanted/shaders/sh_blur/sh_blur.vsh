@@ -1,33 +1,3 @@
-/*-----------------------------------------------------------------------------
-Bloom Shader 2 - Blend: Draws application surface and bloom surface to the screen
-Vertex Shader: Pass-through
--------------------------------------------------------------------------------
-_______________________________________________________________________________
-INFO:
--------------------------------------------------------------------------------
-Process:
-Draw The application surface through this shader to a post process surface.
-Blur the post process surface.
-Draw the application surface with the post process surface to the screen by
-the second bloom shader: bloom_blend.
-
-_______________________________________________________________________________
-UNIFORMS:
--------------------------------------------------------------------------------
-float		bloom_intensity
-			mainly for brightness but also affects contrast & saturaton
-float		bloom_darken
-			to darken the base texture / application surface
-float		bloom_saturation
-			(de-)saturate the bloom texture to change the mood
-			=0:	grey
-			<1:	desaturated
-			=1:	no change
-			>1:	saturated
-sampler2D	bloom_texture
-			texture with blurred light colours / bloom surface
-*/
-
 attribute vec3 in_Position;                  // (x,y,z)
 //attribute vec3 in_Normal;                  // (x,y,z)     unused in this shader.
 attribute vec4 in_Colour;                    // (r,g,b,a)
